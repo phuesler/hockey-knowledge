@@ -1,0 +1,27 @@
+---
+import { t, type Locale } from '../lib/i18n';
+
+interface Props { locale?: Locale }
+const { locale = 'de' } = Astro.props;
+const s = t(locale);
+---
+
+<footer class="site-footer">
+  <div class="wrap wrap-wide">
+    <p>{s.footerNote}</p>
+    <p class="meta">{s.siteName} · {s.tagline}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-block-start: var(--s-8);
+    padding-block: var(--s-6);
+    border-block-start: 1px solid var(--c-border);
+    background: var(--c-surface);
+    color: var(--c-text-muted);
+    font-size: var(--t-sm);
+  }
+  .site-footer p + p { margin-block-start: var(--s-3); }
+  .meta { color: var(--c-text-muted); }
+</style>

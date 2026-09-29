@@ -1,0 +1,69 @@
+---
+import { href } from '../lib/href';
+import { t, type Locale } from '../lib/i18n';
+
+interface Props { locale?: Locale }
+const { locale = 'de' } = Astro.props;
+const s = t(locale);
+const home = href(`/${locale}/`);
+---
+
+<header class="site-header">
+  <div class="wrap wrap-wide bar">
+    <a class="brand" href={home}>
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="var(--c-brand)" />
+        <ellipse cx="16" cy="19.5" rx="8" ry="3.2" fill="var(--c-text)" opacity="0.85" />
+        <path d="M7 14.5 L14 6.5 L16.6 8.7 L9.6 16.7 Z" fill="var(--c-ice)" />
+      </svg>
+      <span class="brand-text">
+        <strong>{s.siteName}</strong>
+        <small>U13</small>
+      </span>
+    </a>
+    <nav aria-label="Hauptnavigation">
+      <a href={home}>{s.allArticles}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--c-surface);
+    border-block-end: 1px solid var(--c-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: saturate(1.4) blur(6px);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-height: 3.75rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    text-decoration: none;
+    color: inherit;
+  }
+  .brand-mark { width: 2rem; height: 2rem; }
+  .brand-text { display: flex; align-items: baseline; gap: var(--s-2); }
+  .brand-text strong { font-size: var(--t-lg); letter-spacing: -0.01em; }
+  .brand-text small {
+    color: var(--c-text-muted);
+    font-size: var(--t-sm);
+    letter-spacing: 0.08em;
+  }
+  nav a {
+    font-size: var(--t-sm);
+    font-weight: 600;
+    text-decoration: none;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--radius);
+  }
+  nav a:hover { background: var(--c-brand-soft); }
+</style>

@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { href, absoluteUrl } from '../lib/href';
+import { t, type Locale } from '../lib/i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: Locale;
+  /** Path of this page without the base prefix, e.g. "/de/schlaeger". */
+  path?: string;
+}
+
+const { title, description, locale = 'de', path = '/' } = Astro.props;
+const s = t(locale);
+const canonical = absoluteUrl(path, Astro.site);
+const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale} />
+  </head>
+  <body>
+    <a class="skip-link" href="#inhalt">{s.skipToContent}</a>
+    <SiteHeader locale={locale} />
+    <main id="inhalt">
+      <slot />
+    </main>
+    <SiteFooter locale={locale} />
+  </body>
+</html>

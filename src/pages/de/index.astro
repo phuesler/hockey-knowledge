@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getArticles, articlePath, readingMinutes, categoryOrder } from '../../lib/articles';
+import { t } from '../../lib/i18n';
+
+const locale = 'de';
+const s = t(locale);
+const articles = await getArticles(locale);
+
+const groups = categoryOrder
+  .map((category) => ({
+    category,
+    label: s.categories[category],
+    intro: s.categoryIntros[category],
+    items: articles.filter((a) => a.data.category === category),
+  }))
+  .filter((group) => group.items.length > 0);
+---
+
+<BaseLayout title={s.siteName} description={s.tagline} locale={locale} path="/de/">
+  <div class="wrap wrap-wide">
+    <section class="hero">
+      <h1>Eishockey verstehen &mdash;<br />für U13 und ihre Eltern</h1>
+      <p>
+        Kurze, verständliche Artikel zu allem, was rund ums Eis wichtig ist. Geschrieben
+        für Kinder, die es selber lesen wollen, und für Eltern, die noch nie in einer
+        Kabine gestanden haben.
+      </p>
+    </section>
+
+    {groups.map((group) => (
+      <section class="group">
+        <h2>{group.label}</h2>
+        <p class="intro">{group.intro}</p>
+        <ul class="grid">
+          {group.items.map((entry) => (
+            <ArticleCard
+              title={entry.data.title}
+              description={entry.data.description}
+              path={articlePath(entry)}
+              tags={entry.data.tags}
+              readingMinutes={readingMinutes(entry)}
+            />
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--s-7) var(--s-6);
+    max-width: 40ch;
+  }
+  .hero h1 {
+    font-size: var(--t-h1);
+    letter-spacing: -0.025em;
+  }
+  .hero p {
+    margin-block-start: var(--s-4);
+    font-size: var(--t-lg);
+    color: var(--c-text-muted);
+    max-width: 60ch;
+  }
+
+  .group { margin-block-start: var(--s-7); }
+  .group h2 {
+    font-size: var(--t-h2);
+    letter-spacing: -0.015em;
+  }
+  .intro {
+    color: var(--c-text-muted);
+    margin-block-start: var(--s-2);
+  }
+
+  .grid {
+    list-style: none;
+    padding: 0;
+    margin-block-start: var(--s-5);
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 44rem) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); }
+  }
+</style>

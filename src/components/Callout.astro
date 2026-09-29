@@ -1,0 +1,48 @@
+---
+/**
+ * Highlight box for article content. Use inside .mdx files:
+ *   <Callout type="tipp" title="Kurz gesagt">Text …</Callout>
+ *
+ * type: "tipp" (green) | "achtung" (amber) | "merke" (blue, the default)
+ */
+interface Props {
+  type?: 'tipp' | 'achtung' | 'merke';
+  title?: string;
+}
+
+const { type = 'merke', title } = Astro.props;
+
+const defaults = {
+  tipp: { label: 'Tipp', icon: '💡' },
+  achtung: { label: 'Achtung', icon: '⚠️' },
+  merke: { label: 'Merke', icon: '📌' },
+} as const;
+
+const { label, icon } = defaults[type];
+---
+
+<aside class:list={['callout', type]}>
+  <p class="head"><span aria-hidden="true">{icon}</span> {title ?? label}</p>
+  <div class="body"><slot /></div>
+</aside>
+
+<style>
+  .callout {
+    margin-block: var(--s-5);
+    padding: var(--s-4) var(--s-5);
+    border-radius: var(--radius);
+    border-inline-start: 4px solid var(--accent);
+    background: var(--bg);
+  }
+  .merke { --accent: var(--c-brand); --bg: var(--c-brand-soft); }
+  .tipp { --accent: var(--c-good); --bg: var(--c-good-soft); }
+  .achtung { --accent: var(--c-warn); --bg: var(--c-warn-soft); }
+
+  .head {
+    font-weight: 700;
+    margin-block-end: var(--s-2);
+  }
+  .body :global(> * + *) { margin-block-start: var(--s-3); }
+  .body :global(ul), .body :global(ol) { padding-inline-start: 1.3em; }
+  .body :global(li + li) { margin-block-start: var(--s-1); }
+</style>

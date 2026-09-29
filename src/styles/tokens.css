@@ -1,0 +1,83 @@
+/*
+ * Design tokens. Every colour, space and size used anywhere in the site comes from
+ * here. Do not hardcode hex values in components — add a token instead, so dark mode
+ * and future theming keep working.
+ */
+:root {
+  /* Ice-rink palette: deep boards blue, clean ice, a warm puck-tape accent. */
+  --c-bg: #f7f9fc;
+  --c-surface: #ffffff;
+  --c-surface-2: #eef3fa;
+  --c-border: #d6e0ee;
+  --c-text: #10233d;
+  --c-text-muted: #4d6382;
+  --c-brand: #0b4da2;
+  --c-brand-strong: #073a7d;
+  --c-brand-soft: #e3edfb;
+  --c-accent: #e2542a;
+  --c-accent-soft: #fdeae3;
+  --c-good: #1c7a52;
+  --c-good-soft: #e0f3ea;
+  --c-warn: #9a6205;
+  --c-warn-soft: #fcf1dc;
+  --c-ice: #cfe6f5;
+  /* Nur für Grafiken (Linien, Flächen) – für Text zu kontrastarm,
+     dafür gibt es --c-text-muted. */
+  --c-steel: #9aa8bb;
+
+  /* Spacing — a 4px scale. */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+
+  /* Type: fluid, mobile-first. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --t-sm: 0.875rem;
+  --t-base: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --t-lg: clamp(1.125rem, 1.08rem + 0.22vw, 1.25rem);
+  --t-h3: clamp(1.25rem, 1.16rem + 0.42vw, 1.5rem);
+  --t-h2: clamp(1.5rem, 1.34rem + 0.78vw, 2rem);
+  --t-h1: clamp(1.9rem, 1.55rem + 1.7vw, 2.9rem);
+
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 2px rgb(16 35 61 / 0.06), 0 6px 20px -8px rgb(16 35 61 / 0.14);
+
+  --measure: 68ch;
+  --gutter: 1rem;
+}
+
+@media (min-width: 40rem) {
+  :root {
+    --gutter: 2rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-bg: #0c1522;
+    --c-surface: #131f31;
+    --c-surface-2: #1a2941;
+    --c-border: #27384f;
+    --c-text: #e9f0f9;
+    --c-text-muted: #9db0c9;
+    --c-brand: #6ba6f5;
+    --c-brand-strong: #9cc4fb;
+    --c-brand-soft: #16283f;
+    --c-accent: #ff8a5f;
+    --c-accent-soft: #33201a;
+    --c-good: #5fd0a0;
+    --c-good-soft: #132c23;
+    --c-warn: #e5b45c;
+    --c-warn-soft: #2e2415;
+    --c-ice: #24455c;
+    --c-steel: #6d8099;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -10px rgb(0 0 0 / 0.6);
+  }
+}
