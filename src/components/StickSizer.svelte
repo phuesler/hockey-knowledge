@@ -9,11 +9,11 @@
 
   /*
    * Faustregeln, wie sie im Laden verwendet werden:
-   * - Der Stock steht senkrecht vor dir, Kelle auf dem Boden. Ohne Schlittschuhe
+   * - Der Schläger steht senkrecht vor dir, Kelle auf dem Boden. Ohne Schlittschuhe
    *   reicht er bis zur Nase, mit Schlittschuhen bis zum Kinn. Beides ergibt
-   *   ungefähr dieselbe Stocklänge: Körpergrösse minus ca. 12 cm.
+   *   ungefähr dieselbe Schlägerlänge: Körpergrösse minus ca. 12 cm.
    * - Flex ≈ halbes Körpergewicht in Pfund, also kg × 2.2 ÷ 2 ≈ kg × 1.1.
-   * - Jeder gekürzte Zoll (2.5 cm) macht den Stock ca. 5 Flexpunkte härter.
+   * - Jeder gekürzte Zoll (2.5 cm) macht den Schläger ca. 5 Flexpunkte härter.
    */
   const NOSE_OFFSET_CM = 12;
   const FLEX_PER_INCH_CUT = 5;
@@ -52,7 +52,7 @@
 </script>
 
 <figure class="sizer">
-  <figcaption class="title">Stock-Rechner</figcaption>
+  <figcaption class="title">Schläger-Rechner</figcaption>
 
   <div class="controls">
     <label>
@@ -71,7 +71,7 @@
   </div>
 
   <div class="panel">
-    <svg viewBox="0 0 220 260" role="img" aria-label="Schematische Darstellung: Spieler mit Stock, der bis zur Nase reicht">
+    <svg viewBox="0 0 220 260" role="img" aria-label="Schematische Darstellung: Spieler mit Schläger, der bis zur Nase reicht">
       <!-- Eisfläche -->
       <line x1="10" y1={GROUND} x2="210" y2={GROUND} stroke="var(--c-steel)" stroke-width="2" />
       <rect x="10" y={GROUND} width="200" height="10" fill="var(--c-ice)" opacity="0.6" />
@@ -85,7 +85,7 @@
         <line x1="80" y1={shoulderY} x2="140" y2={shoulderY + 12} />
       </g>
 
-      <!-- Stock: Schaft bis Nasenhöhe, Kelle auf dem Eis -->
+      <!-- Schläger: Schaft bis Nasenhöhe, Kelle auf dem Eis -->
       <g stroke="var(--c-brand)" stroke-width="6" stroke-linecap="round" fill="none">
         <line x1="140" y1={noseY} x2="140" y2={GROUND} />
         <line x1="140" y1={GROUND} x2="168" y2={GROUND - 4} stroke-width="8" />
@@ -100,7 +100,7 @@
 
     <dl class="results">
       <div>
-        <dt>Stocklänge</dt>
+        <dt>Schlägerlänge</dt>
         <dd class="big">{stickCm} cm</dd>
         <dd class="hint">vom Boden bis zur Nase, ohne Schlittschuhe gemessen</dd>
       </div>
@@ -118,8 +118,8 @@
   </div>
 
   <p class="note">
-    Wird der Stock um 2.5 cm gekürzt, wird er rund {FLEX_PER_INCH_CUT} Flexpunkte härter.
-    Wer viel kürzen muss, kauft also besser gleich einen weicheren Stock.
+    Wird der Schläger um 2.5 cm gekürzt, wird er rund {FLEX_PER_INCH_CUT} Flexpunkte härter.
+    Wer viel kürzen muss, kauft also besser gleich einen weicheren Schläger.
   </p>
 </figure>
 

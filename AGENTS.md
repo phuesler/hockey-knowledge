@@ -31,7 +31,7 @@ description: "Ein bis zwei Sätze. Erscheint auf der Übersichtskarte und als Me
 category: ausruestung      # ausruestung | theorie
 order: 30                  # sort order within the category, lower = further up
 updated: 2026-09-28
-tags: ["Stock", "Kaufberatung"]
+tags: ["Schläger", "Kaufberatung"]
 draft: false               # true excludes the article from the build
 ---
 
