@@ -1,5 +1,6 @@
 ---
 import { t, type Locale } from '../lib/i18n';
+import { repoUrl, clubUrl } from '../lib/site';
 
 interface Props { locale?: Locale }
 const { locale = 'de' } = Astro.props;
@@ -9,7 +10,13 @@ const s = t(locale);
 <footer class="site-footer">
   <div class="wrap wrap-wide">
     <p>{s.footerNote}</p>
-    <p class="meta">{s.siteName} · {s.tagline}</p>
+    <p>
+      {s.repoNote}{' '}
+      <a href={repoUrl}>{s.repoCta}</a>
+    </p>
+    <p class="meta">
+      {s.siteName} · <a href={clubUrl}>{s.clubLink}</a>
+    </p>
   </div>
 </footer>
 
@@ -17,11 +24,12 @@ const s = t(locale);
   .site-footer {
     margin-block-start: var(--s-8);
     padding-block: var(--s-6);
-    border-block-start: 1px solid var(--c-border);
+    border-block-start: 4px solid var(--c-signal);
     background: var(--c-surface);
     color: var(--c-text-muted);
     font-size: var(--t-sm);
   }
   .site-footer p + p { margin-block-start: var(--s-3); }
+  .site-footer a { font-weight: 600; }
   .meta { color: var(--c-text-muted); }
 </style>

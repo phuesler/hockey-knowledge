@@ -21,9 +21,11 @@ const groups = categoryOrder
 <BaseLayout title={s.siteName} description={s.tagline} locale={locale} path="/de/">
   <div class="wrap wrap-wide">
     <section class="hero">
-      <h1>Eishockey verstehen &mdash;<br />für U13 und ihre Eltern</h1>
+      <p class="eyebrow">{s.heroEyebrow}</p>
+      <h1>Eishockey verstehen&nbsp;&mdash;<br />für U13 und ihre Eltern</h1>
       <p>
-        Kurze, verständliche Artikel zu allem, was rund ums Eis wichtig ist. Geschrieben
+        Das Nachschlagewerk unserer U13 bei FASS Berlin: kurze, verständliche Artikel zu
+        allem, was rund ums Eis wichtig ist. Geschrieben
         für Kinder, die es selber lesen wollen, und für Eltern, die noch nie in einer
         Kabine gestanden haben.
       </p>
@@ -53,6 +55,17 @@ const groups = categoryOrder
   .hero {
     padding-block: var(--s-7) var(--s-6);
     max-width: 40ch;
+  }
+  .hero .eyebrow {
+    margin: 0 0 var(--s-3);
+    display: inline-block;
+    padding: var(--s-1) var(--s-3);
+    background: var(--c-signal);
+    color: var(--c-header-text);
+    font-size: var(--t-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
   .hero h1 {
     font-size: var(--t-h1);

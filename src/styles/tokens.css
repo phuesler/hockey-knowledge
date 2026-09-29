@@ -4,18 +4,25 @@
  * and future theming keep working.
  */
 :root {
-  /* Ice-rink palette: deep boards blue, clean ice, a warm puck-tape accent. */
-  --c-bg: #f7f9fc;
+  /* FASS Berlin club palette (fassberlin-nachwuchs.de): signal red, dark red, black
+     and white, with the club's blue as a secondary accent. */
+  --c-bg: #f5f5f4;
   --c-surface: #ffffff;
-  --c-surface-2: #eef3fa;
-  --c-border: #d6e0ee;
-  --c-text: #10233d;
-  --c-text-muted: #4d6382;
-  --c-brand: #0b4da2;
-  --c-brand-strong: #073a7d;
-  --c-brand-soft: #e3edfb;
-  --c-accent: #e2542a;
-  --c-accent-soft: #fdeae3;
+  --c-surface-2: #efefee;
+  --c-border: #dcdcda;
+  --c-text: #0a1214;
+  --c-text-muted: #4e5050;
+  --c-brand: #d82826;
+  --c-brand-strong: #960f0b;
+  --c-brand-soft: #fbe8e7;
+  --c-accent: #1a6f99;
+  --c-accent-soft: #e2f0f7;
+  /* Header bar: black in both colour schemes, like the club site. */
+  --c-header-bg: #0a1214;
+  --c-header-text: #ffffff;
+  --c-header-muted: #c2c1bf;
+  /* Club red behind white text — same in both schemes, --c-brand lightens in dark. */
+  --c-signal: #d82826;
   --c-good: #1c7a52;
   --c-good-soft: #e0f3ea;
   --c-warn: #9a6205;
@@ -23,7 +30,7 @@
   --c-ice: #cfe6f5;
   /* Nur für Grafiken (Linien, Flächen) – für Text zu kontrastarm,
      dafür gibt es --c-text-muted. */
-  --c-steel: #9aa8bb;
+  --c-steel: #a1a09a;
 
   /* Spacing — a 4px scale. */
   --s-1: 0.25rem;
@@ -36,7 +43,7 @@
   --s-8: 4rem;
 
   /* Type: fluid, mobile-first. */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Helvetica Neue', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --t-sm: 0.875rem;
   --t-base: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
@@ -47,7 +54,7 @@
 
   --radius: 10px;
   --radius-lg: 16px;
-  --shadow: 0 1px 2px rgb(16 35 61 / 0.06), 0 6px 20px -8px rgb(16 35 61 / 0.14);
+  --shadow: 0 1px 2px rgb(10 18 20 / 0.06), 0 6px 20px -8px rgb(10 18 20 / 0.16);
 
   --measure: 68ch;
   --gutter: 1rem;
@@ -61,23 +68,24 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --c-bg: #0c1522;
-    --c-surface: #131f31;
-    --c-surface-2: #1a2941;
-    --c-border: #27384f;
-    --c-text: #e9f0f9;
-    --c-text-muted: #9db0c9;
-    --c-brand: #6ba6f5;
-    --c-brand-strong: #9cc4fb;
-    --c-brand-soft: #16283f;
-    --c-accent: #ff8a5f;
-    --c-accent-soft: #33201a;
+    --c-bg: #0f1112;
+    --c-surface: #181b1c;
+    --c-surface-2: #212526;
+    --c-border: #2e3334;
+    --c-text: #f0f0ee;
+    --c-text-muted: #a9aeae;
+    --c-brand: #ff6b68;
+    --c-brand-strong: #ff9a97;
+    --c-brand-soft: #3a1615;
+    --c-accent: #6cc0e8;
+    --c-accent-soft: #14303d;
+    --c-header-bg: #050909;
     --c-good: #5fd0a0;
     --c-good-soft: #132c23;
     --c-warn: #e5b45c;
     --c-warn-soft: #2e2415;
     --c-ice: #24455c;
-    --c-steel: #6d8099;
+    --c-steel: #75776f;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -10px rgb(0 0 0 / 0.6);
   }
 }

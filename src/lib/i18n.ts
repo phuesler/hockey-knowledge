@@ -12,8 +12,11 @@ export const defaultLocale: Locale = 'de';
 
 export const ui = {
   de: {
-    siteName: 'Hockey Wissen',
-    tagline: 'Ausrüstung und Theorie für U13 – erklärt für Kinder und Eltern',
+    siteName: 'FASS U13 Hockey-Wissen',
+    brandShort: 'FASS U13',
+    brandSub: 'Hockey-Wissen',
+    tagline: 'Die Wissensbasis der U13 von FASS Berlin – Ausrüstung und Theorie, erklärt für Kinder und Eltern',
+    heroEyebrow: 'Wissensbasis der FASS Berlin U13',
     skipToContent: 'Zum Inhalt springen',
     home: 'Start',
     allArticles: 'Alle Artikel',
@@ -33,6 +36,12 @@ export const ui = {
     },
     footerNote:
       'Alle Angaben sind Faustregeln aus der Praxis, keine Vorschriften. Im Zweifel probiert ihr im Laden oder auf dem Eis aus, was passt.',
+    repoLabel: 'GitHub',
+    repoTitle: 'Quelltext auf GitHub',
+    repoNote:
+      'Diese Seite ist offen für alle. Fehler gefunden oder eine Idee für einen Artikel? Forkt das Repository auf GitHub und schickt einen Pull Request – oder eröffnet ein Issue.',
+    repoCta: 'Zum Repository auf GitHub',
+    clubLink: 'FASS Berlin Nachwuchs',
     noScript: 'Dieses interaktive Element braucht JavaScript. Die Angaben im Text reichen aber aus.',
   },
 } as const;
