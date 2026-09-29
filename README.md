@@ -1,13 +1,15 @@
 # Hockey Knowledge
 
-Statische Website mit Artikeln über Eishockey für U13-Spielerinnen, Spieler und ihre
-Eltern. Aktuell: Stöcke und Schlittschuhschleifen. Später kommt der Theorieteil dazu.
+Static website with articles about ice hockey for U13 players and their parents.
+Currently: sticks and skate sharpening. The theory section will follow later.
 
-Gebaut mit [Astro](https://astro.build) und [Svelte](https://svelte.dev). Das Ergebnis ist
-reines HTML, CSS und JavaScript in `dist/` — es braucht keinen Server und läuft auf
-GitHub Pages, in einem S3-Bucket oder bei jedem gewöhnlichen Webhoster.
+Built with [Astro](https://astro.build) and [Svelte](https://svelte.dev). The output is
+plain HTML, CSS and JavaScript in `dist/` — no server required. It runs on GitHub Pages,
+in an S3 bucket or on any ordinary web host.
 
-## Entwickeln
+The articles themselves are written in German.
+
+## Development
 
 ```bash
 npm install
@@ -16,48 +18,48 @@ npm run dev
 
 → http://localhost:4321/hockey-knowledge/
 
-| Befehl | Zweck |
+| Command | Purpose |
 | --- | --- |
-| `npm run dev` | Dev-Server mit Hot Reload |
-| `npm run build` | Produktionsbuild nach `dist/` |
-| `npm run preview` | `dist/` lokal servieren |
-| `npx astro check` | Typen prüfen |
+| `npm run dev` | Dev server with hot reload |
+| `npm run build` | Production build into `dist/` |
+| `npm run preview` | Serve `dist/` locally |
+| `npx astro check` | Type check |
 
-Wie ein Artikel oder eine interaktive Komponente hinzugefügt wird, steht in
+How to add an article or an interactive component is described in
 [`AGENTS.md`](./AGENTS.md).
 
-## Deployen
+## Deployment
 
 ### GitHub Pages
 
-`.github/workflows/deploy.yml` baut und deployt bei jedem Push auf `main`.
+`.github/workflows/deploy.yml` builds and deploys on every push to `main`.
 
-Einmalig einrichten:
+One-time setup:
 
-1. In den Repository-Einstellungen unter **Settings → Pages** als Source
-   **„GitHub Actions"** wählen.
-2. In `astro.config.mjs` prüfen, dass `site` auf den eigenen GitHub-Benutzer zeigt und
-   `base` dem Repository-Namen entspricht:
+1. In the repository settings under **Settings → Pages**, choose
+   **"GitHub Actions"** as the source.
+2. In `astro.config.mjs`, check that `site` points to your own GitHub user and `base`
+   matches the repository name:
 
    ```js
    site: 'https://phuesler.github.io',
    base: '/hockey-knowledge',
    ```
 
-Bei einer User-Page (`<benutzer>.github.io`) liegt die Seite im Wurzelverzeichnis; dann im
-Workflow `SITE_BASE=/` setzen.
+For a user page (`<user>.github.io`) the site lives at the root; in that case set
+`SITE_BASE=/` in the workflow.
 
-### S3 oder gewöhnlicher Webhoster
+### S3 or an ordinary web host
 
-Dort liegt die Seite normalerweise im Wurzelverzeichnis, also ohne Base-Pfad bauen:
+There the site usually lives at the root, so build without a base path:
 
 ```bash
-SITE_BASE=/ SITE_URL=https://meine-domain.ch npm run build
-aws s3 sync dist/ s3://mein-bucket --delete    # oder dist/ per FTP hochladen
+SITE_BASE=/ SITE_URL=https://my-domain.ch npm run build
+aws s3 sync dist/ s3://my-bucket --delete    # or upload dist/ via FTP
 ```
 
-`SITE_URL` bestimmt nur die absoluten URLs in Sitemap und Canonical-Tags.
+`SITE_URL` only determines the absolute URLs in the sitemap and canonical tags.
 
-## Inhalt
+## Content
 
-Alle Angaben in den Artikeln sind Faustregeln aus der Praxis, keine Vorschriften.
+All figures in the articles are rules of thumb from practice, not regulations.
