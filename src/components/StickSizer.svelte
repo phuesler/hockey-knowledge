@@ -12,14 +12,15 @@
    * - Der Schläger steht senkrecht vor dir, Kelle auf dem Boden. Ohne Schlittschuhe
    *   reicht er bis zur Nase, mit Schlittschuhen bis zum Kinn. Beides ergibt
    *   ungefähr dieselbe Schlägerlänge: Körpergrösse minus ca. 12 cm.
-   * - Flex ≈ halbes Körpergewicht in Pfund, also kg × 2.2 ÷ 2 ≈ kg × 1.1.
+   * - Flex ≈ Körpergewicht in kg minus 8 (lieber etwas weicher).
    * - Jeder gekürzte Zoll (2.5 cm) macht den Schläger ca. 5 Flexpunkte härter.
    */
   const NOSE_OFFSET_CM = 12;
+  const FLEX_OFFSET_KG = 8;
   const FLEX_PER_INCH_CUT = 5;
 
   const stickCm = $derived(Math.round(heightCm - NOSE_OFFSET_CM));
-  const flex = $derived(Math.round(weightKg * 1.1));
+  const flex = $derived(Math.round(weightKg - FLEX_OFFSET_KG));
   const flexLow = $derived(Math.max(15, Math.round(flex * 0.9)));
   const flexHigh = $derived(Math.round(flex * 1.1));
 
@@ -112,7 +113,7 @@
       <div>
         <dt>Flex</dt>
         <dd class="big">{flexLow}–{flexHigh}</dd>
-        <dd class="hint">Richtwert {flex} (halbes Körpergewicht in Pfund)</dd>
+        <dd class="hint">Richtwert {flex} (Körpergewicht in kg minus {FLEX_OFFSET_KG})</dd>
       </div>
     </dl>
   </div>
