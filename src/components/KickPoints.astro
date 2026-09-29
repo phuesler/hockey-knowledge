@@ -1,0 +1,137 @@
+---
+/**
+ * Illustrates the three kick point families: where a shaft bends most when a
+ * player loads it. Static SVG on purpose — the graphic carries the section, so
+ * it must be there without JavaScript.
+ *
+ * Geometry per stick (viewBox 100 x 250): the shaft runs from (50,12) to
+ * (48,218), drawn as a cubic curve whose control points pull the bulge into the
+ * zone being shown. The dashed line is the same shaft unloaded.
+ */
+const zones = [
+  {
+    id: 'mid',
+    name: 'Mid Kick',
+    shaft: 'M50 12 C24 90 24 150 48 218',
+    band: { y: 72, height: 70 },
+    text: 'Biegt sich in der Mitte des Schafts. Lädt langsamer, gibt dafür viel Wucht.',
+  },
+  {
+    id: 'hybrid',
+    name: 'Hybrid',
+    shaft: 'M50 12 C40 110 22 170 48 218',
+    band: { y: 108, height: 78 },
+    text: 'Die Biegezone ist länger und liegt zwischen Mid und Low. Verzeiht am meisten.',
+  },
+  {
+    id: 'low',
+    name: 'Low Kick',
+    shaft: 'M50 12 C50 130 26 188 48 218',
+    band: { y: 156, height: 56 },
+    text: 'Biegt sich knapp über der Kelle. Lädt sehr schnell, braucht aber Technik.',
+  },
+];
+---
+
+<figure class="kickpoints">
+  <figcaption>Wo sich der Schaft biegt</figcaption>
+
+  <ul>
+    {
+      zones.map((zone) => (
+        <li>
+          <svg viewBox="0 0 100 250" role="img" aria-label={`Schläger mit ${zone.name}: der Schaft biegt sich ${zone.id === 'mid' ? 'in der Mitte' : zone.id === 'hybrid' ? 'zwischen Mitte und Kelle' : 'knapp über der Kelle'}`}>
+            {/* Biegezone */}
+            <rect x="10" y={zone.band.y} width="80" height={zone.band.height} rx="8" />
+            {/* Schaft ohne Belastung */}
+            <path d="M50 12 L48 218" class="ghost" />
+            {/* Schaft unter Belastung, plus Kelle */}
+            <path d={zone.shaft} class="shaft" />
+            <path d="M48 218 L84 226" class="blade" />
+          </svg>
+          <p class="name">{zone.name}</p>
+          <p class="text">{zone.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .kickpoints {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 34rem) {
+    ul { gap: var(--s-5); }
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 7rem;
+    margin-inline: auto;
+    background: var(--c-surface-2);
+    border-radius: var(--radius);
+  }
+
+  rect {
+    fill: var(--c-accent-soft);
+    stroke: var(--c-accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+  }
+
+  path {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .ghost {
+    stroke: var(--c-steel);
+    stroke-width: 2;
+    stroke-dasharray: 6 5;
+  }
+  .shaft {
+    stroke: var(--c-brand);
+    stroke-width: 6;
+  }
+  .blade {
+    stroke: var(--c-brand);
+    stroke-width: 9;
+  }
+
+  .name {
+    margin: var(--s-3) 0 var(--s-1);
+    font-weight: 700;
+    text-align: center;
+  }
+  .text {
+    margin: 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+    text-align: center;
+    text-wrap: balance;
+  }
+</style>
