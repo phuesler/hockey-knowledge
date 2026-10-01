@@ -1,0 +1,125 @@
+---
+/**
+ * Cross-sections of three grind profiles: classic round hollow, flat bottom V
+ * (the trapezoid) and a flat-bottomed hollow with round flanks. Static SVG on
+ * purpose — the graphic carries the section, so it must be there without
+ * JavaScript.
+ *
+ * Geometry per blade: the blade runs from x=25 to x=75 with its edges at y=75;
+ * the viewBox crops to its lower part. The round hollow is an arc of radius 30
+ * centred at (50,91.6), about 13 units deep. The flat-bottom variant uses the
+ * same arc but is cut off at y=66. Depths are hugely exaggerated, like in the
+ * hollow explorer.
+ */
+const profiles = [
+  {
+    id: 'hollow',
+    name: 'Hohlschliff',
+    blade: 'M25 30 H75 V75 A30 30 0 0 0 25 75 Z',
+    label: 'Kufe von vorn mit runder Rille zwischen den Kanten',
+    text: 'Runde Rille. Der Klassiker, den jeder Schleifer kann.',
+  },
+  {
+    id: 'fbv',
+    name: 'Flat Bottom V',
+    blade: 'M25 30 H75 V75 L62 62 H38 L25 75 Z',
+    label: 'Kufe von vorn mit trapezförmiger Rille: flacher Boden, schräge Seiten',
+    text: 'Flacher Boden, schräge Seiten. Sieht aus wie ein Trapez.',
+  },
+  {
+    id: 'flat-hollow',
+    name: 'Flacher Boden, runde Seiten',
+    blade: 'M25 30 H75 V75 A30 30 0 0 0 65.6 66 H34.4 A30 30 0 0 0 25 75 Z',
+    label: 'Kufe von vorn mit runder Rille, die unten abgeflacht ist',
+    text: 'Seiten wie beim Hohlschliff, unten abgeflacht (z. B. FIRE).',
+  },
+];
+---
+
+<figure class="grinds">
+  <figcaption>Die Kufe von vorn gesehen (Rille stark vergrössert)</figcaption>
+
+  <ul>
+    {
+      profiles.map((p) => (
+        <li>
+          <svg viewBox="8 36 84 46" role="img" aria-label={p.label}>
+            <line x1="6" y1="75.5" x2="94" y2="75.5" class="ice" />
+            <path d={p.blade} class="blade" />
+            <circle cx="25" cy="75" r="3" class="edge" />
+            <circle cx="75" cy="75" r="3" class="edge" />
+          </svg>
+          <p class="name">{p.name}</p>
+          <p class="text">{p.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .grinds {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 34rem) {
+    ul { gap: var(--s-5); }
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 8rem;
+    margin-inline: auto;
+    background: var(--c-surface-2);
+    border-radius: var(--radius);
+  }
+
+  .ice {
+    stroke: var(--c-ice);
+    stroke-width: 3;
+  }
+  .blade {
+    fill: var(--c-steel);
+    stroke: var(--c-text-muted);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  .edge { fill: var(--c-accent); }
+
+  .name {
+    margin: var(--s-3) 0 var(--s-1);
+    font-weight: 700;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .text {
+    margin: 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+    text-align: center;
+    text-wrap: balance;
+  }
+</style>
