@@ -97,7 +97,8 @@ aged 11 to 13 **and** parents who have never stood in a locker room.
 
 - German, Swiss spelling (`ss` instead of `ß`).
 - Short sentences. One technical term per paragraph, explained on first use.
-- No advertising, no brand recommendations. Price ranges instead of specific products.
+- No advertising, no brand recommendations. Price ranges instead of specific products,
+  in Euro (German price levels — the team plays in Berlin).
 - Label rules of thumb as rules of thumb. Every article ends with a note that the numbers
   are guideline values.
 - English technical terms that are actually used on the ice (Flex, Lie, Hollow) are used
