@@ -78,7 +78,7 @@ const profiles = [
 
   ul {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--s-3);
     margin: 0;
     padding: 0;
@@ -111,12 +111,14 @@ const profiles = [
 
   .name {
     margin: var(--s-3) 0 var(--s-1);
+    hyphens: auto;
     font-weight: 700;
     text-align: center;
     text-wrap: balance;
   }
   .text {
     margin: 0;
+    hyphens: auto;
     font-size: var(--t-sm);
     color: var(--c-text-muted);
     text-align: center;

@@ -1,0 +1,146 @@
+---
+/**
+ * Shaft cross-sections of junior, intermediate and senior sticks, drawn to scale
+ * and nested on a common centre so the small differences are visible. Static
+ * SVG on purpose — the graphic carries the point, so it must be there without
+ * JavaScript.
+ *
+ * Units in the viewBox are millimetres. Outer dimensions are typical values
+ * measured by hand; corners and shaft shapes vary by model, so the corner radius
+ * is an assumption and the circumference is a rounded estimate.
+ */
+const CORNER_MM = 4;
+const CX = 20;
+const CY = 13;
+
+const shafts = [
+  { id: 'senior', name: 'Senior', w: 30, h: 20 },
+  { id: 'int', name: 'Intermediate', w: 28, h: 19 },
+  { id: 'junior', name: 'Junior', w: 27, h: 18 },
+].map((s) => ({
+  ...s,
+  // Rounded rectangle: straight sides plus four quarter circles.
+  circumference: Math.round(2 * (s.w + s.h) - (8 - 2 * Math.PI) * CORNER_MM),
+}));
+---
+
+<figure class="shafts">
+  <figcaption>Schaftquerschnitt im Vergleich (massstabsgetreu, vergrössert)</figcaption>
+
+  <div class="layout">
+    <svg
+      viewBox="0 0 40 26"
+      role="img"
+      aria-label="Drei ineinander gezeichnete Schaftquerschnitte: Senior aussen, Intermediate in der Mitte, Junior innen"
+    >
+      {
+        shafts.map((s) => (
+          <rect
+            class={s.id}
+            x={CX - s.w / 2}
+            y={CY - s.h / 2}
+            width={s.w}
+            height={s.h}
+            rx={CORNER_MM}
+          />
+        ))
+      }
+    </svg>
+
+    <ul>
+      {
+        shafts.map((s) => (
+          <li>
+            <span class:list={['swatch', s.id]} aria-hidden="true" />
+            <span class="name">{s.name}</span>
+            <span class="dims">
+              {s.w} × {s.h} mm · Umfang ca. {s.circumference} mm
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</figure>
+
+<style>
+  .shafts {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--s-4);
+    align-items: center;
+  }
+  @media (min-width: 34rem) {
+    .layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 18rem;
+    margin-inline: auto;
+    background: var(--c-surface-2);
+    border-radius: var(--radius);
+  }
+
+  rect {
+    fill: none;
+    stroke-width: 0.5;
+  }
+  rect.senior { stroke: var(--c-text-muted); }
+  rect.int { stroke: var(--c-accent); }
+  rect.junior {
+    stroke: var(--c-brand);
+    fill: var(--c-brand-soft);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--s-3);
+  }
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--s-3);
+    align-items: baseline;
+  }
+  .swatch {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 3px;
+    border: 2px solid;
+    align-self: center;
+  }
+  .swatch.senior { border-color: var(--c-text-muted); }
+  .swatch.int { border-color: var(--c-accent); }
+  .swatch.junior {
+    border-color: var(--c-brand);
+    background: var(--c-brand-soft);
+  }
+  .name { font-weight: 700; }
+  .dims {
+    grid-column: 2;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+</style>

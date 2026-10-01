@@ -1,0 +1,124 @@
+---
+/**
+ * Common shaft geometries, drawn at senior size (30 x 20 mm): sharp corners,
+ * rounded corners, concave side walls and a five-sided shaft. Static SVG on
+ * purpose — the graphic carries the point, so it must be there without
+ * JavaScript.
+ *
+ * Units in the viewBox are millimetres; a normal shaft spans x 5–35 and y 3–23.
+ * The concave walls bow in by about 1.5 mm and the five-sided shaft's ridge
+ * rises about 2 mm above one wide side, both slightly exaggerated so they show.
+ */
+const shapes = [
+  {
+    id: 'square',
+    name: 'Eckig',
+    path: 'M6.5 3 H33.5 A1.5 1.5 0 0 1 35 4.5 V21.5 A1.5 1.5 0 0 1 33.5 23 H6.5 A1.5 1.5 0 0 1 5 21.5 V4.5 A1.5 1.5 0 0 1 6.5 3 Z',
+    label: 'Schaftquerschnitt mit fast eckigen Kanten',
+    text: 'Deutliche Kanten. Die Hand spürt gut, wie der Schläger steht.',
+  },
+  {
+    id: 'round',
+    name: 'Abgerundet',
+    path: 'M12 3 H28 A7 7 0 0 1 35 10 V16 A7 7 0 0 1 28 23 H12 A7 7 0 0 1 5 16 V10 A7 7 0 0 1 12 3 Z',
+    label: 'Schaftquerschnitt mit stark abgerundeten Ecken',
+    text: 'Weiche Ecken. Liegt angenehm in der Hand und dreht sich leicht.',
+  },
+  {
+    id: 'concave',
+    name: 'Nach innen gewölbt',
+    path: 'M8 3 Q20 6 32 3 A3 3 0 0 1 35 6 V20 A3 3 0 0 1 32 23 Q20 20 8 23 A3 3 0 0 1 5 20 V6 A3 3 0 0 1 8 3 Z',
+    label: 'Schaftquerschnitt mit leicht nach innen gewölbten Seiten',
+    text: 'Die breiten Seiten sind leicht eingedellt. Die Finger finden mehr Halt.',
+  },
+  {
+    id: 'five-sided',
+    name: 'Fünfeckig',
+    path: 'M5 3 L20 0.8 L35 3 V23 H5 Z',
+    label: 'Eckiger Schaftquerschnitt, bei dem eine breite Seite flach zu einer Spitze zuläuft',
+    text: 'Eckig, aber eine breite Seite läuft flach zu einer Spitze zu (z. B. Bauer Nexus Sync).',
+  },
+];
+---
+
+<figure class="shapes">
+  <figcaption>Schaftformen bei gleicher Grösse</figcaption>
+
+  <ul>
+    {
+      shapes.map((s) => (
+        <li>
+          <svg viewBox="0 0 40 26" role="img" aria-label={s.label}>
+            <path d={s.path} />
+          </svg>
+          <p class="name">{s.name}</p>
+          <p class="text">{s.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .shapes {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 34rem) {
+    ul { gap: var(--s-5); }
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 8rem;
+    margin-inline: auto;
+    background: var(--c-surface-2);
+    border-radius: var(--radius);
+  }
+
+  path {
+    fill: var(--c-brand-soft);
+    stroke: var(--c-brand);
+    stroke-width: 0.6;
+    stroke-linejoin: round;
+  }
+
+  .name {
+    margin: var(--s-3) 0 var(--s-1);
+    hyphens: auto;
+    font-weight: 700;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .text {
+    margin: 0;
+    hyphens: auto;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+    text-align: center;
+    text-wrap: balance;
+  }
+</style>
