@@ -34,20 +34,17 @@ How to add an article or an interactive component is described in
 
 `.github/workflows/deploy.yml` builds and deploys on every push to `main`.
 
+The site is live at http://fass-u13-theorie.bagskate.com/ (custom domain, set under
+**Settings → Pages**). Because a custom domain serves the site from the root, the
+workflow builds with `SITE_BASE=/` and `SITE_URL` set to that domain.
+
 One-time setup:
 
 1. In the repository settings under **Settings → Pages**, choose
-   **"GitHub Actions"** as the source.
-2. In `astro.config.mjs`, check that `site` points to your own GitHub user and `base`
-   matches the repository name:
-
-   ```js
-   site: 'https://phuesler.github.io',
-   base: '/hockey-knowledge',
-   ```
-
-For a user page (`<user>.github.io`) the site lives at the root; in that case set
-`SITE_BASE=/` in the workflow.
+   **"GitHub Actions"** as the source and enter the custom domain.
+2. Keep `SITE_URL` and `SITE_BASE` in `.github/workflows/deploy.yml` in sync with the
+   domain. Without a custom domain the site lives at `https://<user>.github.io/<repo>/`;
+   then remove both variables so the defaults from `astro.config.mjs` apply.
 
 ### S3 or an ordinary web host
 

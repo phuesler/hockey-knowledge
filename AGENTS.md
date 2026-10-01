@@ -78,9 +78,10 @@ For callout boxes there is `Callout.astro`, already available in `.mdx`:
 
 - **Language.** Code, comments, commit messages and project documentation (README.md
   etc.) are in English. Only the articles and the reader-facing UI labels are in German.
-- **Base path.** The site runs on GitHub Pages under `/hockey-knowledge/`. **Always**
-  build internal links and asset paths with `href()` from `src/lib/href.ts`. A hand-written
-  `href="/de/schlaeger"` leads nowhere in the deployment.
+- **Base path.** Locally the site runs under `/hockey-knowledge/`; the deployment on
+  the custom domain runs at the root (see `.github/workflows/deploy.yml`). **Always**
+  build internal links and asset paths with `href()` from `src/lib/href.ts`, so both
+  work. A hand-written `href="/de/schlaeger"` breaks under the local base path.
 - **Colors and spacing** come from `src/styles/tokens.css`. No hex values in components;
   if a value is missing, add a new token. Otherwise dark mode breaks.
 - **Animations** go behind `@media (prefers-reduced-motion: ...)` or through

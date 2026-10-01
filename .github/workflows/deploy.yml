@@ -24,8 +24,11 @@ jobs:
         uses: actions/checkout@v7
       - name: Build
         uses: withastro/action@v6
-        # `base` in astro.config.mjs must match this repository's name.
-        # For a user/organisation site (<user>.github.io) set SITE_BASE=/ here.
+        # The site is served from the root of a custom domain (set under
+        # Settings → Pages), so build without the /hockey-knowledge base path.
+        env:
+          SITE_URL: https://fass-u13-theorie.bagskate.com
+          SITE_BASE: /
 
   deploy:
     needs: build
