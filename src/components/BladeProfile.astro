@@ -1,0 +1,263 @@
+---
+/**
+ * Side view of a skate blade for the profiling section. Three variants:
+ *
+ *   radius – the blade's rocker is cut from a circle; shows the circle and its radius
+ *   pivot  – the lowest point of the rocker, the contact zone and the rocking motion
+ *   quad   – an example profile made of four radii
+ *
+ * Static SVG on purpose — the graphics carry the section, so they must be there
+ * without JavaScript. Real rockers are almost flat (a 9' radius over a junior
+ * blade rises only about 3 mm), so all curvature is hugely exaggerated.
+ *
+ * Coordinates: the blade runs from x=20 (heel) to x=320 (toe); the ice is a
+ * horizontal line under the lowest point.
+ */
+interface Props {
+  variant: 'radius' | 'pivot' | 'quad';
+}
+
+const { variant } = Astro.props;
+
+const LEFT = 20;
+const RIGHT = 320;
+const MID = (LEFT + RIGHT) / 2;
+const HALF = (RIGHT - LEFT) / 2;
+
+/** Blade outline for a single radius: straight top edge, arc underneath. */
+function singleBlade(r: number, bottom: number, top: number) {
+  const endY = bottom - (r - Math.sqrt(r * r - HALF * HALF));
+  const d = `M${LEFT} ${top} H${RIGHT} V${endY.toFixed(1)} A${r} ${r} 0 0 1 ${LEFT} ${endY.toFixed(1)} Z`;
+  return { d, endY };
+}
+
+// radius: a tight circle so its centre fits in the picture.
+const R_RADIUS = 190;
+const radiusIce = 240;
+const radiusCenterY = radiusIce - R_RADIUS;
+const radiusBlade = singleBlade(R_RADIUS, radiusIce, 150);
+
+// pivot: flatter, closer to a real blade.
+const R_PIVOT = 450;
+const pivotIce = 120;
+const pivotBlade = singleBlade(R_PIVOT, pivotIce, 70);
+// Where the blade sits within 3 units of the ice — the part that carries weight.
+const contactHalf = Math.sqrt(2 * R_PIVOT * 3);
+
+// quad: four zones from heel to toe, each with its own radius (in feet). The
+// curve is built by bending away from the pivot at 1/R per unit, so the zones
+// join without a kink. Example values, not a recommendation.
+const FEET_TO_UNITS = 25;
+const zones = [
+  { from: 20, to: 95, feet: 7, label: 'Ferse' },
+  { from: 95, to: 170, feet: 12, label: 'hinten' },
+  { from: 170, to: 245, feet: 10, label: 'vorn' },
+  { from: 245, to: 320, feet: 6, label: 'Spitze' },
+];
+const quadIce = 150;
+const quadTop = 60;
+
+function radiusAt(x: number) {
+  const zone = zones.find((z) => x >= z.from && x <= z.to) ?? zones[0];
+  return zone.feet * FEET_TO_UNITS;
+}
+
+/** Height of the quad rocker above the ice at x, integrating outward from MID. */
+function quadRise(x: number) {
+  const dir = x >= MID ? 1 : -1;
+  let slope = 0;
+  let rise = 0;
+  for (let t = MID; dir > 0 ? t < x : t > x; t += dir) {
+    slope += 1 / radiusAt(t + dir / 2);
+    rise += slope;
+  }
+  return rise;
+}
+
+const quadPoints = (from: number, to: number) => {
+  const pts: string[] = [];
+  for (let x = from; x <= to; x += 2) pts.push(`${x} ${(quadIce - quadRise(x)).toFixed(1)}`);
+  if ((to - from) % 2 !== 0) pts.push(`${to} ${(quadIce - quadRise(to)).toFixed(1)}`);
+  return pts;
+};
+
+const quadOutline = `M${LEFT} ${quadTop} H${RIGHT} L${[...quadPoints(LEFT, RIGHT)].reverse().join(' L')} Z`;
+const quadSegments = zones.map((z, i) => ({
+  ...z,
+  d: `M${quadPoints(z.from, z.to).join(' L')}`,
+  tone: i % 2 === 0 ? 'a' : 'b',
+}));
+
+const captions = {
+  radius: 'Die Rundung ist ein Stück aus einem Kreis',
+  pivot: 'Der Pivot-Punkt: hier liegt das Gewicht',
+  quad: 'Beispiel für ein Quad-Profil mit vier Radien',
+};
+---
+
+<figure class="blade-profile">
+  <figcaption>{captions[variant]}</figcaption>
+
+  {
+    variant === 'radius' && (
+      <svg
+        viewBox="0 0 340 260"
+        role="img"
+        aria-label="Kufe von der Seite. Ihre Unterkante ist ein Ausschnitt aus einem grossen Kreis, dessen Radius eingezeichnet ist."
+      >
+        <circle cx={MID} cy={radiusCenterY} r={R_RADIUS} class="circle" />
+        <path d={radiusBlade.d} class="blade" />
+        <line x1={MID} y1={radiusCenterY} x2={MID} y2={radiusIce} class="radius-line" />
+        <circle cx={MID} cy={radiusCenterY} r="4" class="center" />
+        <text x={MID + 8} y={radiusCenterY - 6} class="label">Kreismittelpunkt</text>
+        <text x={MID + 8} y={(radiusCenterY + radiusIce) / 2 - 20} class="label strong">Radius</text>
+        <text x={MID + 8} y={(radiusCenterY + radiusIce) / 2 - 4} class="label">z. B. 9 Fuss ≈ 2,7 m</text>
+        <line x1="0" y1={radiusIce + 0.5} x2="340" y2={radiusIce + 0.5} class="ice" />
+      </svg>
+    )
+  }
+
+  {
+    variant === 'pivot' && (
+      <svg
+        viewBox="0 0 340 178"
+        role="img"
+        aria-label="Kufe von der Seite mit markiertem Pivot-Punkt am tiefsten Punkt. Gestrichelt ist gezeigt, wie die Kufe nach vorn und hinten kippt."
+      >
+        <g transform={`rotate(-5 ${MID} ${pivotIce})`}>
+          <path d={pivotBlade.d} class="ghost" />
+        </g>
+        <g transform={`rotate(5 ${MID} ${pivotIce})`}>
+          <path d={pivotBlade.d} class="ghost" />
+        </g>
+        <path d={pivotBlade.d} class="blade" />
+        <line x1="0" y1={pivotIce + 0.5} x2="340" y2={pivotIce + 0.5} class="ice" />
+        <line
+          x1={MID - contactHalf}
+          y1={pivotIce + 0.5}
+          x2={MID + contactHalf}
+          y2={pivotIce + 0.5}
+          class="contact"
+        />
+        <path d={`M${MID} ${pivotIce + 4} l-7 12 h14 Z`} class="pivot" />
+        <text x={MID} y={pivotIce + 32} class="label strong" text-anchor="middle">Pivot-Punkt</text>
+        <text x={MID} y={pivotIce + 48} class="label" text-anchor="middle">← Auflage auf dem Eis →</text>
+        <text x={LEFT} y="40" class="label">Ferse</text>
+        <text x={RIGHT} y="40" class="label" text-anchor="end">Spitze</text>
+      </svg>
+    )
+  }
+
+  {
+    variant === 'quad' && (
+      <svg
+        viewBox="0 0 340 200"
+        role="img"
+        aria-label="Kufe von der Seite, deren Unterkante in vier Abschnitte mit unterschiedlichen Radien aufgeteilt ist: Ferse 7 Fuss, hinten 12 Fuss, vorn 10 Fuss, Spitze 6 Fuss."
+      >
+        <path d={quadOutline} class="blade" />
+        {quadSegments.map((z) => <path d={z.d} class:list={['segment', z.tone]} />)}
+        {zones.slice(1).map((z) => (
+          <line x1={z.from} y1={quadTop} x2={z.from} y2={quadIce + 6} class="divider" />
+        ))}
+        <line x1="0" y1={quadIce + 0.5} x2="340" y2={quadIce + 0.5} class="ice" />
+        {quadSegments.map((z) => (
+          <>
+            <text x={(z.from + z.to) / 2} y={quadIce + 24} class="label strong" text-anchor="middle">
+              {z.feet}'
+            </text>
+            <text x={(z.from + z.to) / 2} y={quadIce + 40} class="label" text-anchor="middle">
+              {z.label}
+            </text>
+          </>
+        ))}
+      </svg>
+    )
+  }
+</figure>
+
+<style>
+  .blade-profile {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 30rem;
+    margin-inline: auto;
+    background: var(--c-surface-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .blade {
+    fill: var(--c-steel);
+    stroke: var(--c-text-muted);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  .ghost {
+    fill: none;
+    stroke: var(--c-text-muted);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .ice {
+    stroke: var(--c-ice);
+    stroke-width: 4;
+  }
+  .contact {
+    stroke: var(--c-accent);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+  .circle {
+    fill: none;
+    stroke: var(--c-text-muted);
+    stroke-width: 1;
+    stroke-dasharray: 5 5;
+  }
+  .radius-line {
+    stroke: var(--c-brand);
+    stroke-width: 2;
+  }
+  .center { fill: var(--c-brand); }
+  .pivot { fill: var(--c-brand); }
+
+  .segment {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+  .segment.a { stroke: var(--c-brand); }
+  .segment.b { stroke: var(--c-accent); }
+  .divider {
+    stroke: var(--c-text-muted);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .label {
+    fill: var(--c-text-muted);
+    font-size: 15px;
+  }
+  .label.strong {
+    fill: var(--c-text);
+    font-weight: 700;
+  }
+</style>

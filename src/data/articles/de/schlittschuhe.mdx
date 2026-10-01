@@ -7,6 +7,7 @@ updated: 2026-09-29
 tags: ["Schlittschuhe", "Kaufberatung", "Kufen", "Profiling"]
 ---
 
+import BladeProfile from '../../../components/BladeProfile.astro';
 import Callout from '../../../components/Callout.astro';
 import { href } from '../../../lib/href';
 
@@ -138,6 +139,17 @@ Angegeben wird es als **Radius in Fuss**: 7', 9', 11'. Gemeint ist der Kreis, au
 Rundung ausgeschnitten ist. Hier ist es umgekehrt wie beim Hohlschliff – ein grosser Radius
 heisst flachere Rundung und **mehr** Stahl auf dem Eis.
 
+<BladeProfile variant="radius" />
+
+Der tiefste Punkt der Rundung heisst **Pivot-Punkt**. Dort liegt das Gewicht, und um ihn
+kippt die Kufe nach vorn und nach hinten. Nur ein kurzes Stück links und rechts davon
+liegt wirklich auf dem Eis.
+
+<BladeProfile variant="pivot" />
+
+In den Zeichnungen ist die Rundung stark übertrieben. In Wirklichkeit hebt sich eine
+Junior-Kufe mit 9 Fuss an den Enden nur rund 3 Millimeter vom Eis ab.
+
 | Radius | Wirkung | Wofür |
 | --- | --- | --- |
 | 7' | sehr wendig, kippelig, wenig Laufruhe | kurze Kufen, Stürmer mit engem Spiel |
@@ -159,6 +171,11 @@ ab Werk oft etwas stärker gerundet als Senior-Kufen.
   vorn oder hinten, das Kind steht dadurch mehr auf dem Fussballen oder mehr auf der Ferse.
   Wird oft zusammen mit dem Profil verändert – und hat inzwischen einen eigenen Abschnitt
   verdient, siehe unten.
+
+Ein Quad-Profil teilt die Kufe in vier Abschnitte mit je eigenem Radius. Die Zahlen in der
+Zeichnung sind ein Beispiel, keine Empfehlung:
+
+<BladeProfile variant="quad" />
 
 <Callout type="merke" title="Der Werkszustand">
 Neue Schlittschuhe haben bereits ein Profil, meistens **rund 9 Fuss**, bei kurzen
