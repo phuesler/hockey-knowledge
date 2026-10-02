@@ -20,12 +20,12 @@
     glide: 'Gleiten',
     /** One per grind, same order as `grinds` below. */
     verdicts: [
-      'Sehr tief. Klebt im Eis, bremst stark. Für leichte U13-Spieler fast immer zu viel.',
-      'Tief. Viel Kantengriff, dafür merklich langsamer. Eher für schwere, kräftige Spieler.',
+      'Sehr tief. Klebt im Eis, bremst stark. Höchstens für sehr leichte Spieler.',
+      'Tief. Viel Kantengriff, dafür merklich langsamer. Leichte Spieler kommen damit zurecht, schwere sinken zu tief ein.',
       'Der Standard in den meisten Shops. Guter Kompromiss – ein sinnvoller Startpunkt.',
-      'Flacher. Läuft spürbar leichter, hält in der Kurve immer noch gut. Für viele U13-Kinder die beste Wahl.',
+      'Flacher. Läuft spürbar leichter, hält in der Kurve immer noch gut. Passt zu U13-Kindern, die schon schwerer sind und sicher laufen.',
       'Sehr flach. Schnell und leichtläufig, verlangt aber saubere Technik beim Bremsen.',
-      'Fast flach. Nur für sehr leichte Kinder oder auf weichem, warmem Eis.',
+      'Fast flach. Sehr wenig Kantengriff. Eher für schwere Spieler oder auf weichem, warmem Eis.',
     ],
   };
 
@@ -41,12 +41,12 @@
     grip: 'Edge grip',
     glide: 'Glide',
     verdicts: [
-      'Very deep. Sticks to the ice and brakes hard. Almost always too much for light U13 players.',
-      'Deep. Lots of edge grip, but noticeably slower. More for heavy, strong players.',
+      'Very deep. Sticks to the ice and brakes hard. Only for very light players, if at all.',
+      'Deep. Lots of edge grip, but noticeably slower. Light players cope with it, heavy ones sink in too deep.',
       'The standard in most shops. A good compromise – a sensible place to start.',
-      'Shallower. Glides noticeably more easily and still holds well in turns. The best choice for many U13 kids.',
+      'Shallower. Glides noticeably more easily and still holds well in turns. Suits U13 kids who are already heavier and skate confidently.',
       'Very shallow. Fast and free-gliding, but needs clean stopping technique.',
-      'Almost flat. Only for very light kids or on soft, warm ice.',
+      'Almost flat. Very little edge grip. More for heavy players or on soft, warm ice.',
     ],
   };
 
