@@ -1,0 +1,180 @@
+---
+/**
+ * Illustrates the three common blade curves the way they are checked in the
+ * shop: stick held in front of you, looking down the shaft at the blade. The
+ * shaft is the small block at the heel (seen end-on), the toe points away.
+ * Static SVG on purpose — the graphic carries the section, so it must be there
+ * without JavaScript.
+ *
+ * Geometry per blade (viewBox 60 x 130): heel at (36,112), toe at (36,10). The
+ * blade is two cubic segments that meet with a vertical tangent at the deepest
+ * point (apex, depth). A short apex-to-toe distance makes the toe hook. The
+ * bend goes left, as for a left shot; the dashed line is a flat blade and the
+ * depth is heavily exaggerated.
+ */
+const X = 36;
+const HEEL = 112;
+const TOE = 10;
+
+function bladePath(apex: number, depth: number): string {
+  const x = X - depth;
+  return [
+    `M${X} ${HEEL}`,
+    `C${x} ${HEEL - (HEEL - apex) * 0.5} ${x} ${apex + (HEEL - apex) * 0.25} ${x} ${apex}`,
+    `C${x} ${apex - (apex - TOE) * 0.25} ${x} ${TOE + (apex - TOE) * 0.5} ${X} ${TOE}`,
+  ].join(' ');
+}
+
+const curves = [
+  {
+    name: 'P88',
+    kind: 'Mid-Heel',
+    apex: 80,
+    depth: 14,
+    where: 'zwischen Absatz und Mitte',
+    text: 'Flache Biegung, Kelle nur leicht offen. Gut für Pässe und flache, harte Schüsse.',
+  },
+  {
+    name: 'P92 / P29',
+    kind: 'Mid',
+    apex: 61,
+    depth: 20,
+    where: 'in der Mitte',
+    text: 'Der Allrounder. Offene Kelle, hebt den Puck leicht an.',
+  },
+  {
+    name: 'P28',
+    kind: 'Toe',
+    apex: 32,
+    depth: 20,
+    where: 'vorn an der Spitze',
+    text: 'Biegung vorn, Kelle stark offen. Zieht den Puck schnell hoch.',
+  },
+];
+---
+
+<figure class="bladecurves">
+  <figcaption>Wo die Kelle gebogen ist</figcaption>
+
+  <ul>
+    {
+      curves.map((curve) => (
+        <li>
+          <svg viewBox="0 0 60 130" role="img" aria-label={`Kelle ${curve.name}, am Schaft entlang gesehen: die Biegung ist ${curve.where} am tiefsten`}>
+            {/* Tiefste Stelle */}
+            <rect x="4" y={curve.apex - 14} width="52" height="28" rx="6" class="zone" />
+            {/* Gerade Kelle zum Vergleich */}
+            <path d={`M${X} ${HEEL} L${X} ${TOE}`} class="ghost" />
+            <path d={bladePath(curve.apex, curve.depth)} class="blade" />
+            {/* Schaft, von oben gesehen */}
+            <rect x={X - 7} y={HEEL - 2} width="14" height="10" rx="3" class="shaft" />
+          </svg>
+          <p class="name">{curve.name}</p>
+          <p class="kind">{curve.kind}</p>
+          <p class="text">{curve.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="note">
+    So seht ihr die Kelle, wenn ihr den Schläger vor euch haltet und von oben am Schaft
+    entlang schaut: Schaft und Absatz unten, Spitze oben. Gezeichnet für einen Linksschützen,
+    beim Rechtsschützen ist das Bild gespiegelt. Die Biegung ist stark übertrieben.
+  </p>
+</figure>
+
+<style>
+  .bladecurves {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 34rem) {
+    ul { gap: var(--s-5); }
+  }
+  /* .prose spaces consecutive list items (.prose li + li); in a grid that pushes
+     columns down. ul > li is needed to outrank it. */
+  ul > li {
+    margin: 0;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 6rem;
+    margin-inline: auto;
+    background: var(--c-surface-2);
+    border-radius: var(--radius);
+  }
+
+  .zone {
+    fill: var(--c-accent-soft);
+    stroke: var(--c-accent);
+    stroke-width: 1.2;
+    stroke-dasharray: 4 3;
+  }
+
+  path {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .ghost {
+    stroke: var(--c-steel);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+  }
+  .blade {
+    stroke: var(--c-brand);
+    stroke-width: 6;
+  }
+  .shaft {
+    fill: var(--c-brand-strong);
+  }
+
+  .name {
+    margin: var(--s-3) 0 0;
+    font-weight: 700;
+    text-align: center;
+  }
+  .kind {
+    margin: 0 0 var(--s-1);
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+    text-align: center;
+  }
+  .text {
+    margin: 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .note {
+    margin: var(--s-4) 0 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+</style>
