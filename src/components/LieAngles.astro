@@ -11,47 +11,73 @@
  * blade and ice, heavily exaggerated. The arc in the middle panel is the lie
  * angle itself.
  */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Wie die Kelle auf dem Eis liegt',
+  note:
+    'Von vorn gesehen, das Kind steht in normaler Fahrposition und hält den Schläger jedes Mal gleich. Der Bogen zeigt den Lie, den Winkel zwischen Schaft und Kelle. Die Lücken sind übertrieben gezeichnet.',
+  cases: {
+    low: {
+      name: 'Lie zu tief',
+      label: 'nur die Spitze liegt auf dem Eis, der Absatz steht in der Luft',
+      text: 'Nur die Spitze liegt auf. Der Absatz steht in der Luft.',
+    },
+    right: {
+      name: 'Lie passt',
+      label: 'die ganze Kelle liegt flach auf dem Eis',
+      text: 'Die ganze Kelle liegt flach auf dem Eis.',
+    },
+    high: {
+      name: 'Lie zu hoch',
+      label: 'nur der Absatz liegt auf dem Eis, die Spitze steht hoch',
+      text: 'Nur der Absatz liegt auf. Die Spitze steht hoch.',
+    },
+  },
+};
+
+const en: typeof de = {
+  caption: 'How the blade sits on the ice',
+  note:
+    'Seen from the front, with the player in their normal skating stance, holding the stick the same way each time. The arc shows the lie, the angle between shaft and blade. The gaps are exaggerated.',
+  cases: {
+    low: {
+      name: 'Lie too low',
+      label: 'only the toe touches the ice, the heel is in the air',
+      text: 'Only the toe touches. The heel is in the air.',
+    },
+    right: {
+      name: 'Lie fits',
+      label: 'the whole blade lies flat on the ice',
+      text: 'The whole blade lies flat on the ice.',
+    },
+    high: {
+      name: 'Lie too high',
+      label: 'only the heel touches the ice, the toe is up',
+      text: 'Only the heel touches. The toe is up.',
+    },
+  },
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
 const SHAFT = { dx: -28, dy: -34 };
 
 const cases = [
-  {
-    id: 'low',
-    name: 'Lie zu tief',
-    heel: { x: 52, y: 68 },
-    toe: { x: 108, y: 86 },
-    gap: '52,72 104,90 52,90',
-    label: 'nur die Spitze liegt auf dem Eis, der Absatz steht in der Luft',
-    text: 'Nur die Spitze liegt auf. Der Absatz steht in der Luft.',
-  },
-  {
-    id: 'right',
-    name: 'Lie passt',
-    heel: { x: 52, y: 86 },
-    toe: { x: 108, y: 86 },
-    gap: null,
-    label: 'die ganze Kelle liegt flach auf dem Eis',
-    text: 'Die ganze Kelle liegt flach auf dem Eis.',
-  },
-  {
-    id: 'high',
-    name: 'Lie zu hoch',
-    heel: { x: 52, y: 86 },
-    toe: { x: 106, y: 68 },
-    gap: '56,90 106,90 106,72',
-    label: 'nur der Absatz liegt auf dem Eis, die Spitze steht hoch',
-    text: 'Nur der Absatz liegt auf. Die Spitze steht hoch.',
-  },
-];
+  { id: 'low', heel: { x: 52, y: 68 }, toe: { x: 108, y: 86 }, gap: '52,72 104,90 52,90' },
+  { id: 'right', heel: { x: 52, y: 86 }, toe: { x: 108, y: 86 }, gap: null },
+  { id: 'high', heel: { x: 52, y: 86 }, toe: { x: 106, y: 68 }, gap: '56,90 106,90 106,72' },
+] as const;
 ---
 
 <figure class="lie">
-  <figcaption>Wie die Kelle auf dem Eis liegt</figcaption>
+  <figcaption>{s.caption}</figcaption>
 
   <ul>
     {
       cases.map((c) => (
         <li>
-          <svg viewBox="0 30 120 70" role="img" aria-label={`${c.name}: ${c.label}`}>
+          <svg viewBox="0 30 120 70" role="img" aria-label={`${s.cases[c.id].name}: ${s.cases[c.id].label}`}>
             {/* Eis */}
             <rect x="0" y="90" width="120" height="10" class="ice" />
             {/* Lücke zwischen Kelle und Eis */}
@@ -62,19 +88,15 @@ const cases = [
             <path d={`M${c.heel.x} ${c.heel.y} L${c.toe.x} ${c.toe.y}`} class="blade" />
           </svg>
           <div>
-            <p class:list={['name', { good: c.id === 'right' }]}>{c.name}</p>
-            <p class="text">{c.text}</p>
+            <p class:list={['name', { good: c.id === 'right' }]}>{s.cases[c.id].name}</p>
+            <p class="text">{s.cases[c.id].text}</p>
           </div>
         </li>
       ))
     }
   </ul>
 
-  <p class="note">
-    Von vorn gesehen, das Kind steht in normaler Fahrposition und hält den Schläger jedes Mal
-    gleich. Der Bogen zeigt den Lie, den Winkel zwischen Schaft und Kelle. Die Lücken sind
-    übertrieben gezeichnet.
-  </p>
+  <p class="note">{s.note}</p>
 </figure>
 
 <style>

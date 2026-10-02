@@ -12,6 +12,61 @@
  * bend goes left, as for a left shot; the dashed line is a flat blade and the
  * depth is heavily exaggerated.
  */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Wo die Kelle gebogen ist',
+  recommended: 'Empfehlung',
+  label: (name: string, where: string) =>
+    `Kelle ${name}, am Schaft entlang gesehen: die Biegung ist ${where} am tiefsten`,
+  note:
+    'So seht ihr die Kelle, wenn ihr den Schläger vor euch haltet und von oben am Schaft entlang schaut: Schaft und Absatz unten, Spitze oben. Gezeichnet für einen Linksschützen, beim Rechtsschützen ist das Bild gespiegelt. Die Biegung ist stark übertrieben.',
+  curves: {
+    p88: {
+      kind: 'Mid, flach',
+      where: 'in der Mitte, aber nur schwach',
+      text: 'Flache Biegung, Kelle nur leicht offen. Gut für Pässe und flache, harte Schüsse.',
+    },
+    p92: {
+      kind: 'Mid',
+      where: 'in der Mitte, etwas Richtung Spitze',
+      text: 'Kann alles. Offene Kelle, hebt den Puck leicht an.',
+    },
+    p28: {
+      kind: 'Toe',
+      where: 'vorn an der Spitze',
+      text: 'Biegung vorn, Kelle stark offen. Zieht den Puck schnell hoch.',
+    },
+  },
+};
+
+const en: typeof de = {
+  caption: 'Where the blade is curved',
+  recommended: 'Our pick',
+  label: (name, where) => `${name} blade, seen down the shaft: the curve is deepest ${where}`,
+  note:
+    'This is how the blade looks when you hold the stick in front of you and look down the shaft: shaft and heel at the bottom, toe at the top. Drawn for a left shot; for a right shot the picture is mirrored. The curve is heavily exaggerated.',
+  curves: {
+    p88: {
+      kind: 'Mid, shallow',
+      where: 'in the middle, but only slightly',
+      text: 'Shallow curve, face only slightly open. Good for passing and hard, low shots.',
+    },
+    p92: {
+      kind: 'Mid',
+      where: 'in the middle, slightly towards the toe',
+      text: 'Does it all. Open face, lifts the puck easily.',
+    },
+    p28: {
+      kind: 'Toe',
+      where: 'out at the toe',
+      text: 'Curve at the toe, very open face. Gets the puck up quickly.',
+    },
+  },
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
 const X = 36;
 const HEEL = 112;
 const TOE = 10;
@@ -26,43 +81,22 @@ function bladePath(apex: number, depth: number): string {
 }
 
 const curves = [
-  {
-    name: 'P88',
-    kind: 'Mid, flach',
-    apex: 64,
-    depth: 11,
-    where: 'in der Mitte, aber nur schwach',
-    text: 'Flache Biegung, Kelle nur leicht offen. Gut für Pässe und flache, harte Schüsse.',
-  },
-  {
-    name: 'P92',
-    kind: 'Mid',
-    apex: 54,
-    depth: 20,
-    where: 'in der Mitte, etwas Richtung Spitze',
-    recommended: true,
-    text: 'Kann alles. Offene Kelle, hebt den Puck leicht an.',
-  },
-  {
-    name: 'P28',
-    kind: 'Toe',
-    apex: 32,
-    depth: 20,
-    where: 'vorn an der Spitze',
-    text: 'Biegung vorn, Kelle stark offen. Zieht den Puck schnell hoch.',
-  },
-];
+  { id: 'p88', name: 'P88', apex: 64, depth: 11, recommended: false },
+  // Our recommendation for U13, see the callout in the stick article.
+  { id: 'p92', name: 'P92', apex: 54, depth: 20, recommended: true },
+  { id: 'p28', name: 'P28', apex: 32, depth: 20, recommended: false },
+] as const;
 ---
 
 <figure class="bladecurves">
-  <figcaption>Wo die Kelle gebogen ist</figcaption>
+  <figcaption>{s.caption}</figcaption>
 
   <ul>
     {
       curves.map((curve) => (
         <li class:list={{ recommended: curve.recommended }}>
-          {curve.recommended && <span class="badge">Empfehlung</span>}
-          <svg viewBox="0 0 60 130" role="img" aria-label={`Kelle ${curve.name}, am Schaft entlang gesehen: die Biegung ist ${curve.where} am tiefsten`}>
+          {curve.recommended && <span class="badge">{s.recommended}</span>}
+          <svg viewBox="0 0 60 130" role="img" aria-label={s.label(curve.name, s.curves[curve.id].where)}>
             {/* Tiefste Stelle */}
             <rect x="4" y={curve.apex - 14} width="52" height="28" rx="6" class="zone" />
             {/* Gerade Kelle zum Vergleich */}
@@ -72,18 +106,14 @@ const curves = [
             <rect x={X - 7} y={HEEL - 2} width="14" height="10" rx="3" class="shaft" />
           </svg>
           <p class="name">{curve.name}</p>
-          <p class="kind">{curve.kind}</p>
-          <p class="text">{curve.text}</p>
+          <p class="kind">{s.curves[curve.id].kind}</p>
+          <p class="text">{s.curves[curve.id].text}</p>
         </li>
       ))
     }
   </ul>
 
-  <p class="note">
-    So seht ihr die Kelle, wenn ihr den Schläger vor euch haltet und von oben am Schaft
-    entlang schaut: Schaft und Absatz unten, Spitze oben. Gezeichnet für einen Linksschützen,
-    beim Rechtsschützen ist das Bild gespiegelt. Die Biegung ist stark übertrieben.
-  </p>
+  <p class="note">{s.note}</p>
 </figure>
 
 <style>

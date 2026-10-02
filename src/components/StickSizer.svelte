@@ -2,6 +2,45 @@
   import { Tween } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import { motionDuration } from '../lib/motion';
+  import type { Locale } from '../lib/i18n';
+
+  /** Islands also run in the browser, so the page passes its language in. */
+  let { locale = 'de' }: { locale?: Locale } = $props();
+
+  const de = {
+    title: 'Schläger-Rechner',
+    height: 'Körpergrösse',
+    weight: 'Gewicht',
+    figureLabel: 'Schematische Darstellung: Spieler mit Schläger, der bis zur Nase reicht',
+    nose: 'Nase',
+    stickLength: 'Schlägerlänge',
+    stickHint: 'vom Boden bis zur Nase, ohne Schlittschuhe gemessen',
+    size: 'Grösse',
+    sizeHint: (range: string) => `üblicher Flex-Bereich dieser Grösse: ${range}`,
+    flex: 'Flex',
+    flexHint: (value: number, offset: number) =>
+      `Richtwert ${value} (Körpergewicht in kg minus ${offset})`,
+    note: (points: number) =>
+      `Wird der Schläger um 2.5 cm gekürzt, wird er rund ${points} Flexpunkte härter. Wer viel kürzen muss, kauft also besser gleich einen weicheren Schläger.`,
+  };
+
+  const en: typeof de = {
+    title: 'Stick calculator',
+    height: 'Height',
+    weight: 'Weight',
+    figureLabel: 'Diagram: player with a stick that reaches up to the nose',
+    nose: 'Nose',
+    stickLength: 'Stick length',
+    stickHint: 'from the floor to the nose, measured without skates',
+    size: 'Size',
+    sizeHint: (range) => `typical flex range for this size: ${range}`,
+    flex: 'Flex',
+    flexHint: (value, offset) => `guide value ${value} (body weight in kg minus ${offset})`,
+    note: (points) =>
+      `Cutting the stick down by 2.5 cm makes it about ${points} flex points stiffer. If you have to cut a lot off, buy a softer stick in the first place.`,
+  };
+
+  const s = $derived({ de, en }[locale]);
 
   /** Körpergrösse in cm und Gewicht in kg, beides mit U13-tauglichen Startwerten. */
   let heightCm = $state(150);
@@ -53,26 +92,26 @@
 </script>
 
 <figure class="sizer">
-  <figcaption class="title">Schläger-Rechner</figcaption>
+  <figcaption class="title">{s.title}</figcaption>
 
   <div class="controls">
     <label>
       <span class="label-row">
-        Körpergrösse <output>{heightCm} cm</output>
+        {s.height} <output>{heightCm} cm</output>
       </span>
       <input type="range" min="120" max="180" step="1" bind:value={heightCm} />
     </label>
 
     <label>
       <span class="label-row">
-        Gewicht <output>{weightKg} kg</output>
+        {s.weight} <output>{weightKg} kg</output>
       </span>
       <input type="range" min="25" max="70" step="1" bind:value={weightKg} />
     </label>
   </div>
 
   <div class="panel">
-    <svg viewBox="0 0 220 260" role="img" aria-label="Schematische Darstellung: Spieler mit Schläger, der bis zur Nase reicht">
+    <svg viewBox="0 0 220 260" role="img" aria-label={s.figureLabel}>
       <!-- Eisfläche -->
       <line x1="10" y1={GROUND} x2="210" y2={GROUND} stroke="var(--c-steel)" stroke-width="2" />
       <rect x="10" y={GROUND} width="200" height="10" fill="var(--c-ice)" opacity="0.6" />
@@ -96,32 +135,29 @@
       <line x1="60" y1={noseY} x2="196" y2={noseY}
             stroke="var(--c-accent)" stroke-width="1.5" stroke-dasharray="5 4" />
       <text x="196" y={noseY - 7} text-anchor="end"
-            fill="var(--c-accent)" font-size="11" font-weight="700">Nase</text>
+            fill="var(--c-accent)" font-size="11" font-weight="700">{s.nose}</text>
     </svg>
 
     <dl class="results">
       <div>
-        <dt>Schlägerlänge</dt>
+        <dt>{s.stickLength}</dt>
         <dd class="big">{stickCm} cm</dd>
-        <dd class="hint">vom Boden bis zur Nase, ohne Schlittschuhe gemessen</dd>
+        <dd class="hint">{s.stickHint}</dd>
       </div>
       <div>
-        <dt>Grösse</dt>
+        <dt>{s.size}</dt>
         <dd class="big">{size.name}</dd>
-        <dd class="hint">üblicher Flex-Bereich dieser Grösse: {size.flex}</dd>
+        <dd class="hint">{s.sizeHint(size.flex)}</dd>
       </div>
       <div>
-        <dt>Flex</dt>
+        <dt>{s.flex}</dt>
         <dd class="big">{flexLow}–{flexHigh}</dd>
-        <dd class="hint">Richtwert {flex} (Körpergewicht in kg minus {FLEX_OFFSET_KG})</dd>
+        <dd class="hint">{s.flexHint(flex, FLEX_OFFSET_KG)}</dd>
       </div>
     </dl>
   </div>
 
-  <p class="note">
-    Wird der Schläger um 2.5 cm gekürzt, wird er rund {FLEX_PER_INCH_CUT} Flexpunkte härter.
-    Wer viel kürzen muss, kauft also besser gleich einen weicheren Schläger.
-  </p>
+  <p class="note">{s.note(FLEX_PER_INCH_CUT)}</p>
 </figure>
 
 <style>

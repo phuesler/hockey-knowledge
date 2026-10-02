@@ -9,50 +9,94 @@
  * The concave walls bow in by about 1.5 mm and the five-sided shaft's ridge
  * rises about 2 mm above one wide side, both slightly exaggerated so they show.
  */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Schaftformen bei gleicher Grösse',
+  shapes: {
+    square: {
+      name: 'Eckig',
+      label: 'Schaftquerschnitt mit fast eckigen Kanten',
+      text: 'Deutliche Kanten. Die Hand spürt gut, wie der Schläger steht.',
+    },
+    round: {
+      name: 'Abgerundet',
+      label: 'Schaftquerschnitt mit stark abgerundeten Ecken',
+      text: 'Weiche Ecken. Liegt angenehm in der Hand und dreht sich leicht.',
+    },
+    concave: {
+      name: 'Nach innen gewölbt',
+      label: 'Schaftquerschnitt mit leicht nach innen gewölbten Seiten',
+      text: 'Die breiten Seiten sind leicht eingedellt. Die Finger finden mehr Halt.',
+    },
+    'five-sided': {
+      name: 'Fünfeckig',
+      label: 'Eckiger Schaftquerschnitt, bei dem eine breite Seite flach zu einer Spitze zuläuft',
+      text: 'Eckig, aber eine breite Seite läuft flach zu einer Spitze zu (z. B. Bauer Nexus Sync).',
+    },
+  },
+};
+
+const en: typeof de = {
+  caption: 'Shaft shapes at the same size',
+  shapes: {
+    square: {
+      name: 'Square',
+      label: 'Shaft cross-section with almost square corners',
+      text: 'Clear corners. The hand can feel exactly how the stick is turned.',
+    },
+    round: {
+      name: 'Rounded',
+      label: 'Shaft cross-section with strongly rounded corners',
+      text: 'Soft corners. Comfortable in the hand and easy to turn.',
+    },
+    concave: {
+      name: 'Concave',
+      label: 'Shaft cross-section with slightly inward-curved sides',
+      text: 'The wide sides are slightly dished. The fingers get more grip.',
+    },
+    'five-sided': {
+      name: 'Five-sided',
+      label: 'Square shaft cross-section where one wide side tapers to a ridge',
+      text: 'Square, but one wide side tapers to a ridge (e.g. Bauer Nexus Sync).',
+    },
+  },
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
 const shapes = [
   {
     id: 'square',
-    name: 'Eckig',
     path: 'M6.5 3 H33.5 A1.5 1.5 0 0 1 35 4.5 V21.5 A1.5 1.5 0 0 1 33.5 23 H6.5 A1.5 1.5 0 0 1 5 21.5 V4.5 A1.5 1.5 0 0 1 6.5 3 Z',
-    label: 'Schaftquerschnitt mit fast eckigen Kanten',
-    text: 'Deutliche Kanten. Die Hand spürt gut, wie der Schläger steht.',
   },
   {
     id: 'round',
-    name: 'Abgerundet',
     path: 'M12 3 H28 A7 7 0 0 1 35 10 V16 A7 7 0 0 1 28 23 H12 A7 7 0 0 1 5 16 V10 A7 7 0 0 1 12 3 Z',
-    label: 'Schaftquerschnitt mit stark abgerundeten Ecken',
-    text: 'Weiche Ecken. Liegt angenehm in der Hand und dreht sich leicht.',
   },
   {
     id: 'concave',
-    name: 'Nach innen gewölbt',
     path: 'M8 3 Q20 6 32 3 A3 3 0 0 1 35 6 V20 A3 3 0 0 1 32 23 Q20 20 8 23 A3 3 0 0 1 5 20 V6 A3 3 0 0 1 8 3 Z',
-    label: 'Schaftquerschnitt mit leicht nach innen gewölbten Seiten',
-    text: 'Die breiten Seiten sind leicht eingedellt. Die Finger finden mehr Halt.',
   },
   {
     id: 'five-sided',
-    name: 'Fünfeckig',
     path: 'M5 3 L20 0.8 L35 3 V23 H5 Z',
-    label: 'Eckiger Schaftquerschnitt, bei dem eine breite Seite flach zu einer Spitze zuläuft',
-    text: 'Eckig, aber eine breite Seite läuft flach zu einer Spitze zu (z. B. Bauer Nexus Sync).',
   },
-];
+] as const;
 ---
 
 <figure class="shapes">
-  <figcaption>Schaftformen bei gleicher Grösse</figcaption>
+  <figcaption>{s.caption}</figcaption>
 
   <ul>
     {
-      shapes.map((s) => (
+      shapes.map((shape) => (
         <li>
-          <svg viewBox="0 0 40 26" role="img" aria-label={s.label}>
-            <path d={s.path} />
+          <svg viewBox="0 0 40 26" role="img" aria-label={s.shapes[shape.id].label}>
+            <path d={shape.path} />
           </svg>
-          <p class="name">{s.name}</p>
-          <p class="text">{s.text}</p>
+          <p class="name">{s.shapes[shape.id].name}</p>
+          <p class="text">{s.shapes[shape.id].text}</p>
         </li>
       ))
     }

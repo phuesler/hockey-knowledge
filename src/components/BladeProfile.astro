@@ -17,7 +17,59 @@ interface Props {
   variant: 'radius' | 'pivot' | 'quad';
 }
 
+import { localeFromUrl } from '../lib/i18n';
+
 const { variant } = Astro.props;
+
+type ZoneId = 'heel' | 'back' | 'front' | 'toe';
+
+const de = {
+  captions: {
+    radius: 'Die Rundung ist ein Stück aus einem Kreis',
+    pivot: 'Der Pivot-Punkt: hier liegt das Gewicht',
+    quad: 'Beispiel für ein Quad-Profil mit vier Radien',
+  },
+  radiusLabel:
+    'Kufe von der Seite. Ihre Unterkante ist ein Ausschnitt aus einem grossen Kreis, dessen Radius eingezeichnet ist.',
+  pivotLabel:
+    'Kufe von der Seite mit markiertem Pivot-Punkt am tiefsten Punkt. Gestrichelt ist gezeigt, wie die Kufe nach vorn und hinten kippt.',
+  quadLabel: (parts: string) =>
+    `Kufe von der Seite, deren Unterkante in vier Abschnitte mit unterschiedlichen Radien aufgeteilt ist: ${parts}.`,
+  feet: 'Fuss',
+  centre: 'Kreismittelpunkt',
+  radius: 'Radius',
+  radiusExample: 'z. B. 9 Fuss ≈ 2,7 m',
+  pivot: 'Pivot-Punkt',
+  contact: '← Auflage auf dem Eis →',
+  heel: 'Ferse',
+  toe: 'Spitze',
+  zones: { heel: 'Ferse', back: 'hinten', front: 'vorn', toe: 'Spitze' } as Record<ZoneId, string>,
+};
+
+const en: typeof de = {
+  captions: {
+    radius: 'The rocker is a slice of a circle',
+    pivot: 'The pivot point: this is where the weight sits',
+    quad: 'Example of a quad profile with four radii',
+  },
+  radiusLabel:
+    'Skate blade from the side. Its bottom edge is a section of a large circle, with the radius drawn in.',
+  pivotLabel:
+    'Skate blade from the side with the pivot point marked at the lowest point. Dashed outlines show how the blade rocks forwards and backwards.',
+  quadLabel: (parts) =>
+    `Skate blade from the side, its bottom edge split into four sections with different radii: ${parts}.`,
+  feet: 'ft',
+  centre: 'Centre of the circle',
+  radius: 'Radius',
+  radiusExample: 'e.g. 9 ft ≈ 2.7 m',
+  pivot: 'Pivot point',
+  contact: '← Contact with the ice →',
+  heel: 'Heel',
+  toe: 'Toe',
+  zones: { heel: 'heel', back: 'back', front: 'front', toe: 'toe' },
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
 
 const LEFT = 20;
 const RIGHT = 320;
@@ -48,11 +100,11 @@ const contactHalf = Math.sqrt(2 * R_PIVOT * 3);
 // curve is built by bending away from the pivot at 1/R per unit, so the zones
 // join without a kink. Example values, not a recommendation.
 const FEET_TO_UNITS = 25;
-const zones = [
-  { from: 20, to: 95, feet: 7, label: 'Ferse' },
-  { from: 95, to: 170, feet: 12, label: 'hinten' },
-  { from: 170, to: 245, feet: 10, label: 'vorn' },
-  { from: 245, to: 320, feet: 6, label: 'Spitze' },
+const zones: { id: ZoneId; from: number; to: number; feet: number }[] = [
+  { id: 'heel', from: 20, to: 95, feet: 7 },
+  { id: 'back', from: 95, to: 170, feet: 12 },
+  { id: 'front', from: 170, to: 245, feet: 10 },
+  { id: 'toe', from: 245, to: 320, feet: 6 },
 ];
 const quadIce = 150;
 const quadTop = 60;
@@ -88,30 +140,26 @@ const quadSegments = zones.map((z, i) => ({
   tone: i % 2 === 0 ? 'a' : 'b',
 }));
 
-const captions = {
-  radius: 'Die Rundung ist ein Stück aus einem Kreis',
-  pivot: 'Der Pivot-Punkt: hier liegt das Gewicht',
-  quad: 'Beispiel für ein Quad-Profil mit vier Radien',
-};
+const quadParts = zones.map((z) => `${s.zones[z.id]} ${z.feet} ${s.feet}`).join(', ');
 ---
 
 <figure class="blade-profile">
-  <figcaption>{captions[variant]}</figcaption>
+  <figcaption>{s.captions[variant]}</figcaption>
 
   {
     variant === 'radius' && (
       <svg
         viewBox="0 0 340 260"
         role="img"
-        aria-label="Kufe von der Seite. Ihre Unterkante ist ein Ausschnitt aus einem grossen Kreis, dessen Radius eingezeichnet ist."
+        aria-label={s.radiusLabel}
       >
         <circle cx={MID} cy={radiusCenterY} r={R_RADIUS} class="circle" />
         <path d={radiusBlade.d} class="blade" />
         <line x1={MID} y1={radiusCenterY} x2={MID} y2={radiusIce} class="radius-line" />
         <circle cx={MID} cy={radiusCenterY} r="4" class="center" />
-        <text x={MID + 8} y={radiusCenterY - 6} class="label">Kreismittelpunkt</text>
-        <text x={MID + 8} y={(radiusCenterY + radiusIce) / 2 - 20} class="label strong">Radius</text>
-        <text x={MID + 8} y={(radiusCenterY + radiusIce) / 2 - 4} class="label">z. B. 9 Fuss ≈ 2,7 m</text>
+        <text x={MID + 8} y={radiusCenterY - 6} class="label">{s.centre}</text>
+        <text x={MID + 8} y={(radiusCenterY + radiusIce) / 2 - 20} class="label strong">{s.radius}</text>
+        <text x={MID + 8} y={(radiusCenterY + radiusIce) / 2 - 4} class="label">{s.radiusExample}</text>
         <line x1="0" y1={radiusIce + 0.5} x2="340" y2={radiusIce + 0.5} class="ice" />
       </svg>
     )
@@ -122,7 +170,7 @@ const captions = {
       <svg
         viewBox="0 0 340 178"
         role="img"
-        aria-label="Kufe von der Seite mit markiertem Pivot-Punkt am tiefsten Punkt. Gestrichelt ist gezeigt, wie die Kufe nach vorn und hinten kippt."
+        aria-label={s.pivotLabel}
       >
         <g transform={`rotate(-5 ${MID} ${pivotIce})`}>
           <path d={pivotBlade.d} class="ghost" />
@@ -140,10 +188,10 @@ const captions = {
           class="contact"
         />
         <path d={`M${MID} ${pivotIce + 4} l-7 12 h14 Z`} class="pivot" />
-        <text x={MID} y={pivotIce + 32} class="label strong" text-anchor="middle">Pivot-Punkt</text>
-        <text x={MID} y={pivotIce + 48} class="label" text-anchor="middle">← Auflage auf dem Eis →</text>
-        <text x={LEFT} y="40" class="label">Ferse</text>
-        <text x={RIGHT} y="40" class="label" text-anchor="end">Spitze</text>
+        <text x={MID} y={pivotIce + 32} class="label strong" text-anchor="middle">{s.pivot}</text>
+        <text x={MID} y={pivotIce + 48} class="label" text-anchor="middle">{s.contact}</text>
+        <text x={LEFT} y="40" class="label">{s.heel}</text>
+        <text x={RIGHT} y="40" class="label" text-anchor="end">{s.toe}</text>
       </svg>
     )
   }
@@ -153,7 +201,7 @@ const captions = {
       <svg
         viewBox="0 0 340 200"
         role="img"
-        aria-label="Kufe von der Seite, deren Unterkante in vier Abschnitte mit unterschiedlichen Radien aufgeteilt ist: Ferse 7 Fuss, hinten 12 Fuss, vorn 10 Fuss, Spitze 6 Fuss."
+        aria-label={s.quadLabel(quadParts)}
       >
         <path d={quadOutline} class="blade" />
         {quadSegments.map((z) => <path d={z.d} class:list={['segment', z.tone]} />)}
@@ -167,7 +215,7 @@ const captions = {
               {z.feet}'
             </text>
             <text x={(z.from + z.to) / 2} y={quadIce + 40} class="label" text-anchor="middle">
-              {z.label}
+              {s.zones[z.id]}
             </text>
           </>
         ))}

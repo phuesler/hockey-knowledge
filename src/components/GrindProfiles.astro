@@ -11,46 +11,83 @@
  * same arc but is cut off at y=66. Depths are hugely exaggerated, like in the
  * hollow explorer.
  */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Die Kufe von vorn gesehen (Rille stark vergrössert)',
+  profiles: {
+    hollow: {
+      name: 'Hohlschliff',
+      label: 'Kufe von vorn mit runder Rille zwischen den Kanten',
+      text: 'Runde Rille. Der Klassiker, den jeder Schleifer kann.',
+    },
+    fbv: {
+      name: 'Flat Bottom V',
+      label: 'Kufe von vorn mit trapezförmiger Rille: flacher Boden, schräge Seiten',
+      text: 'Flacher Boden, schräge Seiten. Sieht aus wie ein Trapez.',
+    },
+    'flat-hollow': {
+      name: 'Flacher Boden, runde Seiten',
+      label: 'Kufe von vorn mit runder Rille, die unten abgeflacht ist',
+      text: 'Seiten wie beim Hohlschliff, unten abgeflacht (z. B. FIRE).',
+    },
+  },
+};
+
+const en: typeof de = {
+  caption: 'The blade seen from the front (groove heavily enlarged)',
+  profiles: {
+    hollow: {
+      name: 'Hollow',
+      label: 'Blade from the front with a round groove between the edges',
+      text: 'Round groove. The classic that every sharpener can do.',
+    },
+    fbv: {
+      name: 'Flat Bottom V',
+      label: 'Blade from the front with a trapezoid groove: flat bottom, slanted sides',
+      text: 'Flat bottom, slanted sides. Looks like a trapezoid.',
+    },
+    'flat-hollow': {
+      name: 'Flat bottom, round sides',
+      label: 'Blade from the front with a round groove that is flattened at the bottom',
+      text: 'Sides like a hollow, flattened at the bottom (e.g. FIRE).',
+    },
+  },
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
 const profiles = [
   {
     id: 'hollow',
-    name: 'Hohlschliff',
     blade: 'M25 30 H75 V75 A30 30 0 0 0 25 75 Z',
-    label: 'Kufe von vorn mit runder Rille zwischen den Kanten',
-    text: 'Runde Rille. Der Klassiker, den jeder Schleifer kann.',
   },
   {
     id: 'fbv',
-    name: 'Flat Bottom V',
     blade: 'M25 30 H75 V75 L62 62 H38 L25 75 Z',
-    label: 'Kufe von vorn mit trapezförmiger Rille: flacher Boden, schräge Seiten',
-    text: 'Flacher Boden, schräge Seiten. Sieht aus wie ein Trapez.',
   },
   {
     id: 'flat-hollow',
-    name: 'Flacher Boden, runde Seiten',
     blade: 'M25 30 H75 V75 A30 30 0 0 0 65.6 66 H34.4 A30 30 0 0 0 25 75 Z',
-    label: 'Kufe von vorn mit runder Rille, die unten abgeflacht ist',
-    text: 'Seiten wie beim Hohlschliff, unten abgeflacht (z. B. FIRE).',
   },
-];
+] as const;
 ---
 
 <figure class="grinds">
-  <figcaption>Die Kufe von vorn gesehen (Rille stark vergrössert)</figcaption>
+  <figcaption>{s.caption}</figcaption>
 
   <ul>
     {
       profiles.map((p) => (
         <li>
-          <svg viewBox="8 36 84 46" role="img" aria-label={p.label}>
+          <svg viewBox="8 36 84 46" role="img" aria-label={s.profiles[p.id].label}>
             <line x1="6" y1="75.5" x2="94" y2="75.5" class="ice" />
             <path d={p.blade} class="blade" />
             <circle cx="25" cy="75" r="3" class="edge" />
             <circle cx="75" cy="75" r="3" class="edge" />
           </svg>
-          <p class="name">{p.name}</p>
-          <p class="text">{p.text}</p>
+          <p class="name">{s.profiles[p.id].name}</p>
+          <p class="text">{s.profiles[p.id].text}</p>
         </li>
       ))
     }

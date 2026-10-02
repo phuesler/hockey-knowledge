@@ -2,6 +2,55 @@
   import { Tween } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import { motionDuration } from '../lib/motion';
+  import type { Locale } from '../lib/i18n';
+
+  /** Islands also run in the browser, so the page passes its language in. */
+  let { locale = 'de' }: { locale?: Locale } = $props();
+
+  const de = {
+    title: 'Hohlschliff ausprobieren',
+    control: 'Hohlschliff',
+    figureLabel: (grind: string) => `Querschnitt einer Kufe mit Hohlschliff ${grind}`,
+    edge: 'Kante',
+    width: (mm: number) => `ca. ${mm} mm`,
+    enlarged: 'Rille stark vergrössert',
+    depth: 'Rillentiefe',
+    depthHint: 'in der Zeichnung stark vergrössert',
+    grip: 'Kantengriff',
+    glide: 'Gleiten',
+    /** One per grind, same order as `grinds` below. */
+    verdicts: [
+      'Sehr tief. Klebt im Eis, bremst stark. Für leichte U13-Spieler fast immer zu viel.',
+      'Tief. Viel Kantengriff, dafür merklich langsamer. Eher für schwere, kräftige Spieler.',
+      'Der Standard in den meisten Shops. Guter Kompromiss – ein sinnvoller Startpunkt.',
+      'Flacher. Läuft spürbar leichter, hält in der Kurve immer noch gut. Für viele U13-Kinder die beste Wahl.',
+      'Sehr flach. Schnell und leichtläufig, verlangt aber saubere Technik beim Bremsen.',
+      'Fast flach. Nur für sehr leichte Kinder oder auf weichem, warmem Eis.',
+    ],
+  };
+
+  const en: typeof de = {
+    title: 'Try out the hollow',
+    control: 'Hollow',
+    figureLabel: (grind) => `Cross-section of a skate blade with a ${grind} hollow`,
+    edge: 'Edge',
+    width: (mm) => `approx. ${mm} mm`,
+    enlarged: 'Groove heavily enlarged',
+    depth: 'Groove depth',
+    depthHint: 'heavily enlarged in the drawing',
+    grip: 'Edge grip',
+    glide: 'Glide',
+    verdicts: [
+      'Very deep. Sticks to the ice and brakes hard. Almost always too much for light U13 players.',
+      'Deep. Lots of edge grip, but noticeably slower. More for heavy, strong players.',
+      'The standard in most shops. A good compromise – a sensible place to start.',
+      'Shallower. Glides noticeably more easily and still holds well in turns. The best choice for many U13 kids.',
+      'Very shallow. Fast and free-gliding, but needs clean stopping technique.',
+      'Almost flat. Only for very light kids or on soft, warm ice.',
+    ],
+  };
+
+  const s = $derived({ de, en }[locale]);
 
   /*
    * Der Hohlschliff wird als Radius angegeben: je kleiner der Radius, desto tiefer die
@@ -16,34 +65,15 @@
     label: string;
     mm: number;
     inch: number;
-    verdict: string;
   };
 
   const grinds: Grind[] = [
-    {
-      label: '3/8"', inch: 0.375, mm: 9.5,
-      verdict: 'Sehr tief. Klebt im Eis, bremst stark. Für leichte U13-Spieler fast immer zu viel.',
-    },
-    {
-      label: '7/16"', inch: 0.4375, mm: 11.1,
-      verdict: 'Tief. Viel Kantengriff, dafür merklich langsamer. Eher für schwere, kräftige Spieler.',
-    },
-    {
-      label: '1/2"', inch: 0.5, mm: 12.7,
-      verdict: 'Der Standard in den meisten Shops. Guter Kompromiss – ein sinnvoller Startpunkt.',
-    },
-    {
-      label: '5/8"', inch: 0.625, mm: 15.9,
-      verdict: 'Flacher. Läuft spürbar leichter, hält in der Kurve immer noch gut. Für viele U13-Kinder die beste Wahl.',
-    },
-    {
-      label: '3/4"', inch: 0.75, mm: 19.1,
-      verdict: 'Sehr flach. Schnell und leichtläufig, verlangt aber saubere Technik beim Bremsen.',
-    },
-    {
-      label: '1"', inch: 1, mm: 25.4,
-      verdict: 'Fast flach. Nur für sehr leichte Kinder oder auf weichem, warmem Eis.',
-    },
+    { label: '3/8"', inch: 0.375, mm: 9.5 },
+    { label: '7/16"', inch: 0.4375, mm: 11.1 },
+    { label: '1/2"', inch: 0.5, mm: 12.7 },
+    { label: '5/8"', inch: 0.625, mm: 15.9 },
+    { label: '3/4"', inch: 0.75, mm: 19.1 },
+    { label: '1"', inch: 1, mm: 25.4 },
   ];
 
   /** Startwert: 1/2", weil das fast überall die Voreinstellung ist. */
@@ -86,11 +116,11 @@
 </script>
 
 <figure class="explorer">
-  <figcaption class="title">Hohlschliff ausprobieren</figcaption>
+  <figcaption class="title">{s.title}</figcaption>
 
   <label class="control">
     <span class="label-row">
-      Hohlschliff <output>{grind.label} &middot; {grind.mm} mm</output>
+      {s.control} <output>{grind.label} &middot; {grind.mm} mm</output>
     </span>
     <input type="range" min="0" max={grinds.length - 1} step="1" bind:value={index}
            aria-describedby="grind-verdict" />
@@ -101,7 +131,7 @@
 
   <div class="panel">
     <svg viewBox="0 0 220 190" role="img"
-         aria-label={`Querschnitt einer Kufe mit Hohlschliff ${grind.label}`}>
+         aria-label={s.figureLabel(grind.label)}>
       <!-- Eis -->
       <rect x="0" y={BOTTOM} width="220" height="58" fill="var(--c-ice)" />
       <line x1="0" y1={BOTTOM} x2="220" y2={BOTTOM} stroke="var(--c-steel)" stroke-width="1.5" />
@@ -117,9 +147,9 @@
       <circle cx={LEFT} cy={BOTTOM} r="5" fill="var(--c-accent)" />
       <circle cx={RIGHT} cy={BOTTOM} r="5" fill="var(--c-accent)" />
       <text x={LEFT - 6} y={BOTTOM + 21} text-anchor="middle" font-size="11"
-            font-weight="700" fill="var(--c-text)">Kante</text>
+            font-weight="700" fill="var(--c-text)">{s.edge}</text>
       <text x={RIGHT + 6} y={BOTTOM + 21} text-anchor="middle" font-size="11"
-            font-weight="700" fill="var(--c-text)">Kante</text>
+            font-weight="700" fill="var(--c-text)">{s.edge}</text>
 
       <!-- Breitenmass der Kufe -->
       <g stroke="var(--c-text-muted)" stroke-width="1">
@@ -128,30 +158,30 @@
         <line x1={RIGHT} y1={TOP - 14} x2={RIGHT} y2={TOP - 6} />
       </g>
       <text x="110" y={TOP - 15} text-anchor="middle" font-size="10"
-            fill="var(--c-text-muted)">ca. {BLADE_MM} mm</text>
+            fill="var(--c-text-muted)">{s.width(BLADE_MM)}</text>
 
       <text x="110" y={BOTTOM + 44} text-anchor="middle" font-size="10"
-            fill="var(--c-text-muted)">Rille stark vergrössert</text>
+            fill="var(--c-text-muted)">{s.enlarged}</text>
     </svg>
 
     <div class="readout">
       <p class="depth">
-        Rillentiefe <strong>{depthMm.toFixed(3)} mm</strong>
-        <span class="hint">in der Zeichnung stark vergrössert</span>
+        {s.depth} <strong>{depthMm.toFixed(3)} mm</strong>
+        <span class="hint">{s.depthHint}</span>
       </p>
 
       <div class="bars">
         <div class="bar">
-          <span class="bar-label">Kantengriff</span>
+          <span class="bar-label">{s.grip}</span>
           <span class="track"><span class="fill grip" style:width={`${grip}%`}></span></span>
         </div>
         <div class="bar">
-          <span class="bar-label">Gleiten</span>
+          <span class="bar-label">{s.glide}</span>
           <span class="track"><span class="fill glide" style:width={`${glide}%`}></span></span>
         </div>
       </div>
 
-      <p class="verdict" id="grind-verdict">{grind.verdict}</p>
+      <p class="verdict" id="grind-verdict">{s.verdicts[index]}</p>
     </div>
   </div>
 </figure>

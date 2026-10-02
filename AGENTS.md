@@ -66,6 +66,19 @@ import FlexRechner from '../../../components/FlexRechner.svelte';
 Astro renders it on the server beforehand — **so the initial values must make sense on
 their own**, so that the article stays complete without JavaScript.
 
+**Text in components** goes into a German block and an English block typed against it, so
+a missing translation fails `astro check`:
+
+```ts
+const de = { caption: 'Wo sich der Schaft biegt' };
+const en: typeof de = { caption: 'Where the shaft bends' };
+```
+
+`.astro` components pick the block with `{ de, en }[localeFromUrl(Astro.url)]`. Svelte
+components take a `locale` prop (default `'de'`) and use
+`$derived({ de, en }[locale])`; English articles pass it: `<StickSizer client:visible
+locale="en" />`.
+
 For callout boxes there is `Callout.astro`, already available in `.mdx`:
 
 ```mdx

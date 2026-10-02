@@ -9,6 +9,24 @@
  * measured by hand; corners and shaft shapes vary by model, so the corner radius
  * is an assumption and the circumference is a rounded estimate.
  */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Schaftquerschnitt im Vergleich (massstabsgetreu, vergrössert)',
+  label:
+    'Drei ineinander gezeichnete Schaftquerschnitte: Senior aussen, Intermediate in der Mitte, Junior innen',
+  circumference: 'Umfang ca.',
+};
+
+const en: typeof de = {
+  caption: 'Shaft cross-sections compared (to scale, enlarged)',
+  label:
+    'Three shaft cross-sections drawn inside each other: senior outside, intermediate in the middle, junior inside',
+  circumference: 'circumference approx.',
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
 const CORNER_MM = 4;
 const CX = 20;
 const CY = 13;
@@ -17,30 +35,30 @@ const shafts = [
   { id: 'senior', name: 'Senior', w: 30, h: 20 },
   { id: 'int', name: 'Intermediate', w: 28, h: 19 },
   { id: 'junior', name: 'Junior', w: 27, h: 18 },
-].map((s) => ({
-  ...s,
+].map((shaft) => ({
+  ...shaft,
   // Rounded rectangle: straight sides plus four quarter circles.
-  circumference: Math.round(2 * (s.w + s.h) - (8 - 2 * Math.PI) * CORNER_MM),
+  circumference: Math.round(2 * (shaft.w + shaft.h) - (8 - 2 * Math.PI) * CORNER_MM),
 }));
 ---
 
 <figure class="shafts">
-  <figcaption>Schaftquerschnitt im Vergleich (massstabsgetreu, vergrössert)</figcaption>
+  <figcaption>{s.caption}</figcaption>
 
   <div class="layout">
     <svg
       viewBox="0 0 40 26"
       role="img"
-      aria-label="Drei ineinander gezeichnete Schaftquerschnitte: Senior aussen, Intermediate in der Mitte, Junior innen"
+      aria-label={s.label}
     >
       {
-        shafts.map((s) => (
+        shafts.map((shaft) => (
           <rect
-            class={s.id}
-            x={CX - s.w / 2}
-            y={CY - s.h / 2}
-            width={s.w}
-            height={s.h}
+            class={shaft.id}
+            x={CX - shaft.w / 2}
+            y={CY - shaft.h / 2}
+            width={shaft.w}
+            height={shaft.h}
             rx={CORNER_MM}
           />
         ))
@@ -49,12 +67,12 @@ const shafts = [
 
     <ul>
       {
-        shafts.map((s) => (
+        shafts.map((shaft) => (
           <li>
-            <span class:list={['swatch', s.id]} aria-hidden="true" />
-            <span class="name">{s.name}</span>
+            <span class:list={['swatch', shaft.id]} aria-hidden="true" />
+            <span class="name">{shaft.name}</span>
             <span class="dims">
-              {s.w} × {s.h} mm · Umfang ca. {s.circumference} mm
+              {shaft.w} × {shaft.h} mm · {s.circumference} {shaft.circumference} mm
             </span>
           </li>
         ))
