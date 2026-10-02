@@ -35,7 +35,7 @@ const de = {
   heroTitleLead: 'Eishockey verstehen',
   heroTitleRest: 'für U13 und ihre Eltern',
   heroText:
-    'Das Nachschlagewerk unserer U13 bei FASS Berlin: kurze, verständliche Artikel zu allem, was rund ums Eis wichtig ist. Geschrieben für Kinder, die es selber lesen wollen, und für Eltern, die noch nie in einer Kabine gestanden haben.',
+    'Das Nachschlagewerk unserer U13 bei FASS Berlin: kurze, verständliche Artikel zu allem, was rund ums Eis wichtig ist. Geschrieben für Kinder, die es selber lesen wollen, und für Eltern, die noch nie in einer Kabine gestanden haben. Wir spielen Breitensport. Die Empfehlungen hier sind für Familien gedacht, die gut ausgerüstet sein wollen, ohne jedem letzten Vorteil hinterherzujagen.',
   skipToContent: 'Zum Inhalt springen',
   mainNav: 'Hauptnavigation',
   home: 'Start',
@@ -92,7 +92,7 @@ const en: UiStrings = {
   heroTitleLead: 'Understanding ice hockey',
   heroTitleRest: 'for U13 players and their parents',
   heroText:
-    'The reference guide of our U13 at FASS Berlin: short, clear articles on everything that matters around the ice. Written for kids who want to read it themselves, and for parents who have never set foot in a dressing room.',
+    'The reference guide of our U13 at FASS Berlin: short, clear articles on everything that matters around the ice. Written for kids who want to read it themselves, and for parents who have never set foot in a dressing room. We play recreational hockey. The advice here is meant for families who want good gear without chasing every last advantage.',
   skipToContent: 'Skip to content',
   mainNav: 'Main navigation',
   home: 'Home',
