@@ -3,12 +3,12 @@ import { render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Callout from '../../components/Callout.astro';
 import { getArticles, getAlternates, articlePath, readingMinutes } from '../../lib/articles';
-import { parseEntryId, publishedLocales } from '../../lib/i18n';
+import { parseEntryId, visibleLocales } from '../../lib/i18n';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (async () => {
   const perLocale = await Promise.all(
-    publishedLocales.map(async (locale) => {
+    visibleLocales.map(async (locale) => {
       const articles = await getArticles(locale);
       return articles.map((entry, index) => ({
         params: { locale, slug: parseEntryId(entry.id).slug },
@@ -40,6 +40,7 @@ const toNav = (a: typeof prev) =>
   alternates={alternates}
   updated={entry.data.updated}
   tags={entry.data.tags}
+  draft={entry.data.draft}
   readingMinutes={readingMinutes(entry)}
   headings={headings}
   prev={toNav(prev)}

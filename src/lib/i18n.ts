@@ -6,6 +6,10 @@
  * that are actually built and linked. A language moves into `publishedLocales` once its
  * articles are ready — until then its pages simply don't exist.
  *
+ * `astro dev` is the exception: there `visibleLocales` contains every language and drafts
+ * are shown too, so translations can be proofread before they go live. `npm run build`
+ * never includes them.
+ *
  * To add a language: add it to `locales`, add a matching block to `ui` and create
  * src/data/articles/<locale>/. The pages under src/pages/[locale]/ need no change.
  */
@@ -15,6 +19,12 @@ export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'de';
 
 export const publishedLocales: readonly Locale[] = ['de'];
+
+/** True in `astro dev`: unpublished languages and drafts are shown for proofreading. */
+export const isPreview = import.meta.env.DEV;
+
+/** The languages that get pages: every locale in the dev preview, else the published ones. */
+export const visibleLocales: readonly Locale[] = isPreview ? locales : publishedLocales;
 
 const de = {
   siteName: 'FASS U13 Hockey-Wissen',
@@ -62,6 +72,7 @@ const de = {
   repoCta: 'Zum Repository auf GitHub',
   clubLink: 'FASS Berlin Nachwuchs',
   noScript: 'Dieses interaktive Element braucht JavaScript. Die Angaben im Text reichen aber aus.',
+  draftNote: 'Entwurf – nur in der lokalen Vorschau sichtbar, nicht auf der Website.',
   /** Language switcher: short code on the button, full name for screen readers. */
   languageShort: 'DE',
   languageName: 'Deutsch',
@@ -118,6 +129,7 @@ const en: UiStrings = {
   repoCta: 'Go to the repository on GitHub',
   clubLink: 'FASS Berlin youth hockey',
   noScript: 'This interactive element needs JavaScript. The text has everything you need, though.',
+  draftNote: 'Draft – only visible in the local preview, not on the website.',
   languageShort: 'EN',
   languageName: 'English',
   dateLocale: 'en-GB',

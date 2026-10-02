@@ -152,7 +152,11 @@ lists: `locales` (every language the code knows, with UI strings in `ui`) and
 every published language — there is nothing to copy.
 
 To publish a language: write its articles in `src/data/articles/<locale>/` (each with
-`translationOf`, see above), then add it to `publishedLocales`. The header shows a
+`translationOf`, see above), then add it to `publishedLocales`.
+
+**Proofreading before release.** `npm run dev` shows every language and every draft
+(`visibleLocales` and `isPreview` in `src/lib/i18n.ts`), with a yellow banner on drafts.
+`npm run build` leaves both out, so nothing unpublished can reach the website. The header shows a
 language switch and the pages get `hreflang` links wherever a translation exists.
 
 Static `.astro` components inside articles pick their language with

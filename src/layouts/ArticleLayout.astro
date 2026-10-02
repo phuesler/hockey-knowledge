@@ -16,6 +16,8 @@ interface Props {
   alternates?: Alternate[];
   updated: Date;
   tags?: string[];
+  /** Only true in the dev preview; drafts are never built. */
+  draft?: boolean;
   readingMinutes: number;
   headings: MarkdownHeading[];
   prev?: NavLink;
@@ -23,7 +25,7 @@ interface Props {
 }
 
 const {
-  title, description, locale = 'de', path, alternates, updated, tags = [],
+  title, description, locale = 'de', path, alternates, updated, tags = [], draft = false,
   readingMinutes, headings, prev, next,
 } = Astro.props;
 
@@ -38,6 +40,7 @@ const updatedLabel = updated.toLocaleDateString(s.dateLocale, {
 <BaseLayout title={title} description={description} locale={locale} path={path} alternates={alternates}>
   <article class="wrap">
     <header class="article-head">
+      {draft && <p class="draft">{s.draftNote}</p>}
       <a class="back" href={href(`/${locale}/`)}>&larr; {s.backToOverview}</a>
       <h1>{title}</h1>
       <p class="lede">{description}</p>
@@ -87,6 +90,17 @@ const updatedLabel = updated.toLocaleDateString(s.dateLocale, {
 
 <style>
   article { padding-block: var(--s-6) var(--s-7); }
+
+  .draft {
+    margin-block-end: var(--s-4);
+    padding: var(--s-2) var(--s-3);
+    background: var(--c-warn-soft);
+    color: var(--c-warn);
+    border: 1px solid var(--c-warn);
+    border-radius: var(--radius);
+    font-size: var(--t-sm);
+    font-weight: 700;
+  }
 
   .back {
     display: inline-block;

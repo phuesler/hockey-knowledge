@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { defaultLocale, parseEntryId, publishedLocales, t, type Locale } from './i18n';
+import { defaultLocale, isPreview, parseEntryId, t, visibleLocales, type Locale } from './i18n';
 
 export type Article = CollectionEntry<'articles'>;
 
@@ -18,12 +18,15 @@ export function articlePath(entry: Article): string {
 /**
  * Every published article for a locale, in display order: by category as listed in
  * `categoryOrder`, then by the `order` frontmatter field, then alphabetically.
- * Drafts never make it into a build.
+ * Drafts never make it into a build (see `isVisible`).
  */
 export const categoryOrder = ['ausruestung', 'theorie'] as const;
 
+/** Drafts never reach a build; only the dev preview shows them, for proofreading. */
+const isVisible = ({ data }: Article) => isPreview || !data.draft;
+
 export async function getArticles(locale: Locale): Promise<Article[]> {
-  const entries = await getCollection('articles', ({ data }) => !data.draft);
+  const entries = await getCollection('articles', isVisible);
   return entries
     .filter((entry) => parseEntryId(entry.id).locale === locale)
     .sort((a, b) => {
@@ -53,12 +56,12 @@ function translationKey(entry: Article): string {
 
 /**
  * Every published language version of an article, including the article itself,
- * in the order of `publishedLocales`. Feeds the language switcher and hreflang.
+ * in the order of `visibleLocales`. Feeds the language switcher and hreflang.
  */
 export async function getAlternates(entry: Article): Promise<Alternate[]> {
   const key = translationKey(entry);
-  const entries = await getCollection('articles', ({ data }) => !data.draft);
-  return publishedLocales.flatMap((locale) => {
+  const entries = await getCollection('articles', isVisible);
+  return visibleLocales.flatMap((locale) => {
     const match = entries.find(
       (other) => parseEntryId(other.id).locale === locale && translationKey(other) === key,
     );
@@ -68,5 +71,5 @@ export async function getAlternates(entry: Article): Promise<Alternate[]> {
 
 /** The overview page in every published language. */
 export function indexAlternates(): Alternate[] {
-  return publishedLocales.map((locale) => ({ locale, path: `/${locale}/` }));
+  return visibleLocales.map((locale) => ({ locale, path: `/${locale}/` }));
 }
