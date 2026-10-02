@@ -40,7 +40,8 @@ const curves = [
     apex: 54,
     depth: 20,
     where: 'in der Mitte, etwas Richtung Spitze',
-    text: 'Der Allrounder. Offene Kelle, hebt den Puck leicht an.',
+    recommended: true,
+    text: 'Kann alles. Offene Kelle, hebt den Puck leicht an.',
   },
   {
     name: 'P28',
@@ -59,7 +60,8 @@ const curves = [
   <ul>
     {
       curves.map((curve) => (
-        <li>
+        <li class:list={{ recommended: curve.recommended }}>
+          {curve.recommended && <span class="badge">Empfehlung</span>}
           <svg viewBox="0 0 60 130" role="img" aria-label={`Kelle ${curve.name}, am Schaft entlang gesehen: die Biegung ist ${curve.where} am tiefsten`}>
             {/* Tiefste Stelle */}
             <rect x="4" y={curve.apex - 14} width="52" height="28" rx="6" class="zone" />
@@ -117,7 +119,30 @@ const curves = [
   /* .prose spaces consecutive list items (.prose li + li); in a grid that pushes
      columns down. ul > li is needed to outrank it. */
   ul > li {
+    position: relative;
     margin: 0;
+    padding: var(--s-2) var(--s-1) var(--s-3);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+  }
+  /* Our recommendation for U13, see the callout below the graphic. */
+  ul > li.recommended {
+    background: var(--c-good-soft);
+    border-color: var(--c-good);
+  }
+  .badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 var(--s-2);
+    background: var(--c-good);
+    color: var(--c-surface);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.6;
+    white-space: nowrap;
   }
 
   svg {

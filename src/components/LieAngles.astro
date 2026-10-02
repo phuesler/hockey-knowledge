@@ -1,0 +1,171 @@
+---
+/**
+ * Illustrates the lie: the stick held the same way three times (same shaft
+ * angle to the ice, the player's natural stance), with a blade whose lie is too
+ * low, right or too high. Static SVG on purpose — the graphic carries the
+ * paragraph, so it must be there without JavaScript.
+ *
+ * Geometry per panel (viewBox 0 30 120 70): ice surface from y=90 down. The
+ * blade runs from heel to toe as a thick stroke; the shaft stub leaves the heel
+ * at the same angle in every panel (offset -28,-34). The wedge marks the gap between
+ * blade and ice, heavily exaggerated. The arc in the middle panel is the lie
+ * angle itself.
+ */
+const SHAFT = { dx: -28, dy: -34 };
+
+const cases = [
+  {
+    id: 'low',
+    name: 'Lie zu tief',
+    heel: { x: 52, y: 68 },
+    toe: { x: 108, y: 86 },
+    gap: '52,72 104,90 52,90',
+    label: 'nur die Spitze liegt auf dem Eis, der Absatz steht in der Luft',
+    text: 'Nur die Spitze liegt auf. Der Absatz steht in der Luft.',
+  },
+  {
+    id: 'right',
+    name: 'Lie passt',
+    heel: { x: 52, y: 86 },
+    toe: { x: 108, y: 86 },
+    gap: null,
+    label: 'die ganze Kelle liegt flach auf dem Eis',
+    text: 'Die ganze Kelle liegt flach auf dem Eis.',
+  },
+  {
+    id: 'high',
+    name: 'Lie zu hoch',
+    heel: { x: 52, y: 86 },
+    toe: { x: 106, y: 68 },
+    gap: '56,90 106,90 106,72',
+    label: 'nur der Absatz liegt auf dem Eis, die Spitze steht hoch',
+    text: 'Nur der Absatz liegt auf. Die Spitze steht hoch.',
+  },
+];
+---
+
+<figure class="lie">
+  <figcaption>Wie die Kelle auf dem Eis liegt</figcaption>
+
+  <ul>
+    {
+      cases.map((c) => (
+        <li>
+          <svg viewBox="0 30 120 70" role="img" aria-label={`${c.name}: ${c.label}`}>
+            {/* Eis */}
+            <rect x="0" y="90" width="120" height="10" class="ice" />
+            {/* Lücke zwischen Kelle und Eis */}
+            {c.gap && <polygon points={c.gap} class="gap" />}
+            {/* Der Lie: Winkel zwischen Schaft und Kelle */}
+            {c.id === 'right' && <path d="M66 86 A14 14 0 0 0 43.4 75.2" class="angle" />}
+            <path d={`M${c.heel.x} ${c.heel.y} l${SHAFT.dx} ${SHAFT.dy}`} class="shaft" />
+            <path d={`M${c.heel.x} ${c.heel.y} L${c.toe.x} ${c.toe.y}`} class="blade" />
+          </svg>
+          <div>
+            <p class:list={['name', { good: c.id === 'right' }]}>{c.name}</p>
+            <p class="text">{c.text}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="note">
+    Von vorn gesehen, das Kind steht in normaler Fahrposition und hält den Schläger jedes Mal
+    gleich. Der Bogen zeigt den Lie, den Winkel zwischen Schaft und Kelle. Die Lücken sind
+    übertrieben gezeichnet.
+  </p>
+</figure>
+
+<style>
+  .lie {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  /* One row per case: the gap under a flat blade needs width to be visible. */
+  ul {
+    display: grid;
+    gap: var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* .prose spaces consecutive list items (.prose li + li); ul > li outranks it. */
+  ul > li {
+    display: grid;
+    grid-template-columns: minmax(0, 9rem) 1fr;
+    gap: var(--s-4);
+    align-items: center;
+    margin: 0;
+  }
+  @media (min-width: 34rem) {
+    ul > li { grid-template-columns: 12rem 1fr; }
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    background: var(--c-surface-2);
+    border-radius: var(--radius);
+  }
+
+  .ice {
+    fill: var(--c-ice);
+  }
+  .gap {
+    fill: var(--c-warn-soft);
+    stroke: var(--c-warn);
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+  }
+
+  path {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .angle {
+    stroke: var(--c-accent);
+    stroke-width: 2;
+  }
+  .shaft {
+    stroke: var(--c-brand);
+    stroke-width: 6;
+  }
+  .blade {
+    stroke: var(--c-brand);
+    stroke-width: 7;
+  }
+
+  .name {
+    margin: 0 0 var(--s-1);
+    font-weight: 700;
+  }
+  .name.good {
+    color: var(--c-good);
+  }
+  .text {
+    margin: 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+
+  .note {
+    margin: var(--s-4) 0 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+</style>
