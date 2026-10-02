@@ -105,6 +105,19 @@ aged 11 to 13 **and** parents who have never stood in a locker room.
 - English technical terms that are actually used on the ice (Flex, Lie, Hollow) are used
   and explained — not translated into German.
 
+### English version
+
+English articles (`src/data/articles/en/`) translate the German ones and follow the same
+rules, plus:
+
+- British English spelling (`colour`, `centre`, `tyre`).
+- Same short sentences, same rule-of-thumb notes, prices stay in Euro at German price
+  levels — the readers still shop in Berlin.
+- German shop terms in brackets on first use only, e.g. "sharpening (Schliff)", so
+  parents recognise them in a German shop.
+- English file names and URLs (`en/sticks.mdx` → `/en/sticks`), with
+  `translationOf: "<German slug>"` in the frontmatter to pair them with the original.
+
 ## Structure
 
 ```
@@ -114,15 +127,24 @@ src/
 ├── layouts/               BaseLayout (page shell), ArticleLayout (article frame)
 ├── components/            .astro for static, .svelte for interactive
 ├── lib/                   href(), i18n, article queries, motionDuration()
-├── pages/de/              index.astro (overview), [...slug].astro (article)
+├── pages/[locale]/        index.astro (overview), [...slug].astro (article), per language
 └── styles/                tokens.css (design tokens), global.css (reset + .prose)
 ```
 
-## Additional languages
+## Languages
 
-Prepared but not yet active: add to `locales` in `src/lib/i18n.ts`, add labels, create
-`src/data/articles/<locale>/` and copy `src/pages/de/` to `src/pages/<locale>/`. The
-article ID already contains the language as its first path segment.
+German is live; English is prepared but not yet published. `src/lib/i18n.ts` has two
+lists: `locales` (every language the code knows, with UI strings in `ui`) and
+`publishedLocales` (the ones that are built). The pages under `src/pages/[locale]/` build
+every published language — there is nothing to copy.
+
+To publish a language: write its articles in `src/data/articles/<locale>/` (each with
+`translationOf`, see above), then add it to `publishedLocales`. The header shows a
+language switch and the pages get `hreflang` links wherever a translation exists.
+
+Static `.astro` components inside articles pick their language with
+`t(localeFromUrl(Astro.url))`, so the article needs no extra prop. Svelte components run
+in the browser too and get a `locale` prop instead.
 
 ## Astro documentation
 

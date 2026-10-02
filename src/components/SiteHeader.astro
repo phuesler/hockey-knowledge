@@ -1,11 +1,17 @@
 ---
 import { href } from '../lib/href';
 import { t, type Locale } from '../lib/i18n';
+import type { Alternate } from '../lib/articles';
 import { repoUrl } from '../lib/site';
 
-interface Props { locale?: Locale }
-const { locale = 'de' } = Astro.props;
+interface Props {
+  locale?: Locale;
+  /** Other language versions of the current page; the switcher shows the rest. */
+  alternates?: Alternate[];
+}
+const { locale = 'de', alternates = [] } = Astro.props;
 const s = t(locale);
+const otherLanguages = alternates.filter((a) => a.locale !== locale);
 const home = href(`/${locale}/`);
 ---
 
@@ -22,8 +28,20 @@ const home = href(`/${locale}/`);
         <small>{s.brandSub}</small>
       </span>
     </a>
-    <nav aria-label="Hauptnavigation">
-      <a href={home}>{s.allArticles}</a>
+    <nav aria-label={s.mainNav}>
+      <a class:list={['all', { 'has-lang': otherLanguages.length > 0 }]} href={home}>{s.allArticles}</a>
+      {otherLanguages.map((a) => (
+        <a
+          class="lang"
+          href={href(a.path)}
+          hreflang={a.locale}
+          lang={a.locale}
+          title={t(a.locale).languageName}
+          aria-label={t(a.locale).languageName}
+        >
+          {t(a.locale).languageShort}
+        </a>
+      ))}
       <a class="repo" href={repoUrl} title={s.repoTitle} aria-label={s.repoTitle}>
         <svg viewBox="0 0 16 16" aria-hidden="true">
           <path
@@ -63,7 +81,12 @@ const home = href(`/${locale}/`);
   }
   .brand:hover { color: inherit; }
   .brand-mark { width: 2rem; height: 2rem; flex: none; }
-  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
   .brand-text strong {
     font-size: var(--t-lg);
     font-weight: 800;
@@ -83,14 +106,23 @@ const home = href(`/${locale}/`);
     font-size: var(--t-sm);
     font-weight: 600;
     text-decoration: none;
-    padding: var(--s-2) var(--s-3);
+    padding: var(--s-2);
     border-radius: var(--radius);
     white-space: nowrap;
+  }
+  @media (min-width: 30rem) {
+    nav a { padding-inline: var(--s-3); }
+  }
+  /* With a language link the bar no longer fits at 360 px; the logo and the
+     back link in every article lead to the overview as well. */
+  @media (max-width: 29.99rem) {
+    .all.has-lang { display: none; }
   }
   nav a:hover {
     color: var(--c-header-text);
     background: var(--c-signal);
   }
+  .lang { letter-spacing: 0.06em; }
   .repo svg { width: 1.25rem; height: 1.25rem; }
   /* Icon only on narrow phones, so the bar fits at 360 px. */
   .repo-label { display: none; }

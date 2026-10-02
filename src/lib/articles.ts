@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { parseEntryId, type Locale } from './i18n';
+import { defaultLocale, parseEntryId, publishedLocales, t, type Locale } from './i18n';
 
 export type Article = CollectionEntry<'articles'>;
 
@@ -31,6 +31,42 @@ export async function getArticles(locale: Locale): Promise<Article[]> {
         categoryOrder.indexOf(a.data.category) - categoryOrder.indexOf(b.data.category);
       if (byCategory !== 0) return byCategory;
       if (a.data.order !== b.data.order) return a.data.order - b.data.order;
-      return a.data.title.localeCompare(b.data.title, 'de');
+      return a.data.title.localeCompare(b.data.title, t(locale).dateLocale);
     });
+}
+
+/** One language version of a page: the locale and its path without the base prefix. */
+export interface Alternate {
+  locale: Locale;
+  path: string;
+}
+
+/**
+ * The key that pairs an article with its translations: the slug of the German
+ * original. German articles use their own slug; translations name it in
+ * `translationOf`, because their own slug is in their language.
+ */
+function translationKey(entry: Article): string {
+  const { locale, slug } = parseEntryId(entry.id);
+  return locale === defaultLocale ? slug : (entry.data.translationOf ?? slug);
+}
+
+/**
+ * Every published language version of an article, including the article itself,
+ * in the order of `publishedLocales`. Feeds the language switcher and hreflang.
+ */
+export async function getAlternates(entry: Article): Promise<Alternate[]> {
+  const key = translationKey(entry);
+  const entries = await getCollection('articles', ({ data }) => !data.draft);
+  return publishedLocales.flatMap((locale) => {
+    const match = entries.find(
+      (other) => parseEntryId(other.id).locale === locale && translationKey(other) === key,
+    );
+    return match ? [{ locale, path: articlePath(match) }] : [];
+  });
+}
+
+/** The overview page in every published language. */
+export function indexAlternates(): Alternate[] {
+  return publishedLocales.map((locale) => ({ locale, path: `/${locale}/` }));
 }

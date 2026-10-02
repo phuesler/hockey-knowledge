@@ -1,9 +1,12 @@
 ---
+import { localeFromUrl, t } from '../lib/i18n';
+
 /**
  * Highlight box for article content. Use inside .mdx files:
  *   <Callout type="tipp" title="Kurz gesagt">Text …</Callout>
  *
  * type: "tipp" (green) | "achtung" (amber) | "merke" (blue, the default)
+ * The type names stay German in every language; the default label is translated.
  */
 interface Props {
   type?: 'tipp' | 'achtung' | 'merke';
@@ -12,13 +15,14 @@ interface Props {
 
 const { type = 'merke', title } = Astro.props;
 
-const defaults = {
-  tipp: { label: 'Tipp', icon: '💡' },
-  achtung: { label: 'Achtung', icon: '⚠️' },
-  merke: { label: 'Merke', icon: '📌' },
+const icons = {
+  tipp: '💡',
+  achtung: '⚠️',
+  merke: '📌',
 } as const;
 
-const { label, icon } = defaults[type];
+const icon = icons[type];
+const label = t(localeFromUrl(Astro.url)).callouts[type];
 ---
 
 <aside class:list={['callout', type]}>

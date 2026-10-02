@@ -1,10 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-import { getArticles, articlePath, readingMinutes, categoryOrder } from '../../lib/articles';
-import { t } from '../../lib/i18n';
+import { getArticles, articlePath, readingMinutes, categoryOrder, indexAlternates } from '../../lib/articles';
+import { publishedLocales, t, type Locale } from '../../lib/i18n';
+import type { GetStaticPaths } from 'astro';
 
-const locale = 'de';
+export const getStaticPaths = (() =>
+  publishedLocales.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
+
+const locale = Astro.params.locale as Locale;
 const s = t(locale);
 const articles = await getArticles(locale);
 
@@ -18,17 +22,18 @@ const groups = categoryOrder
   .filter((group) => group.items.length > 0);
 ---
 
-<BaseLayout title={s.siteName} description={s.tagline} locale={locale} path="/de/">
+<BaseLayout
+  title={s.siteName}
+  description={s.tagline}
+  locale={locale}
+  path={`/${locale}/`}
+  alternates={indexAlternates()}
+>
   <div class="wrap wrap-wide">
     <section class="hero">
       <p class="eyebrow">{s.heroEyebrow}</p>
-      <h1>Eishockey verstehen&nbsp;&mdash;<br />für U13 und ihre Eltern</h1>
-      <p>
-        Das Nachschlagewerk unserer U13 bei FASS Berlin: kurze, verständliche Artikel zu
-        allem, was rund ums Eis wichtig ist. Geschrieben
-        für Kinder, die es selber lesen wollen, und für Eltern, die noch nie in einer
-        Kabine gestanden haben.
-      </p>
+      <h1>{s.heroTitleLead}&nbsp;&mdash;<br />{s.heroTitleRest}</h1>
+      <p>{s.heroText}</p>
     </section>
 
     {groups.map((group) => (
@@ -43,6 +48,7 @@ const groups = categoryOrder
               path={articlePath(entry)}
               tags={entry.data.tags}
               readingMinutes={readingMinutes(entry)}
+              locale={locale}
             />
           ))}
         </ul>

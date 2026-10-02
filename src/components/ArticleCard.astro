@@ -1,5 +1,6 @@
 ---
 import { href } from '../lib/href';
+import { t, type Locale } from '../lib/i18n';
 
 interface Props {
   title: string;
@@ -7,9 +8,11 @@ interface Props {
   path: string;
   tags?: string[];
   readingMinutes: number;
+  locale?: Locale;
 }
 
-const { title, description, path, tags = [], readingMinutes } = Astro.props;
+const { title, description, path, tags = [], readingMinutes, locale = 'de' } = Astro.props;
+const s = t(locale);
 ---
 
 <li class="card item">
@@ -19,7 +22,7 @@ const { title, description, path, tags = [], readingMinutes } = Astro.props;
   </a>
   <p class="foot">
     {tags.slice(0, 3).map((tag) => <span class="tag">{tag}</span>)}
-    <span class="time">{readingMinutes} Min.</span>
+    <span class="time">{readingMinutes} {s.readingTimeShort}</span>
   </p>
 </li>
 

@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import { href } from '../lib/href';
 import { t, type Locale } from '../lib/i18n';
+import type { Alternate } from '../lib/articles';
 import type { MarkdownHeading } from 'astro';
 
 interface NavLink { title: string; path: string }
@@ -11,6 +12,8 @@ interface Props {
   description: string;
   locale?: Locale;
   path: string;
+  /** Every language version of this article, for the switcher and hreflang. */
+  alternates?: Alternate[];
   updated: Date;
   tags?: string[];
   readingMinutes: number;
@@ -20,19 +23,19 @@ interface Props {
 }
 
 const {
-  title, description, locale = 'de', path, updated, tags = [],
+  title, description, locale = 'de', path, alternates, updated, tags = [],
   readingMinutes, headings, prev, next,
 } = Astro.props;
 
 const s = t(locale);
 // Only h2s go in the table of contents; h3s would make it unreadable on a phone.
 const toc = headings.filter((h) => h.depth === 2);
-const updatedLabel = updated.toLocaleDateString('de-CH', {
+const updatedLabel = updated.toLocaleDateString(s.dateLocale, {
   year: 'numeric', month: 'long', day: 'numeric',
 });
 ---
 
-<BaseLayout title={title} description={description} locale={locale} path={path}>
+<BaseLayout title={title} description={description} locale={locale} path={path} alternates={alternates}>
   <article class="wrap">
     <header class="article-head">
       <a class="back" href={href(`/${locale}/`)}>&larr; {s.backToOverview}</a>
@@ -44,7 +47,7 @@ const updatedLabel = updated.toLocaleDateString('de-CH', {
         <span>{readingMinutes} {s.readingTime}</span>
       </p>
       {tags.length > 0 && (
-        <ul class="tags" aria-label="Themen">
+        <ul class="tags" aria-label={s.topics}>
           {tags.map((tag) => <li class="tag">{tag}</li>)}
         </ul>
       )}
@@ -64,7 +67,7 @@ const updatedLabel = updated.toLocaleDateString('de-CH', {
     </div>
 
     {(prev || next) && (
-      <nav class="pager" aria-label="Weitere Artikel">
+      <nav class="pager" aria-label={s.moreArticles}>
         {prev && (
           <a class="card pager-link" href={href(prev.path)}>
             <span>{s.previous}</span>

@@ -24,6 +24,11 @@ const articles = defineCollection({
     updated: z.coerce.date(),
     /** Free-form labels shown as pills on the article header. */
     tags: z.array(z.string()).default([]),
+    /**
+     * Translations only: slug of the German original this article translates, e.g.
+     * "schlaeger" in en/sticks.mdx. Pairs the two for the language switcher.
+     */
+    translationOf: z.string().optional(),
     /** Drafts are excluded from the build entirely. */
     draft: z.boolean().default(false),
   }),

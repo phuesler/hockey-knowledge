@@ -3,7 +3,8 @@ import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { href, absoluteUrl } from '../lib/href';
-import { t, type Locale } from '../lib/i18n';
+import { defaultLocale, t, type Locale } from '../lib/i18n';
+import type { Alternate } from '../lib/articles';
 
 interface Props {
   title: string;
@@ -11,9 +12,13 @@ interface Props {
   locale?: Locale;
   /** Path of this page without the base prefix, e.g. "/de/schlaeger". */
   path?: string;
+  /** Every language version of this page. Only rendered when there is more than one. */
+  alternates?: Alternate[];
 }
 
-const { title, description, locale = 'de', path = '/' } = Astro.props;
+const { title, description, locale = 'de', path = '/', alternates = [] } = Astro.props;
+const translated = alternates.length > 1;
+const xDefault = alternates.find((a) => a.locale === defaultLocale);
 const s = t(locale);
 const canonical = absoluteUrl(path, Astro.site);
 const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
@@ -33,11 +38,17 @@ const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content={locale} />
+    <meta property="og:locale" content={s.ogLocale} />
+    {translated && alternates.map((a) => (
+      <link rel="alternate" hreflang={a.locale} href={absoluteUrl(a.path, Astro.site)} />
+    ))}
+    {translated && xDefault && (
+      <link rel="alternate" hreflang="x-default" href={absoluteUrl(xDefault.path, Astro.site)} />
+    )}
   </head>
   <body>
     <a class="skip-link" href="#inhalt">{s.skipToContent}</a>
-    <SiteHeader locale={locale} />
+    <SiteHeader locale={locale} alternates={translated ? alternates : []} />
     <main id="inhalt">
       <slot />
     </main>
