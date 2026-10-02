@@ -18,7 +18,7 @@ export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = 'de';
 
-export const publishedLocales: readonly Locale[] = ['de'];
+export const publishedLocales: readonly Locale[] = ['de', 'en'];
 
 /** True in `astro dev`: unpublished languages and drafts are shown for proofreading. */
 export const isPreview = import.meta.env.DEV;

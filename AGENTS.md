@@ -146,7 +146,8 @@ src/
 
 ## Languages
 
-German is live; English is prepared but not yet published. `src/lib/i18n.ts` has two
+German and English are live. Every article exists in both languages; a change to one
+belongs in the other too. `src/lib/i18n.ts` has two
 lists: `locales` (every language the code knows, with UI strings in `ui`) and
 `publishedLocales` (the ones that are built). The pages under `src/pages/[locale]/` build
 every published language — there is nothing to copy.
