@@ -1,0 +1,169 @@
+---
+/**
+ * Where forwards and defenders sit on the bench, per period. Defenders sit at the
+ * end nearer their own goal; the teams switch ends after every period, so in
+ * period 2 the groups swap places. Static on purpose — it backs up a paragraph
+ * and must be there without JavaScript.
+ *
+ * Each panel is one row: the door (manned by the backup goalie), then the two
+ * groups, with an arrow above pointing at the end where the own goal is. The
+ * groups get equal widths so the labels fit at 360 px. The small arrows inside
+ * each group show which way the players slide with every change: forwards always
+ * towards the door (the door is on the left in both panels), defenders towards
+ * the own goal.
+ */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Wer wo auf der Bank sitzt',
+  periods: { odd: '1. und 3. Drittel', even: '2. Drittel' },
+  door: 'Tür',
+  forwards: 'Sturm',
+  defence: 'Verteidigung',
+  ownGoal: 'eigenes Tor',
+  note: 'Die kleinen Pfeile zeigen, wohin bei jedem Wechsel gerutscht wird: Die Stürmer rutschen immer zur Tür, die Verteidiger zum eigenen Tor hin. Die Verteidiger sitzen immer so nah wie möglich am eigenen Tor. Nach jedem Drittel wechseln die Teams die Seite – darum tauschen die Gruppen im 2. Drittel die Plätze. An der Tür steht der Ersatztorhüter.',
+};
+
+const en: typeof de = {
+  caption: 'Who sits where on the bench',
+  periods: { odd: 'Periods 1 and 3', even: 'Period 2' },
+  door: 'Door',
+  forwards: 'Forwards',
+  defence: 'Defence',
+  ownGoal: 'own goal',
+  note: 'The small arrows show which way everyone slides with every change: the forwards always towards the door, the defenders towards their own goal. The defenders always sit as close as possible to their own goal. The teams switch ends after every period – that is why the groups swap places in period 2. The backup goalie works the door.',
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
+const panels = [
+  { label: s.periods.odd, order: ['forwards', 'defence'] as const, goal: 'end' },
+  { label: s.periods.even, order: ['defence', 'forwards'] as const, goal: 'start' },
+];
+---
+
+<figure class="bench">
+  <figcaption>{s.caption}</figcaption>
+
+  {
+    panels.map((panel) => (
+      <div class="panel">
+        <p class="period">{panel.label}</p>
+        <p class="goal" data-side={panel.goal}>
+          {panel.goal === 'start' ? `← ${s.ownGoal}` : `${s.ownGoal} →`}
+        </p>
+        <ol class="row">
+          <li class="door">
+            <span class="name">{s.door}</span>
+          </li>
+          {panel.order.map((group) => (
+            <li class={group}>
+              <span class="name">{s[group]}</span>
+              <span class="slide" aria-hidden="true">
+                {group === 'forwards' || panel.goal === 'start' ? '← ← ←' : '→ → →'}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    ))
+  }
+
+  <p class="note">{s.note}</p>
+</figure>
+
+<style>
+  .bench {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  .panel + .panel {
+    margin-top: var(--s-5);
+  }
+
+  .period {
+    margin: 0;
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--c-brand);
+  }
+
+  .goal {
+    margin: var(--s-1) 0 var(--s-2);
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+  .goal[data-side='end'] {
+    text-align: end;
+  }
+
+  .row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* .prose spaces consecutive list items (.prose li + li); in a grid that pushes
+     cells down. .row > li is needed to outrank it. */
+  .row > li {
+    display: grid;
+    place-content: center;
+    min-height: 3.5rem;
+    margin: 0;
+    padding: var(--s-2) var(--s-1);
+    text-align: center;
+    border-radius: var(--radius);
+  }
+
+  .door {
+    grid-column: span 2;
+    background: var(--c-surface-2);
+    border: 1px dashed var(--c-steel);
+  }
+  .forwards {
+    grid-column: span 5;
+    background: var(--c-accent-soft);
+    border: 1px solid var(--c-accent);
+  }
+  .defence {
+    grid-column: span 5;
+    background: var(--c-brand-soft);
+    border: 1px solid var(--c-brand);
+  }
+
+  .name {
+    font-size: var(--t-sm);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  .slide {
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .note {
+    margin: var(--s-4) 0 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+</style>

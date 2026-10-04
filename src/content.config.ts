@@ -17,7 +17,7 @@ const articles = defineCollection({
     /** One or two sentences. Used on the index card and as the meta description. */
     description: z.string(),
     /** Groups the article on the index page. Add new values here first. */
-    category: z.enum(['ausruestung', 'theorie']).default('ausruestung'),
+    category: z.enum(['team', 'ausruestung', 'theorie']).default('ausruestung'),
     /** Sort order within a category; lower comes first. */
     order: z.number().default(100),
     /** Last content update, as YYYY-MM-DD. */

@@ -20,7 +20,7 @@ export function articlePath(entry: Article): string {
  * `categoryOrder`, then by the `order` frontmatter field, then alphabetically.
  * Drafts never make it into a build (see `isVisible`).
  */
-export const categoryOrder = ['ausruestung', 'theorie'] as const;
+export const categoryOrder = ['team', 'ausruestung', 'theorie'] as const;
 
 /** Drafts never reach a build; only the dev preview shows them, for proofreading. */
 const isVisible = ({ data }: Article) => isPreview || !data.draft;

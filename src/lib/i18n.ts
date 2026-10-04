@@ -51,10 +51,12 @@ const de = {
   backToOverview: 'Zurück zur Übersicht',
   redirectTo: 'Weiter zu',
   categories: {
+    team: 'Unser Team',
     ausruestung: 'Ausrüstung',
     theorie: 'Theorie',
   },
   categoryIntros: {
+    team: 'Wie wir in der U13 arbeiten: unsere Ziele, unsere Spielweise und wie ein Spieltag abläuft.',
     ausruestung: 'Was ihr beim Kauf und beim Unterhalt der Ausrüstung wissen müsst.',
     theorie: 'Regeln, Spielverständnis und Taktik zum Nachlesen.',
   },
@@ -108,10 +110,12 @@ const en: UiStrings = {
   backToOverview: 'Back to the overview',
   redirectTo: 'Continue to',
   categories: {
+    team: 'Our team',
     ausruestung: 'Equipment',
     theorie: 'Theory',
   },
   categoryIntros: {
+    team: 'How we work in U13: our goals, our style of play and how a game day works.',
     ausruestung: 'What you need to know when buying and looking after equipment.',
     theorie: 'Rules, game sense and tactics to read up on.',
   },

@@ -1,0 +1,243 @@
+---
+/**
+ * An example game lineup, laid out the way it is written on the board: three
+ * forward lines, three defence pairs, two goalies. Static on purpose — the
+ * board is the reference the article text points at, so it must be there
+ * without JavaScript.
+ *
+ * The jersey numbers are made up. The captain sits on defence pair 2 and the
+ * assistants outside line 1, which the article uses to show that neither
+ * line 1 nor the letter on the jersey means "the best players".
+ */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Beispiel einer Aufstellung',
+  forwards: 'Sturm',
+  defence: 'Verteidigung',
+  goalies: 'Tor',
+  line: (n: number) => `${n}. Reihe`,
+  pair: (n: number) => `D ${n}`,
+  firstHalf: '1. Hälfte',
+  secondHalf: '2. Hälfte',
+  roles: { C: 'Captain', A: 'Assistant' },
+  note: 'Die Nummern sind erfunden. C = Captain, A = Assistant. Jeder Torhüter spielt eine Hälfte.',
+};
+
+const en: typeof de = {
+  caption: 'An example lineup',
+  forwards: 'Forwards',
+  defence: 'Defence',
+  goalies: 'Goal',
+  line: (n) => `Line ${n}`,
+  pair: (n) => `D ${n}`,
+  firstHalf: '1st half',
+  secondHalf: '2nd half',
+  roles: { C: 'Captain', A: 'Assistant' },
+  note: 'The numbers are made up. C = captain, A = assistant. Each goalie plays one half.',
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
+type Role = 'C' | 'A';
+interface Slot {
+  pos: string;
+  number: number;
+  role?: Role;
+}
+
+const forwardLines: Slot[][] = [
+  [{ pos: 'LW', number: 17 }, { pos: 'C', number: 9 }, { pos: 'RW', number: 23 }],
+  [{ pos: 'LW', number: 8, role: 'A' }, { pos: 'C', number: 14 }, { pos: 'RW', number: 11 }],
+  [{ pos: 'LW', number: 21 }, { pos: 'C', number: 19 }, { pos: 'RW', number: 6 }],
+];
+
+const defencePairs: Slot[][] = [
+  [{ pos: 'LD', number: 3 }, { pos: 'RD', number: 27, role: 'A' }],
+  [{ pos: 'LD', number: 12 }, { pos: 'RD', number: 4, role: 'C' }],
+  [{ pos: 'LD', number: 15 }, { pos: 'RD', number: 22 }],
+];
+
+const goalies = [
+  { pos: 'G', number: 30, status: s.firstHalf },
+  { pos: 'G', number: 1, status: s.secondHalf },
+];
+---
+
+<figure class="lineup">
+  <figcaption>{s.caption}</figcaption>
+
+  <section aria-label={s.forwards}>
+    <h3 class="group">{s.forwards}</h3>
+    {
+      forwardLines.map((line, i) => (
+        <div class="row">
+          <span class="label">{s.line(i + 1)}</span>
+          <ul class="slots">
+            {line.map((slot) => (
+              <li>
+                <span class="pos">{slot.pos}</span>
+                <span class="num">#{slot.number}</span>
+                {slot.role && <abbr class="role" title={s.roles[slot.role]}>{slot.role}</abbr>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </section>
+
+  <section aria-label={s.defence}>
+    <h3 class="group">{s.defence}</h3>
+    {
+      defencePairs.map((pair, i) => (
+        <div class="row">
+          <span class="label">{s.pair(i + 1)}</span>
+          <ul class="slots">
+            {pair.map((slot) => (
+              <li>
+                <span class="pos">{slot.pos}</span>
+                <span class="num">#{slot.number}</span>
+                {slot.role && <abbr class="role" title={s.roles[slot.role]}>{slot.role}</abbr>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </section>
+
+  <section aria-label={s.goalies}>
+    <h3 class="group">{s.goalies}</h3>
+    <div class="row">
+      <span class="label"></span>
+      <ul class="slots goalies">
+        {
+          goalies.map((g) => (
+            <li>
+              <span class="pos">{g.pos}</span>
+              <span class="num">#{g.number}</span>
+              <span class="status">{g.status}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <p class="note">{s.note}</p>
+</figure>
+
+<style>
+  .lineup {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  section + section {
+    margin-top: var(--s-5);
+  }
+
+  /* Reset the .prose h3 styling: this is a label on the board, not a heading in
+     the article flow. */
+  .group {
+    margin: 0 0 var(--s-2);
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--c-brand);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .row + .row {
+    margin-top: var(--s-2);
+  }
+
+  .label {
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--c-text-muted);
+  }
+
+  .slots {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* Three columns, also for the pairs: LD/RD stay the width of
+       LW/C, so the columns line up like they do on a whiteboard. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  /* Goalies get two wider cells: "1. Hälfte" doesn't fit a third of the row at 360 px. */
+  .goalies {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* .prose spaces consecutive list items (.prose li + li); in a grid that pushes
+     cells down. ul > li is needed to outrank it. */
+  .slots > li {
+    position: relative;
+    margin: 0;
+    padding: var(--s-2) var(--s-1);
+    text-align: center;
+    background: var(--c-surface-2);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+  }
+
+  .pos {
+    display: block;
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--c-accent);
+  }
+  .num {
+    display: block;
+    font-weight: 700;
+  }
+  .status {
+    display: block;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+
+  .role {
+    position: absolute;
+    top: calc(-1 * var(--s-2));
+    right: calc(-1 * var(--s-1));
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: var(--t-sm);
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--c-header-text);
+    background: var(--c-signal);
+    border-radius: 50%;
+  }
+
+  .note {
+    margin: var(--s-4) 0 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+</style>
