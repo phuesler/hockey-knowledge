@@ -72,7 +72,7 @@ const de = {
   repoNote:
     'Diese Seite ist offen für alle. Fehler gefunden oder eine Idee für einen Artikel? Forkt das Repository auf GitHub und schickt einen Pull Request – oder eröffnet ein Issue.',
   repoCta: 'Zum Repository auf GitHub',
-  clubLink: 'FASS Berlin Nachwuchs',
+  clubLink: 'FASS Berlin U13',
   noScript: 'Dieses interaktive Element braucht JavaScript. Die Angaben im Text reichen aber aus.',
   draftNote: 'Entwurf – nur in der lokalen Vorschau sichtbar, nicht auf der Website.',
   /** Language switcher: short code on the button, full name for screen readers. */
@@ -131,7 +131,7 @@ const en: UiStrings = {
   repoNote:
     'This site is open to everyone. Found a mistake or have an idea for an article? Fork the repository on GitHub and send a pull request – or open an issue.',
   repoCta: 'Go to the repository on GitHub',
-  clubLink: 'FASS Berlin youth hockey',
+  clubLink: 'FASS Berlin U13',
   noScript: 'This interactive element needs JavaScript. The text has everything you need, though.',
   draftNote: 'Draft – only visible in the local preview, not on the website.',
   languageShort: 'EN',
