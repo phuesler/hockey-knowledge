@@ -32,7 +32,9 @@ const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={href('/favicon.ico')} sizes="16x16 32x32 48x48" />
+    <link rel="icon" href={href('/icon-192.png')} type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
     <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content={fullTitle} />
