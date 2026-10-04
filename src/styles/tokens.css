@@ -5,14 +5,16 @@
  */
 :root {
   /* FASS Berlin club palette (fassberlin-nachwuchs.de): signal red, dark red, black
-     and white, with the club's blue as a secondary accent. */
+     and white, with the club's blue as a secondary accent. Text colours aim for
+     well above WCAG AA: body ~17:1, muted ~10:1, links (--c-brand) ~6:1. The pure
+     club red lives in --c-signal and is only used behind white text. */
   --c-bg: #f5f5f4;
   --c-surface: #ffffff;
   --c-surface-2: #efefee;
   --c-border: #dcdcda;
   --c-text: #0a1214;
-  --c-text-muted: #4e5050;
-  --c-brand: #d82826;
+  --c-text-muted: #3a3d3e;
+  --c-brand: #b81d1b;
   --c-brand-strong: #960f0b;
   --c-brand-soft: #fbe8e7;
   --c-accent: #1a6f99;
@@ -69,12 +71,12 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --c-bg: #0f1112;
-    --c-surface: #181b1c;
-    --c-surface-2: #212526;
-    --c-border: #2e3334;
+    --c-surface: #1c2021;
+    --c-surface-2: #252a2c;
+    --c-border: #363c3e;
     --c-text: #f0f0ee;
-    --c-text-muted: #a9aeae;
-    --c-brand: #ff6b68;
+    --c-text-muted: #c5c9c9;
+    --c-brand: #ff8a87;
     --c-brand-strong: #ff9a97;
     --c-brand-soft: #3a1615;
     --c-accent: #6cc0e8;

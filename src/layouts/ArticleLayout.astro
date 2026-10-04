@@ -115,7 +115,6 @@ const updatedLabel = updated.toLocaleDateString(s.dateLocale, {
 
   .lede {
     font-size: var(--t-lg);
-    color: var(--c-text-muted);
     margin-block-start: var(--s-3);
   }
 
@@ -157,8 +156,18 @@ const updatedLabel = updated.toLocaleDateString(s.dateLocale, {
     padding-inline-start: 1.3em;
   }
   .toc li + li { margin-block-start: var(--s-2); }
-  .toc a { text-decoration: none; }
-  .toc a:hover { text-decoration: underline; }
+  .toc li::marker {
+    color: var(--c-brand);
+    font-weight: 700;
+  }
+  .toc a {
+    color: var(--c-text);
+    text-decoration: none;
+  }
+  .toc a:hover {
+    color: var(--c-brand);
+    text-decoration: underline;
+  }
 
   .prose { margin-block-start: var(--s-6); }
 

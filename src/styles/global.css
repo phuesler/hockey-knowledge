@@ -30,7 +30,11 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  -webkit-font-smoothing: antialiased;
+}
+
+/* Grayscale smoothing thins dark-on-light text; only use it for light-on-dark. */
+@media (prefers-color-scheme: dark) {
+  body { -webkit-font-smoothing: antialiased; }
 }
 
 img, svg, video { display: block; max-width: 100%; height: auto; }
@@ -102,7 +106,6 @@ main { flex: 1; }
 .prose blockquote {
   border-inline-start: 4px solid var(--c-brand);
   padding: var(--s-1) 0 var(--s-1) var(--s-4);
-  color: var(--c-text-muted);
   font-style: italic;
 }
 
