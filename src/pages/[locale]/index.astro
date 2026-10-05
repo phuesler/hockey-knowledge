@@ -37,7 +37,7 @@ const groups = categoryOrder
     </section>
 
     {groups.map((group) => (
-      <section class="group">
+      <section class="group" data-draft={group.items.every((a) => a.data.draft) || undefined}>
         <h2>{group.label}</h2>
         <p class="intro">{group.intro}</p>
         <ul class="grid">
@@ -49,6 +49,7 @@ const groups = categoryOrder
               tags={entry.data.tags}
               readingMinutes={readingMinutes(entry)}
               locale={locale}
+              draft={entry.data.draft}
             />
           ))}
         </ul>

@@ -32,7 +32,7 @@ category: ausruestung      # ausruestung | theorie
 order: 30                  # sort order within the category, lower = further up
 updated: 2026-09-28
 tags: ["Schläger", "Kaufberatung"]
-draft: false               # true excludes the article from the build
+draft: false               # true hides the article (see "Proofreading before release")
 ---
 
 Text. Plain Markdown is enough — `src/styles/global.css` (`.prose`) styles headings,
@@ -155,9 +155,13 @@ every published language — there is nothing to copy.
 To publish a language: write its articles in `src/data/articles/<locale>/` (each with
 `translationOf`, see above), then add it to `publishedLocales`.
 
-**Proofreading before release.** `npm run dev` shows every language and every draft
+**Proofreading before release.** `npm run dev` shows every language and lists every draft
 (`visibleLocales` and `isPreview` in `src/lib/i18n.ts`), with a yellow banner on drafts.
-`npm run build` leaves both out, so nothing unpublished can reach the website. The header shows a
+`npm run build` leaves unpublished languages out. Drafts *are* built, so proofreaders can
+read them on the website, but they stay hidden: the overview only lists them when the URL
+has `?drafts=true` (remembered for the browser tab, `?drafts=false` turns it off),
+published pages never link to them, and they get `noindex` and no sitemap entry. Anyone
+who knows a draft's URL can open it. The header shows a
 language switch and the pages get `hreflang` links wherever a translation exists.
 
 Static `.astro` components inside articles pick their language with

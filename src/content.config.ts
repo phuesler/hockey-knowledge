@@ -29,7 +29,7 @@ const articles = defineCollection({
      * "schlaeger" in en/sticks.mdx. Pairs the two for the language switcher.
      */
     translationOf: z.string().optional(),
-    /** Drafts are excluded from the build entirely. */
+    /** Drafts are built but hidden from the overview unless ?drafts=true (lib/articles.ts). */
     draft: z.boolean().default(false),
   }),
 });

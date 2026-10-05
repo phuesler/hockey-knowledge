@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { defaultLocale, isPreview, parseEntryId, t, visibleLocales, type Locale } from './i18n';
+import { defaultLocale, parseEntryId, t, visibleLocales, type Locale } from './i18n';
 
 export type Article = CollectionEntry<'articles'>;
 
@@ -16,17 +16,17 @@ export function articlePath(entry: Article): string {
 }
 
 /**
- * Every published article for a locale, in display order: by category as listed in
- * `categoryOrder`, then by the `order` frontmatter field, then alphabetically.
- * Drafts never make it into a build (see `isVisible`).
+ * Every article for a locale, drafts included, in display order: by category as listed
+ * in `categoryOrder`, then by the `order` frontmatter field, then alphabetically.
+ *
+ * Drafts are built so proofreaders can read them, but they stay out of sight: the
+ * overview hides them unless the URL has ?drafts=true (see BaseLayout), published pages
+ * never link to them, and they get noindex and no sitemap entry.
  */
 export const categoryOrder = ['team', 'ausruestung', 'theorie'] as const;
 
-/** Drafts never reach a build; only the dev preview shows them, for proofreading. */
-const isVisible = ({ data }: Article) => isPreview || !data.draft;
-
 export async function getArticles(locale: Locale): Promise<Article[]> {
-  const entries = await getCollection('articles', isVisible);
+  const entries = await getCollection('articles');
   return entries
     .filter((entry) => parseEntryId(entry.id).locale === locale)
     .sort((a, b) => {
@@ -55,12 +55,13 @@ function translationKey(entry: Article): string {
 }
 
 /**
- * Every published language version of an article, including the article itself,
- * in the order of `visibleLocales`. Feeds the language switcher and hreflang.
+ * Every language version of an article, including the article itself, in the order of
+ * `visibleLocales`. Feeds the language switcher and hreflang. A published article only
+ * lists published translations; a draft lists drafts too.
  */
 export async function getAlternates(entry: Article): Promise<Alternate[]> {
   const key = translationKey(entry);
-  const entries = await getCollection('articles', isVisible);
+  const entries = await getCollection('articles', ({ data }) => entry.data.draft || !data.draft);
   return visibleLocales.flatMap((locale) => {
     const match = entries.find(
       (other) => parseEntryId(other.id).locale === locale && translationKey(other) === key,

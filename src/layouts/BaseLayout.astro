@@ -3,7 +3,7 @@ import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { href, absoluteUrl } from '../lib/href';
-import { defaultLocale, t, type Locale } from '../lib/i18n';
+import { defaultLocale, isPreview, t, type Locale } from '../lib/i18n';
 import type { Alternate } from '../lib/articles';
 
 interface Props {
@@ -14,9 +14,11 @@ interface Props {
   path?: string;
   /** Every language version of this page. Only rendered when there is more than one. */
   alternates?: Alternate[];
+  /** Keep search engines away, e.g. from drafts. */
+  noindex?: boolean;
 }
 
-const { title, description, locale = 'de', path = '/', alternates = [] } = Astro.props;
+const { title, description, locale = 'de', path = '/', alternates = [], noindex = false } = Astro.props;
 const translated = alternates.length > 1;
 const xDefault = alternates.find((a) => a.locale === defaultLocale);
 const s = t(locale);
@@ -25,10 +27,21 @@ const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} class:list={{ 'show-drafts': isPreview }}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* ?drafts=true shows drafts on the overview for this browser tab, ?drafts=false
+        hides them again. Runs before the page paints, so nothing flickers. */}
+    <script is:inline>
+      try {
+        const drafts = new URLSearchParams(location.search).get('drafts');
+        if (drafts === 'true') sessionStorage.setItem('drafts', '1');
+        if (drafts === 'false') sessionStorage.removeItem('drafts');
+        if (sessionStorage.getItem('drafts')) document.documentElement.classList.add('show-drafts');
+      } catch {}
+    </script>
+    {noindex && <meta name="robots" content="noindex" />}
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

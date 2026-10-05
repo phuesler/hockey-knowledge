@@ -16,7 +16,7 @@ interface Props {
   alternates?: Alternate[];
   updated: Date;
   tags?: string[];
-  /** Only true in the dev preview; drafts are never built. */
+  /** Drafts are built but hidden: banner, noindex, see lib/articles.ts. */
   draft?: boolean;
   readingMinutes: number;
   headings: MarkdownHeading[];
@@ -37,7 +37,7 @@ const updatedLabel = updated.toLocaleDateString(s.dateLocale, {
 });
 ---
 
-<BaseLayout title={title} description={description} locale={locale} path={path} alternates={alternates}>
+<BaseLayout title={title} description={description} locale={locale} path={path} alternates={alternates} noindex={draft}>
   <article class="wrap">
     <header class="article-head">
       {draft && <p class="draft">{s.draftNote}</p>}
