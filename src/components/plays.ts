@@ -382,6 +382,62 @@ const geometry = {
 
   /* Delayed offside: the opponents have the puck in their zone. All three forwards
      skate back to the blue line before anyone plays the puck again. */
+  /* The puck slides out over the blue line while our players are still in the zone.
+     LD gets it and waits: everyone leaves the zone, RD skates back out as a passing
+     option, LD passes across, then RD attacks on the other side. We face the goal, so
+     our left side is at positive x (see rink.ts). */
+  'puck-out': [
+    {
+      zone: 'attack',
+      view: 'half',
+      scene: {
+        players: [
+          { team: 'them', at: [4, 14] },
+          { team: 'them', at: [-4, 10] },
+          { team: 'them', at: [7, 18] },
+          { team: 'them', at: [-3, 17] },
+          { team: 'us', label: 'LW', at: [10, 9] },
+          { team: 'us', label: 'C', at: [1, 11] },
+          { team: 'us', label: 'RW', at: [-10, 12] },
+          { team: 'us', label: 'RD', at: [-8, 20] },
+          { team: 'us', label: 'LD', at: [9, 25] },
+        ],
+        puck: [8.6, 23.5],
+        moves: [
+          { kind: 'skate', path: [[10, 9], [12.5, 21.8]] },
+          { kind: 'skate', path: [[1, 11], [1.5, 21.8]] },
+          { kind: 'skate', path: [[-10, 12], [-11.5, 21.8]] },
+          { kind: 'skate', path: [[-8, 20], [-7, 26.6]] },
+          { kind: 'pass', path: [[8.6, 23.9], [-6.6, 26.4]], trim: 1.4, step: 1 },
+        ],
+      },
+    },
+    {
+      zone: 'attack',
+      view: 'half',
+      scene: {
+        players: [
+          { team: 'them', at: [4, 16] },
+          { team: 'them', at: [-3, 9] },
+          { team: 'them', at: [8, 19] },
+          { team: 'them', at: [-2, 16] },
+          { team: 'us', label: 'LW', at: [12.3, 22.6] },
+          { team: 'us', label: 'C', at: [1.5, 22.6] },
+          { team: 'us', label: 'RW', at: [-11.5, 22.6] },
+          { team: 'us', label: 'RD', at: [-7, 26.6] },
+          { team: 'us', label: 'LD', at: [5, 27] },
+        ],
+        puck: [-6.6, 25.4],
+        moves: [
+          { kind: 'carry', path: [[-6.8, 25.2], [-8, 17.5]], step: 2 },
+          { kind: 'skate', path: [[-11.5, 22.6], [-12, 18.5]] },
+          { kind: 'skate', path: [[1.5, 22.6], [1.2, 18.5]] },
+          { kind: 'skate', path: [[12.3, 22.6], [11.5, 18.5]] },
+        ],
+      },
+    },
+  ],
+
   'delayed-offside': [
     {
       zone: 'attack',
@@ -817,6 +873,23 @@ const de: Record<PlayId, PlayText> = {
       'Der Puck ist gerade über die blaue Linie. Der linke Flügel stand noch vor der Linie und fährt jetzt hinterher in die Zone.',
     ],
   },
+  'puck-out': {
+    caption: 'Der Puck rutscht aus der Zone',
+    panels: [
+      {
+        title: 'Warten und quer passen',
+        text: 'Der Puck ist über die blaue Linie aus der Zone gerutscht, LD holt ihn. LW, C und RW sind noch in der Zone und fahren sofort zur blauen Linie. RD fährt aus der Zone zurück und wird anspielbar. LD passt quer zu RD (1).',
+      },
+      {
+        title: 'Neu angreifen',
+        text: 'Jetzt ist niemand mehr in der Zone: Alle stehen auf oder vor der blauen Linie. RD fährt mit dem Puck auf der anderen Seite wieder hinein (2). Die Stürmer fahren erst hinein, wenn der Puck drin ist.',
+      },
+    ],
+    labels: [
+      'Halbes Eis, wir greifen nach oben an. Der linke Verteidiger hat den Puck knapp vor der blauen Linie in der neutralen Zone. Die drei Stürmer fahren aus der Angriffszone zur blauen Linie, der rechte Verteidiger fährt aus der Zone zurück. Der linke Verteidiger passt quer zum rechten Verteidiger.',
+      'Die Stürmer stehen auf der blauen Linie. Der rechte Verteidiger fährt mit dem Puck auf der rechten Seite in die Angriffszone, die Stürmer fahren hinter dem Puck mit hinein.',
+    ],
+  },
   'delayed-offside': {
     caption: 'Verzögertes Abseits: alle raus',
     panels: [
@@ -1081,6 +1154,23 @@ const en: typeof de = {
     labels: [
       'The centre carries the puck through the neutral zone towards the blue line. The left wing is already in the attacking zone.',
       'The puck has just crossed the blue line. The left wing was still in front of the line and now follows into the zone.',
+    ],
+  },
+  'puck-out': {
+    caption: 'The puck slides out of the zone',
+    panels: [
+      {
+        title: 'Wait and pass across',
+        text: 'The puck has slid out over the blue line and LD picks it up. LW, C and RW are still in the zone and skate straight to the blue line. RD skates back out of the zone to be a passing option. LD passes across to RD (1).',
+      },
+      {
+        title: 'Attack again',
+        text: 'Now nobody is in the zone any more: everyone is on or behind the blue line. RD carries the puck back in on the other side (2). The forwards only go in once the puck is in.',
+      },
+    ],
+    labels: [
+      'Half the rink, we attack upwards. The left defender has the puck just outside the blue line in the neutral zone. The three forwards skate out of the attacking zone to the blue line, the right defender skates back out of the zone. The left defender passes across to the right defender.',
+      'The forwards are on the blue line. The right defender carries the puck into the attacking zone on the right side, and the forwards follow the puck in.',
     ],
   },
   'delayed-offside': {
