@@ -53,8 +53,20 @@ export interface Move {
  * shot   — what a shooter sees of the goal.
  * near / far — near and far support.
  * bench  — our players' bench along the boards.
+ * cover-* — the coverage area of one position in our zone (see COVERAGE_AREAS);
+ *           cover-shared is the middle strip up high that the wingers and C share.
  */
-export type AreaKind = 'danger' | 'zone' | 'gap' | 'shot' | 'near' | 'far' | 'bench';
+export type CoverRole = 'ld' | 'rd' | 'c' | 'lw' | 'rw';
+export type AreaKind =
+  | 'danger'
+  | 'zone'
+  | 'gap'
+  | 'shot'
+  | 'near'
+  | 'far'
+  | 'bench'
+  | `cover-${CoverRole}`
+  | 'cover-shared';
 
 export interface Area {
   kind: AreaKind;
@@ -173,3 +185,41 @@ export function moveGeometry(move: Move, length = RINK_LENGTH) {
 
   return { d, arrow, stepAt };
 }
+
+/**
+ * Coverage areas in our zone, one per position. The defenders own their side low, up
+ * to a line just above the faceoff dots that rises slightly towards the middle. The
+ * centre owns a strip as wide as the crease, from the end boards to that line. The
+ * wingers own their side high, up to the blue line; between them the centre strip
+ * continues as a shared area.
+ */
+const SPLIT_BOARDS = 11;
+const SPLIT_MIDDLE = 13;
+const STRIP = 1.8;
+
+function defenderArea(side: -1 | 1): Pt[] {
+  const corner: Pt[] = [];
+  for (let i = 0; i <= 8; i++) {
+    const t = (i / 8) * (Math.PI / 2);
+    corner.push([side * (8 + CORNER_RADIUS * Math.sin(t)), CORNER_RADIUS - CORNER_RADIUS * Math.cos(t)]);
+  }
+  return [[side * STRIP, 0], ...corner, [side * 15, SPLIT_BOARDS], [side * STRIP, SPLIT_MIDDLE]];
+}
+
+function wingerArea(side: -1 | 1): Pt[] {
+  return [
+    [side * 15, SPLIT_BOARDS],
+    [side * 15, BLUE_LINE],
+    [side * STRIP, BLUE_LINE],
+    [side * STRIP, SPLIT_MIDDLE],
+  ];
+}
+
+export const COVERAGE_AREAS: Area[] = [
+  { kind: 'cover-ld', poly: defenderArea(-1) },
+  { kind: 'cover-rd', poly: defenderArea(1) },
+  { kind: 'cover-lw', poly: wingerArea(-1) },
+  { kind: 'cover-rw', poly: wingerArea(1) },
+  { kind: 'cover-c', poly: [[-STRIP, 0], [STRIP, 0], [STRIP, SPLIT_MIDDLE], [-STRIP, SPLIT_MIDDLE]] },
+  { kind: 'cover-shared', poly: [[-STRIP, SPLIT_MIDDLE], [STRIP, SPLIT_MIDDLE], [STRIP, BLUE_LINE], [-STRIP, BLUE_LINE]] },
+];

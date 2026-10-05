@@ -219,6 +219,31 @@
     stroke-dasharray: 0.5 0.35;
     stroke-width: 0.2;
   }
+  /* Coverage areas: flat colour, thin dashed borders between them. */
+  .area[class*='cover-'] {
+    stroke: var(--c-steel);
+    stroke-width: 0.12;
+    stroke-dasharray: 0.5 0.35;
+  }
+  .area.cover-ld {
+    fill: var(--c-zone-ld);
+  }
+  .area.cover-rd {
+    fill: var(--c-zone-rd);
+  }
+  .area.cover-c {
+    fill: var(--c-zone-c);
+  }
+  .area.cover-lw {
+    fill: var(--c-zone-lw);
+  }
+  .area.cover-rw {
+    fill: var(--c-zone-rw);
+  }
+  .area.cover-shared {
+    fill: var(--c-zone-c);
+    opacity: 0.45;
+  }
   .area.bench {
     fill: var(--c-good-soft);
     stroke: var(--c-good);

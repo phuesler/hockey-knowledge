@@ -24,6 +24,11 @@
     far: 'weite Unterstützung',
     gap: 'niemand da',
     bench: 'unsere Spielerbank',
+    'cover-ld': 'Bereich LD',
+    'cover-rd': 'Bereich RD',
+    'cover-c': 'Bereich C',
+    'cover-lw': 'Bereich LW',
+    'cover-rw': 'Bereich RW',
   };
   const en: typeof de = {
     title: 'Key',
@@ -41,6 +46,11 @@
     far: 'far support',
     gap: 'nobody there',
     bench: 'our bench',
+    'cover-ld': 'LD’s area',
+    'cover-rd': 'RD’s area',
+    'cover-c': 'C’s area',
+    'cover-lw': 'LW’s area',
+    'cover-rw': 'RW’s area',
   };
 
   const s = $derived({ de, en }[locale]);
@@ -53,10 +63,13 @@
       if (scene.puck) keys.add('puck');
       for (const m of scene.moves ?? []) keys.add(m.kind);
       for (const a of scene.areas ?? []) {
-        if (a.kind === 'danger' || a.kind === 'near' || a.kind === 'far' || a.kind === 'gap' || a.kind === 'bench') keys.add(a.kind);
+        if (a.kind !== 'zone' && a.kind !== 'shot' && a.kind !== 'cover-shared') keys.add(a.kind);
       }
     }
-    const order: Key[] = ['us', 'them', 'ghost', 'puck', 'skate', 'pass', 'shot', 'stick', 'lane', 'danger', 'near', 'far', 'gap', 'bench'];
+    const order: Key[] = [
+      'us', 'them', 'ghost', 'puck', 'skate', 'pass', 'shot', 'stick', 'lane', 'danger', 'near', 'far', 'gap', 'bench',
+      'cover-lw', 'cover-rw', 'cover-ld', 'cover-rd', 'cover-c',
+    ];
     return order.filter((k) => keys.has(k));
   });
 </script>
@@ -171,6 +184,21 @@
   .area.bench {
     fill: var(--c-good-soft);
     stroke: var(--c-good);
+  }
+  .area.cover-ld {
+    fill: var(--c-zone-ld);
+  }
+  .area.cover-rd {
+    fill: var(--c-zone-rd);
+  }
+  .area.cover-c {
+    fill: var(--c-zone-c);
+  }
+  .area.cover-lw {
+    fill: var(--c-zone-lw);
+  }
+  .area.cover-rw {
+    fill: var(--c-zone-rw);
   }
   .area.gap {
     fill: var(--c-brand-soft);
