@@ -164,6 +164,19 @@ Static `.astro` components inside articles pick their language with
 `t(localeFromUrl(Astro.url))`, so the article needs no extra prop. Svelte components run
 in the browser too and get a `locale` prop instead.
 
+## Search engines and AI assistants
+
+`/llms.txt` and `/<locale>/llms-full.txt` are generated from the articles by
+`src/pages/llms.txt.ts` and `src/pages/[locale]/llms-full.txt.ts`. `src/lib/plaintext.ts`
+turns MDX into plain Markdown: it converts `Callout` and `<a href={href(...)}>`, and replaces
+every other self-closing component with a short "diagram on the website" note. A new
+component that **wraps text** (like `Callout`) needs its own rule there, otherwise its tags
+end up in the text file. JSON-LD and Open Graph tags are set in `BaseLayout.astro`
+(`jsonLd` prop) and `ArticleLayout.astro`.
+
+Article paths end in a slash (`articlePath()`): GitHub Pages redirects `/de/x` to `/de/x/`,
+and canonical URLs must not point to a redirect.
+
 ## Astro documentation
 
 - [Routing](https://docs.astro.build/en/guides/routing/)

@@ -16,11 +16,23 @@ import sitemap from '@astrojs/sitemap';
 //
 // Never hardcode an internal link: always build it with href() from src/lib/href.ts,
 // which prefixes import.meta.env.BASE_URL for you.
+const site = process.env.SITE_URL ?? 'https://phuesler.github.io';
+const base = process.env.SITE_BASE ?? '/hockey-knowledge';
+// The root page only redirects to /de/ and is marked noindex, so it stays out of the sitemap.
+const rootPage = new URL(`${base}/`.replace(/\/{2,}/g, '/'), site).href;
+
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://phuesler.github.io',
-  base: process.env.SITE_BASE ?? '/hockey-knowledge',
+  site,
+  base,
   trailingSlash: 'ignore',
-  integrations: [svelte(), mdx(), sitemap()],
+  integrations: [
+    svelte(),
+    mdx(),
+    sitemap({
+      filter: (page) => page !== rootPage,
+      i18n: { defaultLocale: 'de', locales: { de: 'de', en: 'en' } },
+    }),
+  ],
   markdown: {
     shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
   },

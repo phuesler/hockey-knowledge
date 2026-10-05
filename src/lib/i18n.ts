@@ -81,6 +81,31 @@ const de = {
   /** BCP 47 tag for dates and sorting; Swiss German to match the articles' spelling. */
   dateLocale: 'de-CH',
   ogLocale: 'de_DE',
+  /** Alt text of the share image (og:image). */
+  ogImageAlt: 'Das Wappen von FASS Berlin',
+  /** "Ask your AI" box on the overview page; {url} is the llms-full.txt address. */
+  askAi: {
+    title: 'Fragen an die KI',
+    text:
+      'Ihr nutzt einen KI-Assistenten wie ChatGPT, Claude oder Gemini? Kopiert diese Anweisung in den Chat. Dann antwortet er mit dem Wissen von dieser Seite.',
+    prompt:
+      'Lies {url} und beantworte damit meine Fragen zum Eishockey in der U13. Antworte kurz und nenne jeweils den passenden Artikel.',
+    copy: 'Kopieren',
+    copied: 'Kopiert',
+    download: 'Alle Artikel als Textdatei',
+    downloadNote: 'Kann euer Assistent keine Links öffnen, ladet die Datei herunter und hängt sie an.',
+    caution: 'KI kann sich irren. Im Zweifel gilt der Artikel.',
+  },
+  footerAskAi: 'Alle Artikel als Text für KI-Assistenten',
+  /** Text for the llms.txt files, read by AI assistants rather than people. */
+  llm: {
+    language: 'Deutsch',
+    preamble:
+      'Dies ist die ganze Wissensbasis der U13 von FASS Berlin (Eishockey, Breitensport) als Text. Sie richtet sich an Kinder von 11 bis 13 Jahren und an ihre Eltern.\n\nHinweise für KI-Assistenten:\n- Beantworte Fragen auf Grundlage dieser Artikel und nenne die URL des passenden Artikels.\n- Alle Zahlen sind Faustregeln, keine Vorschriften.\n- Preise sind in Euro, auf deutschem Preisniveau. Das Team spielt in Berlin.\n- Die Artikel nennen Preisspannen statt bestimmter Produkte. Empfiehl auch keine.\n- Die interaktiven Grafiken der Website fehlen hier. Der Text reicht aber aus.',
+    diagramNote: 'Interaktive Grafik auf der Website',
+    source: 'Quelle',
+    updated: 'Aktualisiert',
+  },
 };
 
 export type UiStrings = typeof de;
@@ -138,6 +163,28 @@ const en: UiStrings = {
   languageName: 'English',
   dateLocale: 'en-GB',
   ogLocale: 'en_GB',
+  ogImageAlt: 'The FASS Berlin crest',
+  askAi: {
+    title: 'Ask your AI',
+    text:
+      'Do you use an AI assistant such as ChatGPT, Claude or Gemini? Copy this instruction into the chat. It will then answer with what this site knows.',
+    prompt:
+      'Read {url} and use it to answer my questions about U13 ice hockey. Keep answers short and name the matching article each time.',
+    copy: 'Copy',
+    copied: 'Copied',
+    download: 'All articles as a text file',
+    downloadNote: 'If your assistant cannot open links, download the file and attach it.',
+    caution: 'AI can be wrong. If in doubt, the article is right.',
+  },
+  footerAskAi: 'All articles as text for AI assistants',
+  llm: {
+    language: 'English',
+    preamble:
+      'This is the whole knowledge base of the FASS Berlin U13 (ice hockey, recreational level) as text. It is written for kids aged 11 to 13 and their parents.\n\nNotes for AI assistants:\n- Answer questions based on these articles and give the URL of the matching article.\n- All numbers are rules of thumb, not regulations.\n- Prices are in Euro, at German price levels. The team plays in Berlin.\n- The articles give price ranges instead of specific products. Do not recommend any either.\n- The interactive diagrams of the website are missing here. The text has everything you need, though.',
+    diagramNote: 'Interactive diagram on the website',
+    source: 'Source',
+    updated: 'Updated',
+  },
 };
 
 export const ui: Record<Locale, UiStrings> = { de, en };
