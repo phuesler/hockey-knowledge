@@ -168,6 +168,21 @@ Static `.astro` components inside articles pick their language with
 `t(localeFromUrl(Astro.url))`, so the article needs no extra prop. Svelte components run
 in the browser too and get a `locale` prop instead.
 
+## Offline
+
+The site works offline (wifi-only devices on the bus to a game). After every build, the
+`offline` integration in `astro.config.mjs` writes `dist/sw.js` from
+`src/lib/sw-template.js` with a list of every built file (drafts and sitemap left out).
+`BaseLayout.astro` registers it and links `src/pages/manifest.webmanifest.ts`, so the
+site can be added to the home screen. Nothing to do per article.
+
+- Pages are network first (online readers get the latest version), `/_astro/` files and
+  icons cache first. A changed build changes the version hash and replaces the cache.
+- `astro dev` registers no service worker. Test with `npm run build && npm run preview`,
+  then Chrome DevTools → Application (Service workers, Cache storage) and Network → Offline.
+- Changing the manifest colours: they mirror `tokens.css` by hand (a manifest can't read
+  CSS variables).
+
 ## Astro documentation
 
 - [Routing](https://docs.astro.build/en/guides/routing/)

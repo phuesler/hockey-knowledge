@@ -48,6 +48,11 @@ const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
     <link rel="icon" href={href('/favicon.ico')} sizes="16x16 32x32 48x48" />
     <link rel="icon" href={href('/icon-192.png')} type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
+    <link rel="manifest" href={href('/manifest.webmanifest')} />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content={s.brandShort} />
+    {/* Same as --c-header-bg in tokens.css, so the status bar blends into the header. */}
+    <meta name="theme-color" content="#0a1214" />
     <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content={fullTitle} />
@@ -68,5 +73,12 @@ const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
       <slot />
     </main>
     <SiteFooter locale={locale} />
+    {/* Offline copy of the whole site (dist/sw.js, generated in astro.config.mjs).
+        Not in `astro dev`, where a cached page would hide your edits. */}
+    {!isPreview && (
+      <script is:inline define:vars={{ sw: href('/sw.js'), scope: href('/') }}>
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register(sw, { scope });
+      </script>
+    )}
   </body>
 </html>
