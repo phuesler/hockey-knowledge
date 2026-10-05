@@ -15,11 +15,19 @@
   let { play, locale = 'de' }: { play: PlayId; locale?: Locale } = $props();
 
   const de = {
-    zone: { own: 'Eigene Zone – unten ist unser Tor', attack: 'Angriffszone – unten ist das gegnerische Tor' },
+    zone: {
+      own: 'Unten ist unser Tor',
+      attack: 'Unten ist das gegnerische Tor, wir greifen nach unten an',
+      full: 'Das ganze Eis: unten unser Tor, oben das gegnerische',
+    },
     verdict: { good: 'So', bad: 'Nicht so' },
   };
   const en: typeof de = {
-    zone: { own: 'Our zone – our goal is at the bottom', attack: 'Attacking zone – the opponents’ goal is at the bottom' },
+    zone: {
+      own: 'Our goal is at the bottom',
+      attack: 'The opponents’ goal is at the bottom, we attack downwards',
+      full: 'The whole rink: our goal at the bottom, the opponents’ at the top',
+    },
     verdict: { good: 'Do', bad: 'Don’t' },
   };
 
@@ -33,7 +41,7 @@
   <figcaption>{text.caption}</figcaption>
   <p class="zone">{s.zone[panels[0].zone]}</p>
 
-  <div class="panels" class:pair={panels.length > 1}>
+  <div class="panels" class:pair={panels.length > 1} class:tall={panels.some((p) => p.view === 'full')}>
     {#each panels as panel, i}
       <div class="panel">
         <p class="title">
@@ -42,7 +50,7 @@
           {/if}
           {text.panels[i].title}
         </p>
-        <Rink scene={panel.scene} label={text.labels[i]} />
+        <Rink scene={panel.scene} label={text.labels[i]} view={panel.view} />
         <p class="text">{text.panels[i].text}</p>
       </div>
     {/each}
@@ -84,6 +92,10 @@
   /* A single drawing stays phone-sized on wide screens; it reads better that way. */
   .panels:not(.pair) {
     max-width: 26rem;
+  }
+  /* The full rink is twice as tall as wide; keep a pair of them from filling the screen. */
+  .panels.tall {
+    max-width: 34rem;
   }
   @media (min-width: 40rem) {
     .panels.pair {

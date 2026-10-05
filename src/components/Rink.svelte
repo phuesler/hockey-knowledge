@@ -1,7 +1,8 @@
 <script lang="ts">
   /**
-   * One zone of the rink as an SVG, with players, arrows and shaded areas on top.
-   * Renders on the server without JavaScript (RinkPlay uses it that way); the
+   * The rink as an SVG, with players, arrows and shaded areas on top. `view` picks how
+   * much is shown: one zone (default), half the rink up to the centre line, or the full
+   * rink. Renders on the server without JavaScript (RinkPlay uses it that way); the
    * CoverageExplorer island reuses it and lets the players slide to new spots.
    *
    * All positions are rink metres, see rink.ts. Nothing here is language-specific:
@@ -9,50 +10,73 @@
    */
   import {
     BLUE_LINE,
+    CENTRE_LINE,
     CIRCLE_RADIUS,
     CORNER_RADIUS,
-    DANGER_ZONE,
     DOT_D,
     DOT_X,
+    FULL_LENGTH,
     GOAL_LINE,
     PLAYER_RADIUS,
     POST_X,
-    RINK_LENGTH,
     RINK_WIDTH,
+    VIEW_LENGTH,
     moveGeometry,
     points,
     svg,
     type Area,
+    type Pt,
     type Scene,
+    type View,
   } from './rink';
 
-  let { scene, label }: { scene: Scene; label: string } = $props();
+  let { scene, label, view = 'zone' }: { scene: Scene; label: string; view?: View } = $props();
 
   const W = RINK_WIDTH;
-  const L = RINK_LENGTH;
   const R = CORNER_RADIUS;
+  const L = $derived(VIEW_LENGTH[view]);
+  const full = $derived(view === 'full');
+  const at = (p: Pt) => svg(p, L);
 
-  /* The end boards with rounded corners; the far end is open, the zone continues. */
-  const boards = `M0 0 V${L - R} A${R} ${R} 0 0 0 ${R} ${L} H${W - R} A${R} ${R} 0 0 0 ${W} ${L - R} V0`;
-  const ice = `${boards} Z`;
+  /* The boards with rounded corners. Unless the full rink is shown, the top is open:
+     the ice continues beyond the drawing. */
+  const boards = $derived(
+    full
+      ? `M0 ${R} V${L - R} A${R} ${R} 0 0 0 ${R} ${L} H${W - R} A${R} ${R} 0 0 0 ${W} ${L - R} V${R} A${R} ${R} 0 0 0 ${W - R} 0 H${R} A${R} ${R} 0 0 0 0 ${R} Z`
+      : `M0 0 V${L - R} A${R} ${R} 0 0 0 ${R} ${L} H${W - R} A${R} ${R} 0 0 0 ${W} ${L - R} V0`,
+  );
+  const ice = $derived(full ? boards : `${boards} Z`);
 
   /* Where the goal line meets the rounded corners. */
-  const goalY = L - GOAL_LINE;
   const goalLineInset = R - Math.sqrt(R * R - (GOAL_LINE - R) ** 2);
 
-  const [goalX] = svg([-POST_X, GOAL_LINE]);
-  const dots = [-DOT_X, DOT_X].map((x) => svg([x, DOT_D]));
-  const neutralDots = [-DOT_X, DOT_X].map((x) => svg([x, BLUE_LINE + 1.5]));
-  const [, blueY] = svg([0, BLUE_LINE]);
+  /* Each end of the rink: the bottom one always, the top one only on the full rink.
+     `flip` mirrors the crease and net so they open towards the middle. */
+  const ends = $derived(
+    (full ? [GOAL_LINE, FULL_LENGTH - GOAL_LINE] : [GOAL_LINE]).map((d) => ({
+      y: at([0, d])[1],
+      flip: d > CENTRE_LINE,
+      dots: [-DOT_X, DOT_X].map((x) => at([x, d < CENTRE_LINE ? DOT_D : FULL_LENGTH - DOT_D])),
+    })),
+  );
+  const blueLines = $derived(
+    [BLUE_LINE, FULL_LENGTH - BLUE_LINE].filter((d) => d < L).map((d) => at([0, d])[1]),
+  );
+  const neutralDots = $derived(
+    [BLUE_LINE + 1.5, FULL_LENGTH - BLUE_LINE - 1.5]
+      .filter((d) => d < L)
+      .flatMap((d) => [-DOT_X, DOT_X].map((x) => at([x, d]))),
+  );
+  const centreY = $derived(L > CENTRE_LINE ? at([0, CENTRE_LINE])[1] : null);
 
   function areaLabelAt(area: Area): [number, number] | null {
     if (!area.label) return null;
-    if (area.labelAt) return svg(area.labelAt);
-    if (area.ellipse) return svg(area.ellipse.at);
+    if (area.labelAt) return at(area.labelAt);
+    if (area.ellipse) return at(area.ellipse.at);
     return null;
   }
 
-  const moves = $derived((scene.moves ?? []).map((m) => ({ move: m, ...moveGeometry(m) })));
+  const moves = $derived((scene.moves ?? []).map((m) => ({ move: m, ...moveGeometry(m, L) })));
 </script>
 
 <svg viewBox="0 0 {W} {L}" role="img" aria-label={label}>
@@ -61,30 +85,41 @@
   <!-- The dangerous area and other shaded areas sit under the rink lines. -->
   {#each scene.areas ?? [] as area}
     {#if area.poly}
-      <polygon points={points(area.poly)} class="area {area.kind}" />
+      <polygon points={points(area.poly, L)} class="area {area.kind}" />
     {:else if area.ellipse}
-      {@const [cx, cy] = svg(area.ellipse.at)}
+      {@const [cx, cy] = at(area.ellipse.at)}
       <ellipse {cx} {cy} rx={area.ellipse.rx} ry={area.ellipse.ry} class="area {area.kind}" />
     {/if}
   {/each}
 
-  <rect x="0" y={blueY - 0.15} width={W} height="0.3" class="blue-line" />
-  <line x1={goalLineInset} y1={goalY} x2={W - goalLineInset} y2={goalY} class="red-line" />
-  {#each dots as [cx, cy]}
-    <circle {cx} {cy} r={CIRCLE_RADIUS} class="red-line circle" />
-    <circle {cx} {cy} r="0.3" class="dot" />
+  {#each blueLines as y}
+    <rect x="0" {y} width={W} height="0.3" transform="translate(0 -0.15)" class="blue-line" />
   {/each}
+  {#if centreY !== null}
+    <rect x="0" y={centreY - 0.15} width={W} height="0.3" class="centre-line" />
+    <circle cx={W / 2} cy={centreY} r={CIRCLE_RADIUS} class="red-line" />
+    <circle cx={W / 2} cy={centreY} r="0.3" class="dot" />
+  {/if}
   {#each neutralDots as [cx, cy]}
     <circle {cx} {cy} r="0.3" class="dot" />
   {/each}
-  <path d="M{W / 2 - 1.8} {goalY} A1.8 1.8 0 0 1 {W / 2 + 1.8} {goalY} Z" class="crease" />
-  <rect x={goalX} y={goalY} width={POST_X * 2} height="1.1" class="net" />
+  {#each ends as end}
+    <line x1={goalLineInset} y1={end.y} x2={W - goalLineInset} y2={end.y} class="red-line" />
+    {#each end.dots as [cx, cy]}
+      <circle {cx} {cy} r={CIRCLE_RADIUS} class="red-line" />
+      <circle {cx} {cy} r="0.3" class="dot" />
+    {/each}
+    <g transform="translate({W / 2} {end.y}) scale(1 {end.flip ? -1 : 1})">
+      <path d="M-1.8 0 A1.8 1.8 0 0 1 1.8 0 Z" class="crease" />
+      <rect x={-POST_X} y="0" width={POST_X * 2} height="1.1" class="net" />
+    </g>
+  {/each}
   <path d={boards} class="boards" />
 
   {#each scene.areas ?? [] as area}
-    {@const at = areaLabelAt(area)}
-    {#if at}
-      <text x={at[0]} y={at[1]} class="area-label {area.kind}">{area.label}</text>
+    {@const pos = areaLabelAt(area)}
+    {#if pos}
+      <text x={pos[0]} y={pos[1]} class="area-label {area.kind}">{area.label}</text>
     {/if}
   {/each}
 
@@ -100,7 +135,7 @@
   {/each}
 
   {#each scene.players as p, i (p.id ?? `p${i}`)}
-    {@const [x, y] = svg(p.at)}
+    {@const [x, y] = at(p.at)}
     <g class="player {p.team}" class:ghost={p.ghost} style="transform: translate({x}px, {y}px)">
       <circle r={PLAYER_RADIUS} />
       {#if p.label}<text>{p.label}</text>{/if}
@@ -108,7 +143,7 @@
   {/each}
 
   {#if scene.puck}
-    {@const [x, y] = svg(scene.puck)}
+    {@const [x, y] = at(scene.puck)}
     <g class="player puck" style="transform: translate({x}px, {y}px)">
       <circle r="0.55" />
     </g>
@@ -120,7 +155,8 @@
     display: block;
     width: 100%;
     height: auto;
-    overflow: visible;
+    /* The half view cuts through the centre circle; keep it inside the drawing. */
+    overflow: hidden;
   }
 
   .ice {
@@ -143,6 +179,10 @@
   }
   .blue-line {
     fill: var(--c-accent);
+    opacity: 0.7;
+  }
+  .centre-line {
+    fill: var(--c-brand);
     opacity: 0.7;
   }
   .crease {
@@ -177,6 +217,11 @@
     fill: var(--c-brand-soft);
     stroke: var(--c-brand);
     stroke-dasharray: 0.5 0.35;
+    stroke-width: 0.2;
+  }
+  .area.bench {
+    fill: var(--c-good-soft);
+    stroke: var(--c-good);
     stroke-width: 0.2;
   }
   .area.shot {
@@ -220,8 +265,19 @@
   .move.them polygon {
     fill: var(--c-text-muted);
   }
-  .move.pass path {
+  .move.pass path,
+  .move.shot path {
     stroke-dasharray: 0.7 0.45;
+  }
+  .move.shot path {
+    stroke: var(--c-text);
+  }
+  .move.shot polygon {
+    fill: var(--c-text);
+  }
+  .move.stick path {
+    stroke: var(--c-text-muted);
+    stroke-width: 0.45;
   }
   .move.lane path {
     stroke: var(--c-text-muted);

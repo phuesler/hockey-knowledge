@@ -16,11 +16,14 @@
     puck: 'Puck',
     skate: 'fahren',
     pass: 'Pass',
+    shot: 'Puck geschossen',
+    stick: 'Stock',
     lane: 'Weg zum Tor / Passweg',
     danger: 'Gefahrenzone',
     near: 'nahe Unterstützung',
     far: 'weite Unterstützung',
     gap: 'niemand da',
+    bench: 'unsere Spielerbank',
   };
   const en: typeof de = {
     title: 'Key',
@@ -30,11 +33,14 @@
     puck: 'puck',
     skate: 'skate',
     pass: 'pass',
+    shot: 'puck shot',
+    stick: 'stick',
     lane: 'way to goal / passing lane',
     danger: 'danger zone',
     near: 'near support',
     far: 'far support',
     gap: 'nobody there',
+    bench: 'our bench',
   };
 
   const s = $derived({ de, en }[locale]);
@@ -47,10 +53,10 @@
       if (scene.puck) keys.add('puck');
       for (const m of scene.moves ?? []) keys.add(m.kind);
       for (const a of scene.areas ?? []) {
-        if (a.kind === 'danger' || a.kind === 'near' || a.kind === 'far' || a.kind === 'gap') keys.add(a.kind);
+        if (a.kind === 'danger' || a.kind === 'near' || a.kind === 'far' || a.kind === 'gap' || a.kind === 'bench') keys.add(a.kind);
       }
     }
-    const order: Key[] = ['us', 'them', 'ghost', 'puck', 'skate', 'pass', 'lane', 'danger', 'near', 'far', 'gap'];
+    const order: Key[] = ['us', 'them', 'ghost', 'puck', 'skate', 'pass', 'shot', 'stick', 'lane', 'danger', 'near', 'far', 'gap', 'bench'];
     return order.filter((k) => keys.has(k));
   });
 </script>
@@ -63,9 +69,11 @@
           <circle cx="12" cy="6" r="5" class={key} />
         {:else if key === 'puck'}
           <circle cx="12" cy="6" r="2.4" class="puck" />
-        {:else if key === 'skate' || key === 'pass'}
+        {:else if key === 'skate' || key === 'pass' || key === 'shot'}
           <path d="M2 6 H17" class="line {key}" />
-          <polygon points="22,6 16,3 16,9" class="head" />
+          <polygon points="22,6 16,3 16,9" class="head {key}" />
+        {:else if key === 'stick'}
+          <path d="M5 6 H19" class="line stick" />
         {:else if key === 'lane'}
           <path d="M2 6 H22" class="line lane" />
         {:else}
@@ -121,8 +129,19 @@
     stroke: var(--c-brand);
     stroke-width: 1.4;
   }
-  .line.pass {
+  .line.pass,
+  .line.shot {
     stroke-dasharray: 3 2;
+  }
+  .line.shot {
+    stroke: var(--c-text);
+  }
+  .head.shot {
+    fill: var(--c-text);
+  }
+  .line.stick {
+    stroke: var(--c-text-muted);
+    stroke-width: 2.4;
   }
   .line.lane {
     stroke: var(--c-text-muted);
@@ -148,6 +167,10 @@
   .area.far {
     fill: var(--c-accent-soft);
     stroke: var(--c-accent);
+  }
+  .area.bench {
+    fill: var(--c-good-soft);
+    stroke: var(--c-good);
   }
   .area.gap {
     fill: var(--c-brand-soft);

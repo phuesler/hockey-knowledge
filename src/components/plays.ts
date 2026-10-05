@@ -5,10 +5,13 @@
  * A play has one or more panels. Each panel is one zone; `zone` says whose goal is at
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
-import { DANGER_ZONE, POST_X, GOAL_LINE, type Pt, type Scene } from './rink';
+import { DANGER_ZONE, POST_X, GOAL_LINE, type Pt, type Scene, type View } from './rink';
 
 export interface PlayPanel {
-  zone: 'own' | 'attack';
+  /** own: our goal at the bottom; attack: the opponents' goal at the bottom; full: both. */
+  zone: 'own' | 'attack' | 'full';
+  /** How much of the rink to draw; one zone if left out. */
+  view?: View;
   verdict?: 'good' | 'bad';
   scene: Scene;
 }
@@ -291,6 +294,196 @@ const geometry = {
       },
     },
   ],
+  /* Abwehrseite starts in the neutral zone: the defenders skate back inside the dot
+     lines, sticks pointing outside, and the attackers stay on the outside lanes. */
+  'neutral-zone': [
+    {
+      zone: 'own',
+      view: 'half',
+      scene: {
+        areas: [danger],
+        players: [
+          { team: 'them', at: [-11, 29] },
+          { team: 'them', at: [11, 27.5] },
+          { team: 'us', label: 'LD', at: [-5.2, 25] },
+          { team: 'us', label: 'RD', at: [5.2, 24.5] },
+          { team: 'us', label: 'C', at: [0, 29.5] },
+        ],
+        puck: [-10.6, 27.6],
+        moves: [
+          { kind: 'lane', path: [[-7, 10], [-7, 31]] },
+          { kind: 'lane', path: [[7, 10], [7, 31]] },
+          { kind: 'skate', team: 'them', path: [[-11, 29], [-13, 22], [-12.2, 13]] },
+          { kind: 'skate', team: 'them', path: [[11, 27.5], [12.8, 21], [12, 13]] },
+          { kind: 'skate', path: [[-5.2, 25], [-6, 15.5]], trim: 0 },
+          { kind: 'skate', path: [[5.2, 24.5], [5.9, 15.5]] },
+          { kind: 'skate', path: [[0, 29.5], [0, 19]] },
+          { kind: 'stick', path: [[-6.4, 25.6], [-8.4, 26.7]] },
+          { kind: 'stick', path: [[6.4, 25.1], [8.4, 26.2]] },
+        ],
+      },
+    },
+  ],
+
+  /* Offside: LW is in the zone before the puck. Then the same rush with LW waiting at
+     the line. We attack downwards, so our LW is on the right of the drawing. */
+  'offside-entry': [
+    {
+      zone: 'attack',
+      view: 'half',
+      scene: {
+        areas: [{ kind: 'gap', ellipse: { at: [8, 17], rx: 2.4, ry: 2.4 }, label: '!', labelAt: [11.6, 19] }],
+        players: [
+          { team: 'them', at: [5, 13] },
+          { team: 'them', at: [-5, 12.5] },
+          { team: 'them', at: [-3, 26] },
+          { team: 'us', label: 'C', at: [1, 27] },
+          { team: 'us', label: 'LW', at: [8, 17] },
+          { team: 'us', label: 'RW', at: [-9, 25.5] },
+        ],
+        puck: [1, 25.6],
+        moves: [{ kind: 'skate', path: [[1, 27], [1, 20]] }],
+      },
+    },
+    {
+      zone: 'attack',
+      view: 'half',
+      scene: {
+        players: [
+          { team: 'them', at: [5, 13] },
+          { team: 'them', at: [-5, 12.5] },
+          { team: 'them', at: [-3, 26] },
+          { team: 'us', label: 'C', at: [1, 22.6] },
+          { team: 'us', label: 'LW', at: [8, 23.6] },
+          { team: 'us', label: 'RW', at: [-9, 25.5] },
+        ],
+        puck: [1, 21.1],
+        moves: [
+          { kind: 'skate', path: [[1, 22.6], [1, 15]], trim: 1.5 },
+          { kind: 'skate', path: [[8, 23.6], [8.5, 15]], trim: 1.5 },
+        ],
+      },
+    },
+  ],
+
+  /* Delayed offside: the opponents have the puck in their zone. All three forwards
+     skate back to the blue line before anyone plays the puck again. */
+  'delayed-offside': [
+    {
+      zone: 'attack',
+      view: 'half',
+      scene: {
+        players: [
+          { team: 'them', at: [-4, 7] },
+          { team: 'them', at: [4.5, 9] },
+          { team: 'them', at: [-10, 11] },
+          { team: 'them', at: [5, 18] },
+          { team: 'us', label: 'LW', at: [9.5, 13] },
+          { team: 'us', label: 'C', at: [1, 15.5] },
+          { team: 'us', label: 'RW', at: [-8, 17] },
+          { team: 'us', label: 'LD', at: [8, 26.5] },
+          { team: 'us', label: 'RD', at: [-8, 26.5] },
+        ],
+        puck: [-3.2, 5.8],
+        moves: [
+          { kind: 'skate', path: [[9.5, 13], [9.5, 22]] },
+          { kind: 'skate', path: [[1, 15.5], [1.5, 22]] },
+          { kind: 'skate', path: [[-8, 17], [-8, 22]] },
+        ],
+      },
+    },
+  ],
+
+  /* Icing: shot from our own half across the opponents' goal line. Then a shot from
+     beyond the centre line, which is not icing. */
+  icing: [
+    {
+      zone: 'full',
+      view: 'full',
+      scene: {
+        players: [
+          { team: 'them', at: [2, 15] },
+          { team: 'them', at: [6, 30] },
+          { team: 'them', at: [0, 49] },
+          { team: 'us', label: 'LD', at: [-5, 11] },
+          { team: 'us', label: 'C', at: [3, 20] },
+          { team: 'us', label: 'LW', at: [-9, 28] },
+        ],
+        puck: [6, 58.6],
+        moves: [{ kind: 'shot', path: [[-4.4, 12.4], [6, 58.6]], trim: 0.8 }],
+      },
+    },
+    {
+      zone: 'full',
+      view: 'full',
+      scene: {
+        players: [
+          { team: 'them', at: [-2, 26] },
+          { team: 'them', at: [6, 40] },
+          { team: 'them', at: [-2, 49] },
+          { team: 'us', label: 'LD', at: [-5, 24] },
+          { team: 'us', label: 'C', at: [-3, 34] },
+          { team: 'us', label: 'LW', at: [-9, 38] },
+        ],
+        puck: [6, 58.6],
+        moves: [{ kind: 'shot', path: [[-2.6, 35.3], [6, 58.6]], trim: 0.8 }],
+      },
+    },
+  ],
+
+  /* Hybrid icing: whoever leads the race when the first player reaches the dots. */
+  'icing-race': [
+    {
+      zone: 'attack',
+      scene: {
+        players: [
+          { team: 'them', at: [4, 14] },
+          { team: 'us', label: 'C', at: [-2, 19] },
+        ],
+        puck: [9, 1.8],
+        moves: [
+          { kind: 'lane', path: [[-15, 10], [15, 10]] },
+          { kind: 'skate', team: 'them', path: [[4, 14], [8.6, 3.4]], trim: 1.5 },
+          { kind: 'skate', path: [[-2, 19], [3.5, 9], [8, 4]], trim: 1.5 },
+        ],
+      },
+    },
+  ],
+
+  /* Delayed penalty: we keep the puck in their zone, our goalie skates to the bench and
+     an extra skater (+1) comes on. Our goal is empty. */
+  'delayed-penalty': [
+    {
+      zone: 'full',
+      view: 'full',
+      scene: {
+        areas: [
+          { kind: 'bench', poly: [[-15, 22], [-14, 22], [-14, 30], [-15, 30]] },
+          { kind: 'gap', ellipse: { at: [0, 5], rx: 3.2, ry: 2.2 }, label: '!', labelAt: [4.6, 6.2] },
+        ],
+        players: [
+          { team: 'them', at: [2, 53] },
+          { team: 'them', at: [-5, 51.5] },
+          { team: 'them', at: [9, 45] },
+          { team: 'them', at: [-8, 43] },
+          { team: 'them', at: [3, 44] },
+          { team: 'us', label: 'G', at: [0, 5.5], ghost: true },
+          { team: 'us', label: 'G', at: [-12.8, 25.5] },
+          { team: 'us', label: '+1', at: [-3, 40.5] },
+          { team: 'us', label: 'C', at: [5.5, 49.5] },
+          { team: 'us', label: 'LW', at: [-10, 47.5] },
+          { team: 'us', label: 'RW', at: [10, 52] },
+          { team: 'us', label: 'LD', at: [-7, 38.5] },
+          { team: 'us', label: 'RD', at: [7, 39.5] },
+        ],
+        puck: [5, 51],
+        moves: [
+          { kind: 'skate', path: [[0, 5.5], [-10, 9], [-12.8, 25.5]], trim: 1.6 },
+          { kind: 'skate', path: [[-13, 29.5], [-3, 40.5]], trim: 1.6 },
+        ],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -438,6 +631,92 @@ const de: Record<PlayId, PlayText> = {
     ],
     note: 'Hier greifen wir an: Unten ist das gegnerische Tor. Darum spielt unser LW auf der rechten Seite der Zeichnung.',
   },
+  'neutral-zone': {
+    caption: 'Abwehrseite in der neutralen Zone',
+    panels: [
+      {
+        title: 'Innen bleiben, schon vor der blauen Linie',
+        text: 'Die Verteidiger fahren rückwärts innerhalb der gepunkteten Linien durch die Bullypunkte zurück. Der Stock zeigt nach aussen zum Gegner. Die Gegner bleiben aussen und kommen an der Bande in die Zone.',
+      },
+    ],
+    labels: [
+      'Zwei Gegner fahren in der neutralen Zone aussen auf unser Drittel zu, einer davon mit Puck. LD und RD fahren innen rückwärts zurück, den Stock nach aussen gerichtet. Der Center fährt durch die Mitte zurück.',
+    ],
+  },
+  'offside-entry': {
+    caption: 'Abseits beim Einfahren in die Zone',
+    panels: [
+      {
+        title: 'Abseits',
+        text: 'LW ist schon in der Zone, der Puck ist noch draussen. Sobald der Puck über die Linie kommt, ist es Abseits.',
+      },
+      {
+        title: 'Kein Abseits',
+        text: 'LW wartet vor der Linie. Erst wenn der Puck ganz drüben ist, fährt er hinterher.',
+      },
+    ],
+    labels: [
+      'Der Center führt den Puck in der neutralen Zone auf die blaue Linie zu. Der linke Flügel steht schon in der Angriffszone.',
+      'Der Puck ist gerade über die blaue Linie. Der linke Flügel stand noch vor der Linie und fährt jetzt hinterher in die Zone.',
+    ],
+    note: 'Hier greifen wir an: Unten ist das gegnerische Tor. Darum spielt unser LW auf der rechten Seite der Zeichnung.',
+  },
+  'delayed-offside': {
+    caption: 'Verzögertes Abseits: alle raus',
+    panels: [
+      {
+        title: 'Zurück an die blaue Linie',
+        text: 'Der Linienrichter hat den Arm oben, der Gegner hat den Puck. Alle drei Stürmer fahren aus der Zone, bis sie gleichzeitig die blaue Linie berühren. Keiner spielt den Puck. Danach dürfen sie wieder hinein.',
+      },
+    ],
+    labels: [
+      'Ein Gegner hat den Puck tief in seiner Zone. Unsere drei Stürmer stehen noch in der Zone und fahren alle zur blauen Linie zurück. Die Verteidiger warten draussen in der neutralen Zone.',
+    ],
+    note: 'Hier greifen wir an: Unten ist das gegnerische Tor.',
+  },
+  icing: {
+    caption: 'Icing',
+    panels: [
+      {
+        title: 'Icing',
+        text: 'LD schiesst den Puck aus unserer Hälfte, vor der roten Mittellinie, über die gegnerische Torlinie. Niemand berührt ihn.',
+      },
+      {
+        title: 'Kein Icing',
+        text: 'C spielt den Puck erst hinter der roten Mittellinie, in der gegnerischen Hälfte. Dann ist es kein Icing.',
+      },
+    ],
+    labels: [
+      'Das ganze Eis. Unser linker Verteidiger schiesst den Puck aus unserer Hälfte bis hinter das gegnerische Tor.',
+      'Das ganze Eis. Unser Center schiesst den Puck kurz hinter der roten Mittellinie bis hinter das gegnerische Tor.',
+    ],
+  },
+  'icing-race': {
+    caption: 'Das Rennen zum Puck',
+    panels: [
+      {
+        title: 'Wer zuerst am Puck wäre',
+        text: 'Der Puck ist über die Torlinie gerutscht. Der Linienrichter entscheidet, wenn der erste Spieler auf Höhe der Bullypunkte (gepunktete Linie) ist: Wäre der Gegner zuerst am Puck, gibt es Icing. Wäre unser Spieler zuerst dort, geht das Spiel weiter.',
+      },
+    ],
+    labels: [
+      'Der Puck liegt hinter der gegnerischen Torlinie in der Ecke. Ein gegnerischer Verteidiger und unser Center fahren darauf zu. Der Gegner ist näher und zuerst an der Linie durch die Bullypunkte.',
+    ],
+    note: 'So läuft es nach dem IIHF-Regelbuch (Hybrid-Icing). In manchen Ligen wird Icing ohne Rennen sofort abgepfiffen.',
+  },
+  'delayed-penalty': {
+    caption: 'Angezeigte Strafe: Torhüter raus',
+    panels: [
+      {
+        title: 'Der sechste Feldspieler',
+        text: 'Der Schiedsrichter hat den Arm oben. Wir haben den Puck vorne. Unser Torhüter fährt zur Bank, kurz bevor er dort ist, springt der sechste Feldspieler (+1) aufs Eis. Unser Tor ist leer.',
+      },
+    ],
+    labels: [
+      'Das ganze Eis. Unser Team hat den Puck in der gegnerischen Zone. Unser Torhüter fährt aus dem Tor zur Spielerbank an der linken Bande, ein zusätzlicher Feldspieler fährt von dort aufs Eis. Unser Tor ist leer.',
+    ],
+    note: 'Die gestrichelte Markierung zeigt, wo der Torhüter vorher stand.',
+  },
 };
 
 const en: typeof de = {
@@ -566,6 +845,92 @@ const en: typeof de = {
       'The left wing skates from the goal into the corner next to the centre and gets a short pass. The right wing moves into the slot.',
     ],
     note: 'Here we are attacking: the opponents’ goal is at the bottom. That is why our LW plays on the right of the drawing.',
+  },
+  'neutral-zone': {
+    caption: 'Defensive side in the neutral zone',
+    panels: [
+      {
+        title: 'Stay inside, before the blue line already',
+        text: 'The defenders skate backwards inside the dotted lines through the faceoff dots. The stick points outwards at the attacker. The attackers stay wide and enter the zone along the boards.',
+      },
+    ],
+    labels: [
+      'Two attackers skate wide through the neutral zone towards our zone, one with the puck. LD and RD skate backwards on the inside, sticks pointing outwards. The centre comes back through the middle.',
+    ],
+  },
+  'offside-entry': {
+    caption: 'Offside when entering the zone',
+    panels: [
+      {
+        title: 'Offside',
+        text: 'LW is already in the zone, the puck is still outside. As soon as the puck crosses the line, it is offside.',
+      },
+      {
+        title: 'Not offside',
+        text: 'LW waits in front of the line. Only when the puck is completely over it do they follow.',
+      },
+    ],
+    labels: [
+      'The centre carries the puck through the neutral zone towards the blue line. The left wing is already in the attacking zone.',
+      'The puck has just crossed the blue line. The left wing was still in front of the line and now follows into the zone.',
+    ],
+    note: 'Here we are attacking: the opponents’ goal is at the bottom. That is why our LW plays on the right of the drawing.',
+  },
+  'delayed-offside': {
+    caption: 'Delayed offside: everyone out',
+    panels: [
+      {
+        title: 'Back to the blue line',
+        text: 'The linesperson has their arm up, the opponents have the puck. All three forwards leave the zone until they touch the blue line at the same moment. Nobody plays the puck. Then they may go back in.',
+      },
+    ],
+    labels: [
+      'An opponent has the puck deep in their zone. Our three forwards are still in the zone and all skate back to the blue line. The defenders wait outside in the neutral zone.',
+    ],
+    note: 'Here we are attacking: the opponents’ goal is at the bottom.',
+  },
+  icing: {
+    caption: 'Icing',
+    panels: [
+      {
+        title: 'Icing',
+        text: 'LD shoots the puck from our half, before the centre red line, across the opponents’ goal line. Nobody touches it.',
+      },
+      {
+        title: 'Not icing',
+        text: 'C only plays the puck after crossing the centre red line, in the opponents’ half. Then it is not icing.',
+      },
+    ],
+    labels: [
+      'The whole rink. Our left defender shoots the puck from our half to behind the opponents’ goal.',
+      'The whole rink. Our centre shoots the puck just past the centre red line to behind the opponents’ goal.',
+    ],
+  },
+  'icing-race': {
+    caption: 'The race to the puck',
+    panels: [
+      {
+        title: 'Who would get there first',
+        text: 'The puck has slid across the goal line. The linesperson decides when the first player reaches the faceoff dots (dotted line): if the opponent would touch the puck first, it is icing. If our player would get there first, play goes on.',
+      },
+    ],
+    labels: [
+      'The puck is behind the opponents’ goal line in the corner. An opposing defender and our centre skate towards it. The opponent is closer and reaches the line through the dots first.',
+    ],
+    note: 'This is how the IIHF rule book does it (hybrid icing). Some leagues blow the whistle straight away, without a race.',
+  },
+  'delayed-penalty': {
+    caption: 'Delayed penalty: pull the goalie',
+    panels: [
+      {
+        title: 'The extra skater',
+        text: 'The referee has an arm up. We have the puck up front. Our goalie skates to the bench, and just before they get there the extra skater (+1) jumps on. Our goal is empty.',
+      },
+    ],
+    labels: [
+      'The whole rink. Our team has the puck in the opponents’ zone. Our goalie skates out of the goal to the bench on the left boards, an extra skater comes on from there. Our goal is empty.',
+    ],
+    note: 'The dashed marker shows where the goalie stood before.',
   },
 };
 

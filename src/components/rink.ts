@@ -7,8 +7,9 @@
  *       goal. In the attacking zone they face the goal, so their left is on the right.
  *   d — distance from the end boards. The goal line is at d = 4, the blue line at d = 22.
  *
- * The drawing shows one zone with the goal at the bottom, so x grows to the right and d
- * grows upwards. Measurements are rounded IIHF values (rink 30 m wide), close enough
+ * The drawing has the goal at d = 0 at the bottom, so x grows to the right and d grows
+ * upwards. A view decides how much of the rink is shown: one zone, half the rink up to
+ * the centre red line, or the full rink with the second goal at the top (d = 60). Measurements are rounded IIHF values (rink 30 m wide), close enough
  * for a sketch.
  */
 
@@ -30,10 +31,12 @@ export interface Player {
 /**
  * skate — a skating path, with an arrowhead.
  * pass  — a pass, dashed, with an arrowhead.
+ * shot  — the puck shot or dumped, dashed like a pass but in the puck's colour.
  * lane  — a dotted line without arrowhead: the way to the goal or a passing lane.
+ * stick — a short thick line from a player: where their stick is.
  */
 export interface Move {
-  kind: 'skate' | 'pass' | 'lane';
+  kind: 'skate' | 'pass' | 'shot' | 'lane' | 'stick';
   /** Start and end, or start, control point (quadratic curve) and end. */
   path: readonly [Pt, Pt] | readonly [Pt, Pt, Pt];
   team?: Team;
@@ -49,8 +52,9 @@ export interface Move {
  * gap    — an area nobody covers.
  * shot   — what a shooter sees of the goal.
  * near / far — near and far support.
+ * bench  — our players' bench along the boards.
  */
-export type AreaKind = 'danger' | 'zone' | 'gap' | 'shot' | 'near' | 'far';
+export type AreaKind = 'danger' | 'zone' | 'gap' | 'shot' | 'near' | 'far' | 'bench';
 
 export interface Area {
   kind: AreaKind;
@@ -69,9 +73,16 @@ export interface Scene {
   areas?: Area[];
 }
 
-/** Size of the drawing in metres: the full width and the zone plus a strip beyond the blue line. */
+/** Size of the drawing in metres: the full width, and how much of the length each view shows. */
 export const RINK_WIDTH = 30;
 export const RINK_LENGTH = 25;
+export const FULL_LENGTH = 60;
+export const CENTRE_LINE = FULL_LENGTH / 2;
+
+export type View = 'zone' | 'half' | 'full';
+
+/** zone: one zone plus a strip of the neutral zone; half: up to just past the centre line. */
+export const VIEW_LENGTH: Record<View, number> = { zone: RINK_LENGTH, half: CENTRE_LINE + 1, full: FULL_LENGTH };
 export const CORNER_RADIUS = 7;
 export const GOAL_LINE = 4;
 export const BLUE_LINE = 22;
@@ -98,20 +109,20 @@ export const DANGER_ZONE: readonly Pt[] = [
   [POST_X, GOAL_LINE],
 ];
 
-/** Rink metres to SVG user units: the goal at the bottom, 1 unit = 1 m. */
-export function svg([x, d]: Pt): [number, number] {
-  return [x + RINK_WIDTH / 2, RINK_LENGTH - d];
+/** Rink metres to SVG user units: the goal at the bottom, 1 unit = 1 m. `length` is the view's length. */
+export function svg([x, d]: Pt, length = RINK_LENGTH): [number, number] {
+  return [x + RINK_WIDTH / 2, length - d];
 }
 
 const fmt = (n: number) => Math.round(n * 100) / 100;
 
-export function points(pts: readonly Pt[]): string {
-  return pts.map((p) => svg(p).map(fmt).join(',')).join(' ');
+export function points(pts: readonly Pt[], length = RINK_LENGTH): string {
+  return pts.map((p) => svg(p, length).map(fmt).join(',')).join(' ');
 }
 
 /** Point on a straight line or quadratic curve at t (0..1), in SVG units. */
-function at(path: Move['path'], t: number): [number, number] {
-  const [a, b, c] = path.map(svg);
+function at(path: Move['path'], t: number, length: number): [number, number] {
+  const [a, b, c] = path.map((p) => svg(p, length));
   if (!c) return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
   const u = 1 - t;
   return [
@@ -125,8 +136,8 @@ function at(path: Move['path'], t: number): [number, number] {
  * spot for its step number. The end is trimmed along the final direction, which is
  * exact for straight lines and close enough for the gentle curves used here.
  */
-export function moveGeometry(move: Move) {
-  const pts = move.path.map(svg);
+export function moveGeometry(move: Move, length = RINK_LENGTH) {
+  const pts = move.path.map((p) => svg(p, length));
   const end = pts[pts.length - 1];
   const before = pts[pts.length - 2];
   const len = Math.hypot(end[0] - before[0], end[1] - before[1]) || 1;
@@ -135,7 +146,7 @@ export function moveGeometry(move: Move) {
   const trim = move.trim ?? 0;
   const tip: [number, number] = [end[0] - ux * trim, end[1] - uy * trim];
 
-  const head = move.kind === 'lane' ? 0 : 0.9;
+  const head = move.kind === 'lane' || move.kind === 'stick' ? 0 : 0.9;
   // The line stops at the arrowhead's base so the dashes don't poke through its tip.
   const lineEnd: [number, number] = [tip[0] - ux * head * 0.8, tip[1] - uy * head * 0.8];
 
@@ -156,7 +167,7 @@ export function moveGeometry(move: Move) {
       .join(' ');
   }
 
-  const [mx, my] = at(move.path, 0.5);
+  const [mx, my] = at(move.path, 0.5, length);
   // The step number sits just beside the line's middle.
   const stepAt: [number, number] = [mx + -uy * 1.3, my + ux * 1.3];
 
