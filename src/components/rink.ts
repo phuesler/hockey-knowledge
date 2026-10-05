@@ -4,13 +4,15 @@
  * Every position is given in metres as [x, d]:
  *   x — across the ice, 0 is the middle, negative is the left of the drawing. In our own
  *       zone that is where LD and LW play, because they face up the ice, away from the
- *       goal. In the attacking zone they face the goal, so their left is on the right.
+ *       goal. In the attacking zone they face the goal, so their left is at positive x.
  *   d — distance from the end boards. The goal line is at d = 4, the blue line at d = 22.
  *
  * The drawing has the goal at d = 0 at the bottom, so x grows to the right and d grows
- * upwards. A view decides how much of the rink is shown: one zone, half the rink up to
- * the centre red line, or the full rink with the second goal at the top (d = 60). Measurements are rounded IIHF values (rink 30 m wide), close enough
- * for a sketch.
+ * upwards. The attacking zone is turned by 180° when drawn (Rink's `flip`), so we always
+ * attack upwards and our left is on the left. A view decides how much of the rink is
+ * shown: one zone, half the rink up to the centre red line, the neutral zone, or the
+ * full rink with the second goal at the top (d = 60). Measurements are rounded IIHF
+ * values (rink 30 m wide), close enough for a sketch.
  */
 
 export type Pt = readonly [x: number, d: number];
@@ -30,13 +32,15 @@ export interface Player {
 
 /**
  * skate — a skating path, with an arrowhead.
+ * carry — skating with the puck: a wavy line, with an arrowhead.
  * pass  — a pass, dashed, with an arrowhead.
  * shot  — the puck shot or dumped, dashed like a pass but in the puck's colour.
  * lane  — a dotted line without arrowhead: the way to the goal or a passing lane.
+ * sight — a dotted line without arrowhead: what the goalie has to see, e.g. the puck.
  * stick — a short thick line from a player: where their stick is.
  */
 export interface Move {
-  kind: 'skate' | 'pass' | 'shot' | 'lane' | 'stick';
+  kind: 'skate' | 'carry' | 'pass' | 'shot' | 'lane' | 'sight' | 'stick';
   /** Start and end, or start, control point (quadratic curve) and end. */
   path: readonly [Pt, Pt] | readonly [Pt, Pt, Pt];
   team?: Team;
@@ -44,6 +48,8 @@ export interface Move {
   trim?: number;
   /** Step number written next to the middle of the line. */
   step?: number;
+  /** -1 puts the step number on the other side of the line, e.g. away from the boards. */
+  stepSide?: 1 | -1;
 }
 
 /**
@@ -91,10 +97,20 @@ export const RINK_LENGTH = 25;
 export const FULL_LENGTH = 60;
 export const CENTRE_LINE = FULL_LENGTH / 2;
 
-export type View = 'zone' | 'half' | 'full';
+export type View = 'zone' | 'half' | 'full' | 'neutral';
 
-/** zone: one zone plus a strip of the neutral zone; half: up to just past the centre line. */
-export const VIEW_LENGTH: Record<View, number> = { zone: RINK_LENGTH, half: CENTRE_LINE + 1, full: FULL_LENGTH };
+/**
+ * zone: one zone plus a strip of the neutral zone; half: up to just past the centre line;
+ * neutral: the neutral zone with a few metres of each zone, without the ends of the rink.
+ * VIEW_LENGTH is the top edge of the view, VIEW_FROM its bottom edge.
+ */
+export const VIEW_LENGTH: Record<View, number> = {
+  zone: RINK_LENGTH,
+  half: CENTRE_LINE + 1,
+  full: FULL_LENGTH,
+  neutral: 48,
+};
+export const VIEW_FROM: Record<View, number> = { zone: 0, half: 0, full: 0, neutral: 18 };
 export const CORNER_RADIUS = 7;
 export const GOAL_LINE = 4;
 export const BLUE_LINE = 22;
@@ -144,6 +160,36 @@ function at(path: Move['path'], t: number, length: number): [number, number] {
 }
 
 /**
+ * A wavy polyline along a straight line or quadratic curve (SVG units), for skating with
+ * the puck. The wave fades out at both ends, so the line starts at the player and meets
+ * the arrowhead straight on.
+ */
+function wavy(pts: [number, number][]): string {
+  const [a, b, c] = pts;
+  const base = (t: number): [number, number] => {
+    if (!c) return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+    const u = 1 - t;
+    return [u * u * a[0] + 2 * u * t * b[0] + t * t * c[0], u * u * a[1] + 2 * u * t * b[1] + t * t * c[1]];
+  };
+  const n = 120;
+  const along = Array.from({ length: n + 1 }, (_, i) => base(i / n));
+  const dist = [0];
+  for (let i = 1; i <= n; i++) {
+    dist.push(dist[i - 1] + Math.hypot(along[i][0] - along[i - 1][0], along[i][1] - along[i - 1][1]));
+  }
+  const total = dist[n];
+  const out = along.map(([x, y], i) => {
+    const [px, py] = along[Math.max(0, i - 1)];
+    const [nx, ny] = along[Math.min(n, i + 1)];
+    const len = Math.hypot(nx - px, ny - py) || 1;
+    const fade = Math.min(1, dist[i] / 0.8, (total - dist[i]) / 0.8);
+    const off = 0.4 * Math.sin((2 * Math.PI * dist[i]) / 1.4) * fade;
+    return `${fmt(x - ((ny - py) / len) * off)} ${fmt(y + ((nx - px) / len) * off)}`;
+  });
+  return `M${out.join(' L')}`;
+}
+
+/**
  * SVG geometry for a move: the line's path data, the arrowhead polygon (if any) and the
  * spot for its step number. The end is trimmed along the final direction, which is
  * exact for straight lines and close enough for the gentle curves used here.
@@ -158,15 +204,17 @@ export function moveGeometry(move: Move, length = RINK_LENGTH) {
   const trim = move.trim ?? 0;
   const tip: [number, number] = [end[0] - ux * trim, end[1] - uy * trim];
 
-  const head = move.kind === 'lane' || move.kind === 'stick' ? 0 : 0.9;
+  const head = move.kind === 'lane' || move.kind === 'sight' || move.kind === 'stick' ? 0 : 0.9;
   // The line stops at the arrowhead's base so the dashes don't poke through its tip.
   const lineEnd: [number, number] = [tip[0] - ux * head * 0.8, tip[1] - uy * head * 0.8];
 
   const [s, c] = pts;
   const d =
-    pts.length === 3
-      ? `M${fmt(s[0])} ${fmt(s[1])} Q${fmt(c[0])} ${fmt(c[1])} ${fmt(lineEnd[0])} ${fmt(lineEnd[1])}`
-      : `M${fmt(s[0])} ${fmt(s[1])} L${fmt(lineEnd[0])} ${fmt(lineEnd[1])}`;
+    move.kind === 'carry'
+      ? wavy(pts.length === 3 ? [s, c, lineEnd] : [s, lineEnd])
+      : pts.length === 3
+        ? `M${fmt(s[0])} ${fmt(s[1])} Q${fmt(c[0])} ${fmt(c[1])} ${fmt(lineEnd[0])} ${fmt(lineEnd[1])}`
+        : `M${fmt(s[0])} ${fmt(s[1])} L${fmt(lineEnd[0])} ${fmt(lineEnd[1])}`;
 
   let arrow: string | null = null;
   if (head) {
@@ -181,7 +229,8 @@ export function moveGeometry(move: Move, length = RINK_LENGTH) {
 
   const [mx, my] = at(move.path, 0.5, length);
   // The step number sits just beside the line's middle.
-  const stepAt: [number, number] = [mx + -uy * 1.3, my + ux * 1.3];
+  const side = (move.stepSide ?? 1) * 1.3;
+  const stepAt: [number, number] = [mx - uy * side, my + ux * side];
 
   return { d, arrow, stepAt };
 }

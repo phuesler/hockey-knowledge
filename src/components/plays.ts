@@ -8,8 +8,11 @@
 import { DANGER_ZONE, POST_X, GOAL_LINE, type Pt, type Scene, type View } from './rink';
 
 export interface PlayPanel {
-  /** own: our goal at the bottom; attack: the opponents' goal at the bottom; full: both. */
-  zone: 'own' | 'attack' | 'full';
+  /**
+   * own: our goal at the bottom; attack: the opponents' goal, drawn turned so it is at
+   * the top; full: both; neutral: the neutral zone, our goal below the drawing.
+   */
+  zone: 'own' | 'attack' | 'full' | 'neutral';
   /** How much of the rink to draw; one zone if left out. */
   view?: View;
   verdict?: 'good' | 'bad';
@@ -20,6 +23,17 @@ const danger = { kind: 'danger', poly: DANGER_ZONE } as const;
 const posts: [Pt, Pt] = [
   [-POST_X, GOAL_LINE],
   [POST_X, GOAL_LINE],
+];
+
+/* Our team at a faceoff on the left circle in our own zone (both panels of faceoff-own).
+   Apart from C, nobody stands on the line from the goalie to the puck. */
+const faceoffOwn: Scene['players'] = [
+  { team: 'us', label: 'G', at: [0, 5] },
+  { team: 'us', label: 'LD', at: [-12.2, 7.5] },
+  { team: 'us', label: 'C', at: [-7, 8.3] },
+  { team: 'us', label: 'LW', at: [-5.8, 5.2] },
+  { team: 'us', label: 'RD', at: [-2.2, 9.6] },
+  { team: 'us', label: 'RW', at: [1.8, 7.6] },
 ];
 
 const geometry = {
@@ -237,8 +251,8 @@ const geometry = {
     },
   ],
 
-  /* Attacking zone, puck carrier pressed by two opponents in the corner. Our left side is
-     on the right of the drawing here, because we face the goal at the bottom. */
+  /* Attacking zone, puck carrier pressed by two opponents in the corner. We face the
+     goal, so our left side is at positive x (see rink.ts). */
   'pressure-support': [
     {
       zone: 'attack',
@@ -326,7 +340,7 @@ const geometry = {
   ],
 
   /* Offside: LW is in the zone before the puck. Then the same rush with LW waiting at
-     the line. We attack downwards, so our LW is on the right of the drawing. */
+     the line. We face the goal, so our LW is at positive x (see rink.ts). */
   'offside-entry': [
     {
       zone: 'attack',
@@ -484,6 +498,150 @@ const geometry = {
       },
     },
   ],
+  /* Faceoff on our left circle in our own zone, after the DEB's drawing: LD on the hash
+     marks at the boards, LW behind the C, RD on the inner hash marks, RW in the slot. */
+  'faceoff-own': [
+    {
+      zone: 'own',
+      view: 'half',
+      scene: {
+        players: [
+          { team: 'them', at: [-12.6, 12.8] },
+          { team: 'them', at: [-7, 11.7] },
+          { team: 'them', at: [-1.8, 12.6] },
+          { team: 'them', at: [-12.5, 20.5] },
+          { team: 'them', at: [-1.5, 20.5] },
+          ...faceoffOwn,
+        ],
+        puck: [-7, 10],
+        moves: [
+          { kind: 'sight', path: [[0, 5], [-7, 10]] },
+          { kind: 'pass', team: 'them', path: [[-7, 10], [-12.5, 20.5]], trim: 1.6, step: 1 },
+          { kind: 'skate', path: [[-5.8, 5.2], [-2, 14], [-12.5, 20.5]], trim: 2.2 },
+          { kind: 'skate', path: [[1.8, 7.6], [2.4, 14], [-1.5, 20.5]], trim: 2.2 },
+        ],
+      },
+    },
+    {
+      zone: 'own',
+      view: 'half',
+      scene: {
+        players: faceoffOwn,
+        puck: [-7, 10],
+        moves: [
+          { kind: 'pass', path: [[-7, 10], [-10, 4.4]], step: 1 },
+          { kind: 'skate', path: [[-12.2, 7.5], [-10.4, 4.8]] },
+          { kind: 'pass', path: [[-10, 4.2], [1, -1.6], [13, 5.2]], trim: 0.6, step: 2 },
+          { kind: 'skate', path: [[1.8, 7.6], [12.6, 5.4]] },
+          { kind: 'skate', path: [[-5.8, 5.2], [-4, 30], [2, 29.5]] },
+          { kind: 'skate', path: [[-7, 8.3], [-4, 15], [2.5, 18]] },
+        ],
+      },
+    },
+  ],
+
+  /* Faceoff won on the right circle in the attacking zone. We face the goal, so our
+     right side is at negative x (see rink.ts). First everyone moves into place, then RD
+     at the blue line has four options. */
+  'faceoff-attack': [
+    {
+      zone: 'attack',
+      scene: {
+        players: [
+          { team: 'us', label: 'RW', at: [-12.1, 9.2] },
+          { team: 'us', label: 'C', at: [-7, 11.6] },
+          { team: 'us', label: 'LW', at: [-2, 9.3] },
+          { team: 'us', label: 'RD', at: [-11.8, 21] },
+          { team: 'us', label: 'LD', at: [-1.5, 21.2] },
+        ],
+        puck: [-7, 10],
+        moves: [
+          { kind: 'pass', path: [[-7, 10], [-11.8, 21]], trim: 1.6 },
+          { kind: 'skate', path: [[-2, 9.3], [4.2, 11]] },
+          { kind: 'skate', path: [[-1.5, 21.2], [6.5, 20.8]], trim: 0.2 },
+          { kind: 'skate', path: [[-12.1, 9.2], [-12.9, 5.6]] },
+          { kind: 'skate', path: [[-7, 11.6], [-5, 5], [0, 7.3]] },
+        ],
+      },
+    },
+    {
+      zone: 'attack',
+      scene: {
+        players: [
+          { team: 'us', label: 'RW', at: [-12.9, 5.6] },
+          { team: 'us', label: 'C', at: [0, 7.3] },
+          { team: 'us', label: 'LW', at: [4.2, 11] },
+          { team: 'us', label: 'RD', at: [-11.8, 21] },
+          { team: 'us', label: 'LD', at: [6.5, 20.8] },
+        ],
+        puck: [-10.9, 19.9],
+        moves: [
+          { kind: 'shot', path: [[-10.9, 19.9], [-0.2, 4.4]], step: 1 },
+          { kind: 'pass', path: [[-10.4, 20.8], [6.5, 20.8]], trim: 1.6, step: 2 },
+          { kind: 'pass', path: [[-12.4, 19.8], [-15.6, 12], [-12.9, 5.6]], trim: 1.6, step: 3, stepSide: -1 },
+          { kind: 'pass', path: [[-10.6, 20.2], [4.2, 11]], trim: 1.6, step: 4 },
+        ],
+      },
+    },
+  ],
+  /* Faceoffs in the neutral zone, after the DEB's drawings: at centre ice, and on the
+     dot just outside the opponents' zone. We win the draw back to a defender, the
+     opponents' wingers chase our defenders. */
+  'faceoff-neutral': [
+    {
+      zone: 'neutral',
+      view: 'neutral',
+      scene: {
+        players: [
+          { team: 'them', at: [-4.8, 31.7] },
+          { team: 'them', at: [0.4, 31.6] },
+          { team: 'them', at: [4.9, 31.9] },
+          { team: 'them', at: [-2.9, 37.7] },
+          { team: 'them', at: [2.2, 37.8] },
+          { team: 'us', label: 'LW', at: [-4.9, 28.7] },
+          { team: 'us', label: 'C', at: [-0.4, 28.4] },
+          { team: 'us', label: 'RW', at: [4.8, 29.1] },
+          { team: 'us', label: 'LD', at: [-3.8, 23] },
+          { team: 'us', label: 'RD', at: [2, 23] },
+        ],
+        puck: [0, 30],
+        moves: [
+          { kind: 'pass', path: [[0, 30], [2, 23]], trim: 1.6, step: 1 },
+          { kind: 'skate', team: 'them', path: [[-4.8, 31.7], [-6.2, 27], [-3.8, 23]], trim: 2.2 },
+          { kind: 'skate', team: 'them', path: [[4.9, 31.9], [5.6, 27], [2, 23]], trim: 2.2 },
+          { kind: 'skate', team: 'them', path: [[-2.9, 37.7], [-3.6, 33.6]] },
+          { kind: 'skate', team: 'them', path: [[2.2, 37.8], [4.2, 34]] },
+        ],
+      },
+    },
+    {
+      zone: 'neutral',
+      view: 'neutral',
+      scene: {
+        players: [
+          { team: 'them', at: [2.4, 38.4] },
+          { team: 'them', at: [7.2, 38] },
+          { team: 'them', at: [11.2, 38.6] },
+          { team: 'them', at: [4.2, 43.8] },
+          { team: 'them', at: [9.2, 43.9] },
+          { team: 'us', label: 'LW', at: [2.1, 35.4] },
+          { team: 'us', label: 'C', at: [6.6, 35] },
+          { team: 'us', label: 'RW', at: [12, 35.6] },
+          { team: 'us', label: 'LD', at: [1.6, 29.6] },
+          { team: 'us', label: 'RD', at: [9.4, 29.6] },
+        ],
+        puck: [7, 36.5],
+        moves: [
+          { kind: 'pass', path: [[7, 36.5], [9.4, 29.6]], trim: 1.6, step: 1 },
+          { kind: 'pass', path: [[9.4, 29.6], [1.6, 29.6]], trim: 1.6, step: 2 },
+          { kind: 'skate', team: 'them', path: [[2.4, 38.4], [0.2, 34], [1.6, 29.6]], trim: 2.2 },
+          { kind: 'skate', team: 'them', path: [[11.2, 38.6], [12.4, 33.5], [9.4, 29.6]], trim: 2.2 },
+          { kind: 'skate', team: 'them', path: [[4.2, 43.8], [3.4, 39.8]], trim: 0.6 },
+          { kind: 'skate', team: 'them', path: [[9.2, 43.9], [11.2, 40.4]], trim: 0.6 },
+        ],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -629,7 +787,6 @@ const de: Record<PlayId, PlayText> = {
       'In der Angriffszone wird der Center mit Puck in der Ecke von zwei Gegnern bedrängt. Die beiden Flügel stehen vor dem Tor zwischen den gegnerischen Verteidigern.',
       'Der linke Flügel fährt vom Tor in die Ecke neben den Center und bekommt einen kurzen Pass. Der rechte Flügel fährt in den Slot.',
     ],
-    note: 'Hier greifen wir an: Unten ist das gegnerische Tor. Darum spielt unser LW auf der rechten Seite der Zeichnung.',
   },
   'neutral-zone': {
     caption: 'Abwehrseite in der neutralen Zone',
@@ -659,7 +816,6 @@ const de: Record<PlayId, PlayText> = {
       'Der Center führt den Puck in der neutralen Zone auf die blaue Linie zu. Der linke Flügel steht schon in der Angriffszone.',
       'Der Puck ist gerade über die blaue Linie. Der linke Flügel stand noch vor der Linie und fährt jetzt hinterher in die Zone.',
     ],
-    note: 'Hier greifen wir an: Unten ist das gegnerische Tor. Darum spielt unser LW auf der rechten Seite der Zeichnung.',
   },
   'delayed-offside': {
     caption: 'Verzögertes Abseits: alle raus',
@@ -672,7 +828,6 @@ const de: Record<PlayId, PlayText> = {
     labels: [
       'Ein Gegner hat den Puck tief in seiner Zone. Unsere drei Stürmer stehen noch in der Zone und fahren alle zur blauen Linie zurück. Die Verteidiger warten draussen in der neutralen Zone.',
     ],
-    note: 'Hier greifen wir an: Unten ist das gegnerische Tor.',
   },
   icing: {
     caption: 'Icing',
@@ -716,6 +871,60 @@ const de: Record<PlayId, PlayText> = {
       'Das ganze Eis. Unser Team hat den Puck in der gegnerischen Zone. Unser Torhüter fährt aus dem Tor zur Spielerbank an der linken Bande, ein zusätzlicher Feldspieler fährt von dort aufs Eis. Unser Tor ist leer.',
     ],
     note: 'Die gestrichelte Markierung zeigt, wo der Torhüter vorher stand.',
+  },
+  'faceoff-own': {
+    caption: 'Bully in der eigenen Zone',
+    panels: [
+      {
+        title: 'Bully verloren',
+        text: 'Der gegnerische Center zieht den Puck zu seinem Verteidiger an der blauen Linie (1). LW und RW fahren sofort zu den beiden Verteidigern an der blauen Linie und stören Schuss und Pass. LD, RD und C bleiben unten vor dem Tor. Die gepunktete Linie ist der Blick des Torhüters zum Puck: Ausser C steht dort niemand.',
+      },
+      {
+        title: 'Bully gewonnen',
+        text: 'C zieht den Puck nach hinten zu LD (1). LD passt ihn hinter dem Tor herum auf die andere Seite (2), an der Bande entlang oder mit einem Bandenpass. Dort holt ihn RW. LW fährt aussen hoch und in die Mitte, C fährt durch die Mitte mit. RD bleibt vor dem Tor.',
+      },
+    ],
+    labels: [
+      'Bully am linken Kreis vor unserem Tor. Zwischen unserem Torhüter und dem Puck steht ausser dem Center niemand. Der gegnerische Center gewinnt und zieht den Puck zu einem Verteidiger an der blauen Linie. Unser linker Flügel fährt zu diesem Verteidiger, unser rechter Flügel zum anderen.',
+      'Bully am linken Kreis vor unserem Tor. Unser Center zieht den Puck zum linken Verteidiger in die Ecke. Der passt ihn hinter dem Tor herum zum rechten Flügel. Linker Flügel und Center fahren nach vorne.',
+    ],
+    note: 'Das Bully ist hier am linken Kreis. Am rechten Kreis ist alles gespiegelt: RD steht an der Bande, RW hinter dem C, LD innen und LW im Slot.',
+  },
+  'faceoff-attack': {
+    caption: 'Bully in der Angriffszone',
+    panels: [
+      {
+        title: 'Bully gewonnen',
+        text: 'C zieht den Puck zurück zu RD. Sofort bewegen sich alle: LW gleitet Richtung anderer Bullypunkt, LD fährt rückwärts an der Linie auf die andere Seite, RW geht an der Bande Richtung Ecke, C fährt vors Tor.',
+      },
+      {
+        title: 'Vier Möglichkeiten für RD',
+        text: '1 Schiessen: C vor dem Tor nimmt dem Torhüter die Sicht, fälscht ab oder holt den Abpraller. 2 Quer zu LD an der blauen Linie. 3 An der Bande entlang zu RW. 4 Quer über die Mitte zu LW.',
+      },
+    ],
+    labels: [
+      'Bully am Kreis vor dem gegnerischen Tor. Unser Center zieht den Puck zum rechten Verteidiger an der blauen Linie. Der linke Flügel fährt Richtung anderer Bullypunkt, der linke Verteidiger an der blauen Linie auf die andere Seite, der rechte Flügel an der Bande Richtung Ecke, der Center vors Tor.',
+      'Der rechte Verteidiger hat den Puck an der blauen Linie. Vier Möglichkeiten: Schuss aufs Tor, Pass zum linken Verteidiger an der blauen Linie, Pass an der Bande entlang zum rechten Flügel, Pass quer über die Mitte zum linken Flügel.',
+    ],
+    note: 'Das Bully ist hier am rechten Kreis. Am linken Kreis ist alles gespiegelt.',
+  },
+  'faceoff-neutral': {
+    caption: 'Bully in der neutralen Zone',
+    panels: [
+      {
+        title: 'Am Mittelpunkt',
+        text: 'C zieht den Puck zurück zu RD (1). Die gegnerischen Flügel fahren sofort auf unsere Verteidiger zu, ihre Verteidiger rücken nach. RD hat wenig Zeit und spielt den Puck schnell weiter.',
+      },
+      {
+        title: 'Vor der gegnerischen Zone',
+        text: 'C zieht den Puck zurück zu RD (1). Die gegnerischen Flügel fahren auf unsere Verteidiger zu. RD passt quer zu LD (2), bevor der Gegner da ist.',
+      },
+    ],
+    labels: [
+      'Bully am Mittelpunkt. Unser Center zieht den Puck zum rechten Verteidiger. Die gegnerischen Flügel fahren auf unsere beiden Verteidiger zu, die gegnerischen Verteidiger rücken nach.',
+      'Bully am Punkt in der neutralen Zone vor der gegnerischen blauen Linie. Unser Center zieht den Puck zum rechten Verteidiger, der quer zum linken Verteidiger passt. Die gegnerischen Flügel fahren auf unsere Verteidiger zu.',
+    ],
+    note: 'Wir greifen nach oben an. Am Punkt auf der anderen Seite ist alles gespiegelt.',
   },
 };
 
@@ -844,7 +1053,6 @@ const en: typeof de = {
       'In the attacking zone the centre with the puck is pressed by two opponents in the corner. Both wingers stand in front of the goal between the opposing defenders.',
       'The left wing skates from the goal into the corner next to the centre and gets a short pass. The right wing moves into the slot.',
     ],
-    note: 'Here we are attacking: the opponents’ goal is at the bottom. That is why our LW plays on the right of the drawing.',
   },
   'neutral-zone': {
     caption: 'Defensive side in the neutral zone',
@@ -874,7 +1082,6 @@ const en: typeof de = {
       'The centre carries the puck through the neutral zone towards the blue line. The left wing is already in the attacking zone.',
       'The puck has just crossed the blue line. The left wing was still in front of the line and now follows into the zone.',
     ],
-    note: 'Here we are attacking: the opponents’ goal is at the bottom. That is why our LW plays on the right of the drawing.',
   },
   'delayed-offside': {
     caption: 'Delayed offside: everyone out',
@@ -887,7 +1094,6 @@ const en: typeof de = {
     labels: [
       'An opponent has the puck deep in their zone. Our three forwards are still in the zone and all skate back to the blue line. The defenders wait outside in the neutral zone.',
     ],
-    note: 'Here we are attacking: the opponents’ goal is at the bottom.',
   },
   icing: {
     caption: 'Icing',
@@ -931,6 +1137,60 @@ const en: typeof de = {
       'The whole rink. Our team has the puck in the opponents’ zone. Our goalie skates out of the goal to the bench on the left boards, an extra skater comes on from there. Our goal is empty.',
     ],
     note: 'The dashed marker shows where the goalie stood before.',
+  },
+  'faceoff-own': {
+    caption: 'Face-off in our own zone',
+    panels: [
+      {
+        title: 'Face-off lost',
+        text: 'The opposing centre draws the puck back to a defender at the blue line (1). LW and RW skate straight out to the two defenders at the blue line and get in the way of shots and passes. LD, RD and C stay low in front of the net. The dotted line is the goalie’s view of the puck: apart from C, nobody stands on it.',
+      },
+      {
+        title: 'Face-off won',
+        text: 'C draws the puck back to LD (1). LD passes it round behind the net to the other side (2), rimmed along the boards or as a bank pass. RW picks it up there. LW skates up the outside and into the middle, C goes up through the middle. RD stays in front of the net.',
+      },
+    ],
+    labels: [
+      'Face-off on the left circle in front of our goal. Apart from the centre, nobody stands between our goalie and the puck. The opposing centre wins it and draws the puck to a defender at the blue line. Our left wing skates out to that defender, our right wing to the other one.',
+      'Face-off on the left circle in front of our goal. Our centre draws the puck to the left defender in the corner, who passes it round behind the net to the right wing. Left wing and centre skate up the ice.',
+    ],
+    note: 'Here the face-off is on the left circle. On the right circle everything is mirrored: RD stands at the boards, RW behind the C, LD on the inside and LW in the slot.',
+  },
+  'faceoff-attack': {
+    caption: 'Face-off in the attacking zone',
+    panels: [
+      {
+        title: 'Face-off won',
+        text: 'C draws the puck back to RD. Straight away everyone moves: LW slides towards the far face-off spot, LD skates backwards along the line to the other side, RW moves down the boards towards the corner, C goes to the net.',
+      },
+      {
+        title: 'Four options for RD',
+        text: '1 Shoot: C in front of the net blocks the goalie’s view, tips the puck or takes the rebound. 2 Across to LD at the blue line. 3 Along the boards to RW. 4 Across the middle to LW.',
+      },
+    ],
+    labels: [
+      'Face-off on the circle in front of the opponents’ goal. Our centre draws the puck back to the right defender at the blue line. The left wing slides towards the far face-off spot, the left defender skates along the blue line to the other side, the right wing moves down the boards towards the corner, the centre goes to the net.',
+      'The right defender has the puck at the blue line. Four options: a shot on goal, a pass to the left defender at the blue line, a pass along the boards to the right wing, a pass across the middle to the left wing.',
+    ],
+    note: 'Here the face-off is on the right circle. On the left circle everything is mirrored.',
+  },
+  'faceoff-neutral': {
+    caption: 'Face-off in the neutral zone',
+    panels: [
+      {
+        title: 'At centre ice',
+        text: 'C draws the puck back to RD (1). The opposing wingers skate straight at our defenders, and their defenders step up behind them. RD has little time and moves the puck on quickly.',
+      },
+      {
+        title: 'Outside the opponents’ zone',
+        text: 'C draws the puck back to RD (1). The opposing wingers skate at our defenders. RD passes across to LD (2) before the opponent gets there.',
+      },
+    ],
+    labels: [
+      'Face-off at centre ice. Our centre draws the puck to the right defender. The opposing wingers skate at our two defenders, the opposing defenders step up.',
+      'Face-off on the neutral-zone spot in front of the opponents’ blue line. Our centre draws the puck to the right defender, who passes across to the left defender. The opposing wingers skate at our defenders.',
+    ],
+    note: 'We attack upwards. On the spot on the other side everything is mirrored.',
   },
 };
 

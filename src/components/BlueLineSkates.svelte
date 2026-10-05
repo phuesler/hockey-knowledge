@@ -3,8 +3,8 @@
    * Close-up of the blue line from above: where the skates (and the puck) have to be
    * for offside. Static, used without a client directive.
    *
-   * Units are centimetres: the blue line is 30 cm wide (y 45–75), the neutral zone is
-   * above it, the attacking zone below. A skate blade is about 28 cm long; the boot
+   * Units are centimetres: the blue line is 30 cm wide (y 45–75), the attacking zone is
+   * above it, the neutral zone below, so we attack upwards like in the rink diagrams. A skate blade is about 28 cm long; the boot
    * around it is drawn faintly. The puck is 7.6 cm across.
    */
   import type { Locale } from '../lib/i18n';
@@ -33,7 +33,7 @@
         text: 'Der Puck liegt noch auf der Linie. Er ist erst drin, wenn er ganz drüben ist.',
       },
     },
-    note: 'Von oben gesehen, wir greifen nach unten an. Die ganze blaue Linie gehört noch zur neutralen Zone.',
+    note: 'Von oben gesehen, wir greifen nach oben an. Die ganze blaue Linie gehört noch zur neutralen Zone.',
   };
   const en: typeof de = {
     caption: 'At the blue line',
@@ -57,7 +57,7 @@
         text: 'The puck is still on the line. It is only in when it is completely across.',
       },
     },
-    note: 'Seen from above, we attack downwards. The whole blue line still belongs to the neutral zone.',
+    note: 'Seen from above, we attack upwards. The whole blue line still belongs to the neutral zone.',
   };
 
   const s = $derived({ de, en }[locale]);
@@ -82,8 +82,10 @@
         <svg viewBox="0 0 80 120" role="img" aria-label="{s.cases[c.id].name}: {s.cases[c.id].text}">
           <rect x="0" y="0" width="80" height="120" class="ice" />
           <rect x="0" y="45" width="80" height="30" class="line" />
-          <text x="3" y="7" class="zone">{s.neutral}</text>
-          <text x="3" y="116" class="zone">{s.attack}</text>
+          <text x="3" y="7" class="zone">{s.attack}</text>
+          <text x="3" y="116" class="zone">{s.neutral}</text>
+          <!-- Drawn with the attacking zone below, then mirrored so we attack upwards. -->
+          <g transform="translate(0 120) scale(1 -1)">
           {#if c.skates}
             {#each c.skates as top, i}
               <rect x={SKATE_X[i] - 4.5} y={top - 1} width="9" height="30" rx="4" class="boot" />
@@ -97,6 +99,7 @@
           {#if c.puck}
             <circle cx="40" cy="73" r="3.8" class="puck" />
           {/if}
+          </g>
         </svg>
         <p class="text">{s.cases[c.id].text}</p>
       </li>

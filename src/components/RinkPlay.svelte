@@ -17,16 +17,18 @@
   const de = {
     zone: {
       own: 'Unten ist unser Tor',
-      attack: 'Unten ist das gegnerische Tor, wir greifen nach unten an',
+      attack: 'Oben ist das gegnerische Tor, wir greifen nach oben an',
       full: 'Das ganze Eis: unten unser Tor, oben das gegnerische',
+      neutral: 'Die neutrale Zone: unser Tor liegt unten, wir greifen nach oben an',
     },
     verdict: { good: 'So', bad: 'Nicht so' },
   };
   const en: typeof de = {
     zone: {
       own: 'Our goal is at the bottom',
-      attack: 'The opponents’ goal is at the bottom, we attack downwards',
+      attack: 'The opponents’ goal is at the top, we attack upwards',
       full: 'The whole rink: our goal at the bottom, the opponents’ at the top',
+      neutral: 'The neutral zone: our goal is below, we attack upwards',
     },
     verdict: { good: 'Do', bad: 'Don’t' },
   };
@@ -50,7 +52,7 @@
           {/if}
           {text.panels[i].title}
         </p>
-        <Rink scene={panel.scene} label={text.labels[i]} view={panel.view} />
+        <Rink scene={panel.scene} label={text.labels[i]} view={panel.view} flip={panel.zone === 'attack'} />
         <p class="text">{text.panels[i].text}</p>
       </div>
     {/each}
