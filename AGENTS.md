@@ -79,6 +79,11 @@ components take a `locale` prop (default `'de'`) and use
 `$derived({ de, en }[locale])`; English articles pass it: `<StickSizer client:visible
 locale="en" />`.
 
+Rink diagrams: a static situation goes into `src/components/plays.ts` and is shown with
+`<RinkPlay play="…" />` (no client directive). A situation told in steps, where players
+slide from frame to frame, goes into `src/components/sequences.ts` and is shown with
+`<RinkSequence client:visible sequence="…" />`. Both take `locale="en"` in English articles.
+
 For callout boxes there is `Callout.astro`, already available in `.mdx`:
 
 ```mdx

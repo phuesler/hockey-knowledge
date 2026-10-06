@@ -28,6 +28,8 @@ export interface Player {
   ghost?: boolean;
   /** Stable key so the interactive diagram can animate a player from one spot to the next. */
   id?: string;
+  /** A small emoji next to the marker, e.g. the animal role in RinkStory. */
+  badge?: string;
 }
 
 /**
@@ -59,6 +61,9 @@ export interface Move {
  * shot   — what a shooter sees of the goal.
  * near / far — near and far support.
  * bench  — our players' bench along the boards.
+ * open   — open ice: space no opponent covers, where a player can skate or get a pass.
+ * shadow — a passing shadow: the space behind an opponent that no pass reaches.
+ * view   — where a player is looking (see viewCone).
  * cover-* — the coverage area of one position in our zone (see COVERAGE_AREAS);
  *           cover-shared is the middle strip up high that the wingers and C share.
  */
@@ -71,6 +76,9 @@ export type AreaKind =
   | 'near'
   | 'far'
   | 'bench'
+  | 'open'
+  | 'shadow'
+  | 'view'
   | `cover-${CoverRole}`
   | 'cover-shared';
 
@@ -136,6 +144,42 @@ export const DANGER_ZONE: readonly Pt[] = [
   [DOT_X, DOT_D],
   [POST_X, GOAL_LINE],
 ];
+
+/**
+ * A player's field of view as a wedge: from `from`, looking towards `toward`, `spread`
+ * degrees wide and `reach` metres deep. The arc is a few straight segments.
+ */
+export function viewCone(from: Pt, toward: Pt, spread = 70, reach = 9): Pt[] {
+  const dir = Math.atan2(toward[1] - from[1], toward[0] - from[0]);
+  const half = (spread / 2) * (Math.PI / 180);
+  const arc: Pt[] = [];
+  for (let i = 0; i <= 6; i++) {
+    const a = dir - half + (i / 6) * 2 * half;
+    arc.push([from[0] + reach * Math.cos(a), from[1] + reach * Math.sin(a)]);
+  }
+  return [from, ...arc];
+}
+
+/**
+ * The passing shadow behind an opponent, seen from the puck: a strip that starts at the
+ * opponent's shoulders and widens away from the puck for `reach` metres.
+ */
+export function passShadow(puck: Pt, opponent: Pt, reach = 6): Pt[] {
+  const dx = opponent[0] - puck[0];
+  const dd = opponent[1] - puck[1];
+  const len = Math.hypot(dx, dd) || 1;
+  const [ux, ud] = [dx / len, dd / len];
+  const [px, pd] = [-ud, ux];
+  const near = 1.2;
+  const far = near * ((len + reach) / len);
+  const end: Pt = [opponent[0] + ux * reach, opponent[1] + ud * reach];
+  return [
+    [opponent[0] + px * near, opponent[1] + pd * near],
+    [end[0] + px * far, end[1] + pd * far],
+    [end[0] - px * far, end[1] - pd * far],
+    [opponent[0] - px * near, opponent[1] - pd * near],
+  ];
+}
 
 /** Rink metres to SVG user units: the goal at the bottom, 1 unit = 1 m. `length` is the view's length. */
 export function svg([x, d]: Pt, length = RINK_LENGTH): [number, number] {

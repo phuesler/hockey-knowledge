@@ -1,0 +1,172 @@
+---
+/**
+ * The four animals of the forecheck/backcheck article as cards: what each one does,
+ * the picture behind it and a one-line motto to shout on the ice. Static on purpose,
+ * the cards back up the text and must be there without JavaScript.
+ */
+import { localeFromUrl } from '../lib/i18n';
+import { animals, type Animal } from './stories';
+
+const de = {
+  caption: 'Vier Tiere, vier Aufgaben',
+  job: 'Aufgabe',
+  like: 'Wie',
+  cards: {
+    dog: {
+      name: 'Hund',
+      when: 'Forecheck · Erster beim Puck',
+      job: 'Jagt den Puckführer und lässt ihm keine Zeit.',
+      like: 'ein Hütehund: Er beisst nicht, er treibt das Schaf an den Zaun.',
+      motto: '„Ich jage!“',
+    },
+    fox: {
+      name: 'Fuchs',
+      when: 'Forecheck · Zweiter',
+      job: 'Macht die Bande auf der Puckseite zu.',
+      like: 'ein Fuchs vor dem Mauseloch: Er wartet dort, wo die Maus herauskommen muss.',
+      motto: '„Ich lauere an der Bande!“',
+    },
+    hawk: {
+      name: 'Falke',
+      when: 'Forecheck · Dritter',
+      job: 'Bleibt hoch in der Mitte und sichert ab.',
+      like: 'ein Falke, der hoch oben kreist: Er sieht alles und stösst erst herab, wenn es sich lohnt.',
+      motto: '„Ich sehe alles!“',
+    },
+    cheetah: {
+      name: 'Gepard',
+      when: 'Backcheck · nach einem Puckverlust',
+      job: 'Sprintet durch die Mitte zurück ins Haus und bremst dort.',
+      like: 'ein Gepard, das schnellste Tier an Land: kurz und mit voller Kraft.',
+      motto: '„Ich sprinte heim!“',
+    },
+  } satisfies Record<Animal, unknown>,
+};
+
+const en: typeof de = {
+  caption: 'Four animals, four jobs',
+  job: 'Job',
+  like: 'Like',
+  cards: {
+    dog: {
+      name: 'Dog',
+      when: 'Forecheck · first to the puck',
+      job: 'Hunts the puck carrier and gives them no time.',
+      like: 'a sheepdog: it doesn’t bite, it drives the sheep towards the fence.',
+      motto: '“I hunt!”',
+    },
+    fox: {
+      name: 'Fox',
+      when: 'Forecheck · second',
+      job: 'Closes the boards on the puck side.',
+      like: 'a fox at a mouse hole: it waits where the mouse has to come out.',
+      motto: '“I lurk on the boards!”',
+    },
+    hawk: {
+      name: 'Hawk',
+      when: 'Forecheck · third',
+      job: 'Stays high in the middle and covers.',
+      like: 'a hawk circling high up: it sees everything and only swoops when it pays off.',
+      motto: '“I see everything!”',
+    },
+    cheetah: {
+      name: 'Cheetah',
+      when: 'Backcheck · after losing the puck',
+      job: 'Sprints back through the middle to the house and stops there.',
+      like: 'a cheetah, the fastest animal on land: short and at full power.',
+      motto: '“I sprint home!”',
+    },
+  },
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+const order = Object.keys(animals) as Animal[];
+---
+
+<figure class="animals">
+  <figcaption>{s.caption}</figcaption>
+  <ul>
+    {
+      order.map((a) => {
+        const c = s.cards[a];
+        return (
+          <li class={a}>
+            <span class="icon" aria-hidden="true">{animals[a]}</span>
+            <div>
+              <p class="name">{c.name}</p>
+              <p class="when">{c.when}</p>
+              <p><strong>{s.job}:</strong> {c.job}</p>
+              <p><strong>{s.like}</strong> {c.like}</p>
+              <p class="motto">{c.motto}</p>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+</figure>
+
+<style>
+  .animals {
+    margin: var(--s-6) 0;
+  }
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-3);
+  }
+  ul {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 34rem) {
+    ul {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  /* .prose spaces consecutive list items; ul > li outranks it. */
+  ul > li {
+    display: grid;
+    grid-template-columns: 2.75rem 1fr;
+    gap: var(--s-3);
+    margin: 0;
+    padding: var(--s-4);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-top: 4px solid var(--c-signal);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  ul > li.cheetah {
+    border-top-color: var(--c-accent);
+  }
+  .icon {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+  p {
+    margin: 0;
+    font-size: var(--t-sm);
+  }
+  p + p {
+    margin-top: var(--s-1);
+  }
+  .name {
+    font-size: var(--t-lg);
+    font-weight: 700;
+  }
+  .when {
+    color: var(--c-text-muted);
+  }
+  .motto {
+    margin-top: var(--s-2);
+    font-weight: 700;
+    color: var(--c-brand);
+  }
+</style>

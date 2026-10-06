@@ -1,0 +1,230 @@
+---
+title: "The four roles: König, Satellit, Jäger and Wächter"
+description: "Every player on the ice has one of four roles at every moment. What König, Satellit, Jäger and Wächter do – and why the roles keep changing."
+category: theorie
+order: 8
+updated: 2026-10-06
+tags: ["Game sense", "Roles", "DEB"]
+translationOf: rollen
+draft: true
+---
+
+import RinkPlay from '../../../components/RinkPlay.svelte';
+import RinkSequence from '../../../components/RinkSequence.svelte';
+import PuckControl from '../../../components/PuckControl.astro';
+import Callout from '../../../components/Callout.astro';
+import { href } from '../../../lib/href';
+
+Hockey is fast. Nobody has time to think about a tactics board during a game. That is why
+one simple question helps: **Which role do I have right now?**
+
+There are only four. Which one you have depends on two questions: does our team have the
+puck? And do you have the puck yourself – or does your opponent?
+
+The roles come from the training framework of the German Ice Hockey Federation (DEB). For
+U13 it describes attacking with and without the puck in the chapter
+<a href="https://www.deb-rtk.de/grundlagentraining/zweikampf-offensiv">Zweikampf offensiv</a>
+and defending in the chapter
+<a href="https://www.deb-rtk.de/grundlagentraining/zweikampf-defensiv">Zweikampf defensiv</a>
+(both in German). The roles are often called O1, O2, D1 and D2 for short. O stands for
+offence, D for defence. Our team gives the roles names, and we use the German names on the
+ice too: **König** (king), **Satellit** (satellite), **Jäger**
+(hunter) and **Wächter** (guard).
+
+<Callout type="merke" title="The short version">
+**We have the puck:**
+- **König** (O1) – you have the puck.
+- **Satellit** (O2) – a teammate has the puck.
+
+**The opponents have the puck:**
+- **Jäger** (D1) – you defend against the opponent with the puck.
+- **Wächter** (D2) – you defend against an opponent without the puck.
+
+The role does not depend on the position. A defender can be König, a forward can be
+Wächter.
+</Callout>
+
+<RinkPlay play="four-roles" locale="en" />
+
+## Roles change all the time
+
+The roles are not positions like centre or defender. They change with every pass and every
+lost puck.
+
+- The König passes. Now he is a Satellit, and the teammate with the puck is König.
+- The opponents take the puck from us. Now everyone is a Jäger or a Wächter. Whoever is
+  closest to the puck becomes the Jäger.
+- We win the puck back. Whoever has it is König. Everyone else is a Satellit straight away.
+
+<RinkSequence client:visible sequence="role-switch" locale="en" />
+
+## König: the player with the puck
+
+The **König** has the puck. He decides what happens next. That is a responsibility: a good
+König doesn't just get rid of the puck. He looks, skates and then plays a solution. This
+fits our <a href={href('/en/season-concept')}>season concept</a>: we never clear the puck
+blindly.
+
+**Head up, scan the ice.** Scanning means a quick look across the ice. Where are your
+teammates, where are the opponents, where is there space? It starts before the puck
+arrives. Anyone who only looks once they have the puck is often too late.
+
+<RinkSequence client:visible sequence="scan" locale="en" />
+
+**Find open ice.** Don't skate into traffic, the places where many players are. Speed and
+quick changes of direction get you away from your opponent. And look for the way to the
+goal: the best shots come from the slot, right in front of the goal.
+
+<RinkPlay play="open-ice" locale="en" />
+
+**Protect the puck.** Every opponent wants to get his stick on the puck. So don't hold the
+puck out in front of you like on a tray. Carry it on the side away from the opponent. Your
+body is then between the puck and the opponent.
+
+<PuckControl variant="shield" />
+
+**Puck on the forehand.** The **forehand** is the side of the blade you normally shoot
+with. With the puck there, you have three options: pass, shoot or keep skating. The
+opponent doesn't know what is coming.
+
+<PuckControl variant="forehand" />
+
+**Dekes in a 1‑on‑1.** A **deke** is a fake. You point one way with your stick, body or
+head and skate the other way. That pulls the opponent out of position.
+
+## Satellit: attackers without the puck
+
+A **satellite** circles a planet. In hockey the Satelliten circle the König. In attack,
+four out of five players are Satelliten. Their job: the König is never alone. Make
+yourself available for a pass!
+
+**Get out of the passing shadow.** The **passing shadow** is the space behind an opponent.
+No pass gets through to it. If you can't see the König's blade, you are in the shadow. One
+or two steps to the side and you are open.
+
+**Don't hide.** Standing behind an opponent or far from the play doesn't help the König.
+Skate to where he can see you: in front of him, beside him or behind him.
+
+<RinkSequence client:visible sequence="pass-shadow" locale="en" />
+
+**Turn your head.** Look around, even without the puck. Knowing where the opponents are
+helps you find the gap faster.
+
+**Stick on the ice, in the open passing lane.** That shows the König where the pass should
+go. And **talk**: a short call helps him more than any hand signal.
+
+**Skate towards the pass.** Then it is shorter and safer.
+
+<RinkPlay play="skate-to-pass" locale="en" />
+
+Satelliten spread out. One is **near** the König, for a quick, short pass. One gives
+**width**, on the far boards. One gives **depth**, far ahead or far behind. The defenders
+move too, so their partner can pass to them. The <a href={href('/en/support')}>Support</a>
+article shows what this looks like.
+
+**Drive to the net.** Skating away from the König towards the goal often pulls an opponent
+along. That opens space for the König. In front of the goal you block the goalie's view.
+And if the puck bounces off, you are there first.
+
+<RinkSequence client:visible sequence="net-drive" locale="en" />
+
+<Callout type="tipp" title="Always ready">
+A loose puck belongs to whoever gets there first. A Satellit keeps his legs moving, even
+without the puck. Then he gets there faster.
+</Callout>
+
+## Jäger: defending the puck carrier
+
+The **Jäger** defends against the opponent with the puck. Usually that is the player
+closest to the puck. Four things make a good Jäger:
+
+1. **Stay on the defensive side.** You are between the opponent and our goal. More on this
+   in the <a href={href('/en/defensive-side')}>defensive side</a> article.
+2. **Close the gap quickly.** The **gap** is the distance between you and the opponent. The
+   bigger it is, the more time and space he has. A few quick strides towards him – about
+   five as a rule of thumb – take both away.
+3. **Stick on puck.** Your blade is on the ice, pointing at the puck. That puts pressure on
+   him without you leaning in too far.
+4. **Push him outside.** Keep the opponent on the boards, away from the middle. The middle
+   in front of our goal is the most dangerous place on the ice. Some call it *home base*.
+
+<RinkSequence client:visible sequence="close-gap" locale="en" />
+
+### Where is the opponent looking?
+
+A good Jäger reads the situation before he attacks.
+
+**The opponent is facing the play.** He can see you, his teammates and the goal. Don't be
+too wild. Close the gap quickly, get your stick on the puck and put on pressure. But stay
+on the defensive side. Rushing in now gets you skated around.
+
+**The opponent is facing the boards.** His back is to you and he can't see what is
+happening. Now you can attack more firmly and separate him from the puck. Body contact is
+part of it, for example pinning him on the boards as in the
+<a href={href('/en/support')}>Support</a> article. A body check is not: it is banned up to
+and including U13 (see <a href={href('/en/foundation-training')}>DEB foundation training</a>).
+Here too: stick on puck, stay on the defensive side.
+
+<RinkPlay play="read-opponent" locale="en" />
+
+## Wächter: defending players without the puck
+
+The **Wächter** defend against the opponents without the puck. These opponents are the
+other team's Satelliten. They wait for a pass, often in front of our goal. The Wächter
+makes sure the pass doesn't arrive – or that the opponent can't do anything with it.
+
+**Stay on the defensive side.** Without the puck too, you stand between your opponent and
+our goal.
+
+**Opponent and puck in view.** Stand so that you can see both. If you can't, keep turning
+your head from one to the other. Watching only the puck means losing your opponent.
+
+**Stick on the ice.** Your blade is in the passing lane, where a pass to your opponent
+would have to go. That way you can intercept passes.
+
+**Work from the inside out.** First protect the middle in front of the goal. Only then go
+outside.
+
+**The closer to the goal, the tighter.** If your opponent is far from the goal, you can
+leave some space. If he skates to the front of the goal, stay right with him.
+
+<RinkSequence client:visible sequence="guard-tight" locale="en" />
+
+**Talk.** Tell or show your teammates which opponent you are taking. Otherwise two of you
+cover the same player and another one is left open. The
+<a href={href('/en/coverage')}>coverage</a> article explains who takes which area.
+
+<Callout type="tipp" title="Talking is training">
+Calling out who you cover feels strange at first. It only becomes a habit if you do it at
+every practice – not just in games.
+</Callout>
+
+## Switch fast
+
+The most important moment is the switch. We lose the puck, and König and Satelliten become
+Jäger and Wächter. Or we win the puck, and Jäger and Wächter become König and Satelliten.
+This switch is called **transition**.
+
+Whoever switches faster has more players in the right place for a moment. Many goals come
+from that. That is why switching is worth practising: every time the puck is lost, ask
+yourself straight away which role you have now.
+
+**Watching teaches too.** In practice we often play on a small area, with a break between
+shifts. Use it: pick a player and ask yourself which role he has right now. What does he do
+well? What would you do differently?
+
+**The roles as an operating system.** A computer needs an operating system so that
+everything else can run. The four roles are something like that for hockey. If you keep
+them in mind in every drill, you will do the right thing automatically more and more often.
+
+<Callout type="tipp" title="For parents in the stands">
+At the next game, pick one child. Every time the puck changes hands, ask yourself: is the
+child König, Satellit, Jäger or Wächter right now? You will see how often the role changes
+in a single minute.
+</Callout>
+
+<Callout type="merke" title="Rules of thumb, not laws">
+“Five quick strides”, “the closer to the goal, the tighter”: these are guideline values.
+The drawing shows an example, not a set play. How much space is right depends on the
+opponent and on your own speed. But the four roles stay the same in every situation.
+</Callout>
