@@ -151,7 +151,7 @@ const geometry = {
     /* 1. Skates on the blue line, stick in the zone. */
     { correct: 2 },
 
-    /* 2. Delayed offside: everyone out at the same time. */
+    /* 2. Delayed offside: everyone out of the zone, as fast as possible. */
     {
       correct: 1,
       figure: {
@@ -639,7 +639,7 @@ const de: Record<QuizId, QuizText> = {
           'Der Linienrichter hebt den Arm. Der Gegner hat den Puck tief in seiner Zone. Du bist LW und noch in der Zone, genau wie C und RW. Was machst du?',
         label:
           'Angriffszone. Der Gegner hat den Puck tief in seiner Zone. LW, C und RW sind noch in der Zone, LD und RD stehen vor der blauen Linie.',
-        afterLabel: 'LW, C und RW sind zurück an der blauen Linie und berühren sie gleichzeitig.',
+        afterLabel: 'LW, C und RW haben die Zone verlassen. Jetzt ist kein Angreifer mehr drin.',
         options: [
           {
             text: 'Den Gegner mit dem Puck angreifen, bevor er wegkommt.',
@@ -647,14 +647,14 @@ const de: Record<QuizId, QuizText> = {
               'Dann pfeift der Linienrichter. Solange der Arm oben ist, darfst du weder den Puck spielen noch den Gegner mit dem Puck angreifen.',
           },
           {
-            text: 'Zurückfahren, bis wir alle gleichzeitig die blaue Linie berühren.',
+            text: 'So schnell wie möglich raus, bis keiner von uns mehr in der Zone ist.',
             feedback:
-              'Alle, die in der Zone sind, fahren zurück, bis sie gleichzeitig die blaue Linie berühren. Dann geht der Arm herunter, und ihr dürft sofort wieder hinein.',
+              'Ihr müsst nicht gleichzeitig über die Linie fahren. Jeder fährt so schnell wie möglich raus. Sobald keiner mehr in der Zone ist, geht der Arm herunter, und ihr dürft sofort wieder hinein.',
           },
           {
             text: 'Allein schnell raus und gleich wieder rein.',
             feedback:
-              'Einer allein reicht nicht. Der Arm geht erst herunter, wenn alle Angreifer gleichzeitig draussen sind.',
+              'Wer gleich wieder hineinfährt, ist wieder in der Zone. Der Arm geht erst herunter, wenn kein Angreifer mehr drin ist. Also draussen bleiben, bis alle draussen sind.',
           },
         ],
         section: 'verzögertes-abseits-alle-raus',
@@ -1805,7 +1805,7 @@ const en: typeof de = {
           'The linesperson raises their arm. The opponents have the puck deep in their zone. You are LW and still in the zone, and so are C and RW. What do you do?',
         label:
           'Attacking zone. The opponents have the puck deep in their zone. LW, C and RW are still in the zone, LD and RD are outside the blue line.',
-        afterLabel: 'LW, C and RW are back at the blue line and touch it at the same time.',
+        afterLabel: 'LW, C and RW have left the zone. Now no attacker is left in it.',
         options: [
           {
             text: 'Go after the opponent with the puck before they get away.',
@@ -1813,14 +1813,14 @@ const en: typeof de = {
               'Then the linesperson blows the whistle. While the arm is up, you may neither play the puck nor go after the opponent who has it.',
           },
           {
-            text: 'Skate back until we all touch the blue line at the same time.',
+            text: 'Get out as fast as possible, until none of us is left in the zone.',
             feedback:
-              'Everyone in the zone skates back until they all touch the blue line at the same time. Then the arm comes down and you can go straight back in.',
+              'You don’t have to cross the line together. Everyone gets out as fast as possible. As soon as nobody is left in the zone, the arm comes down and you can go straight back in.',
           },
           {
             text: 'Quickly get out on my own and come straight back in.',
             feedback:
-              'One player alone isn’t enough. The arm only comes down once all the attackers are out at the same time.',
+              'If you go straight back in, you are in the zone again. The arm only comes down once no attacker is left inside. So stay out until everyone is out.',
           },
         ],
         section: 'delayed-offside-everyone-out',

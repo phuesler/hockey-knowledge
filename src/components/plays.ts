@@ -1114,7 +1114,7 @@ const de: Record<PlayId, PlayText> = {
     panels: [
       {
         title: 'Zurück an die blaue Linie',
-        text: 'Der Linienrichter hat den Arm oben, der Gegner hat den Puck. Alle drei Stürmer fahren aus der Zone, bis sie gleichzeitig die blaue Linie berühren. Keiner spielt den Puck. Danach dürfen sie wieder hinein.',
+        text: 'Der Linienrichter hat den Arm oben, der Gegner hat den Puck. Alle drei Stürmer fahren so schnell wie möglich aus der Zone. Keiner spielt den Puck. Sobald keiner mehr drin ist, dürfen sie wieder hinein.',
       },
     ],
     labels: [
@@ -1485,7 +1485,7 @@ const en: typeof de = {
     panels: [
       {
         title: 'Back to the blue line',
-        text: 'The linesperson has their arm up, the opponents have the puck. All three forwards leave the zone until they touch the blue line at the same moment. Nobody plays the puck. Then they may go back in.',
+        text: 'The linesperson has their arm up, the opponents have the puck. All three forwards leave the zone as fast as they can. Nobody plays the puck. As soon as none of them is left inside, they may go back in.',
       },
     ],
     labels: [
