@@ -37,6 +37,13 @@ const faceoffOwn: Scene['players'] = [
   { team: 'us', label: 'RW', at: [1.8, 7.6] },
 ];
 
+/* The opponents around the half-wall cross (halfwall-read), apart from the one next to LW. */
+const halfwallReadThem: Scene['players'] = [
+  { team: 'them', at: [4.5, 6] },
+  { team: 'them', at: [-3, 6] },
+  { team: 'them', at: [1.6, 11.6] },
+];
+
 const geometry = {
   /* Abwehrseite: the defender on the wrong side, then between the puck carrier and the goal. */
   'goal-side': [
@@ -918,6 +925,87 @@ const geometry = {
       },
     },
   ],
+  /* The half-wall cross in the attacking zone (our left at positive x): who does the
+     opponent next to LW follow? That decides between the drop and the cut to the slot. */
+  'halfwall-read': [
+    {
+      zone: 'attack',
+      scene: {
+        areas: [danger],
+        players: [
+          ...halfwallReadThem,
+          { team: 'them', at: [10.8, 16.4] },
+          { team: 'us', label: 'LW', at: [13.5, 15.8] },
+          { team: 'us', label: 'LD', at: [10, 12.6] },
+        ],
+        puck: [13.9, 14.4],
+        moves: [
+          { kind: 'pass', path: [[13.9, 13.6], [14.5, 11], [13.4, 8.8]], trim: 0.3 },
+          { kind: 'skate', path: [[10, 11], [10.6, 8.6], [12.4, 8.4]], trim: 0.3 },
+        ],
+      },
+    },
+    {
+      zone: 'attack',
+      scene: {
+        areas: [danger],
+        players: [
+          ...halfwallReadThem,
+          { team: 'them', at: [8.6, 13.4] },
+          { team: 'us', label: 'LW', at: [13.5, 15.8] },
+          { team: 'us', label: 'LD', at: [11.2, 11.4] },
+        ],
+        puck: [13.4, 14.4],
+        moves: [{ kind: 'carry', path: [[12.6, 16.8], [7.4, 18.4], [5, 13.4]] }],
+      },
+    },
+  ],
+  /* Gegenlaufen: skating away up the ice with the back to the puck carrier, all the way to
+     the far blue line, against skating towards the puck and swinging to the outside. */
+  'skate-away': [
+    {
+      zone: 'full',
+      view: 'full',
+      verdict: 'bad',
+      scene: {
+        areas: [{ kind: 'view', poly: viewCone([-7.4, 35.6], [-5, 6], 46, 9) }],
+        players: [
+          { team: 'them', at: [-1.2, 9.4] },
+          { team: 'them', at: [3.6, 31] },
+          { team: 'them', at: [-7, 41.6] },
+          { team: 'us', label: 'LD', at: [-5, 5] },
+          { team: 'us', label: 'LW', at: [-8.4, 16], ghost: true },
+          { team: 'us', label: 'LW', at: [-7.4, 35.6] },
+        ],
+        puck: [-5.6, 6.2],
+        moves: [
+          { kind: 'skate', path: [[-8.3, 17.6], [-7.5, 34]], trim: 0.2 },
+          { kind: 'lane', path: [[-5.6, 6.2], [-7.3, 34.2]] },
+          { kind: 'skate', team: 'them', path: [[3.6, 31], [-4.8, 35]], trim: 1.6 },
+          { kind: 'skate', team: 'them', path: [[-7, 40.2], [-7.3, 37.4]], trim: 0.2 },
+        ],
+      },
+    },
+    {
+      zone: 'full',
+      view: 'full',
+      verdict: 'good',
+      scene: {
+        players: [
+          { team: 'them', at: [-1.2, 9.4] },
+          { team: 'them', at: [3.6, 31] },
+          { team: 'us', label: 'LD', at: [-5, 5] },
+          { team: 'us', label: 'LW', at: [-8.4, 16], ghost: true },
+          { team: 'us', label: 'LW', at: [-12.6, 13.6] },
+        ],
+        puck: [-5.6, 6.2],
+        moves: [
+          { kind: 'skate', path: [[-8.6, 14.4], [-9.4, 6.6], [-12.4, 12]], trim: 0.2 },
+          { kind: 'pass', path: [[-5.6, 6.2], [-11.4, 14.4]], trim: 0.6 },
+        ],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -1307,6 +1395,40 @@ const de: Record<PlayId, PlayText> = {
       'Gleiche Lage. Der linke Flügel fährt zum Puckführer. Der Center fährt an die linke Bande zwischen Puck und gegnerischen Flügel. Der rechte Flügel fährt in die Mitte vor die blaue Linie. Die Verteidiger bleiben an der blauen Linie.',
     ],
   },
+  'halfwall-read': {
+    caption: 'Der Verteidiger kreuzt: Wohin geht der Gegner?',
+    panels: [
+      {
+        title: 'Der Gegner bleibt bei LW',
+        text: 'LW spielt den Puck an der Bande entlang in den Weg von LD. LD nimmt ihn in der Fahrt mit und hat Platz.',
+      },
+      {
+        title: 'Der Gegner geht mit LD',
+        text: 'LW behält den Puck und zieht selbst in den Slot. Der Weg ist frei.',
+      },
+    ],
+    labels: [
+      'Angriffszone, oben das gegnerische Tor. LW ist mit dem Puck an der linken Bande, ein Gegner direkt daneben. LD ist innen an LW vorbeigefahren. LW spielt den Puck an der Bande entlang Richtung Tor, LD fährt in einem Bogen dorthin.',
+      'Gleiche Lage, aber der Gegner ist mit LD nach unten gefahren. LW ist frei und fährt mit dem Puck in einem Bogen in den Slot.',
+    ],
+  },
+  'skate-away': {
+    caption: 'Wegfahren oder entgegenfahren?',
+    panels: [
+      {
+        title: 'Wegfahren und zurückschauen',
+        text: 'LW fährt mit dem Rücken zu LD bis zur blauen Linie und schaut über die Schulter zurück. Der Pass ist lang und kommt steil von hinten. Die Gegner vorne und von der Seite sieht LW nicht. Kommt der Pass, fährt LW blind in einen Check: ein Krankenhauspass.',
+      },
+      {
+        title: 'Entgegenfahren',
+        text: 'LW fährt LD entgegen und dreht nach aussen. Der Pass ist kurz und kommt schräg von der Seite. LW sieht das ganze Eis.',
+      },
+    ],
+    labels: [
+      'Das ganze Eis, unser Tor unten. LD hat den Puck neben unserem Tor. LW fährt mit dem Rücken zu LD nach oben bis kurz vor die gegnerische blaue Linie und schaut zurück. Eine gepunktete Linie zeigt den langen, steilen Passweg von hinten. Ein Gegner wartet direkt vor LW und fährt auf LW zu, ein zweiter kommt von der Seite. Beide sind ausserhalb von dem, was LW sieht.',
+      'Gleiche Lage. LW fährt LD entgegen und dreht in einer Kurve nach aussen zur Bande. LD passt kurz und schräg zu LW.',
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -1676,6 +1798,40 @@ const en: typeof de = {
     labels: [
       'In the attacking zone an opposing defender has the puck in the left corner. LW, C and RW all skate at the puck carrier, who passes along the boards to the free winger at the blue line.',
       'Same situation. The left winger skates at the puck carrier. The centre skates to the left boards, between the puck and the opposing winger. The right winger skates to the middle below the blue line. The defenders stay at the blue line.',
+    ],
+  },
+  'halfwall-read': {
+    caption: 'The defender crosses: where does the opponent go?',
+    panels: [
+      {
+        title: 'The opponent stays with LW',
+        text: 'LW plays the puck along the boards into LD’s path. LD takes it in their stride and has space.',
+      },
+      {
+        title: 'The opponent goes with LD',
+        text: 'LW keeps the puck and cuts into the slot. The way is open.',
+      },
+    ],
+    labels: [
+      'Attacking zone, the opponents’ goal at the top. LW has the puck on the left boards, an opponent right next to them. LD has skated past LW on the inside. LW plays the puck along the boards towards the goal, and LD curves over to it.',
+      'Same situation, but the opponent has gone down with LD. LW is open and carries the puck in a curve into the slot.',
+    ],
+  },
+  'skate-away': {
+    caption: 'Skate away or skate towards the puck?',
+    panels: [
+      {
+        title: 'Skating away and looking back',
+        text: 'LW skates with their back to LD all the way to the blue line and looks back over their shoulder. The pass is long and comes steeply from behind. LW can’t see the opponents in front and at the side. When the pass comes, LW skates blind into a check: a hospital pass.',
+      },
+      {
+        title: 'Skating towards it',
+        text: 'LW skates towards LD and turns to the outside. The pass is short and comes at an angle from the side. LW can see the whole ice.',
+      },
+    ],
+    labels: [
+      'The whole rink, our goal at the bottom. LD has the puck next to our goal. LW skates up with their back to LD to just short of the opponents’ blue line and looks back. A dotted line shows the long, steep passing lane from behind. An opponent waits right in front of LW and skates at them, a second one comes from the side. Both are outside what LW can see.',
+      'Same situation. LW skates towards LD and turns in a curve to the outside, towards the boards. LD passes short and at an angle to LW.',
     ],
   },
 };

@@ -1,0 +1,190 @@
+---
+title: "Cycles: Der Puck kreist in der Angriffszone"
+description: "Wie Stürmer und Verteidiger in der Angriffszone zusammenspielen: an der Bande hoch, wenn Platz ist, der Verteidiger kreuzt innen, wenn ein Gegner klebt, und der klassische Cycle an der Bande."
+category: theorie
+order: 32
+updated: 2026-10-06
+tags: ["Spielverständnis", "Zusammenspiel", "Angriff"]
+draft: false
+---
+
+import RinkPlay from '../../../components/RinkPlay.svelte';
+import RinkStory from '../../../components/RinkStory.svelte';
+import PuckControl from '../../../components/PuckControl.astro';
+import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
+import { href } from '../../../lib/href';
+
+In der Angriffszone stehen die Gegner schon bereit. Jeder hat seinen Bereich, alle schauen
+auf den Puck. Wer dort stillsteht, ist schnell gedeckt. Darum bewegen wir uns: Wir fahren
+an der Bande hoch, kreuzen und lassen den Puck im Kreis laufen. Das heisst **Cycle**.
+
+<Callout type="merke" title="Die Kurzfassung">
+**Platz an der Bande:** Der Stürmer fährt mit dem Puck hoch und zieht nach innen. Der
+Verteidiger lässt sich an der Bande etwas tiefer fallen. Dann gibt es drei Möglichkeiten: Pass zum
+Verteidiger, selbst in den Slot, Pass zum anderen Verteidiger. **Ein Gegner klebt:** Der
+Verteidiger fährt tief in die Zone und kreuzt innen. Der Stürmer spielt den Puck an der Bande entlang in seinen Weg oder zieht selbst in den Slot. **Cycle:** Der Puck geht mit einem Spieler an der Bande hoch
+und zurück zum nächsten, der aus der Ecke kommt. Wie ein Karussell, bis jemand vor dem Tor frei ist. **Der Gegner igelt sich ein:** hoch zum
+Verteidiger, quer, Schuss mit Screen. Kommen die Gegner heraus, hin und her passen, bis im
+Slot Platz ist. Oder Seitenwechsel hinter dem Tor.
+</Callout>
+
+<Callout type="tipp" title="Hoch und tief">
+In der Angriffszone heisst **hoch**: weg vom Tor, Richtung blaue Linie. **Tief** heisst: nah
+beim Tor und in den Ecken. In den Zeichnungen ist das gegnerische Tor oben. Wer „an der Bande
+hoch“ fährt, fährt im Bild also nach unten.
+</Callout>
+
+## Warum Bewegung in der Angriffszone?
+
+Ein Gegner kann gut auf einen Spieler aufpassen, der steht. Fährt der Spieler weg, muss der
+Gegner entscheiden: mitfahren oder bleiben? Fährt er mit, wird sein Platz frei. Bleibt er,
+ist unser Spieler frei. Jede Bewegung stellt dem Gegner eine Frage.
+
+Wo sich die Gegner in der eigenen Zone aufstellen, steht im Artikel
+<a href={href('/de/zuordnung')}>Zuordnung</a>. Genau diese Ordnung wollen wir im Angriff
+durcheinanderbringen.
+
+## An der Bande hoch: wenn Platz ist
+
+Der Flügel hat den Puck an der Bande, etwa auf Höhe des Bullykreises. Diesen Teil der Bande
+nennt man auf Englisch **Half-Wall**, die halbe Bande. Ist der nächste Gegner ein paar
+Meter weg, hat der Flügel Platz.
+
+Dann fährt er mit dem Puck an der Bande hoch und zieht nach innen, Richtung Mitte. Der
+Verteidiger auf seiner Seite lässt sich an der Bande ein Stück tiefer fallen, genau in
+den Platz, den der Flügel frei gemacht hat.
+
+<RinkStory story="halfwall-space" client:visible />
+
+Jetzt hat der Flügel drei Möglichkeiten:
+
+1. **Pass zum Verteidiger.** Kommt ein Gegner auf den Flügel zu, ist der Verteidiger an der
+   Bande frei.
+2. **Selbst in den Slot.** Der **Slot** ist der Raum vor dem Tor zwischen den Bullykreisen.
+   Kommt niemand, fährt der Flügel weiter und schiesst.
+3. **Pass zum anderen Verteidiger.** Sind alle Gegner auf der Puckseite, ist auf der anderen
+   Seite Platz. Diese Seite heisst **schwache Seite**.
+
+## Wenn der Gegner klebt: der Verteidiger kreuzt innen
+
+Manchmal ist ein Gegner ganz nah am Flügel, direkt innen neben ihm. Nach innen ziehen geht
+dann nicht. Der Flügel fährt an der Bande hoch, der Gegner fährt mit.
+
+Jetzt fährt der Verteidiger von der blauen Linie tief in die Zone. Er fährt **innen** am Flügel
+vorbei, also zwischen Flügel und Tor. Die beiden kreuzen sich. Der Flügel spielt den Puck an der Bande entlang tiefer in die Zone,
+genau in den Weg des Verteidigers. So nimmt der Verteidiger den Puck in der Fahrt mit und muss
+nicht abbremsen und abdrehen. Mehr zum Kreuzen steht im Artikel
+<a href={href('/de/gegenlaufen')}>Gegenlaufen und Kreuzen</a>.
+
+<RinkStory story="halfwall-cross" client:visible />
+
+Der Gegner muss sich entscheiden. Bleibt er beim Flügel, hat der Verteidiger den Puck und
+Platz. Fährt er mit dem Verteidiger mit, behält der Flügel den Puck und zieht selbst in den
+Slot. Der Flügel schaut darum kurz zum Gegner, bevor er den Puck abspielt.
+
+<RinkPlay play="halfwall-read" />
+
+<Callout type="achtung" title="Wer sichert die blaue Linie?">
+Fährt der Verteidiger tief in die Zone, ist seine Position an der blauen Linie leer.
+Verlieren wir den Puck, hat der Gegner freie Bahn. Darum fährt der Flügel, der weiter
+hochgefahren ist, an die blaue Linie und übernimmt den Platz, bis der Verteidiger zurück ist.
+</Callout>
+
+## Der klassische Cycle
+
+Der **Cycle** (englisch für Kreislauf) ist ein Karussell an der Bande. Ein Spieler fährt
+mit dem Puck an der Bande hoch. Der Gegner fährt hinter ihm her. Dann spielt der Puckführer
+den Puck an der Bande zurück in die Ecke, hinter dem Gegner durch. Dort kommt schon der
+nächste Mitspieler und nimmt ihn mit. Der erste fährt weiter und dreht nach innen ab,
+Richtung Tor.
+
+Jeder fährt den gleichen Kreis: **an der Bande hoch, innen Richtung Tor, tief zurück in
+die Ecke.** Einer hat den Puck, einer kommt aus der Ecke nach, einer ist vor dem Tor.
+
+<RinkStory story="cycle" client:visible />
+
+Der Gegner muss immer wieder umdrehen und einen neuen Spieler suchen. Irgendwann ist einer
+zu spät, und vor dem Tor ist jemand frei. Dann ist Schluss mit Kreisen: Pass in den Slot
+und schiessen.
+
+### Den Puck an der Bande schützen
+
+Wer mit dem Puck an der Bande hochfährt, hat den Gegner im Rücken. Darum ist der Körper
+zwischen Gegner und Puck, der Puck ist an der Bande auf der anderen Seite. Wie das geht,
+steht auch im Artikel <a href={href('/de/rollen')}>Die vier Rollen</a>.
+
+<PuckControl variant="shield" />
+
+<Callout type="tipp" title="Das Karussell richtig drehen">
+**An die Bande spielen.** Der Puck geht an der Bande entlang zurück, nicht quer durch die
+Mitte. Dort sind die Gegnerschläger. **Nachfahren.** Der nächste Spieler kommt aus der Ecke,
+bevor der Puck kommt. **Nicht ewig kreisen.** Der Cycle ist kein Ziel. Ist vor dem Tor
+jemand frei, geht der Puck dorthin.
+</Callout>
+
+## Wenn der Gegner sich einigelt
+
+Manchmal **igelt sich der Gegner ein**. Wie ein Igel, der sich zusammenrollt, ziehen sich
+alle fünf Gegner eng vor ihr Tor zurück. Im Slot ist dann kein Platz mehr, und ein Cycle an
+der Bande bringt wenig. Dafür ist der Platz jetzt woanders: oben an der blauen Linie und
+auf der anderen Seite.
+
+### Hoch zum Verteidiger, quer, Schuss
+
+Der Puck geht von der Bande hoch zum Verteidiger. Der passt quer an der blauen Linie zum
+anderen Verteidiger, und der schiesst. Damit der Schuss gefährlich wird:
+
+- **Ein Stürmer steht vor dem Torhüter** und nimmt ihm die Sicht. Das nennt man **Screen**,
+  englisch für Sichtschutz.
+- **Die anderen zwei sind bereit für den Abpraller**, am Pfosten und im Slot. Ein Abpraller
+  heisst auf Englisch **Rebound**.
+
+<RinkStory story="collapse-point" client:visible />
+
+### Hin und her, bis sich der Igel öffnet
+
+Kommt der Puck an die blaue Linie, wollen die Gegner den Schuss verhindern. Ihre Stürmer
+kommen aus dem Slot heraus, auf die Verteidiger zu. Darum passen die Verteidiger hin und her,
+bis die Stürmer herauskommen. Dann ist im Slot wieder Platz, und LD oder RD findet die
+Lücke: ein Pass in den Slot oder ein Schuss durch die freie Bahn.
+
+<RinkStory story="collapse-expand" client:visible />
+
+### Seitenwechsel hinter dem Tor
+
+Stehen alle Gegner vor ihrem Tor, ist hinter dem Tor und in der anderen Ecke Platz. Der
+Puckführer spielt den Puck an der Bande entlang hinter dem Tor durch auf die andere Seite.
+Dort wartet ein Mitspieler tief in der Ecke. Jetzt beginnt dort ein neuer Cycle.
+
+<RinkStory story="collapse-switch" client:visible />
+
+## Typische Fehler
+
+- **Stillstehen.** Ein Gegner kann gut auf einen Spieler aufpassen, der steht.
+- **Den Puck quer durch die Mitte spielen.** Dort stehen die meisten Gegner.
+- **Beim Cycle zu zweit an der Bande.** Wer den Puck abgegeben hat, fährt weg und macht
+  Platz.
+- **Nur kreisen.** Wer vor lauter Kreisen den freien Spieler vor dem Tor übersieht,
+  verschenkt die Chance.
+- **Den Puck abspielen, obwohl niemand kommt.** Erst schauen, dann passen.
+- **Den Pass an den Verteidiger statt in seinen Weg spielen.** Dann muss er abbremsen und
+  abdrehen. Spiel den Puck an der Bande entlang tiefer, dorthin, wo er hinfährt.
+- **Der Verteidiger fährt tief, niemand sichert die blaue Linie.**
+- **Gegen einen eingeigelten Gegner immer wieder durch die Mitte wollen.** Spiel den Puck
+  hoch zur blauen Linie oder auf die andere Seite.
+
+## Teste dich
+
+Sieben Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="cycles" />
+
+<Callout type="merke" title="Faustregeln, keine Spielzüge">
+„Ein paar Meter“, „auf Höhe des Bullykreises“, „ein Stück tiefer fallen lassen“: Das
+sind Richtwerte. Die Zeichnungen zeigen Beispiele, keine festen Spielzüge. Im Spiel ist
+jede Situation etwas anders. Die Idee bleibt immer gleich: Bewegung stellt dem Gegner
+Fragen, und irgendwann ist einer von uns frei.
+</Callout>

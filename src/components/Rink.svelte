@@ -37,7 +37,8 @@
     label,
     view = 'zone',
     flip = false,
-  }: { scene: Scene; label: string; view?: View; flip?: boolean } = $props();
+    still = false,
+  }: { scene: Scene; label: string; view?: View; flip?: boolean; still?: boolean } = $props();
 
   const W = RINK_WIDTH;
   const R = CORNER_RADIUS;
@@ -103,7 +104,8 @@
   const moves = $derived((scene.moves ?? []).map((m) => ({ move: m, ...moveGeometry(m, L) })));
 </script>
 
-<svg viewBox="0 0 {W} {H}" role="img" aria-label={label}>
+<!-- `still`: the caller moves the players itself (RinkStory), so no CSS transition. -->
+<svg viewBox="0 0 {W} {H}" role="img" aria-label={label} class:still>
   <g transform={flip ? `rotate(180 ${W / 2} ${H / 2})` : undefined}>
   <path d={ice} class="ice" />
 
@@ -425,6 +427,9 @@
   @media (prefers-reduced-motion: no-preference) {
     .player {
       transition: transform 450ms ease-in-out;
+    }
+    .still .player {
+      transition: none;
     }
   }
 </style>
