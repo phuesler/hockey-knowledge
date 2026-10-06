@@ -1,83 +1,22 @@
 ---
+import Prompt from './Prompt.astro';
 import { absoluteUrl, href } from '../lib/href';
-import { t, type Locale } from '../lib/i18n';
+import { localeFromUrl, t } from '../lib/i18n';
 
 /**
- * Tells parents how to point their AI assistant at the site: a ready-made prompt with
- * the URL of /<locale>/llms-full.txt, plus the file itself for assistants that cannot
- * open links. The copy button only appears when the clipboard API is there; the prompt
- * stays selectable text either way.
+ * Points an AI assistant at the site: a ready-made prompt with the URL of
+ * /<locale>/llms-full.txt, plus the file itself for assistants that cannot open links.
+ * Used in the "Lernen mit KI" article, which explains what to ask next.
  */
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+const locale = localeFromUrl(Astro.url);
 const s = t(locale).askAi;
 const file = `/${locale}/llms-full.txt`;
 const prompt = s.prompt.replace('{url}', absoluteUrl(file, Astro.site));
 ---
 
-<section id="ask-ai" class="ask-ai card" aria-labelledby="ask-ai-title">
-  <h2 id="ask-ai-title">{s.title}</h2>
-  <p>{s.text}</p>
-  <div class="prompt">
-    <p class="prompt-text">{prompt}</p>
-    <button type="button" class="copy" data-copied={s.copied} hidden>{s.copy}</button>
-  </div>
+<div id="ask-ai">
+  <Prompt>{prompt}</Prompt>
   <p>
     <a href={href(file)} download>{s.download}</a>. {s.downloadNote}
   </p>
-  <p class="caution">{s.caution}</p>
-</section>
-
-<script>
-  for (const button of document.querySelectorAll<HTMLButtonElement>('.ask-ai .copy')) {
-    if (!navigator.clipboard) continue;
-    button.hidden = false;
-    const label = button.textContent;
-    button.addEventListener('click', async () => {
-      const text = button.parentElement?.querySelector('.prompt-text')?.textContent ?? '';
-      await navigator.clipboard.writeText(text);
-      button.textContent = button.dataset.copied ?? label;
-      setTimeout(() => (button.textContent = label), 2000);
-    });
-  }
-</script>
-
-<style>
-  .ask-ai {
-    margin-block-start: var(--s-7);
-    padding: var(--s-5);
-    max-width: 48rem;
-  }
-  .ask-ai h2 { font-size: var(--t-h3); }
-  .ask-ai p { margin-block-start: var(--s-3); }
-  .prompt {
-    margin-block-start: var(--s-4);
-    padding: var(--s-3) var(--s-4);
-    border-inline-start: 4px solid var(--c-accent);
-    border-radius: var(--radius);
-    background: var(--c-accent-soft);
-  }
-  .prompt .prompt-text {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--t-sm);
-    overflow-wrap: anywhere;
-    user-select: all;
-  }
-  .copy {
-    margin-block-start: var(--s-3);
-    padding: var(--s-1) var(--s-3);
-    font: inherit;
-    font-size: var(--t-sm);
-    font-weight: 700;
-    color: var(--c-accent);
-    background: var(--c-surface);
-    border: 1px solid var(--c-accent);
-    border-radius: var(--radius);
-    cursor: pointer;
-  }
-  .caution {
-    color: var(--c-text-muted);
-    font-size: var(--t-sm);
-  }
-</style>
+</div>

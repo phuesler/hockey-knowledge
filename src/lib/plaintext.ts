@@ -12,6 +12,7 @@ import { quizMarkdown, quizzes, type QuizId } from '../components/quizzes';
  *   <Callout type title>…</Callout>       -> blockquote with the title in bold
  *   <details><summary>Q</summary>A        -> **Q** followed by A (quiz questions)
  *   <Quiz quiz="x" />                     -> every question with options and answer
+ *   <AskAi />, <Prompt>text</Prompt>      -> the prompt as a quote
  *   <a href={href('/de/x')}>…</a>         -> [text](absolute URL)
  *   <AnyComponent … />                    -> a note that the diagram is on the website
  *
@@ -32,6 +33,9 @@ export function articleMarkdown(entry: Article, site: URL | undefined): string {
     })
     .replace(/<details>\s*<summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g,
       (_, question: string, answer: string) => `**${question.trim()}**\n\n${answer.trim()}`)
+    .replace(/<AskAi\b[^>]*\/>/g, () =>
+      `> ${s.askAi.prompt.replace('{url}', absoluteUrl(`/${locale}/llms-full.txt`, site))}`)
+    .replace(/<Prompt>([\s\S]*?)<\/Prompt>/g, (_, text: string) => `> ${text.trim().replace(/\s*\n\s*/g, ' ')}`)
     .replace(/<Quiz\b[^>]*?quiz="([\w-]+)"[^>]*?\/>/g, (tag: string, id: string) =>
       id in quizzes ? quizMarkdown(id as QuizId, locale) : tag)
     .replace(/<a href=\{href\('([^']*)'\)\}>([\s\S]*?)<\/a>/g, (_, path: string, text: string) =>

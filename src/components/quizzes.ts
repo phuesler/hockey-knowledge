@@ -611,9 +611,17 @@ export const quizzes: Record<QuizId, QuestionGeometry[]> = geometry;
 /**
  * The quizzes the mixed quiz (de/teste-dich, en/quiz) draws from, in article order. Only
  * published articles: the mixed page is public, and published pages never link to drafts.
- * Add rollen and forecheck when they are published.
  */
-export const mixQuizzes: QuizId[] = ['aufstellung', 'regeln', 'abwehrseite', 'zuordnung', 'support', 'bully'];
+export const mixQuizzes: QuizId[] = [
+  'aufstellung',
+  'regeln',
+  'rollen',
+  'abwehrseite',
+  'zuordnung',
+  'support',
+  'forecheck',
+  'bully',
+];
 
 const de: Record<QuizId, QuizText> = {
   regeln: {

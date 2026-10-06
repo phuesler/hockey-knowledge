@@ -85,20 +85,20 @@ const de = {
   ogLocale: 'de_DE',
   /** Alt text of the share image (og:image). */
   ogImageAlt: 'Das Wappen von FASS Berlin',
-  /** "Ask your AI" box on the overview page; {url} is the llms-full.txt address. */
+  /** Prompt boxes in the "Lernen mit KI" article (AskAi, Prompt); {url} is the llms-full.txt address. */
   askAi: {
-    title: 'Fragen an die KI',
-    text:
-      'Ihr nutzt einen KI-Assistenten wie ChatGPT, Claude oder Gemini? Kopiert diese Anweisung in den Chat. Dann antwortet er mit dem Wissen von dieser Seite.',
     prompt:
       'Lies {url} und beantworte damit meine Fragen zum Eishockey in der U13. Antworte kurz und nenne jeweils den passenden Artikel.',
     copy: 'Kopieren',
     copied: 'Kopiert',
     download: 'Alle Artikel als Textdatei',
     downloadNote: 'Kann euer Assistent keine Links öffnen, ladet die Datei herunter und hängt sie an.',
-    caution: 'KI kann sich irren. Im Zweifel gilt der Artikel.',
   },
+  /** Link text for the llms-full.txt file in llms.txt. */
   footerAskAi: 'Alle Artikel als Text für KI-Assistenten',
+  /** Footer link to the article on using the site with an AI assistant. */
+  footerAi: 'Lernen mit KI',
+  aiPath: '/de/lernen-mit-ki/',
   /** Text for the llms.txt files, read by AI assistants rather than people. */
   llm: {
     language: 'Deutsch',
@@ -168,18 +168,16 @@ const en: UiStrings = {
   ogLocale: 'en_GB',
   ogImageAlt: 'The FASS Berlin crest',
   askAi: {
-    title: 'Ask your AI',
-    text:
-      'Do you use an AI assistant such as ChatGPT, Claude or Gemini? Copy this instruction into the chat. It will then answer with what this site knows.',
     prompt:
       'Read {url} and use it to answer my questions about U13 ice hockey. Keep answers short and name the matching article each time.',
     copy: 'Copy',
     copied: 'Copied',
     download: 'All articles as a text file',
     downloadNote: 'If your assistant cannot open links, download the file and attach it.',
-    caution: 'AI can be wrong. If in doubt, the article is right.',
   },
   footerAskAi: 'All articles as text for AI assistants',
+  footerAi: 'Learning with AI',
+  aiPath: '/en/learning-with-ai/',
   llm: {
     language: 'English',
     preamble:

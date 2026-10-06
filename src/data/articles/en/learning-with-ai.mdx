@@ -1,0 +1,114 @@
+---
+title: "Learning with AI: questions, quizzes and study cards"
+description: "How to get an AI assistant such as ChatGPT, Claude or Gemini to answer with what this site knows – and which instructions help with learning: quizzes, study cards, explanations and more."
+category: team
+order: 40
+updated: 2026-10-06
+tags: ["AI", "Learning", "Parents"]
+translationOf: lernen-mit-ki
+draft: false
+---
+
+import AskAi from '../../../components/AskAi.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import { href } from '../../../lib/href';
+
+An **AI assistant** is a program you write to as if it were a person. Well-known ones are
+ChatGPT, Claude and Gemini. AI stands for artificial intelligence. These assistants know a
+lot about ice hockey. But they don’t know how we play in our U13.
+
+That is why every article on this site is also available as one single text file. Give it
+to the assistant, and it answers with what we know. It can do more, too: it asks quiz
+questions, makes study cards and listens when you explain something yourself.
+
+<Callout type="merke" title="The short version">
+1. Copy the prompt below into a new chat. Then the assistant knows every article.
+2. Ask questions, practise, let it test you.
+3. AI can be wrong. If in doubt, the article is right.
+</Callout>
+
+## Step 1: Bring the site into the chat
+
+An instruction to the AI is called a **prompt**. Copy this prompt into a new chat:
+
+<AskAi />
+
+After that the assistant knows every article. Just keep writing in the same chat. You can
+copy the examples below and change them.
+
+## Step 2: Ask questions
+
+Ask the way you would ask a coach. The more precise the question, the better the answer. It
+also helps to say who the answer is for.
+
+<Prompt>What is the difference between offside and icing? Explain it as if I were 11 years old, with an example from a game.</Prompt>
+
+<Prompt>In the game the referee raised their arm, and our goalie skated to the bench. Why?</Prompt>
+
+For parents who have never played:
+
+<Prompt>I have never played ice hockey. What does my child mean when they talk about “Zuordnung”? Please answer in five short sentences.</Prompt>
+
+The assistant helps with equipment too. It works with the rules of thumb from the articles:
+
+<Prompt>My child is 152 cm tall and weighs 41 kg. Which stick length and which flex does the article “The right stick” recommend?</Prompt>
+
+## Step 3: Practise
+
+Reading alone doesn’t stick well. Testing yourself works better: if you have to pull an
+answer out of your head, you remember it longer. That is why many articles end with a quiz,
+and there is the <a href={href('/en/quiz/')}>mixed quiz</a>. An AI assistant can also keep
+asking new questions.
+
+### A quiz
+
+<Prompt>Ask me five questions about the article “Rules”. Only one question at a time, with three answers to choose from. Wait for my answer. Then explain why it is right or wrong.</Prompt>
+
+The last sentence matters. An explanation teaches much more than just “right” or “wrong”.
+
+### Study cards
+
+A **study card** (flashcard) has a question on the front and the answer on the back.
+
+<Prompt>Make me ten study cards on the article “The lineup”. A question on the front, the answer in one sentence on the back. Show them as a table.</Prompt>
+
+You can copy the cards out, print them or practise straight away in the chat:
+
+<Prompt>Test me on the study cards, one at a time. Only show me the answer after I have answered. Ask the cards I got wrong once more at the end.</Prompt>
+
+### Explain it yourself
+
+If you can explain something, you have understood it. So turn the tables:
+
+<Prompt>I am going to explain what a Satellit does. Afterwards, tell me what was missing or wrong. Stick to the article “The four roles”.</Prompt>
+
+### What do you do?
+
+<Prompt>Describe a face-off situation in our zone without giving away the answer. I tell you where I stand and what I do. Then tell me whether that is right.</Prompt>
+
+### Before a game
+
+<Prompt>We have a game tomorrow. Give me one short sentence to remember from each of the articles “Abwehrseite”, “Zuordnung” and “Support”.</Prompt>
+
+<Callout type="tipp" title="How it sticks">
+Often and short beats once and long: five questions on the bus are enough. Repeat after a
+few days. Best in pairs: the child answers, an adult reads along and asks questions.
+</Callout>
+
+## For parents: children and AI
+
+- **Minimum age.** Most AI assistants have a minimum age, often 13 or 18, sometimes only
+  with parental consent. Check the terms of use.
+- **Use it together.** Ideally an adult sits with the child. That helps learning too: the
+  child explains, the adult asks questions.
+- **No personal data.** No names of teammates, no photos, no addresses. The questions here
+  don’t need any.
+- **Check the answers.** AI can be wrong and still sound sure of itself. That is why the
+  prompt above asks the assistant to name the matching article. If an answer contradicts
+  the article, the article is right.
+
+<Callout type="merke" title="Examples, not rules">
+The prompts here are examples. Change them to suit you. And whatever is in the chat doesn’t
+replace practice: you can understand things at home, but you learn to play on the ice.
+</Callout>
