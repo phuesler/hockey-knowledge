@@ -600,12 +600,11 @@ export type QuizId = keyof typeof geometry;
 export const quizzes: Record<QuizId, QuestionGeometry[]> = geometry;
 
 /**
- * The quizzes the mixed quiz (de/teste-dich, en/quiz) draws from. Only published articles:
- * the mixed page is public, and published pages never link to drafts. Add rollen and
- * forecheck when they are published. aufstellung stays out on purpose: it is about how the
- * team is organised, not rules or game sense.
+ * The quizzes the mixed quiz (de/teste-dich, en/quiz) draws from, in article order. Only
+ * published articles: the mixed page is public, and published pages never link to drafts.
+ * Add rollen and forecheck when they are published.
  */
-export const mixQuizzes: QuizId[] = ['regeln', 'abwehrseite', 'zuordnung', 'support', 'bully'];
+export const mixQuizzes: QuizId[] = ['aufstellung', 'regeln', 'abwehrseite', 'zuordnung', 'support', 'bully'];
 
 const de: Record<QuizId, QuizText> = {
   regeln: {
