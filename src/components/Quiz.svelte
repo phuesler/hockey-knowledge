@@ -1,16 +1,21 @@
 <script lang="ts">
   /**
-   * A short quiz at the end of an article: one question at a time, and after every answer
-   * an explanation of why it is right or wrong. A question can show a rink picture; once
-   * it is answered, the explanation can bring a second picture of how it should look, right
-   * below the text, so it is in view on a phone. No points, timer or sounds: the
-   * explanation is what makes a quiz teach. The questions live in quizzes.ts.
+   * A short quiz: one question at a time, and after every answer an explanation of why it
+   * is right or wrong. A question can show a rink picture; once it is answered, the
+   * explanation can bring a second picture of how it should look, right below the text,
+   * so it is in view on a phone. No points, timer or sounds: the explanation is what makes
+   * a quiz teach. The questions live in quizzes.ts.
    *
-   *   <Quiz client:visible={{ rootMargin: '300px' }} quiz="regeln" />
+   *   <Quiz client:visible={{ rootMargin: '300px' }} quiz="regeln" />   one article's quiz
+   *   <Quiz client:visible mix />                                       a mix of all of them
+   *
+   * The mix takes two questions from every quiz, in turns, so similar ideas from different
+   * articles alternate; "Neue Fragen" moves on to the next two of each. Its links lead to
+   * the section in the right article.
    *
    * Server-rendered as a list of every question, each with its solution in a <details>,
-   * so the article stays complete without JavaScript. Once the island is running it
-   * switches to one question at a time.
+   * so the page stays complete without JavaScript. Once the island is running it switches
+   * to one question at a time.
    */
   import { tick } from 'svelte';
   import Rink from './Rink.svelte';
@@ -18,8 +23,9 @@
   import { candidates, quizText, quizzes, type QuizFigure, type QuizId } from './quizzes';
   import type { Scene } from './rink';
   import type { Locale } from '../lib/i18n';
+  import { href } from '../lib/href';
 
-  let { quiz, locale = 'de' }: { quiz: QuizId; locale?: Locale } = $props();
+  let { quiz, mix = false, locale = 'de' }: { quiz?: QuizId; mix?: boolean; locale?: Locale } = $props();
   const uid = $props.id();
 
   const de = {
@@ -29,6 +35,7 @@
       full: 'Das ganze Eis: unten unser Tor, oben das gegnerische',
       neutral: 'Die neutrale Zone: unser Tor liegt unten, wir greifen nach oben an',
     },
+    mixTitle: 'Gemischtes Quiz: Regeln und Spielverständnis',
     progress: (n: number, of: number) => `Frage ${n} von ${of}`,
     correct: 'Richtig!',
     notQuite: 'Nicht ganz.',
@@ -41,7 +48,10 @@
     allRight: 'Alles richtig. Stark!',
     reread: 'Lies hier noch einmal nach:',
     later: 'Mach das Quiz in ein paar Tagen noch einmal. Wer sich später wieder erinnert, behält es länger.',
+    mixLink: 'Gemischtes Quiz mit Fragen aus allen Artikeln',
+    mixPath: '/de/teste-dich/',
     again: 'Noch einmal',
+    newQuestions: 'Neue Fragen',
     solution: 'Lösung',
     after: 'So sieht es richtig aus:',
   };
@@ -52,6 +62,7 @@
       full: 'The whole rink: our goal at the bottom, the opponents’ at the top',
       neutral: 'The neutral zone: our goal is below, we attack upwards',
     },
+    mixTitle: 'Mixed quiz: rules and game sense',
     progress: (n, of) => `Question ${n} of ${of}`,
     correct: 'Right!',
     notQuite: 'Not quite.',
@@ -64,15 +75,43 @@
     allRight: 'All right. Well done!',
     reread: 'Have another look here:',
     later: 'Do the quiz again in a few days. Remembering it again later makes it stick.',
+    mixLink: 'Mixed quiz with questions from every article',
+    mixPath: '/en/quiz/',
     again: 'Try again',
+    newQuestions: 'New questions',
     solution: 'Answer',
     after: 'This is how it should look:',
   };
 
+  /* How many questions the mix takes from each quiz per round. */
+  const MIX_PER_QUIZ = 2;
+
   const s = $derived({ de, en }[locale]);
-  const geo = $derived(quizzes[quiz]);
-  const text = $derived(quizText[locale][quiz]);
-  const count = $derived(geo.length);
+
+  /* Which round of the mix: round 0 asks questions 1–2 of each quiz, round 1 questions 3–4 … */
+  let round = $state(0);
+
+  /* The questions to ask, with the link to where each one is explained. */
+  const items = $derived.by(() => {
+    const item = (id: QuizId, i: number) => {
+      const text = quizText[locale][id];
+      const q = text.questions[i];
+      return {
+        key: `${id}-${i}`,
+        g: quizzes[id][i],
+        q,
+        link: mix ? `${href(`/${locale}/${text.article}/`)}#${q.section}` : `#${q.section}`,
+        topic: mix ? `${text.name}: ${q.topic}` : q.topic,
+      };
+    };
+    if (!mix) return quizzes[quiz!].map((_, i) => item(quiz!, i));
+    const ids = Object.keys(quizzes) as QuizId[];
+    return Array.from({ length: MIX_PER_QUIZ }, (_, k) =>
+      ids.map((id) => item(id, (round * MIX_PER_QUIZ + k) % quizzes[id].length)),
+    ).flat();
+  });
+  const title = $derived(mix ? s.mixTitle : quizText[locale][quiz!].title);
+  const count = $derived(items.length);
 
   /* The server renders every question as a list; the browser switches to one at a time. */
   let mounted = $state(false);
@@ -85,16 +124,17 @@
   let answers = $state<Record<number, number>>({});
   let finished = $state(false);
 
-  const question = $derived(text.questions[index]);
-  const g = $derived(geo[index]);
+  const current = $derived(items[index]);
+  const question = $derived(current.q);
+  const g = $derived(current.g);
   const picked = $derived(answers[index]);
   const answered = $derived(picked !== undefined);
-  const score = $derived(geo.filter((q, i) => answers[i] === q.correct).length);
-  /* The sections to reread, once each, in article order of the questions. */
+  const score = $derived(items.filter((it, i) => answers[i] === it.g.correct).length);
+  /* The sections to reread, once each, in the order of the questions. */
   const missed = $derived(
-    text.questions
-      .filter((q, i) => answers[i] !== geo[i].correct)
-      .filter((q, i, all) => all.findIndex((o) => o.section === q.section) === i),
+    items
+      .filter((it, i) => answers[i] !== it.g.correct)
+      .filter((it, i, all) => all.findIndex((o) => o.link === it.link) === i),
   );
 
   let promptEl: HTMLElement | undefined = $state();
@@ -106,8 +146,6 @@
     if (!f.candidates) return f.scene;
     return { ...f.scene, players: [...f.scene.players, ...candidates(f.candidates)] };
   }
-  /* The key leaves out the candidate spots: the question names them. */
-  const legend = (f: QuizFigure) => (f.after ? [f.scene, f.after] : [f.scene]);
 
   async function choose(option: number) {
     if (answered) return;
@@ -129,6 +167,7 @@
   }
 
   async function restart() {
+    if (mix) round += 1;
     answers = {};
     index = 0;
     finished = false;
@@ -138,12 +177,12 @@
 </script>
 
 <div class="quiz" role="group" aria-labelledby="{uid}-title">
-  <p class="title" id="{uid}-title">{text.title}</p>
+  <p class="title" id="{uid}-title">{title}</p>
 
   {#if !mounted}
     <ol class="all">
-      {#each text.questions as q, i}
-        {@const f = geo[i].figure}
+      {#each items as { q, g: geo } (geo)}
+        {@const f = geo.figure}
         <li>
           <p class="prompt">{q.prompt}</p>
           {#if f}
@@ -157,8 +196,8 @@
           </ul>
           <details>
             <summary>{s.solution}</summary>
-            <p><strong>{q.options[geo[i].correct].text}</strong></p>
-            <p>{q.options[geo[i].correct].feedback}</p>
+            <p><strong>{q.options[geo.correct].text}</strong></p>
+            <p>{q.options[geo.correct].feedback}</p>
             {#if f?.after}
               <div class="figure" class:tall={f.view === 'full'}>
                 <Rink scene={f.after} label={q.afterLabel ?? ''} view={f.view} flip={f.zone === 'attack'} />
@@ -176,11 +215,12 @@
       {#if g.figure}
         {@const f = g.figure}
         <!-- A fresh drawing per question, so players don't slide over from the last one. -->
-        {#key index}
+        {#key current.key}
           <div class="figure" class:tall={f.view === 'full'}>
             <p class="zone">{s.zone[f.zone]}</p>
             <Rink scene={before(f)} label={question.label ?? ''} view={f.view} flip={f.zone === 'attack'} />
-            <RinkLegend scenes={legend(f)} {locale} />
+            <!-- The key leaves out the candidate spots: the question names them. -->
+            <RinkLegend scenes={[f.scene]} {locale} />
           </div>
         {/key}
       {/if}
@@ -227,6 +267,7 @@
               <div class="figure after" class:tall={f.view === 'full'}>
                 <p class="zone">{s.after}</p>
                 <Rink scene={after} label={question.afterLabel ?? ''} view={f.view} flip={f.zone === 'attack'} />
+                <RinkLegend scenes={[after]} {locale} />
               </div>
             {/if}
             <button type="button" class="action" onclick={next}>
@@ -244,11 +285,14 @@
       {:else}
         <p>{s.reread}</p>
         <ul>
-          {#each missed as q}<li><a href="#{q.section}">{q.topic}</a></li>{/each}
+          {#each missed as it (it.link)}<li><a href={it.link}>{it.topic}</a></li>{/each}
         </ul>
       {/if}
-      <p class="hint">{s.later}</p>
-      <button type="button" class="action" onclick={restart}>{s.again}</button>
+      <p class="hint">
+        {s.later}
+        {#if !mix}<a href={href(s.mixPath)}>{s.mixLink}</a>{/if}
+      </p>
+      <button type="button" class="action" onclick={restart}>{mix ? s.newQuestions : s.again}</button>
     </div>
   {/if}
 </div>

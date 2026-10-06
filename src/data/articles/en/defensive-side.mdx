@@ -3,7 +3,7 @@ title: "Abwehrseite: between the opponent and the goal"
 description: "What the call “Abwehrseite!” means, why you keep the opponent outside the faceoff dots, and how it works without the puck too."
 category: theorie
 order: 10
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Game sense", "Defence", "Calls"]
 translationOf: abwehrseite
 draft: false
@@ -11,6 +11,7 @@ draft: false
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 During a game you hear three calls from the bench again and again: **“Abwehrseite!”**,
@@ -138,6 +139,14 @@ At the next game, don’t watch the puck for a while. Pick one defender and watc
 Are they between their opponent and the goal? Are they pushing them towards the boards?
 Then they are doing their job – even if they never touch the puck.
 </Callout>
+
+## Test yourself
+
+Six questions on this article. Have a guess even if you aren’t sure: after every answer
+you’ll see why it is right or wrong. The quiz works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="abwehrseite" locale="en" />
 
 <Callout type="merke" title="Rules of thumb, not laws">
 One stick length of distance, one step to the inside, outside the dots: these are

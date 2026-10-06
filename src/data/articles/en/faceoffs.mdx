@@ -3,7 +3,7 @@ title: "Face-offs: who stands where?"
 description: "Where everyone stands at a face-off in our own zone and in the attacking zone, and where they go after winning or losing it. Based on the DEB's basic set-up."
 category: theorie
 order: 40
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Face-off", "Tactics", "Lineup"]
 translationOf: bully
 draft: false
@@ -11,6 +11,7 @@ draft: false
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Every period starts with a **face-off** (Bully), and after every whistle play restarts with
@@ -138,6 +139,14 @@ Put a plate on the floor at home as the face-off spot and ask: "Face-off in our 
 you're LW. Where do you stand? And what do you do if we lose it?" Knowing it in your head
 makes you quicker on the ice.
 </Callout>
+
+## Test yourself
+
+Six questions on this article. Have a guess even if you aren’t sure: after every answer
+you’ll see why it is right or wrong. The quiz works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="bully" locale="en" />
 
 <Callout type="merke" title="A basic set-up">
 This is the basic set-up from the DEB foundation training. It is a starting point, not a

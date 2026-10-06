@@ -1,0 +1,51 @@
+---
+title: "Teste dich: das gemischte Quiz"
+description: "Fragen aus allen Artikeln zu Regeln und Spielverständnis, bunt gemischt. Für zwischendurch, im Bus oder zu Hause zusammen mit den Eltern."
+category: theorie
+order: 90
+updated: 2026-10-06
+tags: ["Quiz", "Regeln", "Spielverständnis"]
+draft: false
+---
+
+import Quiz from '../../../components/Quiz.svelte';
+import Callout from '../../../components/Callout.astro';
+import { href } from '../../../lib/href';
+
+Am Ende jedes Artikels steht ein Quiz zu genau diesem Artikel. Hier sind die Fragen
+gemischt: Regeln, Abwehrseite, Zuordnung, Support und Bully kommen abwechselnd dran.
+
+Warum gemischt? Wer zehn Fragen zum selben Thema beantwortet, weiss schon vorher, worum es
+geht. Im Spiel weiss man das nicht. Dort muss man zuerst erkennen, was gerade los ist: Hebt
+der Linienrichter den Arm wegen Abseits oder wegen Icing? Gemischte Fragen üben genau das.
+
+<Callout type="tipp" title="So bleibt es hängen">
+Lieber öfter kurz als einmal lang: Zehn Fragen im Bus reichen. Mach das Quiz nach ein paar
+Tagen noch einmal. Mit „Neue Fragen“ kommen jedes Mal andere dran. Am besten zu zweit: Das
+Kind antwortet und erklärt einem Erwachsenen, warum.
+</Callout>
+
+<Quiz client:visible mix />
+
+## Die Artikel dazu
+
+Wer eine Frage falsch hat, findet am Ende des Quiz einen Link zur passenden Stelle. Hier
+sind alle Artikel, aus denen die Fragen kommen:
+
+- <a href={href('/de/regeln/')}>Regeln: Abseits, Icing und Strafen</a>
+- <a href={href('/de/abwehrseite/')}>Abwehrseite: zwischen Gegner und Tor</a>
+- <a href={href('/de/zuordnung/')}>Zuordnung: Jeder übernimmt einen Bereich</a>
+- <a href={href('/de/support/')}>Support: Niemand bleibt mit dem Puck allein</a>
+- <a href={href('/de/bully/')}>Das Bully: Wer steht wo?</a>
+
+## Und auf dem Eis?
+
+Ein Quiz übt das Verstehen. Wer weiss, wo er beim Bully steht, ist schneller dort. Die
+Entscheidung im Spiel, in einer Sekunde und unter Druck, lernt man aber im Training und im
+Spiel. Das Quiz hilft dabei. Es ersetzt das Training nicht.
+
+<Callout type="merke" title="Faustregeln, keine Gesetze">
+Die Antworten folgen den Artikeln. Dort stehen auch die Richtwerte und die Ausnahmen. Im
+Spiel sieht jede Situation etwas anders aus, und bei den Regeln gilt, was der Schiedsrichter
+entscheidet.
+</Callout>

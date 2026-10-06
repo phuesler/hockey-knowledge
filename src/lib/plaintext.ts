@@ -32,7 +32,7 @@ export function articleMarkdown(entry: Article, site: URL | undefined): string {
     })
     .replace(/<details>\s*<summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g,
       (_, question: string, answer: string) => `**${question.trim()}**\n\n${answer.trim()}`)
-    .replace(/<Quiz\b[\s\S]*?quiz="([\w-]+)"[\s\S]*?\/>/g, (tag: string, id: string) =>
+    .replace(/<Quiz\b[^>]*?quiz="([\w-]+)"[^>]*?\/>/g, (tag: string, id: string) =>
       id in quizzes ? quizMarkdown(id as QuizId, locale) : tag)
     .replace(/<a href=\{href\('([^']*)'\)\}>([\s\S]*?)<\/a>/g, (_, path: string, text: string) =>
       `[${text}](${absoluteUrl(path, site)})`)
