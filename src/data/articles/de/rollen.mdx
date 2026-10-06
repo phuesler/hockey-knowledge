@@ -5,13 +5,14 @@ category: theorie
 order: 8
 updated: 2026-10-06
 tags: ["Spielverständnis", "Rollen", "DEB"]
-draft: true
+draft: false
 ---
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import RinkSequence from '../../../components/RinkSequence.svelte';
 import PuckControl from '../../../components/PuckControl.astro';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Eishockey ist schnell. Niemand hat Zeit, im Spiel über eine Taktiktafel nachzudenken.
@@ -220,6 +221,14 @@ Sucht euch beim nächsten Spiel ein Kind aus. Jedes Mal, wenn der Puck den Besit
 fragt euch: Ist es gerade König, Satellit, Jäger oder Wächter? Ihr werdet sehen, wie oft
 sich die Rolle in einer einzigen Minute ändert.
 </Callout>
+
+## Teste dich
+
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="rollen" />
 
 <Callout type="merke" title="Faustregeln, keine Gesetze">
 „Fünf schnelle Schritte“, „je näher am Tor, desto enger“: Das sind Richtwerte. Die Zeichnung

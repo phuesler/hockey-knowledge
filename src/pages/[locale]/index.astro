@@ -5,7 +5,6 @@ import { getArticles, articlePath, readingMinutes, categoryOrder, indexAlternate
 import { visibleLocales, t, type Locale } from '../../lib/i18n';
 import { absoluteUrl } from '../../lib/href';
 import { publisher } from '../../lib/site';
-import AskAi from '../../components/AskAi.astro';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (() =>
@@ -70,7 +69,6 @@ const jsonLd = {
       </section>
     ))}
 
-    <AskAi locale={locale} />
   </div>
 </BaseLayout>
 

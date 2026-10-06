@@ -3,7 +3,7 @@ title: "Zuordnung: Jeder übernimmt einen Bereich"
 description: "Was der Ruf „Zuordnung!“ bedeutet: wer in der eigenen Zone welchen Bereich übernimmt, warum nicht alle zum Puck fahren und wie man die Lücke findet, die noch niemand deckt."
 category: theorie
 order: 20
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Spielverständnis", "Verteidigung", "Rufe"]
 draft: false
 ---
@@ -11,6 +11,7 @@ draft: false
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import CoverageExplorer from '../../../components/CoverageExplorer.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Der zweite der drei Rufe von der Bank ist **„Zuordnung!“**. Er betrifft die eigene Zone,
@@ -131,6 +132,14 @@ Die drei Rufe hängen zusammen. In deinem Bereich gilt immer die
 <a href={href('/de/abwehrseite')}>Abwehrseite</a>: zwischen Gegner und Tor. Und die zwei
 Spieler beim Puck – Druck und Unterstützung – sind schon eine Form von
 <a href={href('/de/support')}>Support</a>.
+
+## Teste dich
+
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="zuordnung" />
 
 <Callout type="merke" title="Eine Grundform, kein Spielzug">
 Es gibt viele Arten, in der eigenen Zone zu verteidigen. Die Verteilung hier ist eine

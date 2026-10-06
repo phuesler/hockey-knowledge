@@ -3,7 +3,7 @@ title: "Zuordnung: everyone takes an area"
 description: "What the call “Zuordnung!” means: who takes which area in our own zone, why not everyone skates to the puck, and how to find the gap nobody is covering yet."
 category: theorie
 order: 20
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Game sense", "Defence", "Calls"]
 translationOf: zuordnung
 draft: false
@@ -12,6 +12,7 @@ draft: false
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import CoverageExplorer from '../../../components/CoverageExplorer.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 The second of the three calls from the bench is **“Zuordnung!”** (coverage, literally
@@ -132,6 +133,14 @@ The three calls belong together. In your area, the
 <a href={href('/en/defensive-side')}>defensive side</a> always applies: between the
 opponent and the goal. And the two players at the puck – pressure and support – are
 already a form of <a href={href('/en/support')}>support</a>.
+
+## Test yourself
+
+Six questions on this article. Have a guess even if you aren’t sure: after every answer
+you’ll see why it is right or wrong. The quiz works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="zuordnung" locale="en" />
 
 <Callout type="merke" title="A basic shape, not a set play">
 There are many ways to defend in your own zone. The setup shown here is a simple, common

@@ -1,0 +1,57 @@
+---
+title: "Test yourself: the mixed quiz"
+description: "Questions from all the articles on rules and game sense, mixed up. For in between, on the bus or at home together with the parents."
+category: theorie
+order: 90
+updated: 2026-10-06
+tags: ["Quiz", "Rules", "Game sense"]
+translationOf: teste-dich
+draft: false
+---
+
+import Quiz from '../../../components/Quiz.svelte';
+import Callout from '../../../components/Callout.astro';
+import { href } from '../../../lib/href';
+
+At the end of every article there is a quiz on just that article. Here the questions are
+mixed: lineup, rules, the four roles, Abwehrseite, Zuordnung, support, forecheck and
+face-offs take turns.
+
+Why mixed? If you answer lots of questions on the same topic, you know beforehand what they are
+about. In a game you don’t. There you first have to recognise what is going on: is the
+linesperson raising their arm for offside or for icing? Mixed questions practise exactly
+that.
+
+<Callout type="tipp" title="How it sticks">
+Often and short beats once and long: one round on the bus is enough. Do the quiz again
+after a few days. “New questions” brings different ones every time. Best in pairs: the child
+answers and explains to an adult why.
+</Callout>
+
+<Quiz client:visible mix locale="en" />
+
+## The articles behind it
+
+If you get a question wrong, the end of the quiz has a link to the right place. These are
+all the articles the questions come from:
+
+- <a href={href('/en/lineup/')}>The lineup: lines, positions and abbreviations</a>
+- <a href={href('/en/rules/')}>Rules: offside, icing and penalties</a>
+- <a href={href('/en/roles/')}>The four roles: König, Satellit, Jäger and Wächter</a>
+- <a href={href('/en/defensive-side/')}>Abwehrseite: between the opponent and the goal</a>
+- <a href={href('/en/coverage/')}>Zuordnung: everyone takes an area</a>
+- <a href={href('/en/support/')}>Support: nobody is left alone with the puck</a>
+- <a href={href('/en/forecheck/')}>Forecheck and backcheck: dog, fox, hawk and cheetah</a>
+- <a href={href('/en/faceoffs/')}>Face-offs: who stands where?</a>
+
+## And on the ice?
+
+A quiz practises understanding. If you know where you stand at a face-off, you get there
+faster. But the decision in a game, in a second and under pressure, is learned in practice
+and in games. The quiz helps with that. It doesn’t replace practice.
+
+<Callout type="merke" title="Rules of thumb, not laws">
+The answers follow the articles. That is where you also find the guideline values and the
+exceptions. In a game every situation looks a little different, and for the rules, what the
+referee decides counts.
+</Callout>

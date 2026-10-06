@@ -71,7 +71,8 @@ The build generates, next to the pages:
   convention.
 - `/de/llms-full.txt` and `/en/llms-full.txt`: every article of one language as plain
   Markdown in one file. A parent pastes this one URL into ChatGPT, Claude or Gemini, or
-  attaches the file. The "Ask your AI" box on the overview page explains this to readers.
+  attaches the file. The article "Lernen mit KI" (`de/lernen-mit-ki`, `en/learning-with-ai`)
+  explains this to readers, with example prompts for quizzes and study cards.
 - JSON-LD (`Article`, `BreadcrumbList`, `WebSite`) and Open Graph tags with a share image
   (`public/og-image.png`, 1200×630).
 

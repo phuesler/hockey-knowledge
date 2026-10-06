@@ -3,13 +3,14 @@ title: "Support: Niemand bleibt mit dem Puck allein"
 description: "Was der Ruf „Support!“ bedeutet: in der Verteidigung zu zweit an den Puck, im Angriff nahe und weite Anspielstationen – statt vor dem Tor auf einen Pass zu warten."
 category: theorie
 order: 30
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Spielverständnis", "Zusammenspiel", "Rufe"]
 draft: false
 ---
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Der dritte Ruf von der Bank ist **„Support!“**. Das englische Wort heisst Unterstützung und
@@ -154,6 +155,14 @@ Darum fahren die Spieler so viel: Das Dreieck bewegt sich mit dem Puck mit.
   wartet auf den Support.
 - **Zu dritt an den Puck.** Support heisst helfen, nicht alle hinfahren. Die anderen
   bleiben in ihrem Bereich.
+
+## Teste dich
+
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="support" />
 
 <Callout type="merke" title="Faustregeln, keine Spielzüge">
 „Ein paar Meter“, „auf Höhe der Bullypunkte“, „zwei an den Puck“: Das sind Richtwerte.

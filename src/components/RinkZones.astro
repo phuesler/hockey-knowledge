@@ -1,0 +1,156 @@
+---
+/**
+ * The whole rink with its three zones shaded and the lines named. Offside and icing both
+ * depend on these lines, so the rules article starts with this picture.
+ *
+ * Rink.svelte draws the ice and lines; a second SVG with the same viewBox lies on top and
+ * adds the shading and the words (Rink itself has no text, so it stays language-neutral).
+ * Static: no JavaScript.
+ */
+import Rink from './Rink.svelte';
+import { BLUE_LINE, CENTRE_LINE, CORNER_RADIUS, FULL_LENGTH, GOAL_LINE, RINK_WIDTH, svg } from './rink';
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Zonen und Linien',
+  zone: 'Das ganze Eis: unten unser Tor, oben das gegnerische',
+  own: 'Verteidigungszone',
+  neutral: 'Neutrale Zone',
+  attack: 'Angriffszone',
+  blue: 'Blaue Linie',
+  centre: 'Rote Mittellinie',
+  goal: 'Torlinie',
+  label:
+    'Das ganze Eis. Zwei blaue Linien teilen es in drei Zonen: unten unsere Verteidigungszone vor unserem Tor, in der Mitte die neutrale Zone, oben die Angriffszone vor dem gegnerischen Tor. Die rote Mittellinie teilt das Eis in zwei Hälften. An beiden Enden läuft eine rote Torlinie durch das Tor.',
+};
+const en: typeof de = {
+  caption: 'Zones and lines',
+  zone: 'The whole rink: our goal at the bottom, the opponents’ at the top',
+  own: 'Defending zone',
+  neutral: 'Neutral zone',
+  attack: 'Attacking zone',
+  blue: 'Blue line',
+  centre: 'Centre red line',
+  goal: 'Goal line',
+  label:
+    'The whole rink. Two blue lines split it into three zones: at the bottom our defending zone in front of our goal, in the middle the neutral zone, at the top the attacking zone in front of the opponents’ goal. The centre red line splits the ice into two halves. At each end a red goal line runs through the goal.',
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
+const W = RINK_WIDTH;
+const L = FULL_LENGTH;
+const R = CORNER_RADIUS;
+const y = (d: number) => svg([0, d], L)[1];
+
+/* The rink outline, to keep the shading inside the boards (same shape as in Rink.svelte). */
+const outline = `M0 ${R} V${L - R} A${R} ${R} 0 0 0 ${R} ${L} H${W - R} A${R} ${R} 0 0 0 ${W} ${L - R} V${R} A${R} ${R} 0 0 0 ${W - R} 0 H${R} A${R} ${R} 0 0 0 0 ${R} Z`;
+
+const zones = [
+  { name: s.attack, kind: 'attack', top: y(L), bottom: y(L - BLUE_LINE) },
+  { name: s.neutral, kind: 'neutral', top: y(L - BLUE_LINE), bottom: y(BLUE_LINE) },
+  { name: s.own, kind: 'own', top: y(BLUE_LINE), bottom: y(0) },
+];
+/* Each line's name sits just above it, at the right-hand boards. */
+const lines = [
+  { name: s.goal, at: y(L - GOAL_LINE) },
+  { name: s.blue, at: y(L - BLUE_LINE) },
+  { name: s.centre, at: y(CENTRE_LINE) },
+  { name: s.blue, at: y(BLUE_LINE) },
+  { name: s.goal, at: y(GOAL_LINE) },
+];
+---
+
+<figure class="zones">
+  <figcaption>{s.caption}</figcaption>
+  <p class="zone">{s.zone}</p>
+
+  <div class="drawing">
+    <Rink scene={{ players: [] }} label={s.label} view="full" />
+    <svg viewBox={`0 0 ${W} ${L}`} aria-hidden="true">
+      <clipPath id="rink-zones-ice"><path d={outline} /></clipPath>
+      <g clip-path="url(#rink-zones-ice)">
+        {zones.map((z) => <rect x="0" y={z.top} width={W} height={z.bottom - z.top} class={`band ${z.kind}`} />)}
+      </g>
+      {
+        zones.map((z) => (
+          <text x={W / 2} y={(z.top + z.bottom) / 2 + (z.kind === 'neutral' ? -3.6 : 0)} class="zone-name">
+            {z.name}
+          </text>
+        ))
+      }
+      {lines.map((l) => <text x={W - 1.6} y={l.at - 0.6} class="line-name">{l.name}</text>)}
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .zones {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+  }
+  .zone {
+    margin: var(--s-1) 0 var(--s-4);
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+
+  /* The full rink is twice as tall as wide; keep it to a phone screen. */
+  .drawing {
+    position: relative;
+    max-width: 18rem;
+  }
+  .drawing > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .band {
+    opacity: 0.45;
+  }
+  .band.own {
+    fill: var(--c-accent-soft);
+  }
+  .band.neutral {
+    fill: var(--c-surface-2);
+  }
+  .band.attack {
+    fill: var(--c-brand-soft);
+  }
+
+  text {
+    font-family: var(--font-sans);
+    text-anchor: middle;
+    dominant-baseline: central;
+    paint-order: stroke;
+    stroke: var(--c-surface);
+    stroke-width: 0.35;
+    stroke-linejoin: round;
+  }
+  .zone-name {
+    font-size: 1.9px;
+    font-weight: 700;
+    fill: var(--c-text);
+  }
+  .line-name {
+    font-size: 1.25px;
+    font-weight: 600;
+    text-anchor: end;
+    dominant-baseline: auto;
+    fill: var(--c-text-muted);
+  }
+</style>

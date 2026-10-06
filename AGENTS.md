@@ -84,6 +84,17 @@ Rink diagrams: a static situation goes into `src/components/plays.ts` and is sho
 slide from frame to frame, goes into `src/components/sequences.ts` and is shown with
 `<RinkSequence client:visible sequence="…" />`. Both take `locale="en"` in English articles.
 
+Quizzes: the questions live in `src/components/quizzes.ts` (geometry shared, text in `de`
+and `en`), shown with `<Quiz client:visible={{ rootMargin: '300px' }} quiz="…" />` in a
+`## Teste dich` / `## Test yourself` section before the article's final rules-of-thumb
+Callout. Every option gets its own explanation, and each wrong option should be a real
+misconception. Picture questions mark spots with `candidates`; the texts call them `{1}`,
+`{2}`, `{3}` ("Platz {2}", "spot {2}"), never by a fixed number, because `Quiz.svelte`
+numbers the spots and orders the answers anew on every attempt. `section` must be a heading
+anchor in that language's article. The mixed
+quiz page (`de/teste-dich`) only draws from `mixQuizzes`: add an article's quiz there once
+the article is published.
+
 For callout boxes there is `Callout.astro`, already available in `.mdx`:
 
 ```mdx
@@ -193,7 +204,8 @@ the site can be added to the home screen. Nothing to do per article.
 
 `/llms.txt` and `/<locale>/llms-full.txt` are generated from the articles by
 `src/pages/llms.txt.ts` and `src/pages/[locale]/llms-full.txt.ts`. `src/lib/plaintext.ts`
-turns MDX into plain Markdown: it converts `Callout`, `<details>` quiz questions and
+turns MDX into plain Markdown: it converts `Callout`, `<details>` quiz questions, `<Quiz>`
+(written out from `quizzes.ts`), `<Prompt>` and `<AskAi />` (as quotes) and
 `<a href={href(...)}>`, and replaces
 every other self-closing component with a short "diagram on the website" note. A new
 component that **wraps text** (like `Callout`) needs its own rule there, otherwise its tags

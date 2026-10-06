@@ -1,0 +1,113 @@
+---
+title: "Lernen mit KI: Fragen, Quiz und Lernkarten"
+description: "Wie ein KI-Assistent wie ChatGPT, Claude oder Gemini mit dem Wissen von dieser Seite antwortet – und mit welchen Anweisungen er beim Lernen hilft: Quiz, Lernkarten, Erklärungen und mehr."
+category: team
+order: 40
+updated: 2026-10-06
+tags: ["KI", "Lernen", "Eltern"]
+draft: false
+---
+
+import AskAi from '../../../components/AskAi.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import { href } from '../../../lib/href';
+
+Ein **KI-Assistent** ist ein Programm, mit dem man schreibt wie mit einem Menschen. Bekannte
+sind ChatGPT, Claude oder Gemini. KI heisst künstliche Intelligenz. Diese Assistenten wissen
+viel über Eishockey. Sie wissen aber nicht, wie wir in der U13 spielen.
+
+Darum gibt es alle Artikel dieser Seite als eine einzige Textdatei. Gebt sie dem Assistenten,
+dann antwortet er mit unserem Wissen. Und er kann noch mehr: Er stellt Quizfragen, macht
+Lernkarten und hört zu, wenn ihr selbst etwas erklärt.
+
+<Callout type="merke" title="Die Kurzfassung">
+1. Den Prompt unten in einen neuen Chat kopieren. Dann kennt der Assistent alle Artikel.
+2. Fragen stellen, üben, sich abfragen lassen.
+3. KI kann sich irren. Im Zweifel gilt der Artikel.
+</Callout>
+
+## Schritt 1: Die Seite in den Chat holen
+
+Eine Anweisung an die KI heisst **Prompt**. Kopiert diesen Prompt in einen neuen Chat:
+
+<AskAi />
+
+Danach kennt der Assistent alle Artikel. Alles Weitere schreibt ihr einfach in denselben
+Chat. Die Beispiele unten könnt ihr kopieren und anpassen.
+
+## Schritt 2: Fragen stellen
+
+Fragt so, wie ihr einen Trainer fragen würdet. Je genauer die Frage, desto besser die Antwort.
+Hilfreich ist auch, zu sagen, für wen die Antwort ist.
+
+<Prompt>Was ist der Unterschied zwischen Abseits und Icing? Erklär es mir, als wäre ich 11 Jahre alt, mit einem Beispiel aus einem Spiel.</Prompt>
+
+<Prompt>Im Spiel hat der Schiedsrichter den Arm gehoben, und unser Torhüter ist zur Bank gefahren. Warum?</Prompt>
+
+Für Eltern, die selbst nie gespielt haben:
+
+<Prompt>Ich habe nie Eishockey gespielt. Was meint mein Kind, wenn es von „Zuordnung“ spricht? Bitte in fünf kurzen Sätzen.</Prompt>
+
+Auch bei der Ausrüstung hilft der Assistent. Er rechnet mit den Faustregeln aus den Artikeln:
+
+<Prompt>Mein Kind ist 152 cm gross und wiegt 41 kg. Welche Schlägerlänge und welchen Flex empfiehlt der Artikel „Der richtige Schläger“?</Prompt>
+
+## Schritt 3: Üben
+
+Lesen allein bleibt schlecht hängen. Besser ist, sich selbst abzufragen: Wer eine Antwort aus
+dem Kopf holen muss, merkt sie sich länger. Darum steht am Ende vieler Artikel ein Quiz, und
+es gibt das <a href={href('/de/teste-dich/')}>gemischte Quiz</a>. Ein KI-Assistent kann
+zusätzlich immer neue Fragen stellen.
+
+### Ein Quiz
+
+<Prompt>Stell mir fünf Fragen zum Artikel „Regeln“. Immer nur eine Frage, mit drei Antworten zur Auswahl. Warte auf meine Antwort. Erklär mir danach, warum sie richtig oder falsch ist.</Prompt>
+
+Wichtig ist der letzte Satz. Eine Erklärung bringt viel mehr als nur „richtig“ oder „falsch“.
+
+### Lernkarten
+
+Eine **Lernkarte** hat vorne eine Frage und hinten die Antwort.
+
+<Prompt>Mach mir zehn Lernkarten zum Artikel „Die Aufstellung“. Vorne eine Frage, hinten die Antwort in einem Satz. Zeig sie als Tabelle.</Prompt>
+
+Die Karten könnt ihr abschreiben, ausdrucken oder gleich im Chat üben:
+
+<Prompt>Frag mich die Lernkarten ab, eine nach der anderen. Zeig mir die Antwort erst, wenn ich geantwortet habe. Die Karten, die ich falsch hatte, fragst du am Schluss noch einmal.</Prompt>
+
+### Selbst erklären
+
+Wer etwas erklären kann, hat es verstanden. Dreht den Spiess also um:
+
+<Prompt>Ich erkläre dir jetzt, was ein Satellit macht. Sag mir danach, was gefehlt hat oder falsch war. Halte dich an den Artikel „Die vier Rollen“.</Prompt>
+
+### Was machst du?
+
+<Prompt>Beschreib mir eine Situation beim Bully in unserer Zone, ohne die Lösung zu verraten. Ich sage dir, wo ich stehe und was ich mache. Dann sagst du mir, ob es stimmt.</Prompt>
+
+### Vor dem Spiel
+
+<Prompt>Wir haben morgen ein Spiel. Gib mir aus den Artikeln „Abwehrseite“, „Zuordnung“ und „Support“ je einen kurzen Merksatz.</Prompt>
+
+<Callout type="tipp" title="So bleibt es hängen">
+Lieber oft kurz üben als einmal lang: Fünf Fragen im Bus reichen. Nach ein paar Tagen
+wiederholen. Am besten zu zweit: Das Kind antwortet, ein Erwachsener liest mit und fragt nach.
+</Callout>
+
+## Für Eltern: Kinder und KI
+
+- **Mindestalter.** Die meisten KI-Assistenten haben ein Mindestalter, oft 13 oder 18 Jahre,
+  manchmal nur mit Einverständnis der Eltern. Schaut in die Nutzungsbedingungen.
+- **Gemeinsam nutzen.** Am besten sitzt ein Erwachsener dabei. Das hilft auch beim Lernen:
+  Das Kind erklärt, der Erwachsene fragt nach.
+- **Keine persönlichen Daten.** Keine Namen von Mitspielern, keine Fotos, keine Adressen. Für
+  die Fragen hier braucht es das nicht.
+- **Nachprüfen.** KI kann sich irren und klingt dabei trotzdem sicher. Darum sagt der Prompt
+  oben, dass der Assistent den passenden Artikel nennen soll. Widerspricht eine Antwort dem
+  Artikel, gilt der Artikel.
+
+<Callout type="merke" title="Beispiele, keine Vorschriften">
+Die Prompts hier sind Beispiele. Ändert sie, wie es für euch passt. Und was im Chat steht,
+ersetzt kein Training: Verstehen kann man zu Hause, spielen lernt man auf dem Eis.
+</Callout>

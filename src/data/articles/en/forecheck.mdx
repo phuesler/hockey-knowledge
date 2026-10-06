@@ -6,13 +6,14 @@ order: 35
 updated: 2026-10-06
 tags: ["Game sense", "Teamwork", "DEB"]
 translationOf: forecheck
-draft: true
+draft: false
 ---
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import RinkStory from '../../../components/RinkStory.svelte';
 import AnimalCards from '../../../components/AnimalCards.astro';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Do you know the game of tag? If only one player is "it", the others get away easily. But if
@@ -156,36 +157,11 @@ if they never touch the puck afterwards.
 
 ## Test yourself
 
-Click on a question to see the answer.
+Six questions on this article. Have a guess even if you aren’t sure: after every answer
+you’ll see why it is right or wrong. The quiz works best in pairs: the child answers and
+explains to an adult why.
 
-<details>
-<summary>You are the first player at the puck carrier. Which animal are you?</summary>
-
-The **dog**. You hunt the puck carrier, come from the inside and drive them to the boards.
-
-</details>
-
-<details>
-<summary>A teammate is already hunting the puck carrier in the corner. Where do you go?</summary>
-
-Not to the puck carrier as well! You are the **fox**: to the boards on the puck side,
-between the puck and the next opponent. That is where you close door 1.
-
-</details>
-
-<details>
-<summary>You are the hawk. The opponents pass the puck behind the goal to your side. Now you are closest. What do you do?</summary>
-
-You become the **dog** and hunt the new puck carrier. The other two take over fox and hawk.
-
-</details>
-
-<details>
-<summary>We lose the puck, and you were deep in the corner. Which way do you skate back?</summary>
-
-You are a **cheetah**: through the middle, to the house, stop there, shoulder check.
-
-</details>
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="forecheck" locale="en" />
 
 ## Other names for the same thing
 

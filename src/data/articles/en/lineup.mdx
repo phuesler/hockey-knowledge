@@ -1,9 +1,9 @@
 ---
 title: "The lineup: lines, positions and abbreviations"
 description: "How a game lineup is built, what LW, C, RW, LD and RD mean, who plays the penalty kill – and why the first line doesn't have to be the best one."
-category: team
-order: 20
-updated: 2026-10-04
+category: theorie
+order: 1
+updated: 2026-10-06
 tags: ["Lineup", "Positions", "Game sense"]
 translationOf: aufstellung
 draft: false
@@ -12,6 +12,7 @@ draft: false
 import LineupBoard from '../../../components/LineupBoard.astro';
 import BenchSeating from '../../../components/BenchSeating.astro';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 
 Before every game there is a lineup (Aufstellung). It says who is on the ice with whom, and
 in which position. To parents it first looks like a list full of abbreviations. This article
@@ -244,6 +245,14 @@ delayed penalty against the opponent. This player is called the **sixth skater**
 
 In our team, that is always the **centre of the next line**. So nobody has to look for who
 goes. If line 1 is on the ice, the centre of line 2 jumps on.
+
+## Test yourself
+
+Six questions on this article. Have a guess even if you aren’t sure: after every answer
+you’ll see why it is right or wrong. The quiz works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="aufstellung" locale="en" />
 
 <Callout type="merke" title="A snapshot, not a verdict">
 A lineup applies to one game – often only to one period. It changes with illness, with the

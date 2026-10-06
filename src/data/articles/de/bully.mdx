@@ -3,13 +3,14 @@ title: "Das Bully: Wer steht wo?"
 description: "Wo jeder beim Bully in der eigenen Zone und in der Angriffszone steht und wohin er fährt, wenn das Bully gewonnen oder verloren ist. Angelehnt an die Grundaufstellung des DEB RTK."
 category: theorie
 order: 40
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Bully", "Taktik", "Aufstellung"]
 draft: false
 ---
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Jedes Drittel beginnt mit einem **Bully**, und nach jedem Pfiff geht es mit einem Bully
@@ -140,6 +141,14 @@ Legt zu Hause einen Teller als Bullypunkt auf den Boden und fragt: „Bully in d
 Zone, du bist LW. Wo stehst du? Und was machst du, wenn wir verlieren?" Wer es im Kopf
 weiss, ist auf dem Eis schneller.
 </Callout>
+
+## Teste dich
+
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="bully" />
 
 <Callout type="merke" title="Eine Grundaufstellung">
 Diese Aufstellung ist die Grundaufstellung auf Basis des DEB-Grundlagentraining. Sie ist ein
