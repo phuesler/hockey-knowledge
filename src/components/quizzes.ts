@@ -615,12 +615,12 @@ export const quizzes: Record<QuizId, QuestionGeometry[]> = geometry;
 export const mixQuizzes: QuizId[] = [
   'aufstellung',
   'regeln',
+  'bully',
   'rollen',
   'abwehrseite',
   'zuordnung',
   'support',
   'forecheck',
-  'bully',
 ];
 
 const de: Record<QuizId, QuizText> = {
