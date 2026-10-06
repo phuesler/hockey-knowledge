@@ -18,6 +18,11 @@ import { createHash } from 'node:crypto';
 //
 // Never hardcode an internal link: always build it with href() from src/lib/href.ts,
 // which prefixes import.meta.env.BASE_URL for you.
+const site = process.env.SITE_URL ?? 'https://phuesler.github.io';
+const base = process.env.SITE_BASE ?? '/hockey-knowledge';
+// The root page only redirects to /de/ and is marked noindex, so it stays out of the sitemap.
+const rootPage = new URL(`${base}/`.replace(/\/{2,}/g, '/'), site).href;
+
 // Drafts are built (see src/lib/articles.ts) but must not show up in the sitemap. The
 // config can't query content collections, so read the frontmatter flag directly:
 // src/data/articles/de/bully.mdx -> "/de/bully/".
@@ -29,7 +34,10 @@ const draftPaths = readdirSync(articleDir, { recursive: true, encoding: 'utf8' }
 
 // Offline reading: after the build, write dist/sw.js from src/lib/sw-template.js with a
 // list of every page and asset, so the service worker can store the whole site on the
-// device. Drafts and the sitemap are left out. Registered in BaseLayout.astro.
+// device. Registered in BaseLayout.astro. Left out: drafts, and files only crawlers and
+// AI services read (sitemap, robots.txt, llms*.txt, the share image), which are useless
+// without a connection.
+const notForOffline = /^(sitemap.*\.xml|sw\.js|robots\.txt|og-image\.png|(\w+\/)?llms(-full)?\.txt)$/;
 /** @returns {import('astro').AstroIntegration} */
 function offline() {
   let base = '/';
@@ -42,7 +50,7 @@ function offline() {
       'astro:build:done': ({ dir, logger }) => {
         const files = readdirSync(dir, { recursive: true, encoding: 'utf8' })
           .map((file) => file.replace(/\\/g, '/'))
-          .filter((file) => !/^sitemap.*\.xml$/.test(file) && file !== 'sw.js')
+          .filter((file) => !notForOffline.test(file))
           .filter((file) => statSync(new URL(file, dir)).isFile())
           .filter((file) => !draftPaths.some((path) => `/${file}` === `${path}index.html`))
           .sort();
@@ -62,13 +70,16 @@ function offline() {
 }
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://phuesler.github.io',
-  base: process.env.SITE_BASE ?? '/hockey-knowledge',
+  site,
+  base,
   trailingSlash: 'ignore',
   integrations: [
     svelte(),
     mdx(),
-    sitemap({ filter: (page) => !draftPaths.some((path) => page.endsWith(path)) }),
+    sitemap({
+      filter: (page) => page !== rootPage && !draftPaths.some((path) => page.endsWith(path)),
+      i18n: { defaultLocale: 'de', locales: { de: 'de', en: 'en' } },
+    }),
     offline(),
   ],
   markdown: {

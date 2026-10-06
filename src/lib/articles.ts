@@ -9,10 +9,13 @@ export function readingMinutes(entry: Article): number {
   return Math.max(1, Math.round(words / 200));
 }
 
-/** Site path for an entry, without the base prefix. Feed it to href(). */
+/**
+ * Site path for an entry, without the base prefix. Feed it to href(). The trailing slash
+ * matters: GitHub Pages redirects /de/x to /de/x/, and canonical URLs must not redirect.
+ */
 export function articlePath(entry: Article): string {
   const { locale, slug } = parseEntryId(entry.id);
-  return `/${locale}/${slug}`;
+  return `/${locale}/${slug}/`;
 }
 
 /**
