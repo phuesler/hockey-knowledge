@@ -193,8 +193,8 @@ the site can be added to the home screen. Nothing to do per article.
 
 `/llms.txt` and `/<locale>/llms-full.txt` are generated from the articles by
 `src/pages/llms.txt.ts` and `src/pages/[locale]/llms-full.txt.ts`. `src/lib/plaintext.ts`
-turns MDX into plain Markdown: it converts `Callout`, `<details>` quiz questions and
-`<a href={href(...)}>`, and replaces
+turns MDX into plain Markdown: it converts `Callout`, `<details>` quiz questions, `<Quiz>`
+(written out from `quizzes.ts`) and `<a href={href(...)}>`, and replaces
 every other self-closing component with a short "diagram on the website" note. A new
 component that **wraps text** (like `Callout`) needs its own rule there, otherwise its tags
 end up in the text file. JSON-LD and Open Graph tags are set in `BaseLayout.astro`

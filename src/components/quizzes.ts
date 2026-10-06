@@ -572,3 +572,19 @@ for (const id of Object.keys(geometry) as QuizId[]) {
     });
   }
 }
+
+/**
+ * A quiz as plain Markdown for the llms-full.txt files: question, a description of the
+ * picture if there is one, options, right answer.
+ */
+export function quizMarkdown(id: QuizId, locale: Locale): string {
+  const answer = { de: 'Richtig:', en: 'Right answer:' }[locale];
+  return quizText[locale][id].questions
+    .map((q, i) => {
+      const right = q.options[geometry[id][i].correct];
+      const options = q.options.map((o) => `- ${o.text}`).join('\n');
+      const picture = q.label ? `_${q.label}_\n\n` : '';
+      return `**${q.prompt}**\n\n${picture}${options}\n\n${answer} ${right.text} ${right.feedback}`;
+    })
+    .join('\n\n');
+}
