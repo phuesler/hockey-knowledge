@@ -9,6 +9,7 @@ import { parseEntryId, t } from './i18n';
  *
  *   import lines                          -> removed
  *   <Callout type title>…</Callout>       -> blockquote with the title in bold
+ *   <details><summary>Q</summary>A        -> **Q** followed by A (quiz questions)
  *   <a href={href('/de/x')}>…</a>         -> [text](absolute URL)
  *   <AnyComponent … />                    -> a note that the diagram is on the website
  *
@@ -27,6 +28,8 @@ export function articleMarkdown(entry: Article, site: URL | undefined): string {
       const lines = `**${title}:** ${inner.trim()}`.split('\n');
       return lines.map((line) => (line ? `> ${line}` : '>')).join('\n');
     })
+    .replace(/<details>\s*<summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g,
+      (_, question: string, answer: string) => `**${question.trim()}**\n\n${answer.trim()}`)
     .replace(/<a href=\{href\('([^']*)'\)\}>([\s\S]*?)<\/a>/g, (_, path: string, text: string) =>
       `[${text}](${absoluteUrl(path, site)})`)
     .replace(/<a href="([^"]*)">([\s\S]*?)<\/a>/g, '[$2]($1)')
