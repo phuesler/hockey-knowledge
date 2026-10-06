@@ -707,6 +707,33 @@ const geometry = {
     /* 7. The opponents collapse in front of their goal: where is the space? */
     { correct: 0 },
   ],
+  torhueter: [
+    /* 1. Puck on the left: where does the goalie stand? On the line to the puck, not in the middle. */
+    {
+      correct: 0,
+      figure: {
+        zone: 'own',
+        candidates: [[-1.06, 5.2], [1.8, 5.2]],
+        scene: { players: [them('o1', [-8, 13])], puck: [-7.2, 12.2] },
+        after: {
+          areas: [{ kind: 'shot', poly: [[-7.2, 12.2], ...posts] }],
+          players: [them('o1', [-8, 13]), us('G', [-1.06, 5.2])],
+          puck: [-7.2, 12.2],
+          moves: [{ kind: 'sight', path: [[-1.06, 5.2], [-7.2, 12.2]] }],
+        },
+      },
+    },
+    /* 2. Butterfly on every shot? */
+    { correct: 1 },
+    /* 3. Two against one: how deep? */
+    { correct: 2 },
+    /* 4. The puck bounces off you: what next? */
+    { correct: 0 },
+    /* 5. Our own player stands in your line of sight. */
+    { correct: 1 },
+    /* 6. After a goal against. */
+    { correct: 2 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -721,6 +748,7 @@ export const mixQuizzes: QuizId[] = [
   'regeln',
   'bully',
   'rollen',
+  'torhueter',
   'abwehrseite',
   'zuordnung',
   'support',
@@ -2175,6 +2203,144 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  torhueter: {
+    title: 'Quiz: Torhüter',
+    name: 'Torhüter',
+    article: 'torhueter',
+    questions: [
+      {
+        prompt: 'Ein Gegner hat den Puck links vor dem Bullykreis. Wo steht der Torhüter besser: auf {1} oder auf {2}?',
+        label:
+          'Eigene Zone, unser Tor unten. Ein Gegner mit Puck links vor dem Bullykreis. Platz {1} liegt links vor dem Tor, auf der Linie zwischen Puck und Tormitte. Platz {2} liegt rechts von der Tormitte.',
+        afterLabel:
+          'Der Torhüter steht auf Platz {1}, auf der Linie zwischen Puck und Tormitte. Der Keil, den der Schütze vom Tor sieht, ist fast ganz zu.',
+        options: [
+          {
+            text: 'Auf {1}',
+            feedback:
+              'Richtig. {1} liegt auf der Linie vom Puck zur Mitte des Tores. Nase und Bauchnabel zeigen zum Puck, beide Pfosten sind zu.',
+          },
+          {
+            text: 'Auf {2}',
+            feedback:
+              'Von {2} aus ist der nahe Pfosten offen. Der Torhüter muss dem Puck folgen, nicht in der Mitte des Tores warten.',
+          },
+        ],
+        section: 'winkel-nase-und-bauchnabel-zum-puck',
+        topic: 'Der Winkel',
+      },
+      {
+        prompt: 'Soll ein Torhüter bei jedem Schuss in den Butterfly gehen?',
+        options: [
+          {
+            text: 'Ja, dann ist unten immer alles zu',
+            feedback:
+              'Unten ist dann zu, aber oben wird es offen. Wer bei jedem Schuss auf die Knie geht, ist ausserdem langsamer wieder auf den Beinen.',
+          },
+          {
+            text: 'Nein, vor allem bei flachen und halbhohen Schüssen',
+            feedback:
+              'Richtig. Der Butterfly ist ein Werkzeug zum Blocken, vor allem bei flachen und halbhohen Schüssen. Hohe Schüsse fängt die Fanghand.',
+          },
+          {
+            text: 'Nein, den Butterfly braucht man erst bei den Profis',
+            feedback:
+              'Den Butterfly lernt man schon jetzt. Er ist nur nicht die Antwort auf jeden Schuss.',
+          },
+        ],
+        section: 'abwehren',
+        topic: 'Der Butterfly',
+      },
+      {
+        prompt: 'Zwei Gegner kommen auf dein Tor zu, einer hat den Puck. Was machst du?',
+        options: [
+          {
+            text: 'Weit herausfahren und den Puckführer angreifen',
+            feedback:
+              'Dann ist der Weg zurück zu lang. Passt er quer, schiesst der andere aufs leere Tor.',
+          },
+          {
+            text: 'Den Spieler ohne Puck anschauen, der schiesst sowieso',
+            feedback:
+              'Schiessen kann nur, wer den Puck hat. Der Torhüter richtet sich immer nach dem Puck.',
+          },
+          {
+            text: 'Tiefer im Torraum bleiben und den Puck anschauen',
+            feedback:
+              'Richtig. Tiefer im Torraum ist der Weg zur anderen Seite kurz. Kommt der Pass, bist du mit einem T-Push dort.',
+          },
+        ],
+        section: 'tiefe-wie-weit-raus',
+        topic: 'Zwei gegen einen',
+      },
+      {
+        prompt: 'Du hast den Schuss abgewehrt. Der Puck liegt vor dir im Torraum. Was jetzt?',
+        options: [
+          {
+            text: 'Dem Puck mit den Augen folgen und dich wieder zu ihm drehen',
+            feedback:
+              'Richtig. Der Puck bleibt im Blick, vor und nach der Abwehr. So bist du für den nächsten Schuss bereit.',
+          },
+          {
+            text: 'Kurz durchatmen, die Abwehr ist geschafft',
+            feedback:
+              'Solange der Puck vor dem Tor liegt, ist es nicht vorbei. Ein Gegner kann ihn sofort noch einmal schiessen.',
+          },
+          {
+            text: 'Zum Schützen schauen, was er als Nächstes macht',
+            feedback:
+              'Der Schütze hat den Puck nicht mehr. Gefährlich ist, wer zuerst beim Puck ist. Darum bleiben die Augen beim Puck.',
+          },
+        ],
+        section: 'nach-dem-schuss',
+        topic: 'Nach dem Schuss',
+      },
+      {
+        prompt: 'Unser Verteidiger steht genau zwischen dir und dem Puck an der blauen Linie. Was ist richtig?',
+        options: [
+          {
+            text: 'Das ist gut, er blockt ja den Schuss',
+            feedback:
+              'Manchmal trifft der Schuss ihn, oft aber nicht. Dann kommt ein Puck, den du nicht gesehen hast.',
+          },
+          {
+            text: 'Du suchst die Sichtlinie zum Puck, und er stellt sich daneben',
+            feedback:
+              'Richtig. Auch eigene Spieler können die Sicht nehmen. Du bewegst den Kopf, bis du den Puck siehst. Der Verteidiger stellt sich neben die Linie.',
+          },
+          {
+            text: 'Du fährst aus dem Tor, bis du den Puck wieder siehst',
+            feedback:
+              'Dann verlässt du deinen Winkel und das Tor ist offen. Den Kopf bewegen reicht meistens.',
+          },
+        ],
+        section: 'den-puck-sehen',
+        topic: 'Sichtlinie',
+      },
+      {
+        prompt: 'Der Gegner hat ein Tor geschossen. Was hilft dir jetzt am meisten?',
+        options: [
+          {
+            text: 'Den Mitspielern sagen, wer den Fehler gemacht hat',
+            feedback:
+              'Ein Gegentor ist nie die Schuld von einem allein. Wer Schuldige sucht, macht das Team schwächer.',
+          },
+          {
+            text: 'Im Kopf genau durchgehen, was du falsch gemacht hast',
+            feedback:
+              'Das gehört ins Training danach. Im Spiel zählt der nächste Schuss.',
+          },
+          {
+            text: 'Puck raus, kurz zur Bande, atmen, trinken: der nächste Schuss gehört mir',
+            feedback:
+              'Richtig. Eine kurze, immer gleiche Routine hilft, das Tor abzuhaken. Danach zählt nur der nächste Schuss.',
+          },
+        ],
+        section: 'nach-einem-gegentor',
+        topic: 'Nach einem Gegentor',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -3583,6 +3749,144 @@ const en: typeof de = {
         ],
         section: 'when-the-opponents-collapse',
         topic: 'Collapsing',
+      },
+    ],
+  },
+  torhueter: {
+    title: 'Quiz: Goalies',
+    name: 'Goalies',
+    article: 'goalies',
+    questions: [
+      {
+        prompt: 'An opponent has the puck on the left, in front of the faceoff circle. Where should the goalie stand: on {1} or on {2}?',
+        label:
+          'Own zone, our goal at the bottom. An opponent with the puck on the left, in front of the faceoff circle. Spot {1} is left in front of the goal, on the line between the puck and the middle of the goal. Spot {2} is right of the middle of the goal.',
+        afterLabel:
+          'The goalie stands on spot {1}, on the line between the puck and the middle of the goal. The wedge the shooter sees of the goal is almost closed.',
+        options: [
+          {
+            text: 'On {1}',
+            feedback:
+              'Right. {1} is on the line from the puck to the middle of the goal. Nose and belly button point at the puck, both posts are covered.',
+          },
+          {
+            text: 'On {2}',
+            feedback:
+              'From {2} the near post is open. The goalie has to follow the puck, not wait in the middle of the net.',
+          },
+        ],
+        section: 'angle-nose-and-belly-button-to-the-puck',
+        topic: 'The angle',
+      },
+      {
+        prompt: 'Should a goalie drop into the butterfly on every shot?',
+        options: [
+          {
+            text: 'Yes, then the bottom is always closed',
+            feedback:
+              'The bottom is closed, but the top opens up. And anyone who drops to their knees on every shot is slower to get back up.',
+          },
+          {
+            text: 'No, mainly on low and mid-height shots',
+            feedback:
+              'Right. The butterfly is a blocking tool, mainly for low and mid-height shots. High shots go to the catch glove.',
+          },
+          {
+            text: 'No, the butterfly is only for professionals',
+            feedback:
+              'You learn the butterfly now already. It just isn’t the answer to every shot.',
+          },
+        ],
+        section: 'making-saves',
+        topic: 'The butterfly',
+      },
+      {
+        prompt: 'Two opponents skate at your goal, one has the puck. What do you do?',
+        options: [
+          {
+            text: 'Come far out and attack the puck carrier',
+            feedback:
+              'Then the way back is too long. If they pass across, the other one shoots at an empty net.',
+          },
+          {
+            text: 'Watch the player without the puck, they will shoot anyway',
+            feedback:
+              'Only the player with the puck can shoot. The goalie always lines up with the puck.',
+          },
+          {
+            text: 'Stay deeper in the crease and watch the puck',
+            feedback:
+              'Right. Deeper in the crease, the way to the other side is short. When the pass comes, one T-push gets you there.',
+          },
+        ],
+        section: 'depth-how-far-out',
+        topic: 'Two against one',
+      },
+      {
+        prompt: 'You made the save. The puck lies in front of you in the crease. What now?',
+        options: [
+          {
+            text: 'Follow the puck with your eyes and turn to it again',
+            feedback:
+              'Right. The puck stays in sight, before and after the save. Then you are ready for the next shot.',
+          },
+          {
+            text: 'Take a breath, the save is done',
+            feedback:
+              'As long as the puck lies in front of the goal, it isn’t over. An opponent can shoot it again straight away.',
+          },
+          {
+            text: 'Look at the shooter to see what they do next',
+            feedback:
+              'The shooter doesn’t have the puck any more. The danger is whoever gets to the puck first. So your eyes stay on the puck.',
+          },
+        ],
+        section: 'after-the-shot',
+        topic: 'After the shot',
+      },
+      {
+        prompt: 'Our defender stands right between you and the puck at the blue line. What is right?',
+        options: [
+          {
+            text: 'That’s good, they block the shot',
+            feedback:
+              'Sometimes the shot hits them, but often it doesn’t. Then a puck comes that you never saw.',
+          },
+          {
+            text: 'You look for the line of sight to the puck, and they move beside it',
+            feedback:
+              'Right. Our own players can block the view too. You move your head until you see the puck. The defender stands beside the line.',
+          },
+          {
+            text: 'You come out of the net until you see the puck again',
+            feedback:
+              'Then you leave your angle and the net is open. Moving your head is usually enough.',
+          },
+        ],
+        section: 'seeing-the-puck',
+        topic: 'Line of sight',
+      },
+      {
+        prompt: 'The opponents have scored. What helps you most now?',
+        options: [
+          {
+            text: 'Tell your teammates who made the mistake',
+            feedback:
+              'A goal against is never one player’s fault. Looking for someone to blame makes the team weaker.',
+          },
+          {
+            text: 'Go through exactly what you did wrong in your head',
+            feedback:
+              'That belongs in practice afterwards. In the game, the next shot is what counts.',
+          },
+          {
+            text: 'Puck out, a moment at the boards, breathe, drink: the next shot is mine',
+            feedback:
+              'Right. A short routine, the same every time, helps you put the goal behind you. After that, only the next shot counts.',
+          },
+        ],
+        section: 'after-a-goal-against',
+        topic: 'After a goal against',
       },
     ],
   },

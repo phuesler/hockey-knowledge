@@ -1006,6 +1006,106 @@ const geometry = {
       },
     },
   ],
+  /* Torhüter: the angle. Good: the goalie stands on the line from the puck to the middle
+     of the goal. Bad: in the middle of the net, the near post is open. */
+  'goalie-angle': [
+    {
+      zone: 'own',
+      verdict: 'bad',
+      scene: {
+        areas: [{ kind: 'shot', poly: [[-7.2, 12.2], ...posts] }],
+        players: [
+          { team: 'them', at: [-8, 13] },
+          { team: 'us', label: 'G', at: [1.2, 5.2] },
+        ],
+        puck: [-7.2, 12.2],
+        moves: [{ kind: 'shot', path: [[-7.2, 12.2], [-0.6, 4.2]] }],
+      },
+    },
+    {
+      zone: 'own',
+      verdict: 'good',
+      scene: {
+        areas: [{ kind: 'shot', poly: [[-7.2, 12.2], ...posts] }],
+        players: [
+          { team: 'them', at: [-8, 13] },
+          { team: 'us', label: 'G', at: [-1.06, 5.2] },
+        ],
+        puck: [-7.2, 12.2],
+        moves: [{ kind: 'sight', path: [[-1.06, 5.2], [-7.2, 12.2]] }],
+      },
+    },
+  ],
+
+  /* Torhüter: depth on a rush. Alone against one: out to the edge of the crease. Two
+     against one: deeper, so the push across to the pass is short. */
+  'goalie-rush': [
+    {
+      zone: 'own',
+      scene: {
+        areas: [{ kind: 'shot', poly: [[0.2, 13.8], ...posts] }],
+        players: [
+          { team: 'them', at: [0.6, 15] },
+          { team: 'us', label: 'G', at: [0, 5], ghost: true },
+          { team: 'us', label: 'G', at: [0, 7] },
+        ],
+        puck: [0.2, 13.8],
+        moves: [{ kind: 'sight', path: [[0, 7], [0.2, 13.8]] }],
+      },
+    },
+    {
+      zone: 'own',
+      scene: {
+        areas: [danger],
+        players: [
+          { team: 'them', at: [-5, 14] },
+          { team: 'them', at: [5.4, 13] },
+          { team: 'us', label: 'LD', at: [0.6, 11] },
+          { team: 'us', label: 'G', at: [-0.66, 5.35] },
+        ],
+        puck: [-4.4, 13],
+        moves: [
+          { kind: 'sight', path: [[-0.66, 5.35], [-4.4, 13]] },
+          { kind: 'lane', path: [[-4.4, 13], [5.4, 13]] },
+        ],
+      },
+    },
+  ],
+
+  /* Torhüter: traffic. A shot from the point; our own LD stands in the goalie's line
+     of sight, then beside it. */
+  'goalie-traffic': [
+    {
+      zone: 'own',
+      verdict: 'bad',
+      scene: {
+        players: [
+          { team: 'them', at: [-7, 19.5] },
+          { team: 'them', at: [3, 9.5] },
+          { team: 'us', label: 'RD', at: [2.4, 6.6] },
+          { team: 'us', label: 'LD', at: [-2.4, 9.5] },
+          { team: 'us', label: 'G', at: [-0.56, 5.28] },
+        ],
+        puck: [-6.4, 18.6],
+        moves: [{ kind: 'sight', path: [[-0.56, 5.28], [-6.4, 18.6]] }],
+      },
+    },
+    {
+      zone: 'own',
+      verdict: 'good',
+      scene: {
+        players: [
+          { team: 'them', at: [-7, 19.5] },
+          { team: 'them', at: [3, 9.5] },
+          { team: 'us', label: 'RD', at: [2.4, 6.6] },
+          { team: 'us', label: 'LD', at: [-4.8, 9.4] },
+          { team: 'us', label: 'G', at: [-0.56, 5.28] },
+        ],
+        puck: [-6.4, 18.6],
+        moves: [{ kind: 'sight', path: [[-0.56, 5.28], [-6.4, 18.6]] }],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -1429,6 +1529,60 @@ const de: Record<PlayId, PlayText> = {
       'Gleiche Lage. LW fährt LD entgegen und dreht in einer Kurve nach aussen zur Bande. LD passt kurz und schräg zu LW.',
     ],
   },
+  'goalie-angle': {
+    caption: 'Winkel: auf der Linie zum Puck',
+    panels: [
+      {
+        title: 'Zu weit in der Mitte',
+        text: 'Der Puck ist links, der Torhüter steht in der Mitte des Tores. Am nahen Pfosten bleibt eine Lücke. Dorthin geht der Schuss.',
+      },
+      {
+        title: 'Nase und Bauchnabel zum Puck',
+        text: 'Der Torhüter steht auf der Linie vom Puck zur Mitte des Tores. Er schaut genau zum Puck. Der blaue Keil, in den der Schütze zielen kann, ist fast ganz zu.',
+      },
+    ],
+    labels: [
+      'Eigene Zone. Ein Gegner mit Puck links vor dem Bullykreis. Unser Torhüter steht rechts von der Tormitte. Ein Schuss geht in die Lücke am linken Pfosten.',
+      'Gleiche Lage. Unser Torhüter steht links vor dem Tor, auf der Linie zwischen Puck und Tormitte, und schaut zum Puck.',
+    ],
+    note: 'Der blaue Keil zeigt, was der Schütze vom Tor sieht.',
+  },
+  'goalie-rush': {
+    caption: 'Tiefe: wie weit raus?',
+    panels: [
+      {
+        title: 'Allein gegen einen',
+        text: 'Ein Gegner fährt allein aufs Tor. Der Torhüter kommt bis an den Rand des Torraums heraus. So sieht der Schütze weniger vom Tor.',
+      },
+      {
+        title: 'Zwei gegen einen',
+        text: 'Zwei Gegner kommen, der Puckführer kann quer passen. Der Torhüter bleibt tiefer im Torraum. So ist der Weg zur anderen Seite kurz, wenn der Pass kommt.',
+      },
+    ],
+    labels: [
+      'Eigene Zone. Ein Gegner mit Puck fährt allein durch die Mitte aufs Tor. Unser Torhüter ist aus dem Tor an den Rand des Torraums gefahren. Eine gestrichelte Markierung zeigt, wo er vorher stand.',
+      'Eigene Zone. Zwei Gegner fahren aufs Tor, der linke hat den Puck. Unser linker Verteidiger steht zwischen ihnen. Unser Torhüter steht tief im Torraum, leicht links, und schaut zum Puck.',
+    ],
+    note: 'Die gestrichelte Markierung zeigt, wo der Torhüter vorher stand.',
+  },
+  'goalie-traffic': {
+    caption: 'Sichtlinie frei halten',
+    panels: [
+      {
+        title: 'Eigener Spieler im Weg',
+        text: 'Der Gegner schiesst von der blauen Linie. Unser LD steht genau zwischen Torhüter und Puck. Der Torhüter sieht den Schuss erst, wenn er schon da ist.',
+      },
+      {
+        title: 'Daneben, nicht davor',
+        text: 'LD steht neben der gepunkteten Linie. Der Torhüter sieht den Puck vom Schläger an.',
+      },
+    ],
+    labels: [
+      'Eigene Zone. Ein Gegner mit Puck an der linken blauen Linie. Unser linker Verteidiger steht auf der Linie zwischen Torhüter und Puck.',
+      'Gleiche Lage. Unser linker Verteidiger steht weiter links, neben der Linie zwischen Torhüter und Puck.',
+    ],
+    note: 'Die gepunktete Linie ist der Blick des Torhüters zum Puck.',
+  },
 };
 
 const en: typeof de = {
@@ -1833,6 +1987,60 @@ const en: typeof de = {
       'The whole rink, our goal at the bottom. LD has the puck next to our goal. LW skates up with their back to LD to just short of the opponents’ blue line and looks back. A dotted line shows the long, steep passing lane from behind. An opponent waits right in front of LW and skates at them, a second one comes from the side. Both are outside what LW can see.',
       'Same situation. LW skates towards LD and turns in a curve to the outside, towards the boards. LD passes short and at an angle to LW.',
     ],
+  },
+  'goalie-angle': {
+    caption: 'Angle: on the line to the puck',
+    panels: [
+      {
+        title: 'Too far in the middle',
+        text: 'The puck is on the left, the goalie stands in the middle of the net. A gap opens at the near post. That is where the shot goes.',
+      },
+      {
+        title: 'Nose and belly button to the puck',
+        text: 'The goalie stands on the line from the puck to the middle of the goal and looks straight at the puck. The blue wedge the shooter can aim at is almost closed.',
+      },
+    ],
+    labels: [
+      'Own zone. An opponent with the puck on the left, in front of the faceoff circle. Our goalie stands right of the middle of the goal. A shot goes into the gap at the left post.',
+      'Same situation. Our goalie stands left in front of the goal, on the line between the puck and the middle of the goal, and looks at the puck.',
+    ],
+    note: 'The blue wedge shows what the shooter sees of the goal.',
+  },
+  'goalie-rush': {
+    caption: 'Depth: how far out?',
+    panels: [
+      {
+        title: 'Alone against one',
+        text: 'One opponent skates in alone. The goalie comes out to the edge of the crease. The shooter sees less of the goal.',
+      },
+      {
+        title: 'Two against one',
+        text: 'Two opponents come, the puck carrier can pass across. The goalie stays deeper in the crease, so the way to the other side is short when the pass comes.',
+      },
+    ],
+    labels: [
+      'Own zone. An opponent with the puck skates alone through the middle towards the goal. Our goalie has come out to the edge of the crease. A dashed outline shows where they stood before.',
+      'Own zone. Two opponents skate towards the goal, the left one has the puck. Our left defender stands between them. Our goalie stays deep in the crease, slightly left, looking at the puck.',
+    ],
+    note: 'The dashed outline shows where the goalie stood before.',
+  },
+  'goalie-traffic': {
+    caption: 'Keep the line of sight clear',
+    panels: [
+      {
+        title: 'Our own player in the way',
+        text: 'The opponent shoots from the blue line. Our LD stands right between the goalie and the puck. The goalie only sees the shot when it is already there.',
+      },
+      {
+        title: 'Beside it, not in front',
+        text: 'LD stands beside the dotted line. The goalie sees the puck from the moment it leaves the stick.',
+      },
+    ],
+    labels: [
+      'Own zone. An opponent with the puck at the left blue line. Our left defender stands on the line between the goalie and the puck.',
+      'Same situation. Our left defender stands further left, beside the line between the goalie and the puck.',
+    ],
+    note: 'The dotted line is the goalie’s view of the puck.',
   },
 };
 
