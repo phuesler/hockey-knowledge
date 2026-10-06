@@ -425,8 +425,8 @@ const geometry = {
       },
     },
 
-    /* 2. In defence: how many go to the puck? */
-    { correct: 0 },
+    /* 2. In defence: LD attacks the puck carrier. What does the helper C do? */
+    { correct: 1 },
 
     /* 3. LD pins an opponent on the boards: who takes the puck? */
     { correct: 1 },
@@ -1148,24 +1148,26 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Nahe Unterstützung',
       },
       {
-        prompt: 'Der Gegner hat den Puck in unserer Zone. Wie viele von uns gehen zum Puck?',
+        prompt:
+          'Der Gegner hat den Puck an der Bande in unserer Zone. LD greift ihn an. Du bist C und hilfst. Was machst du?',
         options: [
           {
-            text: 'Zwei',
+            text: 'Auch auf den Puckführer losgehen. Zu zweit ist es sicherer.',
             feedback:
-              'Einer drückt, der zweite hilft. Die anderen bleiben in der Mitte: vor dem Tor, im hohen Slot und zwischen Puck und blauer Linie.',
+              'Dann seid ihr beide beim selben Gegner, und sein freier Mitspieler hat Platz. Nur einer greift an.',
           },
           {
-            text: 'Drei, dann ist es sicher',
-            feedback: 'Ein dritter Spieler am Puck fehlt vor dem Tor. Support heisst helfen, nicht alle hinfahren.',
+            text: 'Ein paar Meter weg bleiben, bereit zu helfen, und den freien Gegner im Blick behalten.',
+            feedback:
+              'Pinnt LD den Gegner, holst du den Puck. Verliert LD den Zweikampf, bist du sofort da. Und geht der Puck zum freien Gegner, bist du als Erster bei ihm.',
           },
           {
-            text: 'Einer, die anderen bleiben weg',
+            text: 'Vor das Tor fahren und dort warten.',
             feedback:
-              'Allein gegen den Puckführer verliert man oft. Zwei gegen einen gewinnen den Puck fast immer.',
+              'Vor dem Tor steht schon RD. Bist du weit weg, ist LD allein: Verliert LD den Zweikampf, hat der Gegner freie Bahn.',
           },
         ],
-        section: 'overload-zu-zweit-an-den-puck',
+        section: 'overload-einer-greift-an-einer-hilft',
         topic: 'Overload',
       },
       {
@@ -1218,7 +1220,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Wenn der Puckführer festsitzt',
       },
       {
-        prompt: 'LD und C gehen zu zweit an den Puck, ein Overload. Was ist dabei die Gefahr?',
+        prompt: 'LD greift den Puckführer an, C hilft nah dabei. Das ist ein Overload. Was ist dabei die Gefahr?',
         options: [
           {
             text: 'Keine. Zwei gegen einen gewinnen immer.',
@@ -1228,15 +1230,15 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Spielt der Gegner den Puck an der Bande entlang zum freien Mitspieler, hat er ein 2-gegen-1.',
             feedback:
-              'Das ist die Kehrseite: Zwei von uns sind beim Puck. Klappt es nicht, fehlen sie woanders.',
+              'Das ist die Kehrseite: Zwei von uns sind auf der Puckseite. Darum behält der Helfer den freien Gegner im Blick.',
           },
           {
             text: 'Der Schiedsrichter pfeift Behinderung.',
             feedback:
-              'Zu zweit an den Puck zu gehen ist erlaubt. Die Gefahr ist eine andere: Fehlt der Overload, hat der Gegner woanders ein 2-gegen-1.',
+              'Einer greift an, einer hilft: Das ist erlaubt. Die Gefahr ist eine andere: Spielt der Gegner den Puck zum freien Mitspieler, hat er dort ein 2-gegen-1.',
           },
         ],
-        section: 'overload-zu-zweit-an-den-puck',
+        section: 'overload-einer-greift-an-einer-hilft',
         topic: 'Gefahr beim Overload',
       },
       {
@@ -2298,23 +2300,26 @@ const en: typeof de = {
         topic: 'Near support',
       },
       {
-        prompt: 'The opponents have the puck in our zone. How many of us go to the puck?',
+        prompt:
+          'An opponent has the puck on the boards in our zone. LD attacks them. You are C and help. What do you do?',
         options: [
           {
-            text: 'Two',
+            text: 'Go after the puck carrier too. Two of us is safer.',
             feedback:
-              'One puts on pressure, the second helps. The others stay in the middle: in front of the goal, in the high slot, and between the puck and the blue line.',
+              'Then you are both on the same opponent, and their open teammate has space. Only one attacks.',
           },
           {
-            text: 'Three, to be safe',
-            feedback: 'A third player at the puck is missing in front of the goal. Support means helping, not everyone going.',
+            text: 'Stay a few metres away, ready to help, and keep the open opponent in view.',
+            feedback:
+              'If LD pins the opponent, you take the puck. If LD loses the battle, you are right there. And if the puck goes to the open opponent, you get there first.',
           },
           {
-            text: 'One, the others stay away',
-            feedback: 'Alone against the puck carrier you often lose. Two against one win the puck almost every time.',
+            text: 'Skate to the front of the goal and wait there.',
+            feedback:
+              'RD is already in front of the goal. If you are far away, LD is alone: if LD loses the battle, the opponent has a free path.',
           },
         ],
-        section: 'overload-two-to-the-puck',
+        section: 'overload-one-attacks-one-helps',
         topic: 'Overload',
       },
       {
@@ -2363,7 +2368,7 @@ const en: typeof de = {
         topic: 'When the puck carrier is stuck',
       },
       {
-        prompt: 'LD and C go to the puck together, an overload. What is the risk?',
+        prompt: 'LD attacks the puck carrier, C helps close by. That is an overload. What is the risk?',
         options: [
           {
             text: 'None. Two against one always wins.',
@@ -2371,15 +2376,15 @@ const en: typeof de = {
           },
           {
             text: 'If the opponents pass the puck along the boards to their open teammate, they have a 2 against 1.',
-            feedback: 'That is the downside: two of ours are at the puck. If it doesn’t work, they are missing elsewhere.',
+            feedback: 'That is the downside: two of ours are on the puck side. That is why the helper keeps the open opponent in view.',
           },
           {
             text: 'The referee calls interference.',
             feedback:
-              'Going to the puck in pairs is allowed. The risk is a different one: if the overload fails, the opponents have a 2 against 1 somewhere else.',
+              'One attacking and one helping is allowed. The risk is a different one: if the opponents pass to their open teammate, they have a 2 against 1 there.',
           },
         ],
-        section: 'overload-two-to-the-puck',
+        section: 'overload-one-attacks-one-helps',
         topic: 'The risk of the overload',
       },
       {
