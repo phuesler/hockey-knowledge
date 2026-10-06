@@ -3,7 +3,7 @@ title: "Rules: offside, icing and penalties"
 description: "The rules that are new for many players coming up from U11: when it is offside and why everyone then has to leave the zone, what icing is, and what happens when the referee signals a penalty – including the empty net and the extra skater."
 category: theorie
 order: 5
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Rules", "Offside", "Icing", "Penalties"]
 translationOf: regeln
 draft: false
@@ -12,6 +12,9 @@ draft: false
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import BlueLineSkates from '../../../components/BlueLineSkates.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
+import RefSignals from '../../../components/RefSignals.astro';
+import RinkZones from '../../../components/RinkZones.astro';
 import { href } from '../../../lib/href';
 
 For many players coming up from U11, two rules are new: **offside** (Abseits) and
@@ -38,6 +41,8 @@ Two **blue lines** divide the ice into three zones:
 
 The **centre red line** divides the ice into two halves. It matters for icing. The red
 **goal lines** run through the goals at both ends, from boards to boards.
+
+<RinkZones />
 
 ## Offside
 
@@ -227,7 +232,7 @@ What matters:
 - **Back after the whistle.** The goalie goes back into the goal, the sixth skater to the
   bench. The faceoff is usually in the zone of the team getting the penalty.
 
-**In the rule book:** <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=47">Rule 16, Minor penalties</a> and <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=58">Rule 26, Delayed penalties</a>.
+**In the rule book:** <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=46">Rule 15, Calling of penalties</a> (the raised arm), <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=47">Rule 16, Minor penalties</a>, and <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=137">Rule 78, Goals</a>, point XI (the own goal during a delayed penalty).
 
 ## The officials’ signals
 
@@ -239,10 +244,21 @@ what is happening:
 | Linesperson, **arm up**, puck just into the zone | Delayed offside | All attackers back to the blue line, don’t play the puck |
 | Linesperson, **arm up**, puck sliding towards the goal line | Possible icing | Skate to the puck: the race decides |
 | Referee, **arm up** | Delayed penalty against the opponents | Keep the puck, goalie off, extra skater on |
+| Linesperson blows the whistle, **arm stretched out** towards the blue line | Offside | Faceoff in the neutral zone, build up again |
 | **Arms folded across the chest** | Icing | Faceoff in front of the goal of the team that shot the puck |
 | **Both arms stretched out sideways** and swung back and forth | Washed out: no offside, no icing or no goal | Play on |
 
+<RefSignals />
+
 **In the rule book:** all signals with pictures in <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=162">Appendix I</a>.
+
+## Test yourself
+
+Eight questions on this article. Have a guess even if you aren’t sure: after every answer
+you’ll see why it is right or wrong. The quiz works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="regeln" locale="en" />
 
 <Callout type="merke" title="Rules can differ by league">
 This article follows the <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf">IIHF rule book 2026/27</a>, which is also used in Germany. Some points may be

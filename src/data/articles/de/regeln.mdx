@@ -3,7 +3,7 @@ title: "Regeln: Abseits, Icing und Strafen"
 description: "Die Regeln, die für viele aus der U11 neu sind: wann Abseits ist und warum dann alle aus der Zone müssen, was Icing ist, und was passiert, wenn der Schiedsrichter eine Strafe anzeigt – samt leerem Tor und sechstem Feldspieler."
 category: theorie
 order: 5
-updated: 2026-10-05
+updated: 2026-10-06
 tags: ["Regeln", "Abseits", "Icing", "Strafen"]
 draft: false
 ---
@@ -11,6 +11,9 @@ draft: false
 import RinkPlay from '../../../components/RinkPlay.svelte';
 import BlueLineSkates from '../../../components/BlueLineSkates.svelte';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
+import RefSignals from '../../../components/RefSignals.astro';
+import RinkZones from '../../../components/RinkZones.astro';
 import { href } from '../../../lib/href';
 
 Für viele Kinder, die aus der U11 kommen, sind zwei Regeln neu: **Abseits** und
@@ -38,6 +41,8 @@ Das Eis ist durch zwei **blaue Linien** in drei Zonen geteilt:
 
 Die **rote Mittellinie** teilt das Eis in zwei Hälften. Sie ist für das Icing wichtig.
 Die roten **Torlinien** laufen an beiden Enden durch die Tore von Bande zu Bande.
+
+<RinkZones />
 
 ## Abseits
 
@@ -232,7 +237,7 @@ Darauf kommt es an:
 - **Nach dem Pfiff zurück.** Der Torhüter kommt wieder ins Tor, der sechste Feldspieler
   geht auf die Bank. Das Bully ist meistens in der Zone des Teams, das die Strafe bekommt.
 
-**Im Regelbuch:** <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=47">Regel 16, Kleine Strafen</a> und <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=58">Regel 26, Angezeigte Strafen</a>.
+**Im Regelbuch:** <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=46">Regel 15, Verhängen von Strafen</a> (der erhobene Arm), <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=47">Regel 16, Kleine Strafen</a>, und <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=137">Regel 78, Tore</a>, Punkt XI (das Eigentor während der angezeigten Strafe).
 
 ## Die Zeichen der Schiedsrichter
 
@@ -244,10 +249,21 @@ wer ihn hebt und was gerade passiert:
 | Linienrichter, **Arm hoch**, Puck gerade in die Zone | Verzögertes Abseits | Alle Angreifer zurück an die blaue Linie, Puck nicht spielen |
 | Linienrichter, **Arm hoch**, Puck rutscht Richtung Torlinie | Mögliches Icing | Zum Puck fahren: Das Rennen entscheidet |
 | Schiedsrichter, **Arm hoch** | Angezeigte Strafe gegen den Gegner | Puck behalten, Torhüter raus, sechster Feldspieler rein |
+| Linienrichter pfeift, **Arm waagrecht** zur blauen Linie | Abseits | Bully in der neutralen Zone, neu aufbauen |
 | **Arme vor der Brust verschränkt** | Icing | Bully vor dem Tor des Teams, das den Puck geschossen hat |
 | **Beide Arme seitlich ausgestreckt** und hin und her geschwenkt | Aufgehoben: kein Abseits, kein Icing oder kein Tor | Weiterspielen |
 
+<RefSignals />
+
 **Im Regelbuch:** alle Zeichen mit Bildern im <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf#page=162">Anhang I</a>.
+
+## Teste dich
+
+Acht Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="regeln" />
 
 <Callout type="merke" title="Regeln können je nach Liga abweichen">
 Dieser Artikel folgt dem <a href="https://blob.iihf.com/iihf-media/iihfmvc/media/downloads/rule%20book/2026-27_iihf_rule_book.pdf">IIHF-Regelbuch 2026/27</a> (auf Englisch), nach dem auch in Deutschland
