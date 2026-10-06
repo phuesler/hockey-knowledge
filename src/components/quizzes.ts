@@ -155,6 +155,15 @@ const forecheckThem = [
 const forecheckD = [us('LD', [8, 21]), us('RD', [-8, 21])];
 const badged = (label: string, at: Pt, badge: string): Player => ({ ...us(label, at), badge });
 
+/* Gegenlaufen: LD has the puck behind our goal, a forechecker comes at them. */
+const towardPuck: Pt = [-7.7, 2.3];
+const towardChaser: Pt = [-2.4, 7.4];
+
+/* Cycles: LW has cut inside on the half-wall (attacking zone, our left at positive x). */
+const cyclesPuck: Pt = [6.4, 13.6];
+const cyclesChaser: Pt = [7.9, 18.6];
+const cyclesQuizThem = [them('o1', [4.5, 6]), them('o2', [-3.5, 6]), them('o4', [1, 12]), them('o5', [-7, 16])];
+
 const geometry = {
   regeln: [
     /* 1. Skates on the blue line, stick in the zone. */
@@ -603,6 +612,101 @@ const geometry = {
     /* 6. What the C on the jersey means. */
     { correct: 1 },
   ],
+  gegenlaufen: [
+    /* 1. LD has the puck behind our goal, a forechecker comes. Where does LW go? A: down the boards. */
+    {
+      correct: 0,
+      figure: {
+        zone: 'own',
+        candidates: [[-12.8, 12], [-12.8, 19.8], [0.4, 10.6]],
+        scene: {
+          players: [them('o1', towardChaser), them('o2', [-10.4, 21.6]), them('o3', [4, 16]), us('LD', [-6.5, 2.6])],
+          puck: towardPuck,
+          moves: [{ kind: 'skate', team: 'them', path: [towardChaser, [-4.6, 4.8]], trim: 0.4 }],
+        },
+        after: {
+          areas: [{ kind: 'shadow', poly: passShadow(towardPuck, towardChaser) }],
+          players: [
+            them('o1', towardChaser),
+            them('o2', [-10.4, 21.6]),
+            them('o3', [4, 16]),
+            us('LD', [-6.5, 2.6]),
+            { team: 'us', label: 'LW', at: [-12.8, 19.8], ghost: true },
+            us('LW', [-12.8, 12]),
+          ],
+          puck: towardPuck,
+          moves: [
+            { kind: 'skate', path: [[-12.8, 18.2], [-12.8, 13.6]], trim: 0.2 },
+            { kind: 'pass', path: [[-7.4, 3.2], [-12.4, 10.8]], trim: 0.8 },
+          ],
+        },
+      },
+    },
+
+    /* 2. Skate away, wait at the far blue line, or skate towards the puck? */
+    { correct: 1 },
+
+    /* 3. What a drop pass is. */
+    { correct: 1 },
+
+    /* 4. Why the swing. */
+    { correct: 2 },
+
+    /* 5. Crossing: who goes behind whom. */
+    { correct: 0 },
+
+    /* 6. Why crossing works. */
+    { correct: 2 },
+  ],
+
+  cycles: [
+    /* 1. Attacking zone, LW has cut inside, an opponent comes at them. Where does LD go? A: down the boards. */
+    {
+      correct: 0,
+      figure: {
+        zone: 'attack',
+        candidates: [[13.6, 17], [8.7, 21.4], [4.2, 9.4]],
+        scene: {
+          areas: [{ kind: 'danger', poly: DANGER_ZONE }],
+          players: [...cyclesQuizThem, them('o3', cyclesChaser), us('LW', [7.6, 14]), us('C', [0.8, 7.6]), us('RW', [-6, 9]), us('RD', [-9, 20.5])],
+          puck: cyclesPuck,
+          moves: [{ kind: 'skate', team: 'them', path: [cyclesChaser, [7.7, 16.4]], trim: 0.2 }],
+        },
+        after: {
+          areas: [{ kind: 'danger', poly: DANGER_ZONE }, { kind: 'shadow', poly: passShadow(cyclesPuck, cyclesChaser) }],
+          players: [
+            ...cyclesQuizThem,
+            them('o3', cyclesChaser),
+            us('LW', [7.6, 14]),
+            us('C', [0.8, 7.6]),
+            us('RW', [-6, 9]),
+            us('RD', [-9, 20.5]),
+            us('LD', [13.6, 17]),
+          ],
+          puck: cyclesPuck,
+          moves: [{ kind: 'pass', path: [[7, 15], [13.6, 17]], trim: 1.6 }],
+        },
+      },
+    },
+
+    /* 2. An opponent sticks to LW on the boards: what does LD do? */
+    { correct: 1 },
+
+    /* 3. LD crosses, the opponent follows LD: what does LW do? */
+    { correct: 0 },
+
+    /* 4. The cycle: where does the puck go? */
+    { correct: 0 },
+
+    /* 5. After leaving the puck in the cycle: where to? */
+    { correct: 2 },
+
+    /* 6. When to stop cycling. */
+    { correct: 1 },
+
+    /* 7. The opponents collapse in front of their goal: where is the space? */
+    { correct: 0 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -620,6 +724,8 @@ export const mixQuizzes: QuizId[] = [
   'abwehrseite',
   'zuordnung',
   'support',
+  'gegenlaufen',
+  'cycles',
   'forecheck',
 ];
 
@@ -1790,6 +1896,285 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  gegenlaufen: {
+    title: 'Quiz: Gegenlaufen und Kreuzen',
+    name: 'Gegenlaufen und Kreuzen',
+    article: 'gegenlaufen',
+    questions: [
+      {
+        prompt:
+          'LD hat den Puck hinter unserem Tor. Ein Gegner fährt auf ihn zu. Du bist LW. Wohin fährst du, damit LD dich anspielen kann: 1, 2 oder 3?',
+        label:
+          'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, ein Gegner fährt auf ihn zu. Platz {1} liegt an der linken Bande auf Höhe der Bullykreise. Platz {2} liegt oben an der Bande bei der blauen Linie, neben einem Gegner. Platz {3} liegt in der Mitte, hinter dem Gegner, der auf LD zufährt.',
+        afterLabel:
+          'LW ist an der Bande von der blauen Linie nach unten gefahren, auf Platz {1}. LD passt kurz zu LW. Hinter dem Gegner ist ein grauer Passschatten.',
+        options: [
+          {
+            text: 'Platz {1}, an der Bande',
+            feedback: 'Genau. Der Pass ist kurz und schnell da, bevor der Gegner ihn erreicht.',
+          },
+          {
+            text: 'Platz {2}, an der blauen Linie',
+            feedback:
+              'Der Pass dorthin ist lang, und ein Gegner steht schon neben dir. Er ist gleichzeitig beim Puck. Fahr dem Puck entgegen.',
+          },
+          {
+            text: 'Platz {3}, in der Mitte',
+            feedback:
+              'Dort stehst du hinter dem Gegner, der auf LD zufährt, im Passschatten. Dorthin kommt kein Pass durch.',
+          },
+        ],
+        section: 'warum-dem-puck-entgegenfahren',
+        topic: 'Gegenlaufen',
+      },
+      {
+        prompt: 'LD hat den Puck hinter unserem Tor. Du bist LW und willst angespielt werden. Was machst du?',
+        options: [
+          {
+            text: 'Nach vorne wegfahren und über die Schulter zurückschauen.',
+            feedback:
+              'Dann siehst du nicht, was vor dir passiert. Wartet dort ein Gegner, fährst du blind in seinen Check, sobald der Pass kommt: ein Krankenhauspass. Und der Pass kommt steil von hinten, schwer zu passen und schwer anzunehmen.',
+          },
+          {
+            text: 'LD entgegenfahren und mit einem Swing drehen.',
+            feedback: 'Genau. Der Pass ist kurz, kommt von der Seite, und du siehst das ganze Eis.',
+          },
+          {
+            text: 'Bis zur gegnerischen blauen Linie fahren und dort warten.',
+            feedback: 'Dann ist der Pass sehr lang, und du stehst still. Ein Gegner hat Zeit, dazwischenzufahren.',
+          },
+        ],
+        section: 'warum-dem-puck-entgegenfahren',
+        topic: 'Gegenlaufen',
+      },
+      {
+        prompt:
+          'LD fährt mit dem Puck Richtung 10 Uhr, ein Gegner greift LD an. Du fährst LD schräg entgegen, für einen Drop-Pass. Wo fährst du an LD vorbei?',
+        options: [
+          {
+            text: 'Aussen, zwischen LD und dem Gegner.',
+            feedback:
+              'Dann fährst du dem Gegner in die Arme, und der Pass zu dir geht am Gegner vorbei. Beim Drop-Pass fährst du innen an LD vorbei.',
+          },
+          {
+            text: 'Innen, auf der Abwehrseite, zwischen LD und unserem Tor.',
+            feedback:
+              'Genau. LD spielt dir den Puck kurz zurück, wenn ihr aneinander vorbeifahrt, und du drehst mit dem Puck nach vorne. Geht er verloren, bist du schon zwischen Gegner und Tor.',
+          },
+          {
+            text: 'Gar nicht: Du hältst neben LD an und wartest auf den Puck.',
+            feedback: 'Wer anhält, muss wieder anfahren, und der Gegner hat Zeit. Fahr schräg entgegen und innen an LD vorbei.',
+          },
+        ],
+        section: 'der-drop-pass',
+        topic: 'Drop-Pass',
+      },
+      {
+        prompt: 'Du fährst dem Puckführer entgegen und machst dann einen Swing, eine Kurve. Warum?',
+        options: [
+          {
+            text: 'Damit der Gegner schwindlig wird.',
+            feedback: 'Der Swing ist für dich, nicht gegen den Gegner. Nach der Kurve schaust du schon nach vorne.',
+          },
+          {
+            text: 'Damit der Pass länger wird.',
+            feedback: 'Der Pass soll kurz bleiben. Der Swing hilft dir, den Puck mit Schwung zu bekommen.',
+          },
+          {
+            text: 'Du bekommst den Puck, wenn du schon nach vorne fährst, mit Schwung.',
+            feedback: 'Genau. Du musst nicht anhalten und umdrehen. Ein Gegner, der steht, kommt nicht mehr mit.',
+          },
+        ],
+        section: 'nicht-anhalten-der-swing',
+        topic: 'Swing',
+      },
+      {
+        prompt: 'Beim Kreuzen zieht der Puckführer schräg in die Mitte. Wie fährt der Mitspieler?',
+        options: [
+          {
+            text: 'Schräg in die andere Richtung, hinter dem Puckführer durch.',
+            feedback: 'Genau. So kann der Puckführer den Puck liegen lassen, und der Mitspieler fährt direkt darüber.',
+          },
+          {
+            text: 'Schräg in die andere Richtung, vor dem Puckführer durch.',
+            feedback: 'Dann fahrt ihr euch in den Weg, und der Puck liegt hinter dir. Der Mitspieler fährt hinter dem Puckführer durch.',
+          },
+          {
+            text: 'Er bleibt auf seiner Seite und wartet.',
+            feedback: 'Dann kreuzen sich die Wege nicht, und ein Drop-Pass geht nicht. Wer wartet, ist leicht zu decken.',
+          },
+        ],
+        section: 'kreuzen',
+        topic: 'Kreuzen',
+      },
+      {
+        prompt: 'Warum spielt Kreuzen mit Drop-Pass einen Verteidiger oft aus?',
+        options: [
+          {
+            text: 'Weil der Verteidiger beim Kreuzen nicht mitfahren darf.',
+            feedback: 'Eine solche Regel gibt es nicht. Der Verteidiger darf mitfahren, und genau das ist sein Problem.',
+          },
+          {
+            text: 'Weil der Puck beim Drop-Pass schneller ist.',
+            feedback: 'Der Puck liegt beim Drop-Pass fast still. Der Trick ist ein anderer.',
+          },
+          {
+            text: 'Der Verteidiger fährt mit dem Puckführer mit. Bleibt der Puck liegen, ist er auf der falschen Seite.',
+            feedback: 'Genau. Er schaut auf den Puckführer. Wenn der Mitspieler den Puck übernimmt, ist der Verteidiger zu weit weg.',
+          },
+        ],
+        section: 'kreuzen',
+        topic: 'Kreuzen',
+      },
+    ],
+  },
+  cycles: {
+    title: 'Quiz: Cycles',
+    name: 'Cycles',
+    article: 'cycles',
+    questions: [
+      {
+        prompt:
+          'LW ist an der Bande hochgefahren und zieht nach innen. Ein Gegner fährt auf LW zu. Du bist LD. Wohin fährst du, damit LW dich anspielen kann: 1, 2 oder 3?',
+        label:
+          'Angriffszone, oben das gegnerische Tor. LW hat den Puck über dem linken Bullykreis, ein Gegner kommt von oben auf LW zu. Platz {1} liegt an der linken Bande, etwas unterhalb der blauen Linie. Platz {2} liegt an der blauen Linie, direkt hinter dem Gegner. Platz {3} liegt vor dem Tor, zwischen zwei Gegnern.',
+        afterLabel:
+          'LD steht auf Platz {1} an der Bande. Der Pass von LW kommt frei an. Hinter dem Gegner ist ein grauer Passschatten.',
+        options: [
+          {
+            text: 'Platz {1}, an der Bande',
+            feedback: 'Genau. Dort ist der Platz, den LW frei gemacht hat. Der Gegner ist bei LW, du bist frei.',
+          },
+          {
+            text: 'Platz {2}, an der blauen Linie',
+            feedback: 'Dort stehst du hinter dem Gegner, im Passschatten. Der Pass kommt nicht durch.',
+          },
+          {
+            text: 'Platz {3}, vor dem Tor',
+            feedback: 'Vor dem Tor stehen schon zwei Gegner und dein Mitspieler. Und die blaue Linie ist leer.',
+          },
+        ],
+        section: 'an-der-bande-hoch-wenn-platz-ist',
+        topic: 'Platz an der Bande',
+      },
+      {
+        prompt: 'Du hast den Puck an der Bande, ein Gegner klebt innen an dir. Was macht dein Verteidiger?',
+        options: [
+          {
+            text: 'Er bleibt an der blauen Linie und wartet auf einen Pass.',
+            feedback: 'Den Pass bringst du mit dem Gegner neben dir kaum durch. Der Verteidiger kommt dir zu Hilfe.',
+          },
+          {
+            text: 'Er fährt tief in die Zone und kreuzt innen an dir vorbei. Du spielst den Puck an der Bande entlang in seinen Weg.',
+            feedback: 'Genau. Der Gegner muss sich entscheiden, und einer von euch ist frei.',
+          },
+          {
+            text: 'Er fährt aussen an der Bande an dir vorbei.',
+            feedback: 'Zwischen dir und der Bande ist kein Platz. Der Verteidiger fährt innen vorbei, zwischen dir und dem Tor.',
+          },
+        ],
+        section: 'wenn-der-gegner-klebt-der-verteidiger-kreuzt-innen',
+        topic: 'Der Verteidiger kreuzt',
+      },
+      {
+        prompt: 'Dein Verteidiger kreuzt innen. Der Gegner neben dir fährt mit dem Verteidiger mit. Was machst du?',
+        options: [
+          {
+            text: 'Du behältst den Puck und ziehst selbst in den Slot.',
+            feedback: 'Genau. Der Gegner ist weg, der Weg zum Tor ist frei.',
+          },
+          {
+            text: 'Du spielst den Puck trotzdem zum Verteidiger.',
+            feedback: 'Dann bekommt ihn der Verteidiger mit dem Gegner direkt daneben. Schau kurz zum Gegner, bevor du den Puck abspielst.',
+          },
+          {
+            text: 'Du schiesst den Puck hoch an die blaue Linie.',
+            feedback: 'Dort ist niemand mehr, der Verteidiger ist ja tief in die Zone gefahren. Du hast Platz: Nutze ihn.',
+          },
+        ],
+        section: 'wenn-der-gegner-klebt-der-verteidiger-kreuzt-innen',
+        topic: 'Der Verteidiger kreuzt',
+      },
+      {
+        prompt: 'Beim Cycle fährst du mit dem Puck an der Bande hoch, der Gegner hinter dir her. Wohin geht der Puck?',
+        options: [
+          {
+            text: 'An der Bande zurück in die Ecke, zum Mitspieler, der von dort kommt.',
+            feedback: 'Genau. Der Puck geht hinter dem Gegner durch, und der Mitspieler nimmt ihn mit.',
+          },
+          {
+            text: 'Quer durch die Mitte zum anderen Verteidiger.',
+            feedback: 'In der Mitte stehen die meisten Gegner und ihre Schläger. Beim Cycle bleibt der Puck an der Bande.',
+          },
+          {
+            text: 'Von der Bande direkt aufs Tor.',
+            feedback: 'Aus diesem Winkel trifft man fast nie. Der Cycle soll erst einen Spieler vor dem Tor frei machen.',
+          },
+        ],
+        section: 'der-klassische-cycle',
+        topic: 'Cycle',
+      },
+      {
+        prompt: 'Du hast den Puck beim Cycle an der Bande zurückgespielt. Wohin fährst du jetzt?',
+        options: [
+          {
+            text: 'Du bleibst an der Bande stehen.',
+            feedback: 'Dann stehst du deinem Mitspieler im Weg, der jetzt mit dem Puck hochfährt.',
+          },
+          {
+            text: 'Du fährst dem Puck nach in die Ecke.',
+            feedback: 'Dort ist schon dein Mitspieler. Zu zweit am Puck stört ihr euch.',
+          },
+          {
+            text: 'Du fährst weiter und drehst nach innen ab, Richtung Tor.',
+            feedback: 'Genau. Das ist der Weg im Karussell. Oft bist du dort frei, weil der Gegner beim Puck ist.',
+          },
+        ],
+        section: 'der-klassische-cycle',
+        topic: 'Cycle',
+      },
+      {
+        prompt: 'Wann hört ihr mit dem Cycle auf?',
+        options: [
+          {
+            text: 'Nach genau drei Runden.',
+            feedback: 'Eine feste Zahl gibt es nicht. Es kommt darauf an, ob jemand frei ist.',
+          },
+          {
+            text: 'Sobald vor dem Tor jemand frei ist.',
+            feedback: 'Genau. Der Cycle ist kein Ziel. Er soll einen Spieler frei machen, und dann geht der Puck dorthin.',
+          },
+          {
+            text: 'Nie, solange wir den Puck haben.',
+            feedback: 'Wer nur kreist, verschenkt die Chance. Ist jemand vor dem Tor frei, geht der Puck dorthin.',
+          },
+        ],
+        section: 'der-klassische-cycle',
+        topic: 'Cycle',
+      },
+      {
+        prompt: 'Alle fünf Gegner stehen eng vor ihrem Tor, sie igeln sich ein. Wo ist jetzt Platz?',
+        options: [
+          {
+            text: 'Oben an der blauen Linie und auf der anderen Seite, hinter dem Tor durch.',
+            feedback:
+              'Genau. Hoch zum Verteidiger, quer, Schuss mit einem Screen vor dem Torhüter. Oder an der Bande hinter dem Tor durch auf die andere Seite und dort einen neuen Cycle beginnen.',
+          },
+          {
+            text: 'Im Slot, direkt vor dem Tor.',
+            feedback: 'Genau dort stehen jetzt alle fünf Gegner. Der Platz ist oben an der blauen Linie und auf der anderen Seite.',
+          },
+          {
+            text: 'Nirgends. Am besten von der Bande einfach aufs Tor schiessen.',
+            feedback:
+              'Aus diesem Winkel trifft man fast nie, und der Torhüter sieht alles. Spiel den Puck dorthin, wo Platz ist: hoch zur blauen Linie oder auf die andere Seite.',
+          },
+        ],
+        section: 'wenn-der-gegner-sich-einigelt',
+        topic: 'Einigeln',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -2920,6 +3305,284 @@ const en: typeof de = {
         ],
         section: 'captain-and-assistants',
         topic: 'Captain and assistants',
+      },
+    ],
+  },
+  gegenlaufen: {
+    title: 'Quiz: skating to the puck and crossing',
+    name: 'Skating to the puck',
+    article: 'skating-to-the-puck',
+    questions: [
+      {
+        prompt:
+          'LD has the puck behind our goal. An opponent is skating at them. You are LW. Where do you skate so LD can pass to you: 1, 2 or 3?',
+        label:
+          'Our zone, our goal at the bottom. LD has the puck behind the goal on the left, an opponent is skating at them. Spot {1} is on the left boards, level with the faceoff circles. Spot {2} is up on the boards at the blue line, next to an opponent. Spot {3} is in the middle, behind the opponent skating at LD.',
+        afterLabel:
+          'LW has skated down the boards from the blue line to spot {1}. LD passes short to LW. Behind the opponent is a grey passing shadow.',
+        options: [
+          {
+            text: 'Spot {1}, on the boards',
+            feedback: 'Right. The pass is short and gets there quickly, before the opponent can reach it.',
+          },
+          {
+            text: 'Spot {2}, at the blue line',
+            feedback:
+              'The pass there is long, and an opponent is already next to you. They reach the puck at the same time. Skate towards the puck.',
+          },
+          {
+            text: 'Spot {3}, in the middle',
+            feedback: 'There you are behind the opponent skating at LD, in the passing shadow. No pass gets through.',
+          },
+        ],
+        section: 'why-skate-towards-the-puck',
+        topic: 'Skating to the puck',
+      },
+      {
+        prompt: 'LD has the puck behind our goal. You are LW and want a pass. What do you do?',
+        options: [
+          {
+            text: 'Skate away up the ice and look back over your shoulder.',
+            feedback:
+              'Then you can’t see what is happening in front of you. If an opponent is waiting there, you skate blind into their check as the pass arrives: a hospital pass. And the pass comes steeply from behind, hard to pass and hard to take.',
+          },
+          {
+            text: 'Skate towards LD and turn with a swing.',
+            feedback: 'Right. The pass is short, comes from the side, and you can see the whole ice.',
+          },
+          {
+            text: 'Skate to the far blue line and wait there.',
+            feedback: 'Then the pass is very long, and you are standing still. An opponent has time to get in between.',
+          },
+        ],
+        section: 'why-skate-towards-the-puck',
+        topic: 'Skating to the puck',
+      },
+      {
+        prompt:
+          'LD skates with the puck towards 10 o’clock, an opponent attacks LD. You skate towards LD at an angle, for a drop pass. Where do you pass LD?',
+        options: [
+          {
+            text: 'On the outside, between LD and the opponent.',
+            feedback:
+              'Then you skate straight into the opponent, and the pass to you has to get past them. In a drop pass you pass LD on the inside.',
+          },
+          {
+            text: 'On the inside, on the defensive side, between LD and our goal.',
+            feedback:
+              'Right. LD plays the puck back short as you pass each other, and you turn forwards with it. If it is lost, you are already between the opponent and our goal.',
+          },
+          {
+            text: 'Not at all: you stop next to LD and wait for the puck.',
+            feedback: 'If you stop, you have to start again, and the opponent has time. Skate towards LD at an angle and pass on the inside.',
+          },
+        ],
+        section: 'the-drop-pass',
+        topic: 'Drop pass',
+      },
+      {
+        prompt: 'You skate towards the puck carrier and then do a swing, a curve. Why?',
+        options: [
+          {
+            text: 'To make the opponent dizzy.',
+            feedback: 'The swing is for you, not against the opponent. After the curve you are already facing up the ice.',
+          },
+          {
+            text: 'To make the pass longer.',
+            feedback: 'The pass should stay short. The swing helps you get the puck with speed.',
+          },
+          {
+            text: 'You get the puck when you are already skating forwards, with speed.',
+            feedback: 'Right. You don’t have to stop and turn. An opponent standing still can’t keep up.',
+          },
+        ],
+        section: 'dont-stop-the-swing',
+        topic: 'Swing',
+      },
+      {
+        prompt: 'When crossing, the puck carrier cuts diagonally into the middle. How does the teammate skate?',
+        options: [
+          {
+            text: 'Diagonally the other way, behind the puck carrier.',
+            feedback: 'Right. Then the puck carrier can leave the puck, and the teammate skates straight over it.',
+          },
+          {
+            text: 'Diagonally the other way, in front of the puck carrier.',
+            feedback: 'Then you get in each other’s way, and the puck is behind you. The teammate goes behind the puck carrier.',
+          },
+          {
+            text: 'They stay on their side and wait.',
+            feedback: 'Then the paths don’t cross, and a drop pass won’t work. Whoever waits is easy to cover.',
+          },
+        ],
+        section: 'crossing',
+        topic: 'Crossing',
+      },
+      {
+        prompt: 'Why does crossing with a drop pass often beat a defender?',
+        options: [
+          {
+            text: 'Because the defender isn’t allowed to follow when players cross.',
+            feedback: 'There is no such rule. The defender may follow, and that is exactly their problem.',
+          },
+          {
+            text: 'Because the puck is faster in a drop pass.',
+            feedback: 'In a drop pass the puck hardly moves. The trick is something else.',
+          },
+          {
+            text: 'The defender follows the puck carrier. When the puck stays behind, they are on the wrong side.',
+            feedback: 'Right. They watch the puck carrier. When the teammate takes the puck, the defender is too far away.',
+          },
+        ],
+        section: 'crossing',
+        topic: 'Crossing',
+      },
+    ],
+  },
+  cycles: {
+    title: 'Quiz: cycles',
+    name: 'Cycles',
+    article: 'cycles',
+    questions: [
+      {
+        prompt:
+          'LW has skated up the boards and cuts inside. An opponent skates at LW. You are LD. Where do you go so LW can pass to you: 1, 2 or 3?',
+        label:
+          'Attacking zone, the opponents’ goal at the top. LW has the puck above the left faceoff circle, an opponent comes at LW from above. Spot {1} is on the left boards, a little below the blue line. Spot {2} is at the blue line, right behind the opponent. Spot {3} is in front of the goal, between two opponents.',
+        afterLabel:
+          'LD is on spot {1} on the boards. LW’s pass gets there freely. Behind the opponent is a grey passing shadow.',
+        options: [
+          {
+            text: 'Spot {1}, on the boards',
+            feedback: 'Right. That is the space LW has left. The opponent is at LW, you are open.',
+          },
+          {
+            text: 'Spot {2}, at the blue line',
+            feedback: 'There you are behind the opponent, in the passing shadow. The pass won’t get through.',
+          },
+          {
+            text: 'Spot {3}, in front of the goal',
+            feedback: 'Two opponents and your teammate are already in front of the goal. And the blue line is empty.',
+          },
+        ],
+        section: 'up-the-boards-when-there-is-space',
+        topic: 'Space on the boards',
+      },
+      {
+        prompt: 'You have the puck on the boards, an opponent sticks close on your inside. What does your defender do?',
+        options: [
+          {
+            text: 'They stay at the blue line and wait for a pass.',
+            feedback: 'With the opponent next to you, you’ll hardly get that pass through. The defender comes to help.',
+          },
+          {
+            text: 'They skate deep into the zone and cross past you on the inside. You play the puck along the boards into their path.',
+            feedback: 'Right. The opponent has to choose, and one of you is open.',
+          },
+          {
+            text: 'They skate past you on the outside, along the boards.',
+            feedback: 'There is no room between you and the boards. The defender goes past on the inside, between you and the goal.',
+          },
+        ],
+        section: 'when-the-opponent-sticks-close-the-defender-crosses-inside',
+        topic: 'The defender crosses',
+      },
+      {
+        prompt: 'Your defender crosses inside. The opponent next to you goes with the defender. What do you do?',
+        options: [
+          {
+            text: 'Keep the puck and cut into the slot yourself.',
+            feedback: 'Right. The opponent is gone, the way to the goal is open.',
+          },
+          {
+            text: 'Pass to the defender anyway.',
+            feedback: 'Then the defender gets it with the opponent right next to them. Glance at the opponent before you pass.',
+          },
+          {
+            text: 'Shoot the puck up to the blue line.',
+            feedback: 'Nobody is there any more, the defender skated deep into the zone. You have space: use it.',
+          },
+        ],
+        section: 'when-the-opponent-sticks-close-the-defender-crosses-inside',
+        topic: 'The defender crosses',
+      },
+      {
+        prompt: 'In a cycle you skate up the boards with the puck, the opponent chasing you. Where does the puck go?',
+        options: [
+          {
+            text: 'Back along the boards into the corner, to the teammate coming from there.',
+            feedback: 'Right. The puck goes behind the opponent, and the teammate takes it.',
+          },
+          {
+            text: 'Across the middle to the other defender.',
+            feedback: 'Most opponents and their sticks are in the middle. In a cycle the puck stays on the boards.',
+          },
+          {
+            text: 'Straight at the goal from the boards.',
+            feedback: 'From that angle you almost never score. The cycle should first set a player free in front of the goal.',
+          },
+        ],
+        section: 'the-classic-cycle',
+        topic: 'Cycle',
+      },
+      {
+        prompt: 'In a cycle you have played the puck back down the boards. Where do you go now?',
+        options: [
+          {
+            text: 'You stop on the boards.',
+            feedback: 'Then you are in the way of your teammate, who is now skating up with the puck.',
+          },
+          {
+            text: 'You follow the puck into the corner.',
+            feedback: 'Your teammate is already there. Two at the puck get in each other’s way.',
+          },
+          {
+            text: 'You keep skating and turn inside, towards the goal.',
+            feedback: 'Right. That is the way round the merry-go-round. You are often open there, because the opponent is at the puck.',
+          },
+        ],
+        section: 'the-classic-cycle',
+        topic: 'Cycle',
+      },
+      {
+        prompt: 'When do you stop cycling?',
+        options: [
+          {
+            text: 'After exactly three rounds.',
+            feedback: 'There is no fixed number. It depends on whether someone is open.',
+          },
+          {
+            text: 'As soon as someone in front of the goal is open.',
+            feedback: 'Right. The cycle isn’t the goal. It should set a player free, and then the puck goes there.',
+          },
+          {
+            text: 'Never, as long as we have the puck.',
+            feedback: 'Whoever only goes round wastes the chance. If someone in front of the goal is open, the puck goes there.',
+          },
+        ],
+        section: 'the-classic-cycle',
+        topic: 'Cycle',
+      },
+      {
+        prompt: 'All five opponents stand tight in front of their goal, they have collapsed. Where is the space now?',
+        options: [
+          {
+            text: 'Up at the blue line and on the other side, behind the goal.',
+            feedback:
+              'Right. Up to the defender, across, shot with a screen in front of the goalie. Or along the boards behind the goal to the other side, and start a new cycle there.',
+          },
+          {
+            text: 'In the slot, right in front of the goal.',
+            feedback: 'That is exactly where all five opponents are now. The space is up at the blue line and on the other side.',
+          },
+          {
+            text: 'Nowhere. Best just shoot at the goal from the boards.',
+            feedback:
+              'From that angle you almost never score, and the goalie sees everything. Play the puck to where the space is: up to the blue line or to the other side.',
+          },
+        ],
+        section: 'when-the-opponents-collapse',
+        topic: 'Collapsing',
       },
     ],
   },

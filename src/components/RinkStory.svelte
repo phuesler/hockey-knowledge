@@ -8,14 +8,17 @@
    *   <RinkStory story="backcheck" client:visible locale="en" />
    *
    * Server-rendered on the first step, with every step's text listed, so the article is
-   * complete without JavaScript. The sliding is the CSS transition in Rink.svelte, which
-   * only runs when the visitor has not asked for reduced motion.
+   * complete without JavaScript. Stepping on by one moves everyone along their way (curved
+   * where a player has a `via`); other jumps use the CSS transition in Rink.svelte. Both
+   * only run when the visitor has not asked for reduced motion.
    */
   import Rink from './Rink.svelte';
   import RinkLegend from './RinkLegend.svelte';
-  import { PLAYER_RADIUS, type Move, type Scene } from './rink';
+  import { untrack } from 'svelte';
+  import { PLAYER_RADIUS, type Move, type Pt, type Scene } from './rink';
   import { animals, stories, storyText, type Animal, type StoryId, type StoryStep } from './stories';
   import type { Locale } from '../lib/i18n';
+  import { motionDuration } from '../lib/motion';
 
   let { story, locale = 'de' }: { story: StoryId; locale?: Locale } = $props();
 
@@ -66,7 +69,7 @@
         {
           kind: p.id === cur.carrier ? 'carry' : 'skate',
           team: p.team,
-          path: [from, p.at],
+          path: p.via ? [from, p.via, p.at] : [from, p.at],
           trim: PLAYER_RADIUS + 0.3,
         } satisfies Move,
       ];
@@ -83,6 +86,60 @@
       }),
     ),
   );
+
+  /* Point at t (0..1) on the way from `a` to `b`, curving past `via` if there is one. */
+  function along(a: Pt, b: Pt, t: number, via?: Pt): Pt {
+    const c = via ?? [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const u = 1 - t;
+    return [u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]];
+  }
+
+  /* Where the puck curves past: given, or along with a curving carrier. */
+  function puckVia(prev: StoryStep, cur: StoryStep): Pt | undefined {
+    if (cur.puckVia) return cur.puckVia;
+    const now = cur.players.find((p) => p.id === cur.carrier);
+    const before = prev.players.find((p) => p.id === cur.carrier);
+    if (!now?.via || !before) return undefined;
+    const off = (i: 0 | 1) => (prev.puck[i] - before.at[i] + cur.puck[i] - now.at[i]) / 2;
+    return [now.via[0] + off(0), now.via[1] + off(1)];
+  }
+
+  /* While stepping on, the scene in between two steps; null otherwise. */
+  let between = $state<Scene | null>(null);
+  let shown = 0;
+
+  $effect(() => {
+    const to = step;
+    const from = shown;
+    shown = to;
+    const ms = motionDuration(900);
+    if (to !== from + 1 || !ms) return;
+    const prev = data.steps[from];
+    const cur = data.steps[to];
+    const target = untrack(() => scenes[to]);
+    const via = puckVia(prev, cur);
+    const start = performance.now();
+    let frame = 0;
+    const tick = (now: number) => {
+      const x = Math.min(1, (now - start) / ms);
+      const t = x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2;
+      between = {
+        ...target,
+        players: target.players.map((p, i) => {
+          const from = prev.players.find((q) => q.id === cur.players[i].id)?.at;
+          return from ? { ...p, at: along(from, p.at, t, cur.players[i].via) } : p;
+        }),
+        puck: along(prev.puck, cur.puck, t, via),
+      };
+      if (x < 1) frame = requestAnimationFrame(tick);
+      else between = null;
+    };
+    frame = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(frame);
+      between = null;
+    };
+  });
 
   const used = $derived(
     (Object.keys(animals) as Animal[]).filter((a) => data.steps.some((st) => st.players.some((p) => p.badge === a))),
@@ -118,7 +175,13 @@
 
   <div class="layout">
     <div>
-      <Rink scene={scenes[step]} label={text.steps[step].label} view={data.view} flip={data.zone === 'attack'} />
+      <Rink
+        scene={between ?? scenes[step]}
+        label={text.steps[step].label}
+        view={data.view}
+        flip={data.zone === 'attack'}
+        still={between !== null}
+      />
 
       <div class="controls">
         <button type="button" onclick={() => go(step - 1)} disabled={step === 0}>◀ {s.back}</button>
