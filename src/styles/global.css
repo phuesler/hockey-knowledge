@@ -156,6 +156,20 @@ main { flex: 1; }
   margin-block-start: var(--s-2);
 }
 
+/* A question with a hidden answer, e.g. a quiz at the end of an article. */
+.prose details {
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+.prose details + details { margin-block-start: var(--s-2); }
+.prose summary {
+  font-weight: 650;
+  cursor: pointer;
+}
+.prose details[open] summary { margin-block-end: var(--s-2); }
+
 /* ---------- shared bits ---------- */
 /* Drafts are built but hidden until ?drafts=true sets .show-drafts (see BaseLayout). */
 html:not(.show-drafts) [data-draft] { display: none; }

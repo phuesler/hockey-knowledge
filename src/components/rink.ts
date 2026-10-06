@@ -28,6 +28,8 @@ export interface Player {
   ghost?: boolean;
   /** Stable key so the interactive diagram can animate a player from one spot to the next. */
   id?: string;
+  /** A small emoji next to the marker, e.g. the animal role in RinkStory. */
+  badge?: string;
 }
 
 /**

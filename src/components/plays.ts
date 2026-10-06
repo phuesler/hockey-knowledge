@@ -6,6 +6,7 @@
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
 import { DANGER_ZONE, POST_X, GOAL_LINE, type Pt, type Scene, type View } from './rink';
+import { animals } from './stories';
 
 export interface PlayPanel {
   /**
@@ -738,9 +739,9 @@ const geometry = {
           { team: 'them', at: [13.6, 14.5] },
           { team: 'them', at: [1.5, 10.5] },
           { team: 'them', at: [-12.5, 14] },
-          { team: 'us', label: 'LW', at: [7, 11] },
-          { team: 'us', label: 'C', at: [1, 17] },
-          { team: 'us', label: 'RW', at: [-6, 16] },
+          { team: 'us', label: 'LW', at: [7, 11], badge: animals.dog },
+          { team: 'us', label: 'C', at: [1, 17], badge: animals.fox },
+          { team: 'us', label: 'RW', at: [-6, 16], badge: animals.hawk },
           { team: 'us', label: 'LD', at: [8, 21] },
           { team: 'us', label: 'RD', at: [-8, 21] },
         ],
@@ -755,39 +756,6 @@ const geometry = {
     },
   ],
 
-  /* Backcheck after the DEB's drawing: puck lost in the attacking zone. The high forward
-     (RW) stays inside the puck carrier and helps the defenders, the two deep forwards
-     sprint back through the middle into the house. */
-  'backcheck-house': [
-    {
-      zone: 'full',
-      view: 'full',
-      scene: {
-        areas: [danger],
-        players: [
-          { team: 'them', at: [6, 50] },
-          { team: 'them', at: [-11, 47] },
-          { team: 'them', at: [11.5, 44] },
-          { team: 'us', label: 'LW', at: [-9, 54] },
-          { team: 'us', label: 'C', at: [-1, 55] },
-          { team: 'us', label: 'RW', at: [3, 45] },
-          { team: 'us', label: 'LD', at: [-7, 38] },
-          { team: 'us', label: 'RD', at: [7, 38] },
-        ],
-        puck: [6.4, 48.6],
-        moves: [
-          { kind: 'carry', team: 'them', path: [[6.4, 48.6], [6.8, 41.5]] },
-          { kind: 'skate', team: 'them', path: [[-11, 47], [-12, 31]] },
-          { kind: 'skate', team: 'them', path: [[11.5, 44], [12.5, 31]] },
-          { kind: 'skate', path: [[3, 45], [3.6, 35]] },
-          { kind: 'skate', path: [[-7, 38], [-6, 27]] },
-          { kind: 'skate', path: [[7, 38], [7.5, 27]] },
-          { kind: 'skate', path: [[-9, 54], [-2.5, 42], [-2.5, 11]] },
-          { kind: 'skate', path: [[-1, 55], [1.2, 42], [1.5, 13]] },
-        ],
-      },
-    },
-  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -1106,19 +1074,6 @@ const de: Record<PlayId, PlayText> = {
       'Gleiche Lage. Der linke Flügel fährt zum Puckführer. Der Center fährt an die linke Bande zwischen Puck und gegnerischen Flügel. Der rechte Flügel fährt in die Mitte vor die blaue Linie. Die Verteidiger bleiben an der blauen Linie.',
     ],
   },
-  'backcheck-house': {
-    caption: 'Backcheck: zurück ins Haus',
-    panels: [
-      {
-        title: 'Puck verloren',
-        text: 'Der RW war der Falke und ist am nächsten an unserem Tor. Er bleibt innen neben dem Puckführer und hilft den Verteidigern. LW und C sprinten durch die Mitte zurück vor unser Tor.',
-      },
-    ],
-    labels: [
-      'Das ganze Eis, unser Tor unten. Der Gegner hat den Puck in unserer Angriffszone erobert und fährt an der rechten Seite nach unten, zwei Mitspieler fahren an den Banden mit. Der rechte Flügel fährt innen neben dem Puckführer zurück, die Verteidiger fahren rückwärts. Linker Flügel und Center sprinten aus der Angriffszone durch die Mitte bis vor das eigene Tor.',
-    ],
-    note: 'Die gelbe Fläche vor unserem Tor ist das „Haus“.',
-  },
 };
 
 const en: typeof de = {
@@ -1418,19 +1373,6 @@ const en: typeof de = {
       'In the attacking zone an opposing defender has the puck in the left corner. LW, C and RW all skate at the puck carrier, who passes along the boards to the free winger at the blue line.',
       'Same situation. The left winger skates at the puck carrier. The centre skates to the left boards, between the puck and the opposing winger. The right winger skates to the middle below the blue line. The defenders stay at the blue line.',
     ],
-  },
-  'backcheck-house': {
-    caption: 'Backcheck: back to the house',
-    panels: [
-      {
-        title: 'Puck lost',
-        text: 'RW was the hawk and is closest to our goal. They stay inside the puck carrier and help the defenders. LW and C sprint back through the middle to the front of our goal.',
-      },
-    ],
-    labels: [
-      'The whole rink, our goal at the bottom. The opponents have won the puck in our attacking zone and carry it down the right side, two teammates skate along the boards. The right winger skates back inside the puck carrier, the defenders skate backwards. The left winger and the centre sprint from the attacking zone through the middle to the front of our own goal.',
-    ],
-    note: 'The yellow area in front of our goal is the “house”.',
   },
 };
 
