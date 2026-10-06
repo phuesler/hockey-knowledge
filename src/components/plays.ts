@@ -5,7 +5,7 @@
  * A play has one or more panels. Each panel is one zone; `zone` says whose goal is at
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
-import { DANGER_ZONE, POST_X, GOAL_LINE, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, POST_X, GOAL_LINE, viewCone, type Pt, type Scene, type View } from './rink';
 
 export interface PlayPanel {
   /**
@@ -698,6 +698,168 @@ const geometry = {
       },
     },
   ],
+  /* The four roles: in attack the puck carrier is König and everyone else Satellit; in
+     defence the player at the puck carrier is Jäger and everyone else Wächter. */
+  'four-roles': [
+    {
+      zone: 'attack',
+      scene: {
+        areas: [danger],
+        players: [
+          { team: 'them', at: [6.8, 10.8] },
+          { team: 'them', at: [10, 6.8] },
+          { team: 'them', at: [1.6, 5.6] },
+          { team: 'them', at: [-3.2, 8.4] },
+          { team: 'them', at: [-7.5, 15.5] },
+          { team: 'us', label: 'K', at: [9, 13.5] },
+          { team: 'us', label: 'S', at: [11.5, 4.5] },
+          { team: 'us', label: 'S', at: [-0.6, 7.2] },
+          { team: 'us', label: 'S', at: [8, 20.5] },
+          { team: 'us', label: 'S', at: [-8, 20.5] },
+        ],
+        puck: [8.4, 12.2],
+        moves: [
+          { kind: 'carry', path: [[8.4, 12.2], [8.2, 15.6], [5, 17]], trim: 0.6 },
+          { kind: 'lane', path: [[9, 13.5], [11.5, 4.5]] },
+          { kind: 'lane', path: [[9, 13.5], [8, 20.5]] },
+          { kind: 'lane', path: [[9, 13.5], [-8, 20.5]] },
+        ],
+      },
+    },
+    {
+      zone: 'own',
+      scene: {
+        areas: [danger],
+        players: [
+          { team: 'them', at: [-9.6, 13.6] },
+          { team: 'them', at: [2.6, 9] },
+          { team: 'them', at: [-1, 15.4] },
+          { team: 'them', at: [-9.5, 21.5] },
+          { team: 'them', at: [8.5, 20.5] },
+          { team: 'us', label: 'J', at: [-6.4, 11.2] },
+          { team: 'us', label: 'W', at: [1.4, 7] },
+          { team: 'us', label: 'W', at: [-1.2, 12.6] },
+          { team: 'us', label: 'W', at: [-8.2, 18.8] },
+          { team: 'us', label: 'W', at: [6.8, 17.6] },
+        ],
+        puck: [-9, 12.6],
+        moves: [
+          { kind: 'stick', path: [[-6.4, 11.2], [-7.9, 12.1]] },
+          { kind: 'lane', path: [[-9, 12.6], [2.6, 9]] },
+          { kind: 'lane', path: [[-9, 12.6], [-1, 15.4]] },
+          { kind: 'lane', path: [[-9, 12.6], [8.5, 20.5]] },
+        ],
+      },
+    },
+  ],
+
+  /* König: open ice at the zone entry and in the corner. Attacking zone, our left at +x. */
+  'open-ice': [
+    {
+      zone: 'attack',
+      scene: {
+        areas: [danger, { kind: 'open', ellipse: { at: [0.5, 16.5], rx: 4, ry: 2.6 } }],
+        players: [
+          { team: 'them', at: [9.5, 16.5] },
+          { team: 'them', at: [6, 13.6] },
+          { team: 'them', at: [-6.5, 12.5] },
+          { team: 'them', at: [1, 8] },
+          { team: 'us', label: 'K', at: [10.5, 21.5] },
+          { team: 'us', label: 'S', at: [-9, 19] },
+        ],
+        puck: [9.8, 20.4],
+        moves: [{ kind: 'carry', path: [[9.8, 20.4], [5, 19.6], [1.6, 16.8]], trim: 0.4 }],
+      },
+    },
+    {
+      zone: 'attack',
+      scene: {
+        areas: [danger, { kind: 'open', ellipse: { at: [-1, 2], rx: 3.6, ry: 1.5 } }],
+        players: [
+          { team: 'them', at: [9.6, 7.6] },
+          { team: 'them', at: [6.4, 5.4] },
+          { team: 'them', at: [-2.5, 8] },
+          { team: 'us', label: 'K', at: [11.6, 4.4] },
+          { team: 'us', label: 'S', at: [-8.5, 8] },
+        ],
+        puck: [11.2, 3.2],
+        moves: [
+          { kind: 'carry', path: [[11.2, 3.2], [3, 1], [-4.6, 2.4]], trim: 0.4 },
+          { kind: 'lane', path: [[-4.6, 2.4], [-8.5, 8]] },
+        ],
+      },
+    },
+  ],
+
+  /* Satellit: wait for a long pass, or skate towards it. Our zone, our left at -x. */
+  'skate-to-pass': [
+    {
+      zone: 'own',
+      verdict: 'bad',
+      scene: {
+        players: [
+          { team: 'them', at: [-6, 17.5] },
+          { team: 'them', at: [-1, 4.6] },
+          { team: 'us', label: 'K', at: [-4.5, 6.4] },
+          { team: 'us', label: 'S', at: [-12.6, 19.6] },
+        ],
+        puck: [-5.4, 7.2],
+        moves: [
+          { kind: 'pass', path: [[-5.4, 7.2], [-12, 18.6]], trim: 1.6 },
+          { kind: 'skate', team: 'them', path: [[-6, 17.5], [-10.4, 17]], trim: 0.4 },
+        ],
+      },
+    },
+    {
+      zone: 'own',
+      verdict: 'good',
+      scene: {
+        players: [
+          { team: 'them', at: [-6, 17.5] },
+          { team: 'them', at: [-1, 4.6] },
+          { team: 'us', label: 'K', at: [-4.5, 6.4] },
+          { team: 'us', label: 'S', at: [-12.6, 19.6], ghost: true },
+          { team: 'us', label: 'S', at: [-12.2, 12.4] },
+        ],
+        puck: [-5.4, 7.2],
+        moves: [
+          { kind: 'skate', path: [[-12.6, 18.2], [-12.4, 13.8]], trim: 0.2 },
+          { kind: 'pass', path: [[-5.4, 7.2], [-11.4, 11.8]], trim: 1.2 },
+        ],
+      },
+    },
+  ],
+
+  /* Jäger: an opponent facing the play, then one facing the boards. Our zone. */
+  'read-opponent': [
+    {
+      zone: 'own',
+      scene: {
+        areas: [{ kind: 'view', poly: viewCone([-11.2, 7], [-4, 12], 80, 8) }],
+        players: [
+          { team: 'them', at: [-11.2, 7] },
+          { team: 'us', label: 'J', at: [-6.6, 6.4] },
+        ],
+        puck: [-10.4, 8],
+        moves: [
+          { kind: 'skate', path: [[-6.6, 6.4], [-8, 7]], trim: 0.2 },
+          { kind: 'stick', path: [[-6.6, 6.4], [-8.4, 7.4]] },
+        ],
+      },
+    },
+    {
+      zone: 'own',
+      scene: {
+        areas: [{ kind: 'view', poly: viewCone([-11.6, 7], [-15, 9], 80, 4) }],
+        players: [
+          { team: 'them', at: [-11.6, 7] },
+          { team: 'us', label: 'J', at: [-6.6, 6.4] },
+        ],
+        puck: [-12.6, 7.8],
+        moves: [{ kind: 'skate', path: [[-6.6, 6.4], [-10, 6.8]], trim: 1.4 }],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -999,6 +1161,77 @@ const de: Record<PlayId, PlayText> = {
     ],
     note: 'Wir greifen nach oben an. Am Punkt auf der anderen Seite ist alles gespiegelt.',
   },
+  'four-roles': {
+    caption: 'Vier Rollen, zwei Momente',
+    panels: [
+      {
+        title: 'Wir haben den Puck',
+        text: 'K ist der König: Er hat den Puck und fährt ins freie Eis. Alle anderen sind Satelliten (S): tief an der Bande, vor dem Tor und an der blauen Linie. Jeder ist anspielbar.',
+      },
+      {
+        title: 'Der Gegner hat den Puck',
+        text: 'J ist der Jäger: Er steht zwischen Puckführer und Tor, der Schläger zeigt zum Puck. Alle anderen sind Wächter (W): Jeder steht zwischen seinem Gegner und unserem Tor.',
+      },
+    ],
+    labels: [
+      'Angriffsdrittel. Ein Spieler mit Puck, markiert mit K, fährt von der linken Bande in die Mitte. Gepunktete Passwege führen zu drei Mitspielern, markiert mit S: tief an der Bande und zu beiden Verteidigern an der blauen Linie. Ein vierter S steht vor dem Tor.',
+      'Eigenes Drittel. Ein Gegner hat den Puck links an der Bande. Der Spieler J steht zwischen ihm und dem Tor, der Schläger zeigt zum Puck. Vier Spieler, markiert mit W, stehen jeweils zwischen einem Gegner ohne Puck und unserem Tor.',
+    ],
+    note: 'K = König, S = Satellit, J = Jäger, W = Wächter. Die gepunkteten Linien sind Passwege.',
+  },
+  'open-ice': {
+    caption: 'Freies Eis finden',
+    panels: [
+      {
+        title: 'Rein ins Drittel',
+        text: 'Links stehen zwei Gegner. Der König fährt nicht in den Verkehr, sondern nach innen ins freie Eis (grün), zwischen die Gegner.',
+      },
+      {
+        title: 'Unter Druck in der Ecke',
+        text: 'Zwei Gegner kommen von oben. Hinter dem Tor ist frei. Der König fährt hinters Tor und hat auf der anderen Seite einen Satelliten.',
+      },
+    ],
+    labels: [
+      'Angriffsdrittel. Der König fährt mit dem Puck links über die blaue Linie. Zwei Gegner stehen an der linken Seite. Eine grüne Fläche im hohen Slot ist frei, der König fährt hinein.',
+      'Der König hat den Puck in der linken Ecke, zwei Gegner kommen auf ihn zu. Hinter dem Tor ist eine grüne Fläche frei. Der König fährt hinter dem Tor durch auf die rechte Seite, wo ein Satellit wartet.',
+    ],
+    note: 'Grün ist freies Eis: Dort steht kein Gegner. Wer dorthin fährt, hat Zeit.',
+  },
+  'skate-to-pass': {
+    caption: 'Gegenlaufen: dem Pass entgegenfahren',
+    panels: [
+      {
+        title: 'Stehen und warten',
+        text: 'Der Satellit wartet an der blauen Linie. Der Pass ist lang. Der Gegner hat Zeit und kommt gleichzeitig an.',
+      },
+      {
+        title: 'Entgegenfahren',
+        text: 'Der Satellit fährt dem Pass entgegen. Der Pass ist kurz und schnell da. Der Gegner ist noch weit weg.',
+      },
+    ],
+    labels: [
+      'Eigenes Drittel. Der König passt von der linken Torseite weit zur blauen Linie. Ein Gegner aus der Mitte fährt zur gleichen Stelle wie der Pass.',
+      'Gleiche Situation. Der Satellit fährt an der Bande nach unten, dem Puck entgegen. Der Pass ist kurz. Der Gegner ist weit weg.',
+    ],
+  },
+  'read-opponent': {
+    caption: 'Wohin schaut der Gegner?',
+    panels: [
+      {
+        title: 'Er schaut zum Spiel',
+        text: 'Er sieht alles. Der Jäger fährt ruhig heran, bleibt auf der Abwehrseite und bringt den Schläger zum Puck.',
+      },
+      {
+        title: 'Er schaut zur Bande',
+        text: 'Er sieht nichts. Jetzt greift der Jäger entschlossen an und trennt ihn vom Puck – mit Körperkontakt, aber ohne Check.',
+      },
+    ],
+    labels: [
+      'Eigenes Drittel. Ein Gegner mit Puck an der linken Bande schaut zur Mitte, ein blauer Fächer zeigt seinen Blick. Der Jäger fährt nur ein kleines Stück heran, Schläger zum Puck.',
+      'Gleiche Stelle. Der Gegner schaut zur Bande, mit dem Rücken zum Jäger. Der Jäger fährt direkt auf ihn zu.',
+    ],
+    note: 'Der blaue Fächer zeigt, wohin der Gegner schaut.',
+  },
 };
 
 const en: typeof de = {
@@ -1281,6 +1514,77 @@ const en: typeof de = {
       'Face-off on the neutral-zone spot in front of the opponents’ blue line. Our centre draws the puck to the right defender, who passes across to the left defender. The opposing wingers skate at our defenders.',
     ],
     note: 'We attack upwards. On the spot on the other side everything is mirrored.',
+  },
+  'four-roles': {
+    caption: 'Four roles, two moments',
+    panels: [
+      {
+        title: 'We have the puck',
+        text: 'K is the König: he has the puck and skates into open ice. Everyone else is a Satellit (S): low on the boards, in front of the goal and at the blue line. Each one is available for a pass.',
+      },
+      {
+        title: 'The opponents have the puck',
+        text: 'J is the Jäger: he stands between the puck carrier and the goal, stick pointing at the puck. Everyone else is a Wächter (W): each one stands between his opponent and our goal.',
+      },
+    ],
+    labels: [
+      'Attacking zone. A player with the puck, marked K, skates from the left boards towards the middle. Dotted passing lanes lead to three teammates marked S: low on the boards and both defenders at the blue line. A fourth S stands in front of the goal.',
+      'Our own zone. An opponent has the puck on the left boards. Player J stands between him and the goal, stick pointing at the puck. Four players marked W each stand between an opponent without the puck and our goal.',
+    ],
+    note: 'K = König, S = Satellit, J = Jäger, W = Wächter. The dotted lines are passing lanes.',
+  },
+  'open-ice': {
+    caption: 'Finding open ice',
+    panels: [
+      {
+        title: 'Into the zone',
+        text: 'Two opponents are on the left. The König doesn’t skate into traffic but inside into the open ice (green), between the opponents.',
+      },
+      {
+        title: 'Under pressure in the corner',
+        text: 'Two opponents come from above. Behind the goal it is open. The König skates behind the goal and has a Satellit on the other side.',
+      },
+    ],
+    labels: [
+      'Attacking zone. The König carries the puck over the blue line on the left. Two opponents are on the left side. A green area in the high slot is open, and the König skates into it.',
+      'The König has the puck in the left corner, two opponents are coming at him. A green area behind the goal is open. The König skates behind the goal to the right side, where a Satellit is waiting.',
+    ],
+    note: 'Green is open ice: no opponent is there. Whoever skates there has time.',
+  },
+  'skate-to-pass': {
+    caption: 'Skate towards the pass',
+    panels: [
+      {
+        title: 'Stand and wait',
+        text: 'The Satellit waits at the blue line. The pass is long. The opponent has time and arrives at the same moment.',
+      },
+      {
+        title: 'Skate towards it',
+        text: 'The Satellit skates towards the pass. The pass is short and arrives quickly. The opponent is still far away.',
+      },
+    ],
+    labels: [
+      'Our zone. The König passes from the left side of the goal all the way to the blue line. An opponent from the middle skates to the same spot as the pass.',
+      'Same situation. The Satellit skates down the boards towards the puck. The pass is short. The opponent is far away.',
+    ],
+  },
+  'read-opponent': {
+    caption: 'Where is the opponent looking?',
+    panels: [
+      {
+        title: 'He faces the play',
+        text: 'He can see everything. The Jäger comes in calmly, stays on the defensive side and gets his stick on the puck.',
+      },
+      {
+        title: 'He faces the boards',
+        text: 'He can’t see anything. Now the Jäger attacks firmly and separates him from the puck – with body contact, but no check.',
+      },
+    ],
+    labels: [
+      'Our zone. An opponent with the puck on the left boards looks towards the middle; a blue fan shows where he is looking. The Jäger moves in only a little, stick on the puck.',
+      'Same spot. The opponent faces the boards, his back to the Jäger. The Jäger skates straight at him.',
+    ],
+    note: 'The blue fan shows where the opponent is looking.',
   },
 };
 
