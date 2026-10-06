@@ -1,0 +1,294 @@
+---
+/**
+ * Close-ups of a player with the puck, seen from above, skating up the page.
+ *
+ *   shield   – puck held out in front (an opponent reaches it) next to the puck carried
+ *              on the far side, with the body between puck and opponent
+ *   forehand – puck on the forehand: pass, shoot or keep skating
+ *
+ * Static SVG, so it works without JavaScript. Coordinates are SVG units in a 200×170 box.
+ */
+interface Props {
+  variant: 'shield' | 'forehand';
+}
+
+import { localeFromUrl } from '../lib/i18n';
+
+const { variant } = Astro.props;
+
+const de = {
+  captions: {
+    shield: 'Puck abschirmen',
+    forehand: 'Puck auf der Vorhand: drei Möglichkeiten',
+  },
+  bad: 'Nicht so',
+  good: 'So',
+  front: 'Puck vor dem Körper',
+  frontText: 'Der Gegner kommt mit dem Schläger leicht an den Puck.',
+  away: 'Puck weg vom Gegner',
+  awayText: 'Der Körper ist zwischen Puck und Gegner. Der Schläger des Gegners kommt nicht hin.',
+  frontLabel:
+    'Von oben: Ein Spieler führt den Puck direkt vor sich. Ein Gegner links vorne streckt den Schläger aus und erreicht den Puck.',
+  awayLabel:
+    'Von oben: Derselbe Spieler führt den Puck rechts neben sich, weg vom Gegner. Der Gegner links kommt mit dem Schläger nur bis an den Körper.',
+  pass: 'Pass',
+  shot: 'Schuss',
+  skate: 'weiterfahren',
+  defender: 'Gegner',
+  forehandText:
+    'Liegt der Puck auf der Vorhand, kann der König passen, schiessen oder weiterfahren. Der Gegner weiss nicht, was kommt.',
+  forehandLabel:
+    'Von oben: Ein Spieler hat den Puck auf der Vorhand, rechts neben sich. Drei Pfeile gehen vom Puck aus: nach links ein Pass, nach oben ein Schuss, und ein Pfeil vom Spieler nach rechts oben zum Weiterfahren. Vorne steht ein Gegner.',
+};
+
+const en: typeof de = {
+  captions: {
+    shield: 'Protecting the puck',
+    forehand: 'Puck on the forehand: three options',
+  },
+  bad: 'Don’t',
+  good: 'Do',
+  front: 'Puck in front of the body',
+  frontText: 'The opponent can easily reach the puck with his stick.',
+  away: 'Puck away from the opponent',
+  awayText: 'The body is between the puck and the opponent. The opponent’s stick can’t get there.',
+  frontLabel:
+    'From above: a player carries the puck straight in front of him. An opponent ahead on the left reaches out with his stick and gets to the puck.',
+  awayLabel:
+    'From above: the same player carries the puck on his right, away from the opponent. The opponent on the left can only reach the player’s body with his stick.',
+  pass: 'Pass',
+  shot: 'Shot',
+  skate: 'keep skating',
+  defender: 'opponent',
+  forehandText:
+    'With the puck on the forehand, the König can pass, shoot or keep skating. The opponent doesn’t know what is coming.',
+  forehandLabel:
+    'From above: a player has the puck on his forehand, to his right. Three arrows start at the puck: a pass to the left, a shot straight up, and an arrow from the player up to the right for skating on. An opponent stands ahead.',
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+---
+
+<figure class="puck-control">
+  <figcaption>{s.captions[variant]}</figcaption>
+
+  {
+    variant === 'shield' && (
+      <div class="pair">
+        <div>
+          <p class="title">
+            <span class="verdict bad">{s.bad}</span>
+            {s.front}
+          </p>
+          <svg viewBox="0 0 200 170" role="img" aria-label={s.frontLabel}>
+            <g class="them">
+              <ellipse cx="52" cy="58" rx="20" ry="11" class="shoulders" />
+              <circle cx="52" cy="58" r="8" class="helmet" />
+            </g>
+            <path d="M62 66 L94 64" class="stick them-stick" />
+            <g class="us">
+              <ellipse cx="100" cy="118" rx="20" ry="11" class="shoulders" />
+              <circle cx="100" cy="118" r="8" class="helmet" />
+            </g>
+            <path d="M110 110 L101 74" class="stick" />
+            <path d="M101 74 L92 70" class="blade" />
+            <circle cx="96" cy="64" r="5" class="puck" />
+          </svg>
+          <p class="text">{s.frontText}</p>
+        </div>
+        <div>
+          <p class="title">
+            <span class="verdict good">{s.good}</span>
+            {s.away}
+          </p>
+          <svg viewBox="0 0 200 170" role="img" aria-label={s.awayLabel}>
+            <g class="them">
+              <ellipse cx="52" cy="80" rx="20" ry="11" class="shoulders" />
+              <circle cx="52" cy="80" r="8" class="helmet" />
+            </g>
+            <path d="M62 88 L80 108" class="stick them-stick" />
+            <g class="us">
+              <ellipse cx="100" cy="118" rx="20" ry="11" class="shoulders" />
+              <circle cx="100" cy="118" r="8" class="helmet" />
+            </g>
+            <path d="M112 112 L146 104" class="stick" />
+            <path d="M146 104 L150 94" class="blade" />
+            <circle cx="156" cy="97" r="5" class="puck" />
+          </svg>
+          <p class="text">{s.awayText}</p>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    variant === 'forehand' && (
+      <div class="single">
+        <svg viewBox="0 0 200 170" role="img" aria-label={s.forehandLabel}>
+          <defs>
+            <marker id="puck-control-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 Z" class="head" />
+            </marker>
+          </defs>
+          <g class="them">
+            <ellipse cx="100" cy="30" rx="20" ry="11" class="shoulders" />
+            <circle cx="100" cy="30" r="8" class="helmet" />
+          </g>
+          <text x="100" y="54" class="label muted">{s.defender}</text>
+
+          <path d="M126 98 Q80 92 30 70" class="option" marker-end="url(#puck-control-head)" />
+          <text x="40" y="92" class="label">{s.pass}</text>
+          <path d="M132 92 L150 26" class="option shot" marker-end="url(#puck-control-head)" />
+          <text x="166" y="50" class="label">{s.shot}</text>
+          <path d="M108 128 Q160 140 182 104" class="option skate" marker-end="url(#puck-control-head)" />
+          <text x="146" y="160" class="label">{s.skate}</text>
+
+          <g class="us">
+            <ellipse cx="100" cy="118" rx="20" ry="11" class="shoulders" />
+            <circle cx="100" cy="118" r="8" class="helmet" />
+          </g>
+          <path d="M112 112 L128 102" class="stick" />
+          <path d="M128 102 L126 92" class="blade" />
+          <circle cx="132" cy="96" r="5" class="puck" />
+        </svg>
+        <p class="text">{s.forehandText}</p>
+      </div>
+    )
+  }
+</figure>
+
+<style>
+  .puck-control {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  .pair {
+    display: grid;
+    gap: var(--s-5);
+  }
+  @media (min-width: 40rem) {
+    .pair {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .single {
+    max-width: 26rem;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 20rem;
+    height: auto;
+    background: var(--c-ice);
+    border-radius: var(--radius);
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0 0 var(--s-2);
+    font-weight: 700;
+  }
+  .verdict {
+    flex: none;
+    white-space: nowrap;
+    padding: 0 var(--s-2);
+    font-size: var(--t-sm);
+    border-radius: var(--radius);
+    border: 1px solid currentColor;
+  }
+  .verdict.good {
+    color: var(--c-good);
+    background: var(--c-good-soft);
+  }
+  .verdict.bad {
+    color: var(--c-brand);
+    background: var(--c-brand-soft);
+  }
+  .text {
+    margin: var(--s-2) 0 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+
+  .us .shoulders {
+    fill: var(--c-signal);
+  }
+  .us .helmet {
+    fill: var(--c-brand-strong);
+  }
+  .them .shoulders {
+    fill: var(--c-text);
+  }
+  .them .helmet {
+    fill: var(--c-text-muted);
+  }
+  .shoulders,
+  .helmet {
+    stroke: var(--c-surface);
+    stroke-width: 1.5;
+  }
+  .stick,
+  .blade {
+    fill: none;
+    stroke: var(--c-text);
+    stroke-linecap: round;
+  }
+  .stick {
+    stroke-width: 3;
+  }
+  .blade {
+    stroke-width: 5;
+  }
+  .them-stick {
+    stroke: var(--c-text-muted);
+  }
+  .puck {
+    fill: var(--c-text);
+  }
+
+  .option {
+    fill: none;
+    stroke: var(--c-accent);
+    stroke-width: 2.5;
+    stroke-dasharray: 6 4;
+  }
+  .option.shot {
+    stroke: var(--c-brand);
+    stroke-dasharray: none;
+  }
+  .option.skate {
+    stroke: var(--c-good);
+    stroke-dasharray: none;
+  }
+  .head {
+    fill: var(--c-text-muted);
+  }
+  .label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--c-text);
+    text-anchor: middle;
+  }
+  .label.muted {
+    fill: var(--c-text-muted);
+    font-weight: 600;
+  }
+</style>

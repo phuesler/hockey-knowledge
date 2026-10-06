@@ -26,6 +26,9 @@
     far: 'weite Unterstützung',
     gap: 'niemand da',
     bench: 'unsere Spielerbank',
+    open: 'freies Eis',
+    shadow: 'Passschatten',
+    view: 'Blick',
     'cover-ld': 'Bereich LD',
     'cover-rd': 'Bereich RD',
     'cover-c': 'Bereich C',
@@ -50,6 +53,9 @@
     far: 'far support',
     gap: 'nobody there',
     bench: 'our bench',
+    open: 'open ice',
+    shadow: 'passing shadow',
+    view: 'where the player looks',
     'cover-ld': 'LD’s area',
     'cover-rd': 'RD’s area',
     'cover-c': 'C’s area',
@@ -71,7 +77,7 @@
       }
     }
     const order: Key[] = [
-      'us', 'them', 'ghost', 'puck', 'skate', 'carry', 'pass', 'shot', 'stick', 'lane', 'sight', 'danger', 'near', 'far', 'gap', 'bench',
+      'us', 'them', 'ghost', 'puck', 'skate', 'carry', 'pass', 'shot', 'stick', 'lane', 'sight', 'danger', 'near', 'far', 'gap', 'open', 'shadow', 'view', 'bench',
       'cover-lw', 'cover-rw', 'cover-ld', 'cover-rd', 'cover-c',
     ];
     return order.filter((k) => keys.has(k));
@@ -227,5 +233,20 @@
     fill: var(--c-brand-soft);
     stroke: var(--c-brand);
     stroke-dasharray: 2 1.5;
+  }
+  .area.open {
+    fill: var(--c-good-soft);
+    stroke: var(--c-good);
+    stroke-dasharray: 2 1.5;
+  }
+  .area.shadow {
+    fill: var(--c-steel);
+    stroke: none;
+    opacity: 0.35;
+  }
+  .area.view {
+    fill: var(--c-accent);
+    fill-opacity: 0.18;
+    stroke: var(--c-accent);
   }
 </style>
