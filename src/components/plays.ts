@@ -6,6 +6,7 @@
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
 import { DANGER_ZONE, POST_X, GOAL_LINE, viewCone, type Pt, type Scene, type View } from './rink';
+import { animals } from './stories';
 
 export interface PlayPanel {
   /**
@@ -860,6 +861,62 @@ const geometry = {
       },
     },
   ],
+
+  /* Forecheck after the DEB's "allgemeiner Forecheck": the opponents' D has the puck in
+     the corner. Three to the puck, then dog (LW), fox (C, closes the boards) and hawk
+     (RW, stays high). We face the goal, so our LW is at positive x (see rink.ts). */
+  forecheck: [
+    {
+      zone: 'attack',
+      verdict: 'bad',
+      scene: {
+        players: [
+          { team: 'them', at: [10, 2.4] },
+          { team: 'them', at: [-6.5, 2.8] },
+          { team: 'them', at: [13.6, 14.5] },
+          { team: 'them', at: [1.5, 10.5] },
+          { team: 'them', at: [-12.5, 14] },
+          { team: 'us', label: 'LW', at: [7, 11] },
+          { team: 'us', label: 'C', at: [1, 17] },
+          { team: 'us', label: 'RW', at: [-6, 16] },
+          { team: 'us', label: 'LD', at: [8, 21] },
+          { team: 'us', label: 'RD', at: [-8, 21] },
+        ],
+        puck: [9.2, 3.6],
+        moves: [
+          { kind: 'skate', path: [[7, 11], [9.8, 5]] },
+          { kind: 'skate', path: [[1, 17], [6, 9], [8, 5.4]] },
+          { kind: 'skate', path: [[-6, 16], [2, 8], [6.6, 4.2]] },
+          { kind: 'pass', team: 'them', path: [[10.6, 3.2], [14.4, 7.5], [13.6, 14.5]], trim: 1.6 },
+        ],
+      },
+    },
+    {
+      zone: 'attack',
+      verdict: 'good',
+      scene: {
+        players: [
+          { team: 'them', at: [10, 2.4] },
+          { team: 'them', at: [-6.5, 2.8] },
+          { team: 'them', at: [13.6, 14.5] },
+          { team: 'them', at: [1.5, 10.5] },
+          { team: 'them', at: [-12.5, 14] },
+          { team: 'us', label: 'LW', at: [7, 11], badge: animals.dog },
+          { team: 'us', label: 'C', at: [1, 17], badge: animals.fox },
+          { team: 'us', label: 'RW', at: [-6, 16], badge: animals.hawk },
+          { team: 'us', label: 'LD', at: [8, 21] },
+          { team: 'us', label: 'RD', at: [-8, 21] },
+        ],
+        puck: [9.2, 3.6],
+        moves: [
+          { kind: 'lane', path: [[10.6, 3.2], [14.4, 7.5], [13.6, 14.5]] },
+          { kind: 'skate', path: [[7, 11], [9.8, 5]] },
+          { kind: 'skate', path: [[1, 17], [10, 15], [12.8, 9]] },
+          { kind: 'skate', path: [[-6, 16], [0, 14.6]] },
+        ],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -1232,6 +1289,23 @@ const de: Record<PlayId, PlayText> = {
     ],
     note: 'Der blaue Fächer zeigt, wohin der Gegner schaut.',
   },
+  forecheck: {
+    caption: 'Forecheck: Hund, Fuchs und Falke',
+    panels: [
+      {
+        title: 'Alle zum Puck',
+        text: 'Alle drei Stürmer fahren zum Puckführer. Der Pass an der Bande hoch zum freien Flügel ist offen, und drei Spieler sind ausgespielt.',
+      },
+      {
+        title: 'Jeder eine Rolle',
+        text: 'Der LW ist der Hund und greift den Puckführer an. Der C ist der Fuchs und macht die Bande zu. Der RW ist der Falke und bleibt hoch in der Mitte.',
+      },
+    ],
+    labels: [
+      'In der Angriffszone hat ein gegnerischer Verteidiger den Puck in der linken Ecke. LW, C und RW fahren alle zu ihm. Er passt an der Bande entlang zum freien Flügel an der blauen Linie.',
+      'Gleiche Lage. Der linke Flügel fährt zum Puckführer. Der Center fährt an die linke Bande zwischen Puck und gegnerischen Flügel. Der rechte Flügel fährt in die Mitte vor die blaue Linie. Die Verteidiger bleiben an der blauen Linie.',
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -1585,6 +1659,23 @@ const en: typeof de = {
       'Same spot. The opponent faces the boards, his back to the Jäger. The Jäger skates straight at him.',
     ],
     note: 'The blue fan shows where the opponent is looking.',
+  },
+  forecheck: {
+    caption: 'Forecheck: dog, fox and hawk',
+    panels: [
+      {
+        title: 'Everyone to the puck',
+        text: 'All three forwards skate at the puck carrier. The pass up the boards to the free winger is open, and three players are beaten.',
+      },
+      {
+        title: 'One role each',
+        text: 'LW is the dog and attacks the puck carrier. C is the fox and closes the boards. RW is the hawk and stays high in the middle.',
+      },
+    ],
+    labels: [
+      'In the attacking zone an opposing defender has the puck in the left corner. LW, C and RW all skate at the puck carrier, who passes along the boards to the free winger at the blue line.',
+      'Same situation. The left winger skates at the puck carrier. The centre skates to the left boards, between the puck and the opposing winger. The right winger skates to the middle below the blue line. The defenders stay at the blue line.',
+    ],
   },
 };
 

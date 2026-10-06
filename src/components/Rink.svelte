@@ -174,6 +174,7 @@
     <g class="player {p.team}" class:ghost={p.ghost} style="transform: translate({x}px, {y}px)">
       <circle r={PLAYER_RADIUS} />
       {#if p.label}<text>{p.label}</text>{/if}
+      {#if p.badge}<text class="badge" x={PLAYER_RADIUS} y={-PLAYER_RADIUS}>{p.badge}</text>{/if}
     </g>
   {/each}
 
@@ -389,6 +390,9 @@
   }
   .player text {
     font-size: 1.15px;
+  }
+  .player text.badge {
+    font-size: 1.8px;
   }
   .player.us circle {
     fill: var(--c-signal);
