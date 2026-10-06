@@ -163,12 +163,13 @@ const geometry = {
     },
   ],
 
-  /* Defensive support, overload: LD and C go to the puck together, 2 against 1. */
+  /* Defensive support, overload: LD attacks the puck carrier, C stays a few metres away
+     as the helper, ready to take the puck or step in. */
   overload: [
     {
       zone: 'own',
       scene: {
-        areas: [{ kind: 'zone', ellipse: { at: [-11.6, 10.8], rx: 3.5, ry: 4.6 }, label: '2:1', labelAt: [-12, 16.6] }],
+        areas: [{ kind: 'zone', ellipse: { at: [-11.4, 11.6], rx: 3.8, ry: 5.2 }, label: '2:1', labelAt: [-12.6, 17.6] }],
         players: [
           { team: 'them', at: [-13, 11] },
           { team: 'them', at: [-10, 3.2] },
@@ -178,7 +179,7 @@ const geometry = {
           { team: 'us', label: 'LD', at: [-8.6, 4.8], ghost: true },
           { team: 'us', label: 'C', at: [-4.8, 12.6], ghost: true },
           { team: 'us', label: 'LD', at: [-11.2, 8.6] },
-          { team: 'us', label: 'C', at: [-10.4, 13.2] },
+          { team: 'us', label: 'C', at: [-9.2, 14.6] },
           { team: 'us', label: 'RD', at: [0.6, 5.5] },
           { team: 'us', label: 'LW', at: [-7.6, 18] },
           { team: 'us', label: 'RW', at: [2.4, 13.6] },
@@ -186,7 +187,7 @@ const geometry = {
         puck: [-12.4, 9.9],
         moves: [
           { kind: 'skate', path: [[-8.6, 4.8], [-11.2, 8.6]], trim: 1.5 },
-          { kind: 'skate', path: [[-4.8, 12.6], [-10.4, 13.2]], trim: 1.5 },
+          { kind: 'skate', path: [[-4.8, 12.6], [-9.2, 14.6]], trim: 1.5 },
         ],
       },
     },
@@ -1010,15 +1011,15 @@ const de: Record<PlayId, PlayText> = {
     ],
   },
   overload: {
-    caption: 'Overload: zu zweit an den Puck',
+    caption: 'Overload: einer greift an, einer hilft',
     panels: [
       {
         title: '2 gegen 1 am Puck',
-        text: 'Der Gegner hat den Puck an der Bande. LD kommt von unten, C von oben. Die anderen bleiben in der Mitte: RD vor dem Tor, RW im hohen Slot, LW zwischen Puck und blauer Linie.',
+        text: 'Der Gegner hat den Puck an der Bande. LD greift von unten an. C kommt von oben dazu und bleibt ein paar Meter weg, bereit zu helfen. Die anderen bleiben in der Mitte: RD vor dem Tor, RW im hohen Slot, LW zwischen Puck und blauer Linie.',
       },
     ],
     labels: [
-      'Ein Gegner mit Puck an der linken Bande. Der linke Verteidiger und der Center fahren von zwei Seiten zu ihm. Der rechte Verteidiger steht vor dem Tor, die Flügel weiter oben.',
+      'Ein Gegner mit Puck an der linken Bande. Der linke Verteidiger greift ihn von unten an, der Center steht ein paar Meter darüber, bereit zu helfen. Der rechte Verteidiger steht vor dem Tor, die Flügel weiter oben.',
     ],
     note: 'Die gestrichelten Kreise zeigen, wo die Spieler vorher waren.',
   },
@@ -1381,15 +1382,15 @@ const en: typeof de = {
     ],
   },
   overload: {
-    caption: 'Overload: two to the puck',
+    caption: 'Overload: one attacks, one helps',
     panels: [
       {
         title: '2 against 1 at the puck',
-        text: 'The attacker has the puck on the boards. LD comes from below, C from above. The others stay in the middle: RD in front of the goal, RW in the high slot, LW between the puck and the blue line.',
+        text: 'The attacker has the puck on the boards. LD attacks from below. C comes in from above and stays a few metres away, ready to help. The others stay in the middle: RD in front of the goal, RW in the high slot, LW between the puck and the blue line.',
       },
     ],
     labels: [
-      'An attacker with the puck on the left boards. The left defender and the centre close in from two sides. The right defender is in front of the goal, the wingers higher up.',
+      'An attacker with the puck on the left boards. The left defender attacks from below, the centre is a few metres above, ready to help. The right defender is in front of the goal, the wingers higher up.',
     ],
     note: 'The dashed circles show where the players were before.',
   },
