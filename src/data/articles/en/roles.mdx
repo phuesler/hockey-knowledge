@@ -13,6 +13,7 @@ import RinkPlay from '../../../components/RinkPlay.svelte';
 import RinkSequence from '../../../components/RinkSequence.svelte';
 import PuckControl from '../../../components/PuckControl.astro';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Hockey is fast. Nobody has time to think about a tactics board during a game. That is why
@@ -222,6 +223,14 @@ At the next game, pick one child. Every time the puck changes hands, ask yoursel
 child König, Satellit, Jäger or Wächter right now? You will see how often the role changes
 in a single minute.
 </Callout>
+
+## Test yourself
+
+Six questions on this article. Have a guess even if you aren’t sure: after every answer
+you’ll see why it is right or wrong. The quiz works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="rollen" locale="en" />
 
 <Callout type="merke" title="Rules of thumb, not laws">
 “Five quick strides”, “the closer to the goal, the tighter”: these are guideline values.

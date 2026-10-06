@@ -9,9 +9,9 @@
    *   <Quiz client:visible={{ rootMargin: '300px' }} quiz="regeln" />   one article's quiz
    *   <Quiz client:visible mix />                                       a mix of all of them
    *
-   * The mix takes two questions from every quiz, in turns, so similar ideas from different
-   * articles alternate; "Neue Fragen" moves on to the next two of each. Its links lead to
-   * the section in the right article.
+   * The mix takes two questions from each quiz in `mixQuizzes`, in turns, so similar ideas
+   * from different articles alternate; "Neue Fragen" moves on to the next two of each. Its
+   * links lead to the section in the right article.
    *
    * Server-rendered as a list of every question, each with its solution in a <details>,
    * so the page stays complete without JavaScript. Once the island is running it switches
@@ -20,7 +20,7 @@
   import { tick } from 'svelte';
   import Rink from './Rink.svelte';
   import RinkLegend from './RinkLegend.svelte';
-  import { candidates, quizText, quizzes, type QuizFigure, type QuizId } from './quizzes';
+  import { candidates, mixQuizzes, quizText, quizzes, type QuizFigure, type QuizId } from './quizzes';
   import type { Scene } from './rink';
   import type { Locale } from '../lib/i18n';
   import { href } from '../lib/href';
@@ -48,7 +48,7 @@
     allRight: 'Alles richtig. Stark!',
     reread: 'Lies hier noch einmal nach:',
     later: 'Mach das Quiz in ein paar Tagen noch einmal. Wer sich später wieder erinnert, behält es länger.',
-    mixLink: 'Gemischtes Quiz mit Fragen aus allen Artikeln',
+    mixLink: 'Gemischtes Quiz zu Regeln und Spielverständnis',
     mixPath: '/de/teste-dich/',
     again: 'Noch einmal',
     newQuestions: 'Neue Fragen',
@@ -75,7 +75,7 @@
     allRight: 'All right. Well done!',
     reread: 'Have another look here:',
     later: 'Do the quiz again in a few days. Remembering it again later makes it stick.',
-    mixLink: 'Mixed quiz with questions from every article',
+    mixLink: 'Mixed quiz on rules and game sense',
     mixPath: '/en/quiz/',
     again: 'Try again',
     newQuestions: 'New questions',
@@ -105,9 +105,8 @@
       };
     };
     if (!mix) return quizzes[quiz!].map((_, i) => item(quiz!, i));
-    const ids = Object.keys(quizzes) as QuizId[];
     return Array.from({ length: MIX_PER_QUIZ }, (_, k) =>
-      ids.map((id) => item(id, (round * MIX_PER_QUIZ + k) % quizzes[id].length)),
+      mixQuizzes.map((id) => item(id, (round * MIX_PER_QUIZ + k) % quizzes[id].length)),
     ).flat();
   });
   const title = $derived(mix ? s.mixTitle : quizText[locale][quiz!].title);

@@ -10,6 +10,7 @@
  * Positions are rink metres, see rink.ts. In the attacking zone our left is at positive x.
  */
 import { COVERAGE_AREAS, DANGER_ZONE, GOAL_LINE, POST_X, passShadow, type Player, type Pt, type Scene, type View } from './rink';
+import { animals } from './stories';
 import type { Locale } from '../lib/i18n';
 
 export interface QuizFigure {
@@ -126,6 +127,24 @@ const faceoffThem = [
 const faceoffUs = [us('G', [0, 5]), us('LD', [-12.2, 7.5]), us('C', [-7, 8.3]), us('RD', [-2.2, 9.6]), us('RW', [1.8, 7.6])];
 const faceoffLW = us('LW', [-5.8, 5.2]);
 const faceoffPuck: Pt = [-7, 10];
+
+/* Attacking zone: LW is König with the puck, an opponent stands between them and the
+   middle. Behind the opponent is the passing shadow. */
+const kingPuck: Pt = [8.4, 12.4];
+const kingBlocker: Pt = [4.4, 11.2];
+const kingScene = [them('o1', kingBlocker), them('o2', [-2, 6]), them('o3', [-6, 14]), us('LW', [9.2, 13.6])];
+
+/* Forecheck in the attacking zone (the 'forecheck' play): LW is the dog at the puck
+   carrier in the corner, C comes in second. */
+const forecheckThem = [
+  them('o1', [10, 2.4]),
+  them('o2', [-6.5, 2.8]),
+  them('o3', [13.6, 14.5]),
+  them('o4', [1.5, 10.5]),
+  them('o5', [-12.5, 14]),
+];
+const forecheckD = [us('LD', [8, 21]), us('RD', [-8, 21])];
+const badged = (label: string, at: Pt, badge: string): Player => ({ ...us(label, at), badge });
 
 const geometry = {
   regeln: [
@@ -486,10 +505,107 @@ const geometry = {
     /* 6. Neutral zone: our D gets the puck, their winger comes fast. */
     { correct: 0 },
   ],
+
+  rollen: [
+    /* 1. LD has the puck: a defender can be König. */
+    { correct: 0 },
+
+    /* 2. The König passes: now they are Satellit. */
+    { correct: 1 },
+
+    /* 3. Where is the Satellit C open? B: out of the passing shadow. */
+    {
+      correct: 1,
+      figure: {
+        zone: 'attack',
+        candidates: [[1.3, 10.3], [1.8, 14.8], [11.6, 16.4]],
+        scene: { players: kingScene, puck: kingPuck },
+        after: {
+          areas: [{ kind: 'shadow', poly: passShadow(kingPuck, kingBlocker) }],
+          players: [...kingScene, us('C', [1.8, 14.8])],
+          puck: kingPuck,
+          moves: [{ kind: 'pass', path: [kingPuck, [1.8, 14.8]], trim: 1.5 }],
+        },
+      },
+    },
+
+    /* 4. Jäger against a carrier who is facing the play. */
+    { correct: 1 },
+
+    /* 5. Wächter: the opponent skates to the front of our goal. */
+    { correct: 2 },
+
+    /* 6. Puck lost, you are closest: Jäger. */
+    { correct: 0 },
+  ],
+
+  forecheck: [
+    /* 1. First at the puck carrier: the dog. */
+    { correct: 0 },
+
+    /* 2. LW is already the dog. C comes second: where to? B: the boards, as the fox. */
+    {
+      correct: 1,
+      figure: {
+        zone: 'attack',
+        candidates: [[6.6, 6.6], [12.8, 9.4], [-0.5, 13.6]],
+        scene: {
+          players: [...forecheckThem, us('LW', [9.8, 5]), us('C', [1, 17]), us('RW', [-6, 16]), ...forecheckD],
+          puck: [9.2, 3.6],
+        },
+        after: {
+          players: [
+            ...forecheckThem,
+            badged('LW', [9.8, 5], animals.dog),
+            badged('C', [12.8, 9.4], animals.fox),
+            badged('RW', [0, 14.6], animals.hawk),
+            ...forecheckD,
+          ],
+          puck: [9.2, 3.6],
+          moves: [{ kind: 'lane', path: [[10.6, 3.2], [14.4, 7.5], [13.6, 14.5]] }],
+        },
+      },
+    },
+
+    /* 3. The dog arrives at the puck carrier. */
+    { correct: 1 },
+
+    /* 4. The hawk: the puck comes round the back to their side. */
+    { correct: 2 },
+
+    /* 5. Where the hawk stays. */
+    { correct: 1 },
+
+    /* 6. Puck lost deep in the corner: the cheetah's way back. */
+    { correct: 0 },
+  ],
+
+  aufstellung: [
+    /* 1. LW in line 2: when do you go on? */
+    { correct: 0 },
+    /* 2. Who plays PK1? */
+    { correct: 2 },
+    /* 3. What "line 1" means. */
+    { correct: 1 },
+    /* 4. Who is the sixth skater? */
+    { correct: 1 },
+    /* 5. The centre is in the penalty box: who kills the penalty? */
+    { correct: 2 },
+    /* 6. What the C on the jersey means. */
+    { correct: 1 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
 export const quizzes: Record<QuizId, QuestionGeometry[]> = geometry;
+
+/**
+ * The quizzes the mixed quiz (de/teste-dich, en/quiz) draws from. Only published articles:
+ * the mixed page is public, and published pages never link to drafts. Add rollen and
+ * forecheck when they are published. aufstellung stays out on purpose: it is about how the
+ * team is organised, not rules or game sense.
+ */
+export const mixQuizzes: QuizId[] = ['regeln', 'abwehrseite', 'zuordnung', 'support', 'bully'];
 
 const de: Record<QuizId, QuizText> = {
   regeln: {
@@ -1273,6 +1389,389 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  rollen: {
+    title: 'Quiz: Die vier Rollen',
+    name: 'Die vier Rollen',
+    article: 'rollen',
+    questions: [
+      {
+        prompt: 'LD hat den Puck hinter unserem Tor. Welche Rolle hat LD gerade?',
+        options: [
+          {
+            text: 'König',
+            feedback: 'Wer den Puck hat, ist König. Die Rolle hängt nicht von der Position ab: Auch ein Verteidiger kann König sein.',
+          },
+          {
+            text: 'Jäger',
+            feedback: 'Der Jäger verteidigt gegen den Gegner mit dem Puck. Hier hat aber unser LD den Puck. Wer den Puck hat, ist König.',
+          },
+          {
+            text: 'Wächter, weil LD ein Verteidiger ist',
+            feedback: 'Die Rollen sind keine Positionen. Wer den Puck hat, ist König, auch als Verteidiger.',
+          },
+        ],
+        section: 'könig-spieler-mit-puck',
+        topic: 'König',
+      },
+      {
+        prompt: 'Du bist König und passt den Puck zu einem Mitspieler. Welche Rolle hast du jetzt?',
+        options: [
+          {
+            text: 'Immer noch König',
+            feedback: 'König ist, wer den Puck hat. Die Rolle wechselt mit jedem Pass.',
+          },
+          {
+            text: 'Satellit',
+            feedback:
+              'Jetzt ist dein Mitspieler König, und du bist Satellit. Also gleich wieder anspielbar machen.',
+          },
+          {
+            text: 'Wächter',
+            feedback: 'Wächter gibt es nur, wenn der Gegner den Puck hat. Wir haben ihn noch: Du bist Satellit.',
+          },
+        ],
+        section: 'rollen-wechseln-ständig',
+        topic: 'Rollen wechseln ständig',
+      },
+      {
+        prompt: 'LW ist König. Du bist C, also Satellit. Wo bist du anspielbar: A, B oder C?',
+        label:
+          'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande. Ein Gegner steht zwischen LW und der Mitte. A liegt direkt hinter diesem Gegner, B etwas höher daneben, C ganz nah bei LW.',
+        afterLabel:
+          'C steht auf B und bekommt den Pass. Hinter dem Gegner ist ein grauer Passschatten, dorthin kommt kein Pass.',
+        options: [
+          {
+            text: 'A',
+            feedback:
+              'A liegt im Passschatten, direkt hinter dem Gegner. Dorthin kommt kein Pass durch. Siehst du die Kelle des Königs nicht, stehst du im Schatten.',
+          },
+          {
+            text: 'B',
+            feedback: 'Ein, zwei Schritte zur Seite, und du bist raus aus dem Passschatten. Der König sieht dich und kann passen.',
+          },
+          {
+            text: 'C',
+            feedback: 'Zu nah. Stehst du direkt neben dem König, stört ein einziger Gegner euch beide.',
+          },
+        ],
+        section: 'satellit-angreifer-ohne-puck',
+        topic: 'Satellit',
+      },
+      {
+        prompt: 'Du bist Jäger. Der Gegner mit dem Puck schaut zum Spiel und sieht dich. Was machst du?',
+        options: [
+          {
+            text: 'Mit Vollgas auf ihn losstürmen.',
+            feedback: 'Wer losstürmt, während der Gegner zum Spiel schaut, wird leicht umfahren.',
+          },
+          {
+            text: 'Die Lücke schnell schliessen, Schläger zum Puck, auf der Abwehrseite bleiben.',
+            feedback:
+              'Ein paar schnelle Schritte nehmen ihm Zeit und Platz. Der Schläger zeigt zum Puck. Und du bleibst zwischen ihm und unserem Tor.',
+          },
+          {
+            text: 'Warten, bis er zu mir kommt.',
+            feedback: 'Je grösser die Lücke, desto mehr Zeit und Platz hat er. Schliess sie schnell.',
+          },
+        ],
+        section: 'jäger-verteidiger-gegen-den-puckführer',
+        topic: 'Jäger',
+      },
+      {
+        prompt: 'Du bist Wächter. Dein Gegner hat keinen Puck und fährt vor unser Tor. Was machst du?',
+        options: [
+          {
+            text: 'Abstand lassen. Er hat ja keinen Puck.',
+            feedback: 'Weit weg vom Tor darfst du Abstand lassen. Vor dem Tor nicht: Ein Pass, und er schiesst.',
+          },
+          {
+            text: 'Zum Puck fahren und dem Jäger helfen.',
+            feedback: 'Dann steht dein Gegner frei vor unserem Tor. Das ist der gefährlichste Ort auf dem Eis.',
+          },
+          {
+            text: 'Ganz nah bei ihm bleiben, den Schläger im Passweg.',
+            feedback:
+              'Je näher am Tor, desto enger. Bleib auf der Abwehrseite, hab Gegner und Puck im Blick, und leg den Schläger dorthin, wo der Pass durch müsste.',
+          },
+        ],
+        section: 'wächter-verteidiger-gegen-gegner-ohne-puck',
+        topic: 'Wächter',
+      },
+      {
+        prompt: 'Wir verlieren den Puck. Du bist dem neuen Puckführer am nächsten. Welche Rolle hast du jetzt?',
+        options: [
+          {
+            text: 'Jäger',
+            feedback:
+              'Wer dem Puck am nächsten ist, wird Jäger. Je schneller du umschaltest, desto weniger Zeit hat der Gegner.',
+          },
+          {
+            text: 'Satellit',
+            feedback: 'Satelliten gibt es nur, wenn wir den Puck haben. Jetzt hat ihn der Gegner. Du bist Jäger.',
+          },
+          {
+            text: 'Wächter',
+            feedback: 'Wächter verteidigen gegen Gegner ohne Puck. Wer dem Puckführer am nächsten ist, wird Jäger.',
+          },
+        ],
+        section: 'schnell-umschalten',
+        topic: 'Schnell umschalten',
+      },
+    ],
+  },
+  forecheck: {
+    title: 'Quiz: Forecheck und Backcheck',
+    name: 'Forecheck und Backcheck',
+    article: 'forecheck',
+    questions: [
+      {
+        prompt: 'Du bist als Erster beim Puckführer. Welches Tier bist du?',
+        options: [
+          {
+            text: 'Hund',
+            feedback: 'Der Hund jagt den Puckführer. Hund ist, wer zuerst beim Puck ist, egal auf welcher Position.',
+          },
+          {
+            text: 'Fuchs',
+            feedback: 'Der Fuchs ist der Zweite. Er macht die Bande zu. Wer zuerst beim Puckführer ist, ist der Hund.',
+          },
+          {
+            text: 'Falke',
+            feedback: 'Der Falke bleibt hoch in der Mitte. Wer zuerst beim Puckführer ist, ist der Hund.',
+          },
+        ],
+        section: 'vier-tiere-vier-aufgaben',
+        topic: 'Vier Tiere, vier Aufgaben',
+      },
+      {
+        prompt: 'LW jagt den Puckführer in der Ecke, LW ist also der Hund. Du bist C und kommst als Zweiter. Wohin fährst du: A, B oder C?',
+        label:
+          'Angriffszone, oben das gegnerische Tor. Der Gegner hat den Puck in der linken Ecke, LW ist bei ihm. Ein Gegner wartet weiter oben an der linken Bande. A liegt nah beim Puckführer, B an der linken Bande zwischen Puck und dem Gegner weiter oben, C hoch in der Mitte.',
+        afterLabel:
+          'LW ist der Hund beim Puckführer, C der Fuchs an der Bande, RW der Falke hoch in der Mitte. Der Pass an der Bande hoch ist zu.',
+        options: [
+          {
+            text: 'A, auch zum Puckführer',
+            feedback: 'Nicht auch zum Puckführer! Dann ist Tür 1 offen, und ein Pass an der Bande hoch spielt euch beide aus.',
+          },
+          {
+            text: 'B, an die Bande',
+            feedback:
+              'Du bist der Fuchs: an die Bande auf der Puckseite, zwischen den Puck und den nächsten Gegner. Dort machst du Tür 1 zu.',
+          },
+          {
+            text: 'C, hoch in die Mitte',
+            feedback: 'Hoch in der Mitte bleibt der Falke, das ist der Dritte. Als Zweiter bist du der Fuchs und machst die Bande zu.',
+          },
+        ],
+        section: 'der-fuchs-vor-dem-mauseloch-warten',
+        topic: 'Der Fuchs',
+      },
+      {
+        prompt: 'Du bist der Hund und kommst beim Puckführer an. Was machst du?',
+        options: [
+          {
+            text: 'Mit Vollgas hineinfahren und ihn umchecken.',
+            feedback:
+              'Ein Bodycheck ist in der U13 verboten. Und wer mit Vollgas ankommt, wird einfach umfahren.',
+          },
+          {
+            text: 'Kurz vorher langsamer werden, von innen kommen, Stock auf den Puck.',
+            feedback: 'So treibt der Hütehund den Puckführer an die Bande, ohne zu beissen. Der Weg in die Mitte ist zu.',
+          },
+          {
+            text: 'Von aussen kommen, damit er in die Mitte ausweicht.',
+            feedback: 'Umgekehrt: Der Hund kommt von innen. So bleibt dem Puckführer nur der Weg an die Bande, nicht in die Mitte.',
+          },
+        ],
+        section: 'der-hund-treiben-nicht-beissen',
+        topic: 'Der Hund',
+      },
+      {
+        prompt:
+          'Du bist der Falke. Der Gegner spielt den Puck hinter dem Tor durch auf deine Seite. Jetzt bist du am nächsten. Was tust du?',
+        options: [
+          {
+            text: 'Hoch in der Mitte bleiben. Ich bin ja der Falke.',
+            feedback: 'Die Tiere sind keine festen Positionen. Wer jetzt am nächsten am Puck ist, wird zum Hund.',
+          },
+          {
+            text: 'Warten, bis der Hund von der anderen Seite herüberkommt.',
+            feedback: 'Bis dahin hat der Gegner Zeit und Platz. Wer am nächsten ist, jagt.',
+          },
+          {
+            text: 'Ich werde zum Hund und jage den neuen Puckführer.',
+            feedback: 'Die anderen beiden übernehmen Fuchs und Falke. So tauschen die Tiere ständig die Rollen.',
+          },
+        ],
+        section: 'forecheck-die-drei-türen',
+        topic: 'Forecheck: die drei Türen',
+      },
+      {
+        prompt: 'Wo bleibt der Falke beim Forecheck?',
+        options: [
+          {
+            text: 'Tief in der Ecke, damit er schnell beim Puck ist.',
+            feedback: 'Fährt der Falke tief, ist Tür 2 in die Mitte offen, und niemand ist zuerst zurück.',
+          },
+          {
+            text: 'Hoch in der Mitte, zwischen den Bullykreisen und der blauen Linie.',
+            feedback:
+              'Von dort sieht er alles. Kommt der Puck in die Mitte, ist er da. Und kommt der Puck aus der Ecke heraus, ist er der Erste zurück.',
+          },
+          {
+            text: 'An der blauen Linie bei den Verteidigern.',
+            feedback: 'An der blauen Linie stehen die Verteidiger. Der Falke ist etwas tiefer, zwischen den Bullykreisen und der blauen Linie.',
+          },
+        ],
+        section: 'der-falke-oben-kreisen',
+        topic: 'Der Falke',
+      },
+      {
+        prompt: 'Wir verlieren den Puck, und du warst tief in der Ecke. Welchen Weg nimmst du zurück?',
+        options: [
+          {
+            text: 'Durch die Mitte sprinten, ins Haus, dort bremsen, Schulterblick.',
+            feedback: 'Du bist ein Gepard. Die Mitte ist der kürzeste Weg zum Tor, und im Haus fallen die meisten Tore.',
+          },
+          {
+            text: 'An der Bande entlang zurück.',
+            feedback: 'An der Bande ist der Weg länger, und die Mitte bleibt frei. Gepard heisst: durch die Mitte.',
+          },
+          {
+            text: 'Ausrollen lassen. Die Verteidiger sind ja hinten.',
+            feedback: 'Ein Backcheck ist ein Sprint, kein Ausrollen. Wer schneller zurück ist, gewinnt das Rennen zum Tor.',
+          },
+        ],
+        section: 'backcheck-der-gepard',
+        topic: 'Backcheck: der Gepard',
+      },
+    ],
+  },
+  aufstellung: {
+    title: 'Quiz: Die Aufstellung',
+    name: 'Die Aufstellung',
+    article: 'aufstellung',
+    questions: [
+      {
+        prompt: 'Du bist LW in der 2. Reihe. Das Spiel läuft. Wann gehst du aufs Eis?',
+        options: [
+          {
+            text: 'Wenn der LW der 1. Reihe vom Eis kommt.',
+            feedback: 'Im normalen Spiel reicht es zu wissen, wer in der Reihe vor dir auf deiner Position spielt. Kommt er vom Eis, gehst du rein.',
+          },
+          {
+            text: 'Wenn die ganze 1. Reihe auf der Bank ist.',
+            feedback: 'Sturm und Verteidigung wechseln getrennt. Du wartest auf den LW der 1. Reihe, nicht auf alle.',
+          },
+          {
+            text: 'Wenn ein Trainer meinen Namen ruft.',
+            feedback:
+              'Nach einer Unterbrechung ruft ein Trainer manchmal „Reihe 1!“. Im laufenden Spiel weisst du selbst, wann du dran bist: wenn der LW der 1. Reihe vom Eis kommt.',
+          },
+        ],
+        section: 'kenne-deine-reihe',
+        topic: 'Kenne deine Reihe',
+      },
+      {
+        prompt: 'Wir bekommen eine Strafe. Deine Reihe ist gerade dran. Wer spielt die Unterzahl, PK1?',
+        options: [
+          {
+            text: 'Die vier besten Spieler des Teams.',
+            feedback: 'Es gibt keine eigene Unterzahl-Mannschaft. Die Reihe, die dran ist, spielt PK1.',
+          },
+          {
+            text: 'Alle drei Stürmer meiner Reihe und ein Verteidiger.',
+            feedback: 'In Unterzahl stehen nur zwei Stürmer auf dem Eis, dafür beide Verteidiger.',
+          },
+          {
+            text: 'Der Center und ein Flügel meiner Reihe, dazu zwei Verteidiger.',
+            feedback: 'Welcher Flügel spielt, entscheiden LW und RW selbst. Die nächste Reihe löst als PK2 ab.',
+          },
+        ],
+        section: 'unterzahl-und-überzahl-pk-und-pp',
+        topic: 'Unterzahl und Überzahl',
+      },
+      {
+        prompt: 'Deine Reihe steht in der Aufstellung als 1. Reihe. Was heisst das?',
+        options: [
+          {
+            text: 'Wir sind die beste Reihe.',
+            feedback: '„1. Reihe“ ist eine Nummer, keine Rangliste. Oft stehen gute Spieler bewusst in der 2. oder 3. Reihe.',
+          },
+          {
+            text: 'Wir gehen zuerst aufs Eis.',
+            feedback: 'Die Nummer sagt nur, wer zuerst dran ist. Danach geht es der Reihe nach: 1, 2, 3, dann wieder 1.',
+          },
+          {
+            text: 'Wir spielen am meisten.',
+            feedback: 'Alle drei Reihen spielen, der Reihe nach. Keine Reihe sitzt länger auf der Bank.',
+          },
+        ],
+        section: 'die-erste-reihe-ist-nicht-die-beste-reihe',
+        topic: 'Die erste Reihe ist nicht die beste Reihe',
+      },
+      {
+        prompt: 'Die 1. Reihe ist auf dem Eis. Unser Torhüter fährt raus für einen sechsten Feldspieler. Wer springt aufs Eis?',
+        options: [
+          {
+            text: 'Der schnellste Spieler auf der Bank.',
+            feedback: 'Dann müsste erst jemand entscheiden, wer das ist. Bei uns ist es immer der Center der nächsten Reihe.',
+          },
+          {
+            text: 'Der Center der 2. Reihe.',
+            feedback: 'Der sechste Feldspieler ist immer der Center der nächsten Reihe. So muss niemand erst gesucht werden.',
+          },
+          {
+            text: 'Der Center der 1. Reihe.',
+            feedback: 'Der ist schon auf dem Eis. Es springt der Center der nächsten Reihe, hier der 2.',
+          },
+        ],
+        section: 'der-sechste-feldspieler',
+        topic: 'Der sechste Feldspieler',
+      },
+      {
+        prompt: 'Der Center deiner Reihe sitzt auf der Strafbank. Deine Reihe ist dran. Wer spielt die Unterzahl?',
+        options: [
+          {
+            text: 'Ein Flügel und der Center der nächsten Reihe.',
+            feedback: 'Die nächste Reihe kommt erst als PK2. Fehlt der Center, spielen beide Flügel seiner Reihe.',
+          },
+          {
+            text: 'Die nächste Reihe übernimmt sofort.',
+            feedback: 'Die Reihe, die dran ist, spielt auch jetzt. Ohne ihren Center: beide Flügel und zwei Verteidiger.',
+          },
+          {
+            text: 'Beide Flügel der Reihe, dazu zwei Verteidiger.',
+            feedback: 'Sitzt ein Center auf der Strafbank, spielen stattdessen beide Flügel seiner Reihe zusammen mit den zwei Verteidigern.',
+          },
+        ],
+        section: 'unterzahl-und-überzahl-pk-und-pp',
+        topic: 'Unterzahl und Überzahl',
+      },
+      {
+        prompt: 'Neben einem Namen in der Aufstellung steht ein C. Was heisst das?',
+        options: [
+          {
+            text: 'Das ist der beste Spieler des Teams.',
+            feedback: 'Das C geht nicht unbedingt an den Spieler mit dem meisten Können oder den meisten Toren.',
+          },
+          {
+            text: 'Das ist der Captain.',
+            feedback:
+              'Der Captain ist die Seele des Teams und das Bindeglied zu den Trainern. Auf dem Eis dürfen nur Captain und Assistants mit dem Schiedsrichter sprechen.',
+          },
+          {
+            text: 'Das Kind spielt immer Center.',
+            feedback:
+              'Das C neben dem Namen markiert den Captain, nicht die Position. Im Beispiel oben im Artikel ist der Captain sogar Verteidiger.',
+          },
+        ],
+        section: 'captain-und-assistants',
+        topic: 'Captain und Assistants',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -2019,6 +2518,387 @@ const en: typeof de = {
         ],
         section: 'face-off-in-the-neutral-zone',
         topic: 'Face-off in the neutral zone',
+      },
+    ],
+  },
+  rollen: {
+    title: 'Quiz: the four roles',
+    name: 'The four roles',
+    article: 'roles',
+    questions: [
+      {
+        prompt: 'LD has the puck behind our goal. Which role does LD have right now?',
+        options: [
+          {
+            text: 'König',
+            feedback: 'Whoever has the puck is König. The role doesn’t depend on the position: a defender can be König too.',
+          },
+          {
+            text: 'Jäger',
+            feedback: 'The Jäger defends against the opponent with the puck. But here our LD has the puck. Whoever has the puck is König.',
+          },
+          {
+            text: 'Wächter, because LD is a defender',
+            feedback: 'The roles are not positions. Whoever has the puck is König, defenders included.',
+          },
+        ],
+        section: 'könig-the-player-with-the-puck',
+        topic: 'König',
+      },
+      {
+        prompt: 'You are König and pass the puck to a teammate. Which role do you have now?',
+        options: [
+          {
+            text: 'Still König',
+            feedback: 'König is whoever has the puck. The role changes with every pass.',
+          },
+          {
+            text: 'Satellit',
+            feedback: 'Now your teammate is König and you are Satellit. So get open for a pass again straight away.',
+          },
+          {
+            text: 'Wächter',
+            feedback: 'There are only Wächter when the opponents have the puck. We still have it: you are Satellit.',
+          },
+        ],
+        section: 'roles-change-all-the-time',
+        topic: 'Roles change all the time',
+      },
+      {
+        prompt: 'LW is König. You are C, so a Satellit. Where are you open for a pass: A, B or C?',
+        label:
+          'Attacking zone, the opponents’ goal at the top. LW has the puck on the left boards. An opponent stands between LW and the middle. A is right behind that opponent, B a bit higher to the side, C right next to LW.',
+        afterLabel:
+          'C is on B and gets the pass. Behind the opponent is a grey passing shadow, where no pass gets through.',
+        options: [
+          {
+            text: 'A',
+            feedback:
+              'A is in the passing shadow, right behind the opponent. No pass gets through there. If you can’t see the König’s blade, you are in the shadow.',
+          },
+          {
+            text: 'B',
+            feedback: 'One or two steps to the side and you are out of the passing shadow. The König can see you and pass.',
+          },
+          {
+            text: 'C',
+            feedback: 'Too close. Right next to the König, a single opponent can bother you both.',
+          },
+        ],
+        section: 'satellit-attackers-without-the-puck',
+        topic: 'Satellit',
+      },
+      {
+        prompt: 'You are Jäger. The opponent with the puck is facing the play and can see you. What do you do?',
+        options: [
+          {
+            text: 'Charge at them full speed.',
+            feedback: 'Charging in while the opponent is facing the play makes you easy to skate around.',
+          },
+          {
+            text: 'Close the gap quickly, stick on puck, stay on the defensive side.',
+            feedback:
+              'A few quick strides take away their time and space. Your blade points at the puck. And you stay between them and our goal.',
+          },
+          {
+            text: 'Wait for them to come to me.',
+            feedback: 'The bigger the gap, the more time and space they have. Close it quickly.',
+          },
+        ],
+        section: 'jäger-defending-the-puck-carrier',
+        topic: 'Jäger',
+      },
+      {
+        prompt: 'You are Wächter. Your opponent has no puck and skates to the front of our goal. What do you do?',
+        options: [
+          {
+            text: 'Give them space. They don’t have the puck anyway.',
+            feedback: 'Far from the goal you may give some space. In front of the goal you may not: one pass, and they shoot.',
+          },
+          {
+            text: 'Go to the puck and help the Jäger.',
+            feedback: 'Then your opponent is open in front of our goal. That is the most dangerous place on the ice.',
+          },
+          {
+            text: 'Stay very close to them, stick in the passing lane.',
+            feedback:
+              'The closer to the goal, the tighter. Stay on the defensive side, keep the opponent and the puck in view, and put your stick where the pass would have to go.',
+          },
+        ],
+        section: 'wächter-defending-players-without-the-puck',
+        topic: 'Wächter',
+      },
+      {
+        prompt: 'We lose the puck. You are closest to the new puck carrier. Which role do you have now?',
+        options: [
+          {
+            text: 'Jäger',
+            feedback: 'Whoever is closest to the puck becomes Jäger. The faster you switch, the less time the opponent has.',
+          },
+          {
+            text: 'Satellit',
+            feedback: 'There are only Satelliten when we have the puck. Now the opponents have it. You are Jäger.',
+          },
+          {
+            text: 'Wächter',
+            feedback: 'Wächter defend against opponents without the puck. Whoever is closest to the puck carrier becomes Jäger.',
+          },
+        ],
+        section: 'switch-fast',
+        topic: 'Switch fast',
+      },
+    ],
+  },
+  forecheck: {
+    title: 'Quiz: forecheck and backcheck',
+    name: 'Forecheck and backcheck',
+    article: 'forecheck',
+    questions: [
+      {
+        prompt: 'You are the first player at the puck carrier. Which animal are you?',
+        options: [
+          {
+            text: 'Dog',
+            feedback: 'The dog hunts the puck carrier. Whoever gets there first is the dog, whatever their position.',
+          },
+          {
+            text: 'Fox',
+            feedback: 'The fox is the second player. They close the boards. Whoever gets to the puck carrier first is the dog.',
+          },
+          {
+            text: 'Hawk',
+            feedback: 'The hawk stays high in the middle. Whoever gets to the puck carrier first is the dog.',
+          },
+        ],
+        section: 'four-animals-four-jobs',
+        topic: 'Four animals, four jobs',
+      },
+      {
+        prompt:
+          'LW is hunting the puck carrier in the corner, so LW is the dog. You are C and get there second. Where do you go: A, B or C?',
+        label:
+          'Attacking zone, the opponents’ goal at the top. An opponent has the puck in the left corner, LW is with them. Another opponent waits higher up on the left boards. A is close to the puck carrier, B on the left boards between the puck and the opponent higher up, C high in the middle.',
+        afterLabel:
+          'LW is the dog at the puck carrier, C the fox on the boards, RW the hawk high in the middle. The pass up the boards is closed.',
+        options: [
+          {
+            text: 'A, to the puck carrier as well',
+            feedback: 'Not to the puck carrier as well! Then door 1 is open, and one pass up the boards beats you both.',
+          },
+          {
+            text: 'B, to the boards',
+            feedback:
+              'You are the fox: to the boards on the puck side, between the puck and the next opponent. That is where you close door 1.',
+          },
+          {
+            text: 'C, high in the middle',
+            feedback: 'High in the middle is where the hawk stays, the third player. As the second you are the fox and close the boards.',
+          },
+        ],
+        section: 'the-fox-wait-at-the-mouse-hole',
+        topic: 'The fox',
+      },
+      {
+        prompt: 'You are the dog and reach the puck carrier. What do you do?',
+        options: [
+          {
+            text: 'Go in full speed and check them.',
+            feedback: 'Body checking is not allowed in U13. And whoever arrives at full speed simply gets skated around.',
+          },
+          {
+            text: 'Slow down just before, come from the inside, stick on the puck.',
+            feedback: 'That is how the herding dog drives the puck carrier to the boards without biting. The way to the middle is closed.',
+          },
+          {
+            text: 'Come from the outside, so they dodge into the middle.',
+            feedback: 'The other way round: the dog comes from the inside. That leaves the puck carrier only the way to the boards, not the middle.',
+          },
+        ],
+        section: 'the-dog-herd-dont-bite',
+        topic: 'The dog',
+      },
+      {
+        prompt:
+          'You are the hawk. The opponents pass the puck behind the goal to your side. Now you are closest. What do you do?',
+        options: [
+          {
+            text: 'Stay high in the middle. I’m the hawk, after all.',
+            feedback: 'The animals are not fixed positions. Whoever is now closest to the puck becomes the dog.',
+          },
+          {
+            text: 'Wait until the dog comes over from the other side.',
+            feedback: 'By then the opponents have time and space. Whoever is closest hunts.',
+          },
+          {
+            text: 'I become the dog and hunt the new puck carrier.',
+            feedback: 'The other two take over fox and hawk. That is how the animals keep swapping roles.',
+          },
+        ],
+        section: 'forecheck-the-three-doors',
+        topic: 'Forecheck: the three doors',
+      },
+      {
+        prompt: 'Where does the hawk stay during the forecheck?',
+        options: [
+          {
+            text: 'Deep in the corner, so they are quickly at the puck.',
+            feedback: 'If the hawk goes deep, door 2 to the middle is open, and nobody is first back.',
+          },
+          {
+            text: 'High in the middle, between the faceoff circles and the blue line.',
+            feedback:
+              'From there they see everything. If the puck comes into the middle, they are there. And if the puck gets out of the corner, they are first back.',
+          },
+          {
+            text: 'At the blue line with the defenders.',
+            feedback: 'The defenders stand at the blue line. The hawk is a bit deeper, between the faceoff circles and the blue line.',
+          },
+        ],
+        section: 'the-hawk-circle-up-high',
+        topic: 'The hawk',
+      },
+      {
+        prompt: 'We lose the puck, and you were deep in the corner. Which way do you skate back?',
+        options: [
+          {
+            text: 'Sprint through the middle, to the house, stop there, shoulder check.',
+            feedback: 'You are a cheetah. The middle is the shortest way to the goal, and most goals are scored from the house.',
+          },
+          {
+            text: 'Back along the boards.',
+            feedback: 'Along the boards the way is longer, and the middle stays open. Cheetah means: through the middle.',
+          },
+          {
+            text: 'Glide back. The defenders are behind us anyway.',
+            feedback: 'A backcheck is a sprint, not a glide. Whoever is back faster wins the race to the goal.',
+          },
+        ],
+        section: 'backcheck-the-cheetah',
+        topic: 'Backcheck: the cheetah',
+      },
+    ],
+  },
+  aufstellung: {
+    title: 'Quiz: the lineup',
+    name: 'The lineup',
+    article: 'lineup',
+    questions: [
+      {
+        prompt: 'You are LW in line 2. The game is running. When do you go on the ice?',
+        options: [
+          {
+            text: 'When the LW of line 1 comes off.',
+            feedback: 'In normal play it is enough to know who plays your position in the line before you. When they come off, you go on.',
+          },
+          {
+            text: 'When the whole of line 1 is on the bench.',
+            feedback: 'Forwards and defence change separately. You wait for the LW of line 1, not for everyone.',
+          },
+          {
+            text: 'When a coach calls my name.',
+            feedback:
+              'After a stoppage a coach sometimes calls “Line 1!”. During play you know yourself when it’s your turn: when the LW of line 1 comes off.',
+          },
+        ],
+        section: 'know-your-line',
+        topic: 'Know your line',
+      },
+      {
+        prompt: 'We get a penalty. Your line is up. Who plays the penalty kill, PK1?',
+        options: [
+          {
+            text: 'The team’s four best players.',
+            feedback: 'There is no separate penalty-kill team. The line that is up plays PK1.',
+          },
+          {
+            text: 'All three forwards of my line and one defender.',
+            feedback: 'On the penalty kill only two forwards are on the ice, but both defenders.',
+          },
+          {
+            text: 'The centre and one winger of my line, plus two defenders.',
+            feedback: 'LW and RW decide between themselves which winger plays. The next line takes over as PK2.',
+          },
+        ],
+        section: 'penalty-kill-and-power-play-pk-and-pp',
+        topic: 'Penalty kill and power play',
+      },
+      {
+        prompt: 'Your line is listed as line 1 in the lineup. What does that mean?',
+        options: [
+          {
+            text: 'We are the best line.',
+            feedback: '“Line 1” is a number, not a ranking. Good players are often deliberately placed in line 2 or 3.',
+          },
+          {
+            text: 'We go on the ice first.',
+            feedback: 'The number only says who goes first. After that it goes in turn: 1, 2, 3, then 1 again.',
+          },
+          {
+            text: 'We play the most.',
+            feedback: 'All three lines play, in turn. No line sits on the bench longer.',
+          },
+        ],
+        section: 'the-first-line-is-not-the-best-line',
+        topic: 'The first line is not the best line',
+      },
+      {
+        prompt: 'Line 1 is on the ice. Our goalie comes off for an extra skater. Who jumps on?',
+        options: [
+          {
+            text: 'The fastest player on the bench.',
+            feedback: 'Then someone would first have to decide who that is. For us it is always the centre of the next line.',
+          },
+          {
+            text: 'The centre of line 2.',
+            feedback: 'The sixth skater is always the centre of the next line. That way nobody has to be found first.',
+          },
+          {
+            text: 'The centre of line 1.',
+            feedback: 'They are already on the ice. The centre of the next line jumps on, here line 2.',
+          },
+        ],
+        section: 'the-sixth-skater',
+        topic: 'The sixth skater',
+      },
+      {
+        prompt: 'The centre of your line is in the penalty box. Your line is up. Who plays the penalty kill?',
+        options: [
+          {
+            text: 'One winger and the centre of the next line.',
+            feedback: 'The next line only comes on as PK2. Without the centre, both wingers of their line play.',
+          },
+          {
+            text: 'The next line takes over straight away.',
+            feedback: 'The line that is up plays now too. Without its centre: both wingers and two defenders.',
+          },
+          {
+            text: 'Both wingers of the line, plus two defenders.',
+            feedback: 'If a centre is in the penalty box, both wingers of their line play instead, together with the two defenders.',
+          },
+        ],
+        section: 'penalty-kill-and-power-play-pk-and-pp',
+        topic: 'Penalty kill and power play',
+      },
+      {
+        prompt: 'There is a C next to a name in the lineup. What does it mean?',
+        options: [
+          {
+            text: 'That is the team’s best player.',
+            feedback: 'The C doesn’t necessarily go to the most skilled player or the top scorer.',
+          },
+          {
+            text: 'That is the captain.',
+            feedback:
+              'The captain is the soul of the team and the link to the coaches. On the ice, only the captain and the assistants may talk to the referee.',
+          },
+          {
+            text: 'That child always plays centre.',
+            feedback:
+              'The C next to the name marks the captain, not the position. In the example earlier in the article, the captain even plays defence.',
+          },
+        ],
+        section: 'captain-and-assistants',
+        topic: 'Captain and assistants',
       },
     ],
   },

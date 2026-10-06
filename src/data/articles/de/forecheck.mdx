@@ -12,6 +12,7 @@ import RinkPlay from '../../../components/RinkPlay.svelte';
 import RinkStory from '../../../components/RinkStory.svelte';
 import AnimalCards from '../../../components/AnimalCards.astro';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import { href } from '../../../lib/href';
 
 Kennst du Fangis? Wenn nur einer fängt, entwischen die anderen leicht. Wenn ein Fänger
@@ -157,37 +158,11 @@ sie danach den Puck nicht berühren.
 
 ## Teste dich
 
-Klick auf eine Frage, dann siehst du die Antwort.
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
 
-<details>
-<summary>Du bist als Erster beim Puckführer. Welches Tier bist du?</summary>
-
-Der **Hund**. Du jagst den Puckführer, kommst von innen und treibst ihn an die Bande.
-
-</details>
-
-<details>
-<summary>Dein Mitspieler jagt schon den Puckführer in der Ecke. Wohin fährst du?</summary>
-
-Nicht auch zum Puckführer! Du bist der **Fuchs**: an die Bande auf der Puckseite, zwischen
-den Puck und den nächsten Gegner. Dort machst du Tür 1 zu.
-
-</details>
-
-<details>
-<summary>Du bist der Falke. Der Gegner spielt den Puck hinter dem Tor durch auf deine Seite. Jetzt bist du am nächsten. Was tust du?</summary>
-
-Du wirst zum **Hund** und jagst den neuen Puckführer. Die anderen beiden übernehmen Fuchs und
-Falke.
-
-</details>
-
-<details>
-<summary>Wir verlieren den Puck, und du warst tief in der Ecke. Welchen Weg nimmst du zurück?</summary>
-
-Du bist ein **Gepard**: durch die Mitte, ins Haus, dort bremsen, Schulterblick.
-
-</details>
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="forecheck" />
 
 ## Andere Namen für dasselbe
 

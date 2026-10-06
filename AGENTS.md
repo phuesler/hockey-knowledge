@@ -84,6 +84,14 @@ Rink diagrams: a static situation goes into `src/components/plays.ts` and is sho
 slide from frame to frame, goes into `src/components/sequences.ts` and is shown with
 `<RinkSequence client:visible sequence="…" />`. Both take `locale="en"` in English articles.
 
+Quizzes: the questions live in `src/components/quizzes.ts` (geometry shared, text in `de`
+and `en`), shown with `<Quiz client:visible={{ rootMargin: '300px' }} quiz="…" />` in a
+`## Teste dich` / `## Test yourself` section before the article's final rules-of-thumb
+Callout. Every option gets its own explanation, and each wrong option should be a real
+misconception. `section` must be a heading anchor in that language's article. The mixed
+quiz page (`de/teste-dich`) only draws from `mixQuizzes`: add an article's quiz there once
+the article is published.
+
 For callout boxes there is `Callout.astro`, already available in `.mdx`:
 
 ```mdx

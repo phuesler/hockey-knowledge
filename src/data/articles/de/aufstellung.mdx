@@ -3,13 +3,14 @@ title: "Die Aufstellung: Reihen, Positionen und Abkürzungen"
 description: "Wie eine Aufstellung für ein Spiel aufgebaut ist, was LW, C, RW, LD und RD bedeuten, wer in Unterzahl spielt – und warum die erste Reihe nicht die beste sein muss."
 category: team
 order: 20
-updated: 2026-10-04
+updated: 2026-10-06
 tags: ["Aufstellung", "Positionen", "Spielverständnis"]
 ---
 
 import LineupBoard from '../../../components/LineupBoard.astro';
 import BenchSeating from '../../../components/BenchSeating.astro';
 import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
 
 Vor jedem Spiel gibt es eine Aufstellung. Sie sagt, wer mit wem auf dem Eis steht und auf
 welcher Position. Für Eltern sieht sie zuerst aus wie eine Liste voller Abkürzungen. Dieser
@@ -248,6 +249,14 @@ den **sechsten Feldspieler**, auf Englisch *6th skater* oder *extra attacker*.
 
 Bei uns ist das immer der **Center der nächsten Reihe**. Wer dran ist, muss also nicht erst
 gesucht werden. Steht die 1. Reihe auf dem Eis, springt der Center der 2. Reihe dazu.
+
+## Teste dich
+
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="aufstellung" />
 
 <Callout type="merke" title="Eine Momentaufnahme, kein Urteil">
 Eine Aufstellung gilt für ein Spiel – oft sogar nur für ein Drittel. Sie ändert sich mit
