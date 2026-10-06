@@ -3,6 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getArticles, articlePath, readingMinutes, categoryOrder, indexAlternates } from '../../lib/articles';
 import { visibleLocales, t, type Locale } from '../../lib/i18n';
+import { absoluteUrl } from '../../lib/href';
+import { publisher } from '../../lib/site';
+import AskAi from '../../components/AskAi.astro';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (() =>
@@ -20,6 +23,16 @@ const groups = categoryOrder
     items: articles.filter((a) => a.data.category === category),
   }))
   .filter((group) => group.items.length > 0);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: s.siteName,
+  description: s.tagline,
+  url: absoluteUrl(`/${locale}/`, Astro.site),
+  inLanguage: locale,
+  publisher,
+};
 ---
 
 <BaseLayout
@@ -28,6 +41,7 @@ const groups = categoryOrder
   locale={locale}
   path={`/${locale}/`}
   alternates={indexAlternates()}
+  jsonLd={jsonLd}
 >
   <div class="wrap wrap-wide">
     <section class="hero">
@@ -55,6 +69,8 @@ const groups = categoryOrder
         </ul>
       </section>
     ))}
+
+    <AskAi locale={locale} />
   </div>
 </BaseLayout>
 

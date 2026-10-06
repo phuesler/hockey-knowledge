@@ -1,4 +1,5 @@
 ---
+import { href } from '../lib/href';
 import { t, type Locale } from '../lib/i18n';
 import { repoUrl, clubUrl } from '../lib/site';
 
@@ -15,7 +16,8 @@ const s = t(locale);
       <a href={repoUrl}>{s.repoCta}</a>
     </p>
     <p class="meta">
-      {s.siteName} · <a href={clubUrl}>{s.clubLink}</a>
+      {s.siteName} · <a href={clubUrl}>{s.clubLink}</a> ·
+      <a href={href(`/${locale}/#ask-ai`)}>{s.footerAskAi}</a>
     </p>
   </div>
 </footer>

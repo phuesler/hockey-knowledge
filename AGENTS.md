@@ -177,9 +177,10 @@ in the browser too and get a `locale` prop instead.
 
 The site works offline (wifi-only devices on the bus to a game). After every build, the
 `offline` integration in `astro.config.mjs` writes `dist/sw.js` from
-`src/lib/sw-template.js` with a list of every built file (drafts and sitemap left out).
-`BaseLayout.astro` registers it and links `src/pages/manifest.webmanifest.ts`, so the
-site can be added to the home screen. Nothing to do per article.
+`src/lib/sw-template.js` with a list of every built file. Drafts are left out, and so are
+files only crawlers and AI services read (sitemap, `robots.txt`, `llms*.txt`, the share
+image). `BaseLayout.astro` registers it and links `src/pages/manifest.webmanifest.ts`, so
+the site can be added to the home screen. Nothing to do per article.
 
 - Pages are network first (online readers get the latest version), `/_astro/` files and
   icons cache first. A changed build changes the version hash and replaces the cache.
@@ -187,6 +188,20 @@ site can be added to the home screen. Nothing to do per article.
   then Chrome DevTools → Application (Service workers, Cache storage) and Network → Offline.
 - Changing the manifest colours: they mirror `tokens.css` by hand (a manifest can't read
   CSS variables).
+
+## Search engines and AI assistants
+
+`/llms.txt` and `/<locale>/llms-full.txt` are generated from the articles by
+`src/pages/llms.txt.ts` and `src/pages/[locale]/llms-full.txt.ts`. `src/lib/plaintext.ts`
+turns MDX into plain Markdown: it converts `Callout`, `<details>` quiz questions and
+`<a href={href(...)}>`, and replaces
+every other self-closing component with a short "diagram on the website" note. A new
+component that **wraps text** (like `Callout`) needs its own rule there, otherwise its tags
+end up in the text file. JSON-LD and Open Graph tags are set in `BaseLayout.astro`
+(`jsonLd` prop) and `ArticleLayout.astro`.
+
+Article paths end in a slash (`articlePath()`): GitHub Pages redirects `/de/x` to `/de/x/`,
+and canonical URLs must not point to a redirect.
 
 ## Astro documentation
 
