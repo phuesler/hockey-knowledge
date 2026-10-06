@@ -34,7 +34,10 @@ const draftPaths = readdirSync(articleDir, { recursive: true, encoding: 'utf8' }
 
 // Offline reading: after the build, write dist/sw.js from src/lib/sw-template.js with a
 // list of every page and asset, so the service worker can store the whole site on the
-// device. Drafts and the sitemap are left out. Registered in BaseLayout.astro.
+// device. Registered in BaseLayout.astro. Left out: drafts, and files only crawlers and
+// AI services read (sitemap, robots.txt, llms*.txt, the share image), which are useless
+// without a connection.
+const notForOffline = /^(sitemap.*\.xml|sw\.js|robots\.txt|og-image\.png|(\w+\/)?llms(-full)?\.txt)$/;
 /** @returns {import('astro').AstroIntegration} */
 function offline() {
   let base = '/';
@@ -47,7 +50,7 @@ function offline() {
       'astro:build:done': ({ dir, logger }) => {
         const files = readdirSync(dir, { recursive: true, encoding: 'utf8' })
           .map((file) => file.replace(/\\/g, '/'))
-          .filter((file) => !/^sitemap.*\.xml$/.test(file) && file !== 'sw.js')
+          .filter((file) => !notForOffline.test(file))
           .filter((file) => statSync(new URL(file, dir)).isFile())
           .filter((file) => !draftPaths.some((path) => `/${file}` === `${path}index.html`))
           .sort();

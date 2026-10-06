@@ -172,9 +172,10 @@ in the browser too and get a `locale` prop instead.
 
 The site works offline (wifi-only devices on the bus to a game). After every build, the
 `offline` integration in `astro.config.mjs` writes `dist/sw.js` from
-`src/lib/sw-template.js` with a list of every built file (drafts and sitemap left out).
-`BaseLayout.astro` registers it and links `src/pages/manifest.webmanifest.ts`, so the
-site can be added to the home screen. Nothing to do per article.
+`src/lib/sw-template.js` with a list of every built file. Drafts are left out, and so are
+files only crawlers and AI services read (sitemap, `robots.txt`, `llms*.txt`, the share
+image). `BaseLayout.astro` registers it and links `src/pages/manifest.webmanifest.ts`, so
+the site can be added to the home screen. Nothing to do per article.
 
 - Pages are network first (online readers get the latest version), `/_astro/` files and
   icons cache first. A changed build changes the version hash and replaces the cache.
