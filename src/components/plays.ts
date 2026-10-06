@@ -698,6 +698,62 @@ const geometry = {
       },
     },
   ],
+  /* The four roles: in attack the puck carrier is König and everyone else Satellit; in
+     defence the player at the puck carrier is Jäger and everyone else Wächter. */
+  'four-roles': [
+    {
+      zone: 'attack',
+      scene: {
+        areas: [danger],
+        players: [
+          { team: 'them', at: [6.8, 10.8] },
+          { team: 'them', at: [10, 6.8] },
+          { team: 'them', at: [1.6, 5.6] },
+          { team: 'them', at: [-3.2, 8.4] },
+          { team: 'them', at: [-7.5, 15.5] },
+          { team: 'us', label: 'K', at: [9, 13.5] },
+          { team: 'us', label: 'S', at: [11.5, 4.5] },
+          { team: 'us', label: 'S', at: [-0.6, 7.2] },
+          { team: 'us', label: 'S', at: [-4, 14] },
+          { team: 'us', label: 'S', at: [8, 20.5] },
+          { team: 'us', label: 'S', at: [-8, 20.5] },
+        ],
+        puck: [8.4, 12.2],
+        moves: [
+          { kind: 'carry', path: [[8.4, 12.2], [8.2, 15.6], [5, 17]], trim: 0.6 },
+          { kind: 'lane', path: [[9, 13.5], [11.5, 4.5]] },
+          { kind: 'lane', path: [[9, 13.5], [-4, 14]] },
+          { kind: 'lane', path: [[9, 13.5], [8, 20.5]] },
+          { kind: 'skate', path: [[-4, 14], [-2, 11.5]], trim: 0.4 },
+        ],
+      },
+    },
+    {
+      zone: 'own',
+      scene: {
+        areas: [danger],
+        players: [
+          { team: 'them', at: [-9.6, 13.6] },
+          { team: 'them', at: [2.6, 9] },
+          { team: 'them', at: [-1, 15.4] },
+          { team: 'them', at: [-9.5, 21.5] },
+          { team: 'them', at: [8.5, 20.5] },
+          { team: 'us', label: 'J', at: [-6.4, 11.2] },
+          { team: 'us', label: 'W', at: [1.4, 7] },
+          { team: 'us', label: 'W', at: [-1.2, 12.6] },
+          { team: 'us', label: 'W', at: [-8.2, 18.8] },
+          { team: 'us', label: 'W', at: [6.8, 17.6] },
+        ],
+        puck: [-9, 12.6],
+        moves: [
+          { kind: 'stick', path: [[-6.4, 11.2], [-7.9, 12.1]] },
+          { kind: 'lane', path: [[-9, 12.6], [2.6, 9]] },
+          { kind: 'lane', path: [[-9, 12.6], [-1, 15.4]] },
+          { kind: 'lane', path: [[-9, 12.6], [8.5, 20.5]] },
+        ],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -999,6 +1055,24 @@ const de: Record<PlayId, PlayText> = {
     ],
     note: 'Wir greifen nach oben an. Am Punkt auf der anderen Seite ist alles gespiegelt.',
   },
+  'four-roles': {
+    caption: 'Vier Rollen, zwei Momente',
+    panels: [
+      {
+        title: 'Wir haben den Puck',
+        text: 'K ist der König: Er hat den Puck und fährt ins freie Eis. Alle anderen sind Satelliten (S): an der Bande, vor dem Tor, im Slot und an der blauen Linie. Jeder ist frei anspielbar.',
+      },
+      {
+        title: 'Der Gegner hat den Puck',
+        text: 'J ist der Jäger: Er steht zwischen Puckführer und Tor, der Schläger zeigt zum Puck. Alle anderen sind Wächter (W): Jeder steht zwischen seinem Gegner und unserem Tor.',
+      },
+    ],
+    labels: [
+      'Angriffsdrittel. Ein Spieler mit Puck, markiert mit K, fährt von der linken Bande in die Mitte. Gepunktete Passwege führen zu drei Mitspielern, markiert mit S: tief an der Bande, im hohen Slot und an der blauen Linie. Ein vierter S steht vor dem Tor, ein fünfter an der blauen Linie rechts.',
+      'Eigenes Drittel. Ein Gegner hat den Puck links an der Bande. Der Spieler J steht zwischen ihm und dem Tor, der Schläger zeigt zum Puck. Vier Spieler, markiert mit W, stehen jeweils zwischen einem Gegner ohne Puck und unserem Tor.',
+    ],
+    note: 'K = König, S = Satellit, J = Jäger, W = Wächter. Die gepunkteten Linien sind Passwege.',
+  },
 };
 
 const en: typeof de = {
@@ -1281,6 +1355,24 @@ const en: typeof de = {
       'Face-off on the neutral-zone spot in front of the opponents’ blue line. Our centre draws the puck to the right defender, who passes across to the left defender. The opposing wingers skate at our defenders.',
     ],
     note: 'We attack upwards. On the spot on the other side everything is mirrored.',
+  },
+  'four-roles': {
+    caption: 'Four roles, two moments',
+    panels: [
+      {
+        title: 'We have the puck',
+        text: 'K is the König: he has the puck and skates into open ice. Everyone else is a Satellit (S): on the boards, in front of the goal, in the slot and at the blue line. Each one is open for a pass.',
+      },
+      {
+        title: 'The opponents have the puck',
+        text: 'J is the Jäger: he stands between the puck carrier and the goal, stick pointing at the puck. Everyone else is a Wächter (W): each one stands between his opponent and our goal.',
+      },
+    ],
+    labels: [
+      'Attacking zone. A player with the puck, marked K, skates from the left boards towards the middle. Dotted passing lanes lead to three teammates marked S: low on the boards, in the high slot and at the blue line. A fourth S stands in front of the goal, a fifth at the right of the blue line.',
+      'Our own zone. An opponent has the puck on the left boards. Player J stands between him and the goal, stick pointing at the puck. Four players marked W each stand between an opponent without the puck and our goal.',
+    ],
+    note: 'K = König, S = Satellit, J = Jäger, W = Wächter. The dotted lines are passing lanes.',
   },
 };
 
