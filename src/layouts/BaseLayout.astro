@@ -3,7 +3,7 @@ import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { href, absoluteUrl } from '../lib/href';
-import { defaultLocale, t, type Locale } from '../lib/i18n';
+import { defaultLocale, isPreview, t, type Locale } from '../lib/i18n';
 import type { Alternate } from '../lib/articles';
 
 interface Props {
@@ -20,11 +20,13 @@ interface Props {
   modified?: Date;
   /** schema.org structured data for search engines, rendered as JSON-LD. */
   jsonLd?: Record<string, unknown>;
+  /** Keep search engines away, e.g. from drafts. */
+  noindex?: boolean;
 }
 
 const {
   title, description, locale = 'de', path = '/', alternates = [], ogType = 'website', modified,
-  jsonLd,
+  jsonLd, noindex = false,
 } = Astro.props;
 const translated = alternates.length > 1;
 const xDefault = alternates.find((a) => a.locale === defaultLocale);
@@ -34,16 +36,32 @@ const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} class:list={{ 'show-drafts': isPreview }}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* ?drafts=true shows drafts on the overview for this browser tab, ?drafts=false
+        hides them again. Runs before the page paints, so nothing flickers. */}
+    <script is:inline>
+      try {
+        const drafts = new URLSearchParams(location.search).get('drafts');
+        if (drafts === 'true') sessionStorage.setItem('drafts', '1');
+        if (drafts === 'false') sessionStorage.removeItem('drafts');
+        if (sessionStorage.getItem('drafts')) document.documentElement.classList.add('show-drafts');
+      } catch {}
+    </script>
+    {noindex && <meta name="robots" content="noindex" />}
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={href('/favicon.ico')} sizes="16x16 32x32 48x48" />
     <link rel="icon" href={href('/icon-192.png')} type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
+    <link rel="manifest" href={href('/manifest.webmanifest')} />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content={s.brandShort} />
+    {/* Same as --c-header-bg in tokens.css, so the status bar blends into the header. */}
+    <meta name="theme-color" content="#0a1214" />
     <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={fullTitle} />
@@ -72,5 +90,12 @@ const fullTitle = title === s.siteName ? title : `${title} · ${s.siteName}`;
       <slot />
     </main>
     <SiteFooter locale={locale} />
+    {/* Offline copy of the whole site (dist/sw.js, generated in astro.config.mjs).
+        Not in `astro dev`, where a cached page would hide your edits. */}
+    {!isPreview && (
+      <script is:inline define:vars={{ sw: href('/sw.js'), scope: href('/') }}>
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register(sw, { scope });
+      </script>
+    )}
   </body>
 </html>

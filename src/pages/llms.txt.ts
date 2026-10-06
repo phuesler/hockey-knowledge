@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ site }) => {
   const sections = await Promise.all(
     visibleLocales.map(async (locale) => {
       const s = t(locale);
-      const articles = await getArticles(locale);
+      const articles = (await getArticles(locale)).filter((entry) => !entry.data.draft);
       const links = articles.map(
         (entry) =>
           `- [${entry.data.title}](${absoluteUrl(articlePath(entry), site)}): ${entry.data.description}`,

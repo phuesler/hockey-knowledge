@@ -7,7 +7,7 @@ import { visibleLocales, t, type Locale } from '../../lib/i18n';
 /**
  * Every article of one language in a single Markdown file, e.g. /de/llms-full.txt.
  * Parents paste this one URL into their AI assistant (or attach the file) instead of
- * linking article by article. New articles show up here automatically; drafts never do.
+ * linking article by article. New articles show up here automatically; drafts are left out.
  */
 export const getStaticPaths = (() =>
   visibleLocales.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
@@ -15,7 +15,7 @@ export const getStaticPaths = (() =>
 export const GET: APIRoute = async ({ params, site }) => {
   const locale = params.locale as Locale;
   const s = t(locale);
-  const articles = await getArticles(locale);
+  const articles = (await getArticles(locale)).filter((entry) => !entry.data.draft);
 
   const sections = articles.map((entry) => {
     const updated = entry.data.updated.toISOString().slice(0, 10);

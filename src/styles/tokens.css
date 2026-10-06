@@ -33,6 +33,13 @@
   /* Nur für Grafiken (Linien, Flächen) – für Text zu kontrastarm,
      dafür gibt es --c-text-muted. */
   --c-steel: #a1a09a;
+  /* Coverage areas in the defensive zone (rink diagrams only): one soft colour per
+     position, distinct enough to tell apart side by side. */
+  --c-zone-ld: #f6c6d6;
+  --c-zone-rd: #f8d6a6;
+  --c-zone-c: #f1b3ae;
+  --c-zone-lw: #bfe3b8;
+  --c-zone-rw: #b1d3ee;
 
   /* Spacing — a 4px scale. */
   --s-1: 0.25rem;
@@ -88,6 +95,11 @@
     --c-warn-soft: #2e2415;
     --c-ice: #24455c;
     --c-steel: #75776f;
+    --c-zone-ld: #5b2a3e;
+    --c-zone-rd: #5a4120;
+    --c-zone-c: #5e2b28;
+    --c-zone-lw: #234a2b;
+    --c-zone-rw: #1f3e59;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -10px rgb(0 0 0 / 0.6);
   }
 }

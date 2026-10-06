@@ -3,10 +3,10 @@ title: "Zuordnung: everyone takes an area"
 description: "What the call “Zuordnung!” means: who takes which area in our own zone, why not everyone skates to the puck, and how to find the gap nobody is covering yet."
 category: theorie
 order: 20
-updated: 2026-10-04
+updated: 2026-10-05
 tags: ["Game sense", "Defence", "Calls"]
 translationOf: zuordnung
-draft: true
+draft: false
 ---
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
@@ -16,14 +16,16 @@ import { href } from '../../../lib/href';
 
 The second of the three calls from the bench is **“Zuordnung!”** (coverage, literally
 “assignment”). It is about our own zone, the third of the ice in front of our goal. There,
-each of the five skaters has a job. This article explains what the jobs are and how to
-find yours.
+each of the five skaters has their own area. This article explains where those areas are
+and what to do in them.
 
 <Callout type="merke" title="The short version">
-In our own zone everyone takes an **area**: one puts **pressure on the puck**, one **helps
-them**, one is **in front of the goal**, two close **the middle and the blue line**. The
-job belongs to the area, not to the person. A player who comes into the zone does **not
-skate to the puck**, but looks: **which area is still free?** That is where they go.
+Our zone is split into **five areas**: the **defenders** each have one side low down, the
+**wingers** each one side higher up, the **centre** starts in the middle in front of the
+goal. If the puck is in your area, you put on **pressure**. The **centre** helps as near
+support, and the **far-side defender** goes to the front of the goal. A player who comes
+into the zone does **not skate to the puck**, but looks: **which area is still free?**
+That is where they go.
 </Callout>
 
 ## What “Zuordnung” means
@@ -40,30 +42,50 @@ not a particular opponent.
 When someone calls **“Zuordnung!”**, it means: look where you belong and take your area.
 The call usually comes when too many players are at the puck or an area is empty.
 
-## The five jobs
+## The five areas
 
-The side of the ice where the puck is right now is the **puck side** (or strong side). The
-other side is the **weak side**. The jobs depend on that:
+Our zone is divided up like a house with five rooms. The border between low and high runs
+just above the faceoff dots:
 
-| Job | Where | Usually |
+| Area | Where | Who |
 | --- | --- | --- |
-| **Pressure on the puck** | at the puck, on the <a href={href('/en/defensive-side')}>defensive side</a> | puck-side defender |
-| **Low support** | between the puck and the slot | centre |
-| **In front of the goal** | between the opponent and the goal | weak-side defender |
-| **Blue line, puck side** | between the puck and the opposing defender | puck-side winger |
-| **High slot** | middle, up by the faceoff circles | weak-side winger |
+| **Low left** | left corner and left faceoff circle, up to just above the dot | LD |
+| **Low right** | right corner and right faceoff circle, up to just above the dot | RD |
+| **Middle** | a strip as wide as the crease, from the goal into the slot | C (starting point) |
+| **High left** | from the boards to the middle, up to the blue line | LW |
+| **High right** | from the boards to the middle, up to the blue line | RW |
 
-The **slot** is the space right in front of the goal, where most goals come from. The
-**high slot** is its upper part, between the tops of the faceoff circles.
+The **slot** is the space right in front of the goal, where most goals come from. Higher
+up, between the two wingers, the middle strip continues to the blue line. The centre and
+the wingers share that part.
 
-When the puck moves, everyone moves with it. Try it: tap a spot and watch who goes where.
+For defenders and wingers the same applies in every area:
+
+- **If the puck is in your area**, you put on pressure, on the
+  <a href={href('/en/defensive-side')}>defensive side</a>.
+- **If an attacker without the puck is in your area**, you are between them and the goal.
+- **If the puck is on the other side**, you move to the edge of your area, towards the puck
+  and the middle. The far-side defender is then in front of the goal.
+
+### The centre: support first
+
+The centre has a special role. The middle is their starting point, but they don’t stand
+still there. They are the **near support** at the puck: if a defender is battling for the
+puck in the corner, the centre goes down low and helps. More in the article
+<a href={href('/en/support')}>Support</a>.
+
+There is one exception: if **an attacker in front of the goal is open** and the far-side
+defender can’t cover them, the centre goes there. An open attacker in front of the goal is
+more dangerous than a battle in the corner.
+
+When the puck moves, everyone shifts with it. Try it: tap a spot and watch who goes where.
 
 <CoverageExplorer client:visible locale="en" />
 
-## The job belongs to the area, not the person
+## The area counts, not the person
 
-The table says “usually”. In a game the right player isn’t always in the right place. The
-centre might be in the corner and the defender on the boards. Then they **swap**. The
+In a game the right player isn’t always in the right place. The centre might be battling
+in the corner, with the defender helping from the side. Then they **swap**. The
 centre plays defender until the puck is out of the zone.
 
 What doesn’t help: skating across the ice to your “own” position while the opponent uses

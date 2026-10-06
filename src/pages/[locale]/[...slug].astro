@@ -10,15 +10,16 @@ export const getStaticPaths = (async () => {
   const perLocale = await Promise.all(
     visibleLocales.map(async (locale) => {
       const articles = await getArticles(locale);
-      return articles.map((entry, index) => ({
-        params: { locale, slug: parseEntryId(entry.id).slug },
-        props: {
-          entry,
-          locale,
-          prev: articles[index - 1],
-          next: articles[index + 1],
-        },
-      }));
+      const published = articles.filter((a) => !a.data.draft);
+      return articles.map((entry) => {
+        // Published articles only link to published neighbours; drafts see everything.
+        const list = entry.data.draft ? articles : published;
+        const index = list.indexOf(entry);
+        return {
+          params: { locale, slug: parseEntryId(entry.id).slug },
+          props: { entry, locale, prev: list[index - 1], next: list[index + 1] },
+        };
+      });
     }),
   );
   return perLocale.flat();

@@ -9,14 +9,17 @@ interface Props {
   tags?: string[];
   readingMinutes: number;
   locale?: Locale;
+  /** Hidden unless drafts are shown (see BaseLayout). */
+  draft?: boolean;
 }
 
-const { title, description, path, tags = [], readingMinutes, locale = 'de' } = Astro.props;
+const { title, description, path, tags = [], readingMinutes, locale = 'de', draft = false } = Astro.props;
 const s = t(locale);
 ---
 
-<li class="card item">
+<li class="card item" data-draft={draft || undefined}>
   <a href={href(path)}>
+    {draft && <p class="draft">{s.draft}</p>}
     <h3>{title}</h3>
     <p class="desc">{description}</p>
   </a>
@@ -39,6 +42,17 @@ const s = t(locale);
     text-decoration: none;
     color: inherit;
     display: block;
+  }
+  .draft {
+    display: inline-block;
+    margin-block-end: var(--s-2);
+    padding: 0 var(--s-2);
+    background: var(--c-warn-soft);
+    color: var(--c-warn);
+    border: 1px solid var(--c-warn);
+    border-radius: var(--radius);
+    font-size: var(--t-sm);
+    font-weight: 700;
   }
   h3 {
     font-size: var(--t-h3);

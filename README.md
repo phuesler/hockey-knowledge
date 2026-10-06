@@ -25,6 +25,10 @@ npm run dev
 | `npm run preview` | Serve `dist/` locally |
 | `npx astro check` | Type check |
 
+The production build also works offline: a generated service worker (`dist/sw.js`)
+stores the whole site on the device, and the site can be added to the home screen.
+Details in [`AGENTS.md`](./AGENTS.md#offline).
+
 How to add an article or an interactive component is described in
 [`AGENTS.md`](./AGENTS.md).
 

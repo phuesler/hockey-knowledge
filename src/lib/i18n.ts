@@ -6,9 +6,10 @@
  * that are actually built and linked. A language moves into `publishedLocales` once its
  * articles are ready — until then its pages simply don't exist.
  *
- * `astro dev` is the exception: there `visibleLocales` contains every language and drafts
- * are shown too, so translations can be proofread before they go live. `npm run build`
- * never includes them.
+ * `astro dev` is the exception: there `visibleLocales` contains every language, so
+ * translations can be proofread before they go live, and drafts are listed on the
+ * overview. `npm run build` leaves unpublished languages out. Drafts are built but hidden;
+ * ?drafts=true lists them (see lib/articles.ts).
  *
  * To add a language: add it to `locales`, add a matching block to `ui` and create
  * src/data/articles/<locale>/. The pages under src/pages/[locale]/ need no change.
@@ -20,7 +21,7 @@ export const defaultLocale: Locale = 'de';
 
 export const publishedLocales: readonly Locale[] = ['de', 'en'];
 
-/** True in `astro dev`: unpublished languages and drafts are shown for proofreading. */
+/** True in `astro dev`: unpublished languages are built and drafts are listed. */
 export const isPreview = import.meta.env.DEV;
 
 /** The languages that get pages: every locale in the dev preview, else the published ones. */
@@ -74,7 +75,8 @@ const de = {
   repoCta: 'Zum Repository auf GitHub',
   clubLink: 'FASS Berlin U13',
   noScript: 'Dieses interaktive Element braucht JavaScript. Die Angaben im Text reichen aber aus.',
-  draftNote: 'Entwurf – nur in der lokalen Vorschau sichtbar, nicht auf der Website.',
+  draftNote: 'Entwurf – noch nicht veröffentlicht. Nur über ?drafts=true auf der Übersicht zu finden.',
+  draft: 'Entwurf',
   /** Language switcher: short code on the button, full name for screen readers. */
   languageShort: 'DE',
   languageName: 'Deutsch',
@@ -158,7 +160,8 @@ const en: UiStrings = {
   repoCta: 'Go to the repository on GitHub',
   clubLink: 'FASS Berlin U13',
   noScript: 'This interactive element needs JavaScript. The text has everything you need, though.',
-  draftNote: 'Draft – only visible in the local preview, not on the website.',
+  draftNote: 'Draft – not published yet. Only listed on the overview with ?drafts=true.',
+  draft: 'Draft',
   languageShort: 'EN',
   languageName: 'English',
   dateLocale: 'en-GB',

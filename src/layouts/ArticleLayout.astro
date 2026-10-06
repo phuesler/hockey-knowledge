@@ -17,7 +17,7 @@ interface Props {
   alternates?: Alternate[];
   updated: Date;
   tags?: string[];
-  /** Only true in the dev preview; drafts are never built. */
+  /** Drafts are built but hidden: banner, noindex, see lib/articles.ts. */
   draft?: boolean;
   readingMinutes: number;
   headings: MarkdownHeading[];
@@ -71,6 +71,7 @@ const updatedLabel = updated.toLocaleDateString(s.dateLocale, {
   ogType="article"
   modified={updated}
   jsonLd={jsonLd}
+  noindex={draft}
 >
   <article class="wrap">
     <header class="article-head">

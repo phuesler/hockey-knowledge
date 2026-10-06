@@ -157,6 +157,9 @@ main { flex: 1; }
 }
 
 /* ---------- shared bits ---------- */
+/* Drafts are built but hidden until ?drafts=true sets .show-drafts (see BaseLayout). */
+html:not(.show-drafts) [data-draft] { display: none; }
+
 .card {
   background: var(--c-surface);
   border: 1px solid var(--c-border);
