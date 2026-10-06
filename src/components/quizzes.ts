@@ -17,7 +17,11 @@ export interface QuizFigure {
   zone: 'own' | 'attack' | 'full' | 'neutral';
   view?: View;
   scene: Scene;
-  /** Spots to choose from, drawn as dashed circles A, B, C … (see candidates()). */
+  /**
+   * Spots to choose from, drawn as numbered dashed circles (see candidates()). The texts
+   * refer to them as {1}, {2}, {3}: Quiz.svelte numbers the spots in a new order on every
+   * attempt, so nobody can learn "the answer is 2" by heart.
+   */
   candidates?: readonly Pt[];
   /** How it should look: shown with the explanation once the question is answered. */
   after?: Scene;
@@ -48,12 +52,17 @@ interface QuizText {
   questions: QuestionText[];
 }
 
-/** Candidate spots as ghost players labelled A, B, C (ids `cand-A` …). */
-export function candidates(spots: readonly Pt[]): Player[] {
-  return spots.map((at, i) => {
-    const label = String.fromCharCode(65 + i);
-    return { id: `cand-${label}`, team: 'us', label, ghost: true, at };
-  });
+/**
+ * Candidate spots as ghost players. `names[i]` is the number shown on spot i; without it
+ * the spots are numbered in order.
+ */
+export function candidates(spots: readonly Pt[], names: readonly string[] = []): Player[] {
+  return spots.map((at, i) => ({ id: `cand-${i}`, team: 'us', label: names[i] ?? String(i + 1), ghost: true, at }));
+}
+
+/** Puts each spot's shown number into a text: {1} is the first spot in `candidates`. */
+export function fill(text: string, names: readonly string[] = []): string {
+  return text.replace(/\{(\d)\}/g, (_, n: string) => names[Number(n) - 1] ?? n);
 }
 
 const us = (label: string, at: Pt): Player => ({ id: label, team: 'us', label, at });
@@ -662,23 +671,23 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Wir spielen fünf gegen fünf. Zwei Schüsse, von A und von B. Beide Pucks rutschen über die gegnerische Torlinie, niemand berührt sie. Welcher ist Icing?',
+          'Wir spielen fünf gegen fünf. Zwei Schüsse, von 1 und von 2. Beide Pucks rutschen über die gegnerische Torlinie, niemand berührt sie. Welcher ist Icing?',
         label:
-          'Das ganze Eis, unser Tor unten. A steht in unserer Hälfte vor der roten Mittellinie, B steht schon in der gegnerischen Hälfte. Von beiden geht ein Schuss über die gegnerische Torlinie.',
+          'Das ganze Eis, unser Tor unten. Platz {1} steht in unserer Hälfte vor der roten Mittellinie, Platz {2} steht schon in der gegnerischen Hälfte. Von beiden geht ein Schuss über die gegnerische Torlinie.',
         options: [
           {
-            text: 'Der Schuss von A',
-            feedback: 'A schiesst aus unserer eigenen Hälfte, also vor der roten Mittellinie. Das ist Icing.',
+            text: 'Der Schuss von {1}',
+            feedback: 'Der Schuss von {1} kommt aus unserer eigenen Hälfte, also von vor der roten Mittellinie. Das ist Icing.',
           },
           {
-            text: 'Der Schuss von B',
+            text: 'Der Schuss von {2}',
             feedback:
-              'B steht schon hinter der roten Mittellinie, in der Hälfte des Gegners. Von dort ist es nie Icing.',
+              'Platz {2} steht schon hinter der roten Mittellinie, in der Hälfte des Gegners. Von dort ist es nie Icing.',
           },
           {
             text: 'Beide',
             feedback:
-              'Es kommt darauf an, von wo geschossen wird. Icing ist es nur aus der eigenen Hälfte, vor der roten Mittellinie. B steht schon dahinter.',
+              'Es kommt darauf an, von wo geschossen wird. Icing ist es nur aus der eigenen Hälfte, vor der roten Mittellinie. Platz {2} steht schon dahinter.',
           },
         ],
         section: 'icing',
@@ -807,45 +816,45 @@ const de: Record<QuizId, QuizText> = {
     article: 'abwehrseite',
     questions: [
       {
-        prompt: 'Ein Gegner kommt mit dem Puck auf unser Tor zu. Du bist LD. Wo stehst du am besten: A, B oder C?',
+        prompt: 'Ein Gegner kommt mit dem Puck auf unser Tor zu. Du bist LD. Wo stehst du am besten: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten, die Gefahrenzone ist markiert. Ein Gegner mit Puck links oberhalb des Bullykreises. A ist weiter weg vom Tor als er. B steht zwischen ihm und dem Tor, ein Stück nach innen. C steht zwischen ihm und dem Tor, aber weiter aussen.',
+          'Eigene Zone, unser Tor unten, die Gefahrenzone ist markiert. Ein Gegner mit Puck links oberhalb des Bullykreises. Platz {1} ist weiter weg vom Tor als er. Platz {2} steht zwischen ihm und dem Tor, ein Stück nach innen. Platz {3} steht zwischen ihm und dem Tor, aber weiter aussen.',
         afterLabel:
-          'LD steht auf B, zwischen Gegner und Tor und etwas innen. Der Weg zum Tor ist zu, der Gegner muss aussen an der Bande entlang.',
+          'LD steht auf Platz {2}, zwischen Gegner und Tor und etwas innen. Der Weg zum Tor ist zu, der Gegner muss aussen an der Bande entlang.',
         options: [
           {
-            text: 'A',
+            text: 'Platz {1}',
             feedback:
-              'A ist weiter weg vom Tor als der Gegner. Das ist die falsche Seite: Er hat freie Bahn zum Tor.',
+              'Platz {1} ist weiter weg vom Tor als der Gegner. Das ist die falsche Seite: Er hat freie Bahn zum Tor.',
           },
           {
-            text: 'B',
+            text: 'Platz {2}',
             feedback:
-              'B steht zwischen Gegner und Tor und einen kleinen Schritt innen. Offen bleibt nur der Weg nach aussen, an die Bande.',
+              'Platz {2} steht zwischen Gegner und Tor und einen kleinen Schritt innen. Offen bleibt nur der Weg nach aussen, an die Bande.',
           },
           {
-            text: 'C',
+            text: 'Platz {3}',
             feedback:
-              'C steht zwischen Gegner und Tor, aber zu weit aussen. Dann ist der Weg durch die Mitte offen. Ein kleiner Schritt nach innen, und es passt.',
+              'Platz {3} steht zwischen Gegner und Tor, aber zu weit aussen. Dann ist der Weg durch die Mitte offen. Ein kleiner Schritt nach innen, und es passt.',
           },
         ],
         section: 'nicht-genau-dazwischen-sondern-etwas-nach-innen',
         topic: 'Etwas nach innen',
       },
       {
-        prompt: 'Von wo ist ein Schuss gefährlicher: von A oder von B?',
+        prompt: 'Von wo ist ein Schuss gefährlicher: von 1 oder von 2?',
         label:
-          'Eigene Zone, unser Tor unten. A liegt direkt vor dem Tor im Slot. B liegt aussen, neben dem linken Bullypunkt.',
+          'Eigene Zone, unser Tor unten. Platz {1} liegt direkt vor dem Tor im Slot. Platz {2} liegt aussen, neben dem linken Bullypunkt.',
         afterLabel:
-          'Von A sieht der Schütze das ganze Tor. Von B sieht er nur einen schmalen Streifen, den der Torhüter fast allein abdeckt.',
+          'Von {1} sieht der Schütze das ganze Tor. Von {2} sieht er nur einen schmalen Streifen, den der Torhüter fast allein abdeckt.',
         options: [
           {
-            text: 'Von A, aus dem Slot',
+            text: 'Von {1}, aus dem Slot',
             feedback:
               'Aus dem Slot sieht der Schütze das ganze Tor. Von dort fallen die meisten Tore.',
           },
           {
-            text: 'Von B, neben dem Bullypunkt',
+            text: 'Von {2}, neben dem Bullypunkt',
             feedback:
               'Von aussen sieht der Schütze nur einen schmalen Streifen vom Tor. Den deckt der Torhüter fast allein ab.',
           },
@@ -904,19 +913,19 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Wir haben den Puck verloren. Du bist RW und fährst zurück. Ein Gegner ohne Puck fährt Richtung Tor. Welchen Weg nimmst du: A oder B?',
+          'Wir haben den Puck verloren. Du bist RW und fährst zurück. Ein Gegner ohne Puck fährt Richtung Tor. Welchen Weg nimmst du: 1 oder 2?',
         label:
-          'Eigene Zone. Ein Gegner hat den Puck links an der Bande, LD steht vor ihm. RW kommt oben rechts zurück. Ein zweiter Gegner ohne Puck fährt Richtung Tor. A liegt innen, in der Mitte, B aussen an der rechten Bande.',
+          'Eigene Zone. Ein Gegner hat den Puck links an der Bande, LD steht vor ihm. RW kommt oben rechts zurück. Ein zweiter Gegner ohne Puck fährt Richtung Tor. Platz {1} liegt innen, in der Mitte, Platz {2} aussen an der rechten Bande.',
         afterLabel:
           'RW ist innen zurückgefahren und steht zwischen dem Gegner ohne Puck und dem Tor, im Weg des Passes.',
         options: [
           {
-            text: 'A, innen durch die Mitte',
+            text: 'Platz {1}, innen durch die Mitte',
             feedback:
               'Innen zurück, über die Schulter schauen und vor dem Gegner zwischen ihn und das Tor kommen. Der Pass zu ihm geht dann nicht mehr durch.',
           },
           {
-            text: 'B, aussen an der Bande',
+            text: 'Platz {2}, aussen an der Bande',
             feedback:
               'Wer aussen zurückfährt, lässt dem Gegner innen freie Bahn zum Tor. Ein Pass, und er steht allein vor dem Torhüter.',
           },
@@ -956,23 +965,23 @@ const de: Record<QuizId, QuizText> = {
     questions: [
       {
         prompt:
-          'Drei von uns sind beim Puck in der linken Ecke. Du bist RW und kommst gerade in die Zone. Wohin fährst du: A, B oder C?',
+          'Drei von uns sind beim Puck in der linken Ecke. Du bist RW und kommst gerade in die Zone. Wohin fährst du: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten. LD, RD und C sind in der linken Ecke beim Puck, LW steht oben links. Vor dem Tor steht ein Gegner frei. RW kommt oben rechts in die Zone. A liegt neben der Ecke, B vor dem Tor, C oben rechts.',
+          'Eigene Zone, unser Tor unten. LD, RD und C sind in der linken Ecke beim Puck, LW steht oben links. Vor dem Tor steht ein Gegner frei. RW kommt oben rechts in die Zone. Platz {1} liegt neben der Ecke, Platz {2} vor dem Tor, Platz {3} oben rechts.',
         afterLabel: 'RW ist vor das Tor gefahren und steht beim freien Gegner.',
         options: [
           {
-            text: 'A, in die Ecke helfen',
+            text: 'Platz {1}, in die Ecke helfen',
             feedback:
               'Dort sind schon drei von uns. Ein weiterer Spieler am Puck hilft fast nie, aber er fehlt vor dem Tor.',
           },
           {
-            text: 'B, vor das Tor',
+            text: 'Platz {2}, vor das Tor',
             feedback:
               'Vor dem Tor steht ein Gegner frei, und von dort fallen die meisten Tore. Ist mehr als ein Bereich frei: zuerst vor das Tor.',
           },
           {
-            text: 'C, in meinen Bereich oben rechts',
+            text: 'Platz {3}, in meinen Bereich oben rechts',
             feedback:
               'Dein Bereich ist wichtig. Aber der Bereich zählt, nicht die Person: Vor dem Tor ist niemand, und das ist gefährlicher. Zuerst dorthin.',
           },
@@ -1026,24 +1035,24 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Der Center',
       },
       {
-        prompt: 'RD macht Druck in der rechten Ecke, C hilft. Du bist LD. Wo stehst du: A, B oder C?',
+        prompt: 'RD macht Druck in der rechten Ecke, C hilft. Du bist LD. Wo stehst du: 1, 2 oder 3?',
         label:
-          'Eigene Zone in fünf farbigen Bereichen. Der Puck ist in der rechten Ecke, RD und C sind dort. Vor dem Tor steht ein Gegner. A liegt in der linken Ecke, B vor dem Tor, C neben RD in der rechten Ecke.',
+          'Eigene Zone in fünf farbigen Bereichen. Der Puck ist in der rechten Ecke, RD und C sind dort. Vor dem Tor steht ein Gegner. Platz {1} liegt in der linken Ecke, Platz {2} vor dem Tor, Platz {3} neben RD in der rechten Ecke.',
         afterLabel:
           'LD steht vor dem Tor beim Gegner. LW und RW stehen oben in ihren Bereichen, nah an der Mitte.',
         options: [
           {
-            text: 'A, unten links in meinem Bereich',
+            text: 'Platz {1}, unten links in meinem Bereich',
             feedback:
               'Ist der Puck auf der anderen Seite, rückst du an den Rand deines Bereichs, Richtung Puck und Mitte. In der linken Ecke ist gerade niemand, den du decken müsstest.',
           },
           {
-            text: 'B, vor dem Tor',
+            text: 'Platz {2}, vor dem Tor',
             feedback:
               'Der Verteidiger der anderen Seite geht vor das Tor. Dort deckst du den Gegner, mit dem Schläger auf dem Eis.',
           },
           {
-            text: 'C, neben RD in der Ecke',
+            text: 'Platz {3}, neben RD in der Ecke',
             feedback:
               'Bei RD sind schon zwei: RD und C. Als Dritter in der Ecke fehlst du vor dem Tor.',
           },
@@ -1105,24 +1114,24 @@ const de: Record<QuizId, QuizText> = {
     questions: [
       {
         prompt:
-          'LD hat den Puck in der Ecke, ein Gegner kommt auf ihn zu. Du bist LW. Wo bist du die beste nahe Unterstützung: A, B oder C?',
+          'LD hat den Puck in der Ecke, ein Gegner kommt auf ihn zu. Du bist LW. Wo bist du die beste nahe Unterstützung: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten. LD hat den Puck in der linken Ecke, ein Gegner fährt auf ihn zu. A liegt an der linken Bande auf Höhe der Hashmarks. B liegt in der Mitte, direkt hinter dem Gegner. C liegt oben an der blauen Linie.',
+          'Eigene Zone, unser Tor unten. LD hat den Puck in der linken Ecke, ein Gegner fährt auf ihn zu. Platz {1} liegt an der linken Bande auf Höhe der Hashmarks. Platz {2} liegt in der Mitte, direkt hinter dem Gegner. Platz {3} liegt oben an der blauen Linie.',
         afterLabel:
-          'LW steht auf A an der Bande. Der Pass von LD kommt frei an. Hinter dem Gegner ist ein grauer Passschatten, dorthin kommt kein Pass.',
+          'LW steht auf Platz {1} an der Bande. Der Pass von LD kommt frei an. Hinter dem Gegner ist ein grauer Passschatten, dorthin kommt kein Pass.',
         options: [
           {
-            text: 'A, an der Bande',
+            text: 'Platz {1}, an der Bande',
             feedback:
               'Frei, nah und an der Bande, etwa auf Höhe der Hashmarks. Ein kurzer Pass, und der Druck ist weg.',
           },
           {
-            text: 'B, in der Mitte',
+            text: 'Platz {2}, in der Mitte',
             feedback:
               'Zwischen dir und LD steht ein Gegner. Den Pass bringt LD nicht durch. Siehst du die Kelle des Puckführers nicht, geh ein, zwei Schritte zur Seite.',
           },
           {
-            text: 'C, an der blauen Linie',
+            text: 'Platz {3}, an der blauen Linie',
             feedback:
               'Zu weit weg. Ein kurzer, sicherer Pass muss reichen, solange der Gegner drückt. Und so weit oben bist du zu früh raus.',
           },
@@ -1249,23 +1258,23 @@ const de: Record<QuizId, QuizText> = {
     article: 'bully',
     questions: [
       {
-        prompt: 'Bully in unserer Zone am linken Kreis. Du bist LW. Wo stehst du: A, B oder C?',
+        prompt: 'Bully in unserer Zone am linken Kreis. Du bist LW. Wo stehst du: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten. Bully am linken Kreis. C steht am Punkt, LD an der Bande, RD an den inneren Strichen, RW im Slot, G im Tor. A liegt hinter dem C Richtung Torlinie, B oben über dem Kreis, C zwischen Torhüter und Puck.',
+          'Eigene Zone, unser Tor unten. Bully am linken Kreis. C steht am Punkt, LD an der Bande, RD an den inneren Strichen, RW im Slot, G im Tor. Platz {1} liegt hinter dem C Richtung Torlinie, Platz {2} oben über dem Kreis, Platz {3} zwischen Torhüter und Puck.',
         afterLabel:
           'LW steht hinter dem C Richtung Torlinie. Eine gepunktete Linie zeigt: Zwischen Torhüter und Puck steht niemand ausser dem C.',
         options: [
           {
-            text: 'A, hinter dem C Richtung Torlinie',
+            text: 'Platz {1}, hinter dem C Richtung Torlinie',
             feedback: 'LW steht hinter dem C, Richtung Torlinie. Verliert C das Bully, ist LW schnell beim gegnerischen Verteidiger.',
           },
           {
-            text: 'B, oben über dem Kreis',
+            text: 'Platz {2}, oben über dem Kreis',
             feedback:
               'Dort steht keiner von uns. LW steht hinter dem C, Richtung Torlinie.',
           },
           {
-            text: 'C, zwischen Torhüter und Puck',
+            text: 'Platz {3}, zwischen Torhüter und Puck',
             feedback:
               'Dort nimmst du dem Torhüter die Sicht. Ausser dem C steht niemand zwischen Torhüter und Puck.',
           },
@@ -1317,24 +1326,24 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Bully in der Angriffszone',
       },
       {
-        prompt: 'Jetzt ist das Bully am rechten Kreis in unserer Zone. Du bist wieder LW. Wo stehst du: A, B oder C?',
+        prompt: 'Jetzt ist das Bully am rechten Kreis in unserer Zone. Du bist wieder LW. Wo stehst du: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten. Bully am rechten Kreis, C steht am Punkt, G im Tor. A liegt hinter dem C Richtung Torlinie, B links vom Tor im Slot, C rechts an der Bande.',
+          'Eigene Zone, unser Tor unten. Bully am rechten Kreis, C steht am Punkt, G im Tor. Platz {1} liegt hinter dem C Richtung Torlinie, Platz {2} links vom Tor im Slot, Platz {3} rechts an der Bande.',
         afterLabel:
           'Die ganze Aufstellung am rechten Kreis: hinter dem C steht RW, an der Bande RD, an den inneren Strichen LD, im Slot LW.',
         options: [
           {
-            text: 'A, hinter dem C',
+            text: 'Platz {1}, hinter dem C',
             feedback:
               'Das war dein Platz am linken Kreis. Am rechten Kreis ist alles gespiegelt: Hinter dem C steht jetzt RW.',
           },
           {
-            text: 'B, im Slot',
+            text: 'Platz {2}, im Slot',
             feedback:
               'Gespiegelt tauschen die Flügel die Plätze. Wo am linken Kreis RW stand, im Slot, steht jetzt LW.',
           },
           {
-            text: 'C, an der Bande',
+            text: 'Platz {3}, an der Bande',
             feedback:
               'An der Bande steht ein Verteidiger: am linken Kreis LD, am rechten Kreis RD.',
           },
@@ -1433,23 +1442,23 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Rollen wechseln ständig',
       },
       {
-        prompt: 'LW ist König. Du bist C, also Satellit. Wo bist du anspielbar: A, B oder C?',
+        prompt: 'LW ist König. Du bist C, also Satellit. Wo bist du anspielbar: 1, 2 oder 3?',
         label:
-          'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande. Ein Gegner steht zwischen LW und der Mitte. A liegt direkt hinter diesem Gegner, B etwas höher daneben, C ganz nah bei LW.',
+          'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande. Ein Gegner steht zwischen LW und der Mitte. Platz {1} liegt direkt hinter diesem Gegner, Platz {2} etwas höher daneben, Platz {3} ganz nah bei LW.',
         afterLabel:
-          'C steht auf B und bekommt den Pass. Hinter dem Gegner ist ein grauer Passschatten, dorthin kommt kein Pass.',
+          'C steht auf Platz {2} und bekommt den Pass. Hinter dem Gegner ist ein grauer Passschatten, dorthin kommt kein Pass.',
         options: [
           {
-            text: 'A',
+            text: 'Platz {1}',
             feedback:
-              'A liegt im Passschatten, direkt hinter dem Gegner. Dorthin kommt kein Pass durch. Siehst du die Kelle des Königs nicht, stehst du im Schatten.',
+              'Platz {1} liegt im Passschatten, direkt hinter dem Gegner. Dorthin kommt kein Pass durch. Siehst du die Kelle des Königs nicht, stehst du im Schatten.',
           },
           {
-            text: 'B',
+            text: 'Platz {2}',
             feedback: 'Ein, zwei Schritte zur Seite, und du bist raus aus dem Passschatten. Der König sieht dich und kann passen.',
           },
           {
-            text: 'C',
+            text: 'Platz {3}',
             feedback: 'Zu nah. Stehst du direkt neben dem König, stört ein einziger Gegner euch beide.',
           },
         ],
@@ -1543,23 +1552,23 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Vier Tiere, vier Aufgaben',
       },
       {
-        prompt: 'LW jagt den Puckführer in der Ecke, LW ist also der Hund. Du bist C und kommst als Zweiter. Wohin fährst du: A, B oder C?',
+        prompt: 'LW jagt den Puckführer in der Ecke, LW ist also der Hund. Du bist C und kommst als Zweiter. Wohin fährst du: 1, 2 oder 3?',
         label:
-          'Angriffszone, oben das gegnerische Tor. Der Gegner hat den Puck in der linken Ecke, LW ist bei ihm. Ein Gegner wartet weiter oben an der linken Bande. A liegt nah beim Puckführer, B an der linken Bande zwischen Puck und dem Gegner weiter oben, C hoch in der Mitte.',
+          'Angriffszone, oben das gegnerische Tor. Der Gegner hat den Puck in der linken Ecke, LW ist bei ihm. Ein Gegner wartet weiter oben an der linken Bande. Platz {1} liegt nah beim Puckführer, Platz {2} an der linken Bande zwischen Puck und dem Gegner weiter oben, Platz {3} hoch in der Mitte.',
         afterLabel:
           'LW ist der Hund beim Puckführer, C der Fuchs an der Bande, RW der Falke hoch in der Mitte. Der Pass an der Bande hoch ist zu.',
         options: [
           {
-            text: 'A, auch zum Puckführer',
+            text: 'Platz {1}, auch zum Puckführer',
             feedback: 'Nicht auch zum Puckführer! Dann ist Tür 1 offen, und ein Pass an der Bande hoch spielt euch beide aus.',
           },
           {
-            text: 'B, an die Bande',
+            text: 'Platz {2}, an die Bande',
             feedback:
               'Du bist der Fuchs: an die Bande auf der Puckseite, zwischen den Puck und den nächsten Gegner. Dort machst du Tür 1 zu.',
           },
           {
-            text: 'C, hoch in die Mitte',
+            text: 'Platz {3}, hoch in die Mitte',
             feedback: 'Hoch in der Mitte bleibt der Falke, das ist der Dritte. Als Zweiter bist du der Fuchs und machst die Bande zu.',
           },
         ],
@@ -1828,23 +1837,23 @@ const en: typeof de = {
       },
       {
         prompt:
-          'We are playing five against five. Two shots, from A and from B. Both pucks slide over the opponents’ goal line and nobody touches them. Which one is icing?',
+          'We are playing five against five. Two shots, from 1 and from 2. Both pucks slide over the opponents’ goal line and nobody touches them. Which one is icing?',
         label:
-          'The whole rink, our goal at the bottom. A is in our half, before the red centre line; B is already in the opponents’ half. A shot goes from each over the opponents’ goal line.',
+          'The whole rink, our goal at the bottom. Spot {1} is in our half, before the red centre line; spot {2} is already in the opponents’ half. A shot goes from each over the opponents’ goal line.',
         options: [
           {
-            text: 'The shot from A',
-            feedback: 'A shoots from our own half, before the red centre line. That is icing.',
+            text: 'The shot from {1}',
+            feedback: 'The shot from {1} comes from our own half, before the red centre line. That is icing.',
           },
           {
-            text: 'The shot from B',
+            text: 'The shot from {2}',
             feedback:
-              'B is already past the red centre line, in the opponents’ half. From there it is never icing.',
+              'Spot {2} is already past the red centre line, in the opponents’ half. From there it is never icing.',
           },
           {
             text: 'Both',
             feedback:
-              'It depends on where the shot comes from. It is only icing from your own half, before the red centre line. B is already past it.',
+              'It depends on where the shot comes from. It is only icing from your own half, before the red centre line. Spot {2} is already past it.',
           },
         ],
         section: 'icing',
@@ -1971,42 +1980,42 @@ const en: typeof de = {
     article: 'defensive-side',
     questions: [
       {
-        prompt: 'An opponent is coming towards our goal with the puck. You are LD. Where is the best place to stand: A, B or C?',
+        prompt: 'An opponent is coming towards our goal with the puck. You are LD. Where is the best place to stand: 1, 2 or 3?',
         label:
-          'Our zone, our goal at the bottom, the danger zone marked. An opponent with the puck to the left, above the faceoff circle. A is further from the goal than they are. B is between them and the goal, a little to the inside. C is between them and the goal, but further out.',
+          'Our zone, our goal at the bottom, the danger zone marked. An opponent with the puck to the left, above the faceoff circle. Spot {1} is further from the goal than they are. Spot {2} is between them and the goal, a little to the inside. Spot {3} is between them and the goal, but further out.',
         afterLabel:
-          'LD stands on B, between the opponent and the goal and a little inside. The way to the goal is closed, the opponent has to go wide along the boards.',
+          'LD stands on spot {2}, between the opponent and the goal and a little inside. The way to the goal is closed, the opponent has to go wide along the boards.',
         options: [
           {
-            text: 'A',
-            feedback: 'A is further from the goal than the opponent. That is the wrong side: they have a free run at goal.',
+            text: 'Spot {1}',
+            feedback: 'Spot {1} is further from the goal than the opponent. That is the wrong side: they have a free run at goal.',
           },
           {
-            text: 'B',
+            text: 'Spot {2}',
             feedback:
-              'B is between the opponent and the goal, and a small step to the inside. The only way left open is wide, towards the boards.',
+              'Spot {2} is between the opponent and the goal, and a small step to the inside. The only way left open is wide, towards the boards.',
           },
           {
-            text: 'C',
+            text: 'Spot {3}',
             feedback:
-              'C is between the opponent and the goal, but too far out. That leaves the way through the middle open. One small step inside, and it’s right.',
+              'Spot {3} is between the opponent and the goal, but too far out. That leaves the way through the middle open. One small step inside, and it’s right.',
           },
         ],
         section: 'not-exactly-in-between-a-bit-to-the-inside',
         topic: 'A bit to the inside',
       },
       {
-        prompt: 'Where is a shot more dangerous from: A or B?',
-        label: 'Our zone, our goal at the bottom. A is right in front of the goal in the slot. B is out wide, next to the left faceoff dot.',
+        prompt: 'Where is a shot more dangerous from: 1 or 2?',
+        label: 'Our zone, our goal at the bottom. Spot {1} is right in front of the goal in the slot. Spot {2} is out wide, next to the left faceoff dot.',
         afterLabel:
-          'From A the shooter sees the whole goal. From B they see only a narrow strip, which the goalie covers almost alone.',
+          'From {1} the shooter sees the whole goal. From {2} they see only a narrow strip, which the goalie covers almost alone.',
         options: [
           {
-            text: 'From A, in the slot',
+            text: 'From {1}, in the slot',
             feedback: 'From the slot the shooter sees the whole goal. Most goals are scored from there.',
           },
           {
-            text: 'From B, next to the faceoff dot',
+            text: 'From {2}, next to the faceoff dot',
             feedback: 'From out wide the shooter sees only a narrow strip of the goal. The goalie covers that almost alone.',
           },
           {
@@ -2063,19 +2072,19 @@ const en: typeof de = {
       },
       {
         prompt:
-          'We have lost the puck. You are RW and skating back. An opponent without the puck is heading for the goal. Which way do you take: A or B?',
+          'We have lost the puck. You are RW and skating back. An opponent without the puck is heading for the goal. Which way do you take: 1 or 2?',
         label:
-          'Our zone. An opponent has the puck on the left boards, LD is in front of them. RW is coming back at the top right. A second opponent without the puck is skating towards the goal. A is inside, in the middle; B is wide, on the right boards.',
+          'Our zone. An opponent has the puck on the left boards, LD is in front of them. RW is coming back at the top right. A second opponent without the puck is skating towards the goal. Spot {1} is inside, in the middle; spot {2} is wide, on the right boards.',
         afterLabel:
           'RW came back on the inside and is between the opponent without the puck and the goal, in the way of the pass.',
         options: [
           {
-            text: 'A, inside through the middle',
+            text: 'Spot {1}, inside through the middle',
             feedback:
               'Come back inside, look over your shoulder and get between the opponent and the goal before they do. Then the pass to them won’t get through.',
           },
           {
-            text: 'B, wide along the boards',
+            text: 'Spot {2}, wide along the boards',
             feedback:
               'Coming back wide leaves the opponent a free path to the goal on the inside. One pass, and they are alone in front of the goalie.',
           },
@@ -2115,23 +2124,23 @@ const en: typeof de = {
     questions: [
       {
         prompt:
-          'Three of our players are at the puck in the left corner. You are RW and just coming into the zone. Where do you go: A, B or C?',
+          'Three of our players are at the puck in the left corner. You are RW and just coming into the zone. Where do you go: 1, 2 or 3?',
         label:
-          'Our zone, our goal at the bottom. LD, RD and C are in the left corner at the puck, LW is high on the left. An opponent stands open in front of the goal. RW is coming into the zone at the top right. A is next to the corner, B in front of the goal, C high on the right.',
+          'Our zone, our goal at the bottom. LD, RD and C are in the left corner at the puck, LW is high on the left. An opponent stands open in front of the goal. RW is coming into the zone at the top right. Spot {1} is next to the corner, spot {2} in front of the goal, spot {3} high on the right.',
         afterLabel: 'RW has skated to the front of the goal and is with the open opponent.',
         options: [
           {
-            text: 'A, help in the corner',
+            text: 'Spot {1}, help in the corner',
             feedback:
               'Three of ours are already there. Another player at the puck hardly ever helps, but they are missing in front of the goal.',
           },
           {
-            text: 'B, in front of the goal',
+            text: 'Spot {2}, in front of the goal',
             feedback:
               'An opponent is open in front of the goal, and most goals are scored from there. If more than one area is free: the front of the goal first.',
           },
           {
-            text: 'C, my own area high on the right',
+            text: 'Spot {3}, my own area high on the right',
             feedback:
               'Your area matters. But the area counts, not the person: nobody is in front of the goal, and that is more dangerous. Go there first.',
           },
@@ -2184,22 +2193,22 @@ const en: typeof de = {
         topic: 'The centre',
       },
       {
-        prompt: 'RD puts pressure on in the right corner, C helps. You are LD. Where do you stand: A, B or C?',
+        prompt: 'RD puts pressure on in the right corner, C helps. You are LD. Where do you stand: 1, 2 or 3?',
         label:
-          'Our zone in five coloured areas. The puck is in the right corner, RD and C are there. An opponent stands in front of the goal. A is in the left corner, B in front of the goal, C next to RD in the right corner.',
+          'Our zone in five coloured areas. The puck is in the right corner, RD and C are there. An opponent stands in front of the goal. Spot {1} is in the left corner, spot {2} in front of the goal, spot {3} next to RD in the right corner.',
         afterLabel: 'LD is in front of the goal with the opponent. LW and RW are high in their areas, close to the middle.',
         options: [
           {
-            text: 'A, low on the left in my area',
+            text: 'Spot {1}, low on the left in my area',
             feedback:
               'If the puck is on the other side, you move to the edge of your area, towards the puck and the middle. There is nobody in the left corner for you to cover right now.',
           },
           {
-            text: 'B, in front of the goal',
+            text: 'Spot {2}, in front of the goal',
             feedback: 'The far-side defender goes to the front of the goal. There you cover the opponent, stick on the ice.',
           },
           {
-            text: 'C, next to RD in the corner',
+            text: 'Spot {3}, next to RD in the corner',
             feedback: 'Two are already with RD: RD and C. As a third player in the corner you are missing in front of the goal.',
           },
         ],
@@ -2256,23 +2265,23 @@ const en: typeof de = {
     questions: [
       {
         prompt:
-          'LD has the puck in the corner, an opponent is coming at them. You are LW. Where are you the best near support: A, B or C?',
+          'LD has the puck in the corner, an opponent is coming at them. You are LW. Where are you the best near support: 1, 2 or 3?',
         label:
-          'Our zone, our goal at the bottom. LD has the puck in the left corner, an opponent is skating at them. A is on the left boards, roughly level with the faceoff dots. B is in the middle, right behind the opponent. C is high up at the blue line.',
+          'Our zone, our goal at the bottom. LD has the puck in the left corner, an opponent is skating at them. Spot {1} is on the left boards, roughly level with the faceoff dots. Spot {2} is in the middle, right behind the opponent. Spot {3} is high up at the blue line.',
         afterLabel:
-          'LW is on A on the boards. LD’s pass gets there freely. Behind the opponent is a grey passing shadow, where no pass gets through.',
+          'LW is on spot {1} on the boards. LD’s pass gets there freely. Behind the opponent is a grey passing shadow, where no pass gets through.',
         options: [
           {
-            text: 'A, on the boards',
+            text: 'Spot {1}, on the boards',
             feedback: 'Open, near and on the boards, roughly level with the faceoff dots. One short pass, and the pressure is gone.',
           },
           {
-            text: 'B, in the middle',
+            text: 'Spot {2}, in the middle',
             feedback:
               'An opponent is between you and LD. LD can’t get the pass through. If you can’t see the puck carrier’s blade, take a step or two to the side.',
           },
           {
-            text: 'C, at the blue line',
+            text: 'Spot {3}, at the blue line',
             feedback:
               'Too far away. A short, safe pass has to be enough while the opponent is pressing. And that high up you are out too early.',
           },
@@ -2392,22 +2401,22 @@ const en: typeof de = {
     article: 'faceoffs',
     questions: [
       {
-        prompt: 'Face-off in our zone on the left circle. You are LW. Where do you stand: A, B or C?',
+        prompt: 'Face-off in our zone on the left circle. You are LW. Where do you stand: 1, 2 or 3?',
         label:
-          'Our zone, our goal at the bottom. Face-off on the left circle. C is on the dot, LD on the boards, RD on the inner hash marks, RW in the slot, G in goal. A is behind C towards the goal line, B high above the circle, C between the goalie and the puck.',
+          'Our zone, our goal at the bottom. Face-off on the left circle. C is on the dot, LD on the boards, RD on the inner hash marks, RW in the slot, G in goal. Spot {1} is behind C towards the goal line, spot {2} high above the circle, spot {3} between the goalie and the puck.',
         afterLabel:
           'LW stands behind C towards the goal line. A dotted line shows: apart from C, nobody stands between the goalie and the puck.',
         options: [
           {
-            text: 'A, behind C towards the goal line',
+            text: 'Spot {1}, behind C towards the goal line',
             feedback: 'LW stands behind C, towards the goal line. If C loses the draw, LW is quickly at the opposing defender.',
           },
           {
-            text: 'B, high above the circle',
+            text: 'Spot {2}, high above the circle',
             feedback: 'None of ours stands there. LW stands behind C, towards the goal line.',
           },
           {
-            text: 'C, between the goalie and the puck',
+            text: 'Spot {3}, between the goalie and the puck',
             feedback: 'There you block the goalie’s view. Apart from C, nobody stands between the goalie and the puck.',
           },
         ],
@@ -2455,22 +2464,22 @@ const en: typeof de = {
         topic: 'Face-off in the attacking zone',
       },
       {
-        prompt: 'Now the face-off is on the right circle in our zone. You are LW again. Where do you stand: A, B or C?',
+        prompt: 'Now the face-off is on the right circle in our zone. You are LW again. Where do you stand: 1, 2 or 3?',
         label:
-          'Our zone, our goal at the bottom. Face-off on the right circle, C on the dot, G in goal. A is behind C towards the goal line, B to the left of the goal in the slot, C on the right boards.',
+          'Our zone, our goal at the bottom. Face-off on the right circle, C on the dot, G in goal. Spot {1} is behind C towards the goal line, spot {2} to the left of the goal in the slot, spot {3} on the right boards.',
         afterLabel:
           'The whole line-up on the right circle: RW behind C, RD on the boards, LD on the inner hash marks, LW in the slot.',
         options: [
           {
-            text: 'A, behind C',
+            text: 'Spot {1}, behind C',
             feedback: 'That was your spot on the left circle. On the right circle everything is mirrored: now RW stands behind C.',
           },
           {
-            text: 'B, in the slot',
+            text: 'Spot {2}, in the slot',
             feedback: 'Mirrored, the wingers swap places. Where RW stood on the left circle, in the slot, LW now stands.',
           },
           {
-            text: 'C, on the boards',
+            text: 'Spot {3}, on the boards',
             feedback: 'A defender stands on the boards: LD on the left circle, RD on the right circle.',
           },
         ],
@@ -2564,23 +2573,23 @@ const en: typeof de = {
         topic: 'Roles change all the time',
       },
       {
-        prompt: 'LW is König. You are C, so a Satellit. Where are you open for a pass: A, B or C?',
+        prompt: 'LW is König. You are C, so a Satellit. Where are you open for a pass: 1, 2 or 3?',
         label:
-          'Attacking zone, the opponents’ goal at the top. LW has the puck on the left boards. An opponent stands between LW and the middle. A is right behind that opponent, B a bit higher to the side, C right next to LW.',
+          'Attacking zone, the opponents’ goal at the top. LW has the puck on the left boards. An opponent stands between LW and the middle. Spot {1} is right behind that opponent, spot {2} a bit higher to the side, spot {3} right next to LW.',
         afterLabel:
-          'C is on B and gets the pass. Behind the opponent is a grey passing shadow, where no pass gets through.',
+          'C is on spot {2} and gets the pass. Behind the opponent is a grey passing shadow, where no pass gets through.',
         options: [
           {
-            text: 'A',
+            text: 'Spot {1}',
             feedback:
-              'A is in the passing shadow, right behind the opponent. No pass gets through there. If you can’t see the König’s blade, you are in the shadow.',
+              'Spot {1} is in the passing shadow, right behind the opponent. No pass gets through there. If you can’t see the König’s blade, you are in the shadow.',
           },
           {
-            text: 'B',
+            text: 'Spot {2}',
             feedback: 'One or two steps to the side and you are out of the passing shadow. The König can see you and pass.',
           },
           {
-            text: 'C',
+            text: 'Spot {3}',
             feedback: 'Too close. Right next to the König, a single opponent can bother you both.',
           },
         ],
@@ -2674,23 +2683,23 @@ const en: typeof de = {
       },
       {
         prompt:
-          'LW is hunting the puck carrier in the corner, so LW is the dog. You are C and get there second. Where do you go: A, B or C?',
+          'LW is hunting the puck carrier in the corner, so LW is the dog. You are C and get there second. Where do you go: 1, 2 or 3?',
         label:
-          'Attacking zone, the opponents’ goal at the top. An opponent has the puck in the left corner, LW is with them. Another opponent waits higher up on the left boards. A is close to the puck carrier, B on the left boards between the puck and the opponent higher up, C high in the middle.',
+          'Attacking zone, the opponents’ goal at the top. An opponent has the puck in the left corner, LW is with them. Another opponent waits higher up on the left boards. Spot {1} is close to the puck carrier, spot {2} on the left boards between the puck and the opponent higher up, spot {3} high in the middle.',
         afterLabel:
           'LW is the dog at the puck carrier, C the fox on the boards, RW the hawk high in the middle. The pass up the boards is closed.',
         options: [
           {
-            text: 'A, to the puck carrier as well',
+            text: 'Spot {1}, to the puck carrier as well',
             feedback: 'Not to the puck carrier as well! Then door 1 is open, and one pass up the boards beats you both.',
           },
           {
-            text: 'B, to the boards',
+            text: 'Spot {2}, to the boards',
             feedback:
               'You are the fox: to the boards on the puck side, between the puck and the next opponent. That is where you close door 1.',
           },
           {
-            text: 'C, high in the middle',
+            text: 'Spot {3}, high in the middle',
             feedback: 'High in the middle is where the hawk stays, the third player. As the second you are the fox and close the boards.',
           },
         ],
@@ -2928,9 +2937,9 @@ export function quizMarkdown(id: QuizId, locale: Locale): string {
   return quizText[locale][id].questions
     .map((q, i) => {
       const right = q.options[geometry[id][i].correct];
-      const options = q.options.map((o) => `- ${o.text}`).join('\n');
-      const picture = q.label ? `_${q.label}_\n\n` : '';
-      return `**${q.prompt}**\n\n${picture}${options}\n\n${answer} ${right.text} ${right.feedback}`;
+      const options = q.options.map((o) => `- ${fill(o.text)}`).join('\n');
+      const picture = q.label ? `_${fill(q.label)}_\n\n` : '';
+      return `**${q.prompt}**\n\n${picture}${options}\n\n${answer} ${fill(right.text)} ${fill(right.feedback)}`;
     })
     .join('\n\n');
 }

@@ -88,7 +88,10 @@ Quizzes: the questions live in `src/components/quizzes.ts` (geometry shared, tex
 and `en`), shown with `<Quiz client:visible={{ rootMargin: '300px' }} quiz="…" />` in a
 `## Teste dich` / `## Test yourself` section before the article's final rules-of-thumb
 Callout. Every option gets its own explanation, and each wrong option should be a real
-misconception. `section` must be a heading anchor in that language's article. The mixed
+misconception. Picture questions mark spots with `candidates`; the texts call them `{1}`,
+`{2}`, `{3}` ("Platz {2}", "spot {2}"), never by a fixed number, because `Quiz.svelte`
+numbers the spots and orders the answers anew on every attempt. `section` must be a heading
+anchor in that language's article. The mixed
 quiz page (`de/teste-dich`) only draws from `mixQuizzes`: add an article's quiz there once
 the article is published.
 

@@ -13,14 +13,18 @@
    * from different articles alternate; "Neue Fragen" moves on to the next two of each. Its
    * links lead to the section in the right article.
    *
+   * Every attempt shuffles the answers, so nobody learns "question 3 is the second button":
+   * plain answers come in a new order, and on a picture the spots get new numbers (the
+   * buttons then follow the numbers).
+   *
    * Server-rendered as a list of every question, each with its solution in a <details>,
    * so the page stays complete without JavaScript. Once the island is running it switches
    * to one question at a time.
    */
-  import { tick } from 'svelte';
+  import { tick, untrack } from 'svelte';
   import Rink from './Rink.svelte';
   import RinkLegend from './RinkLegend.svelte';
-  import { candidates, mixQuizzes, quizText, quizzes, type QuizFigure, type QuizId } from './quizzes';
+  import { candidates, fill, mixQuizzes, quizText, quizzes, type QuizFigure, type QuestionText, type QuizId } from './quizzes';
   import type { Scene } from './rink';
   import type { Locale } from '../lib/i18n';
   import { href } from '../lib/href';
@@ -112,9 +116,48 @@
   const title = $derived(mix ? s.mixTitle : quizText[locale][quiz!].title);
   const count = $derived(items.length);
 
+  /*
+   * The shuffle for each question, by question index: `names[i]` is the number shown on
+   * spot i, `options` the order of the answer buttons (option indices).
+   */
+  interface Shuffle {
+    names: string[];
+    options: number[];
+  }
+  let shuffles = $state<Shuffle[]>([]);
+
+  function shuffled(n: number): number[] {
+    const a = Array.from({ length: n }, (_, i) => i);
+    for (let i = n - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  /* The spot an answer is about: the first {n} in its text, or none. */
+  const spotOf = (text: string) => Number(text.match(/\{(\d)\}/)?.[1] ?? 0) - 1;
+
+  function shuffle(q: QuestionText, spots: number): Shuffle {
+    if (!spots) return { names: [], options: shuffled(q.options.length) };
+    const names = shuffled(spots).map((n) => String(n + 1));
+    /* Answers about a spot are listed by the spot's new number; the others ("both") last. */
+    const key = (i: number) => {
+      const spot = spotOf(q.options[i].text);
+      return spot < 0 ? Infinity : Number(names[spot]);
+    };
+    const options = q.options.map((_, i) => i).sort((a, b) => key(a) - key(b));
+    return { names, options };
+  }
+
+  function reshuffle() {
+    shuffles = items.map((it) => shuffle(it.q, it.g.figure?.candidates?.length ?? 0));
+  }
+
   /* The server renders every question as a list; the browser switches to one at a time. */
   let mounted = $state(false);
   $effect(() => {
+    untrack(reshuffle);
     mounted = true;
   });
 
@@ -127,6 +170,9 @@
   const question = $derived(current.q);
   const g = $derived(current.g);
   const picked = $derived(answers[index]);
+  const names = $derived(shuffles[index]?.names ?? []);
+  const order = $derived(shuffles[index]?.options ?? question.options.map((_, i) => i));
+  const say = (text: string) => fill(text, names);
   const answered = $derived(picked !== undefined);
   const score = $derived(items.filter((it, i) => answers[i] === it.g.correct).length);
   /* The sections to reread, once each, in the order of the questions. */
@@ -141,9 +187,9 @@
   let summaryEl: HTMLElement | undefined = $state();
 
   /* The picture before answering, with the spots to choose from. */
-  function before(f: QuizFigure): Scene {
+  function before(f: QuizFigure, spotNames: string[] = []): Scene {
     if (!f.candidates) return f.scene;
-    return { ...f.scene, players: [...f.scene.players, ...candidates(f.candidates)] };
+    return { ...f.scene, players: [...f.scene.players, ...candidates(f.candidates, spotNames)] };
   }
 
   async function choose(option: number) {
@@ -167,6 +213,7 @@
 
   async function restart() {
     if (mix) round += 1;
+    reshuffle();
     answers = {};
     index = 0;
     finished = false;
@@ -187,19 +234,19 @@
           {#if f}
             <div class="figure" class:tall={f.view === 'full'}>
               <p class="zone">{s.zone[f.zone]}</p>
-              <Rink scene={before(f)} label={q.label ?? ''} view={f.view} flip={f.zone === 'attack'} />
+              <Rink scene={before(f)} label={fill(q.label ?? '')} view={f.view} flip={f.zone === 'attack'} />
             </div>
           {/if}
           <ul class="plain">
-            {#each q.options as o}<li>{o.text}</li>{/each}
+            {#each q.options as o}<li>{fill(o.text)}</li>{/each}
           </ul>
           <details>
             <summary>{s.solution}</summary>
-            <p><strong>{q.options[geo.correct].text}</strong></p>
-            <p>{q.options[geo.correct].feedback}</p>
+            <p><strong>{fill(q.options[geo.correct].text)}</strong></p>
+            <p>{fill(q.options[geo.correct].feedback)}</p>
             {#if f?.after}
               <div class="figure" class:tall={f.view === 'full'}>
-                <Rink scene={f.after} label={q.afterLabel ?? ''} view={f.view} flip={f.zone === 'attack'} />
+                <Rink scene={f.after} label={fill(q.afterLabel ?? '')} view={f.view} flip={f.zone === 'attack'} />
               </div>
             {/if}
           </details>
@@ -217,7 +264,7 @@
         {#key current.key}
           <div class="figure" class:tall={f.view === 'full'}>
             <p class="zone">{s.zone[f.zone]}</p>
-            <Rink scene={before(f)} label={question.label ?? ''} view={f.view} flip={f.zone === 'attack'} />
+            <Rink scene={before(f, names)} label={say(question.label ?? '')} view={f.view} flip={f.zone === 'attack'} />
             <!-- The key leaves out the candidate spots: the question names them. -->
             <RinkLegend scenes={[f.scene]} {locale} />
           </div>
@@ -227,7 +274,8 @@
       <div>
 
         <ul class="options plain" aria-labelledby="{uid}-prompt">
-          {#each question.options as option, i}
+          {#each order as i (i)}
+            {@const option = question.options[i]}
             {@const right = answered && i === g.correct}
             {@const wrong = answered && i === picked && i !== g.correct}
             <li>
@@ -239,7 +287,7 @@
                 aria-disabled={answered}
                 onclick={() => choose(i)}
               >
-                {option.text}
+                {say(option.text)}
                 {#if right}
                   <span class="mark">✓ {s.rightAnswer}</span>
                 {:else if wrong}
@@ -253,11 +301,11 @@
         {#if answered}
           <div class="feedback" class:good={picked === g.correct} tabindex="-1" bind:this={feedbackEl}>
             <p class="verdict">{picked === g.correct ? `✓ ${s.correct}` : `✗ ${s.notQuite}`}</p>
-            <p>{question.options[picked].feedback}</p>
+            <p>{say(question.options[picked].feedback)}</p>
             {#if picked !== g.correct}
               <p>
-                <strong>{s.answerIs} {question.options[g.correct].text}</strong>
-                {question.options[g.correct].feedback}
+                <strong>{s.answerIs} {say(question.options[g.correct].text)}</strong>
+                {say(question.options[g.correct].feedback)}
               </p>
             {/if}
             {#if g.figure?.after}
@@ -265,7 +313,7 @@
               {@const after = g.figure.after}
               <div class="figure after" class:tall={f.view === 'full'}>
                 <p class="zone">{s.after}</p>
-                <Rink scene={after} label={question.afterLabel ?? ''} view={f.view} flip={f.zone === 'attack'} />
+                <Rink scene={after} label={say(question.afterLabel ?? '')} view={f.view} flip={f.zone === 'attack'} />
                 <RinkLegend scenes={[after]} {locale} />
               </div>
             {/if}
