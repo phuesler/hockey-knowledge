@@ -748,6 +748,7 @@ export const mixQuizzes: QuizId[] = [
   'regeln',
   'bully',
   'rollen',
+  'torhueter',
   'abwehrseite',
   'zuordnung',
   'support',
