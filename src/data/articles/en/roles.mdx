@@ -10,6 +10,8 @@ draft: true
 ---
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
+import RinkSequence from '../../../components/RinkSequence.svelte';
+import PuckControl from '../../../components/PuckControl.astro';
 import Callout from '../../../components/Callout.astro';
 import { href } from '../../../lib/href';
 
@@ -42,6 +44,8 @@ The role does not depend on the position. A defender can be König, a forward ca
 Wächter.
 </Callout>
 
+<RinkPlay play="four-roles" locale="en" />
+
 ## Roles change all the time
 
 The roles are not positions like centre or defender. They change with every pass and every
@@ -52,7 +56,7 @@ lost puck.
   closest to the puck becomes the Jäger.
 - We win the puck back. Whoever has it is König. Everyone else is a Satellit straight away.
 
-<RinkPlay play="four-roles" locale="en" />
+<RinkSequence client:visible sequence="role-switch" locale="en" />
 
 ## König: the player with the puck
 
@@ -65,17 +69,25 @@ blindly.
 teammates, where are the opponents, where is there space? It starts before the puck
 arrives. Anyone who only looks once they have the puck is often too late.
 
+<RinkSequence client:visible sequence="scan" locale="en" />
+
 **Find open ice.** Don't skate into traffic, the places where many players are. Speed and
 quick changes of direction get you away from your opponent. And look for the way to the
 goal: the best shots come from the slot, right in front of the goal.
+
+<RinkPlay play="open-ice" locale="en" />
 
 **Protect the puck.** Every opponent wants to get his stick on the puck. So don't hold the
 puck out in front of you like on a tray. Carry it on the side away from the opponent. Your
 body is then between the puck and the opponent.
 
+<PuckControl variant="shield" />
+
 **Puck on the forehand.** The **forehand** is the side of the blade you normally shoot
 with. With the puck there, you have three options: pass, shoot or keep skating. The
 opponent doesn't know what is coming.
+
+<PuckControl variant="forehand" />
 
 **Dekes in a 1‑on‑1.** A **deke** is a fake. You point one way with your stick, body or
 head and skate the other way. That pulls the opponent out of position.
@@ -93,6 +105,8 @@ or two steps to the side and you are open.
 **Don't hide.** Standing behind an opponent or far from the play doesn't help the König.
 Skate to where he can see you: in front of him, beside him or behind him.
 
+<RinkSequence client:visible sequence="pass-shadow" locale="en" />
+
 **Turn your head.** Look around, even without the puck. Knowing where the opponents are
 helps you find the gap faster.
 
@@ -100,6 +114,8 @@ helps you find the gap faster.
 go. And **talk**: a short call helps him more than any hand signal.
 
 **Skate towards the pass.** Then it is shorter and safer.
+
+<RinkPlay play="skate-to-pass" locale="en" />
 
 Satelliten spread out. One is **near** the König, for a quick, short pass. One gives
 **width**, on the far boards. One gives **depth**, far ahead or far behind. The defenders
@@ -109,6 +125,8 @@ article shows what this looks like.
 **Drive to the net.** Skating away from the König towards the goal often pulls an opponent
 along. That opens space for the König. In front of the goal you block the goalie's view.
 And if the puck bounces off, you are there first.
+
+<RinkSequence client:visible sequence="net-drive" locale="en" />
 
 <Callout type="tipp" title="Always ready">
 A loose puck belongs to whoever gets there first. A Satellit keeps his legs moving, even
@@ -130,6 +148,8 @@ closest to the puck. Four things make a good Jäger:
 4. **Push him outside.** Keep the opponent on the boards, away from the middle. The middle
    in front of our goal is the most dangerous place on the ice. Some call it *home base*.
 
+<RinkSequence client:visible sequence="close-gap" locale="en" />
+
 ### Where is the opponent looking?
 
 A good Jäger reads the situation before he attacks.
@@ -144,6 +164,8 @@ part of it, for example pinning him on the boards as in the
 <a href={href('/en/support')}>Support</a> article. A body check is not: it is banned up to
 and including U13 (see <a href={href('/en/foundation-training')}>DEB foundation training</a>).
 Here too: stick on puck, stay on the defensive side.
+
+<RinkPlay play="read-opponent" locale="en" />
 
 ## Wächter: defending players without the puck
 
@@ -165,6 +187,8 @@ outside.
 
 **The closer to the goal, the tighter.** If your opponent is far from the goal, you can
 leave some space. If he skates to the front of the goal, stay right with him.
+
+<RinkSequence client:visible sequence="guard-tight" locale="en" />
 
 **Talk.** Tell or show your teammates which opponent you are taking. Otherwise two of you
 cover the same player and another one is left open. The

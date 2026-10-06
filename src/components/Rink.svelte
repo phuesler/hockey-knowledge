@@ -4,7 +4,7 @@
    * much is shown: one zone (default), half the rink up to the centre line, or the full
    * rink. `flip` turns the drawing by 180°, so the far end is at the top: the attacking
    * zone is drawn that way, so we always attack upwards and left stays left. Renders on the server without JavaScript (RinkPlay uses it that way); the
-   * CoverageExplorer island reuses it and lets the players slide to new spots.
+   * CoverageExplorer and RinkSequence islands reuse it and let the players slide to new spots.
    *
    * All positions are rink metres, see rink.ts. Nothing here is language-specific:
    * labels are position letters and numbers, the words live in the figure around it.
@@ -289,6 +289,23 @@
     stroke: none;
     opacity: 0.25;
   }
+  .area.open {
+    fill: var(--c-good-soft);
+    stroke: var(--c-good);
+    stroke-dasharray: 0.5 0.35;
+    stroke-width: 0.2;
+  }
+  .area.shadow {
+    fill: var(--c-steel);
+    stroke: none;
+    opacity: 0.35;
+  }
+  .area.view {
+    fill: var(--c-accent);
+    stroke: var(--c-accent);
+    fill-opacity: 0.18;
+    stroke-width: 0.12;
+  }
 
   text {
     font-family: var(--font-sans);
@@ -304,7 +321,8 @@
   .area-label.danger {
     fill: var(--c-brand);
   }
-  .area-label.near {
+  .area-label.near,
+  .area-label.open {
     fill: var(--c-good);
   }
 
@@ -399,7 +417,7 @@
     stroke-width: 0.15;
   }
 
-  /* Only the CoverageExplorer ever moves a player; the static diagrams never change. */
+  /* Only CoverageExplorer and RinkSequence move players; the static diagrams never change. */
   @media (prefers-reduced-motion: no-preference) {
     .player {
       transition: transform 450ms ease-in-out;

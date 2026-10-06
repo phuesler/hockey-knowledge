@@ -9,6 +9,8 @@ draft: true
 ---
 
 import RinkPlay from '../../../components/RinkPlay.svelte';
+import RinkSequence from '../../../components/RinkSequence.svelte';
+import PuckControl from '../../../components/PuckControl.astro';
 import Callout from '../../../components/Callout.astro';
 import { href } from '../../../lib/href';
 
@@ -39,6 +41,8 @@ Die Rolle hängt nicht von der Position ab. Ein Verteidiger kann König sein, ei
 Wächter.
 </Callout>
 
+<RinkPlay play="four-roles" />
+
 ## Rollen wechseln ständig
 
 Die Rollen sind keine Positionen wie Center oder Verteidiger. Sie wechseln mit jedem Pass
@@ -49,7 +53,7 @@ und mit jedem Puckverlust.
   nächsten ist, wird Jäger.
 - Wir holen den Puck zurück. Wer ihn hat, ist König. Alle anderen sind sofort Satelliten.
 
-<RinkPlay play="four-roles" />
+<RinkSequence client:visible sequence="role-switch" />
 
 ## König: Spieler mit Puck
 
@@ -62,17 +66,25 @@ spielt dann eine Lösung. Das passt zum
 die Mitspieler, wo die Gegner, wo ist Platz? Das beginnt schon, bevor der Puck kommt. Wer
 erst schaut, wenn er den Puck hat, ist oft zu spät.
 
+<RinkSequence client:visible sequence="scan" />
+
 **Freies Eis finden.** Fahr nicht in den Verkehr, also dorthin, wo viele Spieler stehen.
 Mit Tempo und schnellen Richtungswechseln kommst du vom Gegner weg. Und such den Weg zum
 Tor: Die besten Schüsse kommen aus dem Slot, direkt vor dem Tor.
+
+<RinkPlay play="open-ice" />
 
 **Puck abschirmen.** Jeder Gegner will mit dem Schläger an den Puck. Halte den Puck darum
 nicht vor dir wie auf einem Tablett. Führe ihn auf der Seite weg vom Gegner. Dein Körper
 ist dann zwischen Puck und Gegner.
 
+<PuckControl variant="shield" />
+
 **Puck auf die Vorhand.** Die **Vorhand** ist die Seite der Kelle, mit der du normal
 schiesst. Liegt der Puck dort, hast du drei Möglichkeiten: passen, schiessen oder
 weiterfahren. Der Gegner weiss nicht, was kommt.
+
+<PuckControl variant="forehand" />
 
 **Finten im 1‑gegen‑1.** Eine **Finte** ist eine Täuschung. Du zeigst mit dem Schläger,
 dem Körper oder dem Kopf in die eine Richtung und fährst in die andere. So bringst du den
@@ -91,6 +103,8 @@ zwei Schritte zur Seite, und du bist frei.
 **Nicht verstecken.** Wer hinter einem Gegner oder weit weg vom Spiel steht, hilft dem
 König nicht. Fahr dorthin, wo er dich sehen kann: vor ihm, neben ihm oder hinter ihm.
 
+<RinkSequence client:visible sequence="pass-shadow" />
+
 **Kopf drehen.** Schau dich um, auch ohne Puck. Wer weiss, wo die Gegner sind, findet die
 Lücke schneller.
 
@@ -98,6 +112,8 @@ Lücke schneller.
 Und **reden**: Ein kurzer Ruf hilft ihm mehr als jede Handbewegung.
 
 **Gegenlaufen.** Fahr dem Pass entgegen. Dann wird er kürzer und sicherer.
+
+<RinkPlay play="skate-to-pass" />
 
 Satelliten verteilen sich. Einer ist **nah** am König, für einen schnellen, kurzen Pass.
 Einer hält die **Breite**, an der anderen Bande. Einer gibt **Tiefe**, weit vorne oder
@@ -107,6 +123,8 @@ das genau aussieht, steht im Artikel <a href={href('/de/support')}>Support</a>.
 **Zum Tor fahren.** Wer vom König weg zum Tor fährt, nimmt oft einen Gegner mit. Dann
 wird Platz frei für den König. Vor dem Tor nimmst du dem Torhüter die Sicht. Und prallt
 der Puck ab, bist du als Erster dort.
+
+<RinkSequence client:visible sequence="net-drive" />
 
 <Callout type="tipp" title="Immer bereit">
 Ein freier Puck auf dem Eis gehört dem, der zuerst dort ist. Ein Satellit bewegt die Beine,
@@ -128,6 +146,8 @@ dem Puck am nächsten ist. Vier Dinge machen einen guten Jäger aus:
 4. **Nach aussen drängen.** Halte den Gegner an der Bande, weg von der Mitte. Die Mitte vor
    unserem Tor ist der gefährlichste Ort auf dem Eis. Manche nennen sie *Home Base*.
 
+<RinkSequence client:visible sequence="close-gap" />
+
 ### Wohin schaut der Gegner?
 
 Ein guter Jäger liest die Situation, bevor er angreift.
@@ -142,6 +162,8 @@ dazu, zum Beispiel das Pinnen an der Bande aus dem Artikel
 <a href={href('/de/support')}>Support</a>. Ein Bodycheck nicht: Der ist bis und mit U13
 verboten (siehe <a href={href('/de/grundlagentraining')}>DEB-Grundlagentraining</a>). Auch
 hier gilt: Schläger zum Puck, Abwehrseite halten.
+
+<RinkPlay play="read-opponent" />
 
 ## Wächter: Verteidiger gegen Gegner ohne Puck
 
@@ -163,6 +185,8 @@ gehst du nach aussen.
 
 **Je näher am Tor, desto enger.** Ist dein Gegner weit weg vom Tor, darfst du etwas Abstand
 lassen. Fährt er vor das Tor, bleibst du ganz nah bei ihm.
+
+<RinkSequence client:visible sequence="guard-tight" />
 
 **Reden.** Sag oder zeig deinen Mitspielern, welchen Gegner du übernimmst. Sonst decken zwei
 denselben Gegner, und einer bleibt frei. Wer welchen Bereich übernimmt, erklärt der Artikel
