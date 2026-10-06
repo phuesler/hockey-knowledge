@@ -322,6 +322,60 @@ const geometry = {
       },
     ],
   },
+  /* goalie-rebound: a pass across, the goalie pushes over, saves, and follows the
+     rebound until LD clears it. */
+  'goalie-rebound': {
+    zone: 'own',
+    frames: [
+      {
+        areas: [danger],
+        players: [
+          them('a', [-8.2, 12]),
+          them('b', [5.6, 9.6]),
+          us('d', 'LD', [-4.8, 12.6]),
+          us('g', 'G', [-1.1, 5.1]),
+        ],
+        puck: [-7.6, 11.2],
+        moves: [{ kind: 'pass', path: [[-7.6, 11.2], [5, 9]], trim: 1.4 }],
+      },
+      {
+        areas: [danger],
+        players: [
+          them('a', [-8.2, 12]),
+          them('b', [5.6, 9.6]),
+          us('d', 'LD', [-4.8, 12.6]),
+          us('g', 'G', [1.06, 5.06]),
+        ],
+        puck: [4.6, 8.6],
+        moves: [{ kind: 'shot', path: [[4.6, 8.6], [1.06, 5.06]], trim: 1.4 }],
+      },
+      {
+        areas: [danger],
+        players: [
+          them('a', [-8.2, 12]),
+          them('b', [5.6, 9.6]),
+          us('d', 'LD', [-4.8, 12.6]),
+          us('g', 'G', [1.06, 5.06]),
+        ],
+        puck: [-3, 7.5],
+        moves: [
+          { kind: 'sight', path: [[1.06, 5.06], [-3, 7.5]] },
+          { kind: 'skate', path: [[-4.8, 12.6], [-3.4, 8.4]], trim: 1.4 },
+        ],
+      },
+      {
+        areas: [danger],
+        players: [
+          them('a', [-8.2, 12]),
+          them('b', [5.6, 9.6]),
+          us('d', 'LD', [-3.4, 8.8]),
+          us('g', 'G', [-0.98, 5.14]),
+        ],
+        puck: [-3, 7.5],
+        moves: [{ kind: 'shot', path: [[-3, 7.5], [-12.5, 3.5]] }],
+      },
+    ],
+  },
 } satisfies Record<string, Sequence>;
 
 export type SequenceId = keyof typeof geometry;
@@ -481,6 +535,33 @@ const de: Record<SequenceId, SequenceText> = {
       'Der Puck liegt beim Schläger des Wächters vor dem Tor.',
     ],
   },
+  'goalie-rebound': {
+    caption: 'Rüberschieben, abwehren, dem Puck folgen',
+    steps: [
+      {
+        title: 'Der Pass quer',
+        text: 'Der Torhüter steht auf der Linie zum Puck. Der Gegner passt quer auf die andere Seite.',
+      },
+      {
+        title: 'T-Push',
+        text: 'Der Torhüter schaut dem Puck nach und stösst sich mit einem T-Push hinüber. Er steht wieder auf der Linie zum Puck, bevor der Schuss kommt.',
+      },
+      {
+        title: 'Abpraller',
+        text: 'Der Puck prallt vom Torhüter ab und liegt vor dem Tor. Der Torhüter schaut ihm nach. LD fährt hin.',
+      },
+      {
+        title: 'Wieder bereit',
+        text: 'Der Torhüter hat sich zum Puck gedreht und ist wieder bereit. LD spielt den Puck aus der Gefahrenzone in die Ecke.',
+      },
+    ],
+    labels: [
+      'Eigene Zone. Ein Gegner mit Puck links vor dem Bullykreis, ein zweiter Gegner rechts. Unser linker Verteidiger steht zwischen dem linken Gegner und dem Tor. Der Puckführer passt quer nach rechts.',
+      'Der rechte Gegner hat den Puck. Unser Torhüter ist zur rechten Seite des Tores gerutscht. Der Gegner schiesst auf ihn.',
+      'Der Puck liegt nach dem Schuss links vor dem Tor. Unser Torhüter schaut zum Puck, unser linker Verteidiger fährt hin.',
+      'Unser linker Verteidiger ist beim Puck und spielt ihn in die linke Ecke. Unser Torhüter steht wieder auf der Linie zum Puck.',
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -620,6 +701,33 @@ const en: typeof de = {
       'Our zone. An opponent with the puck on the right boards, the Jäger in front of him. An opponent without the puck in the high slot skates to the goal. The Wächter goes with him; a blue fan shows he can see both the opponent and the puck.',
       'The opponent is in front of the goal, the Wächter right next to him on the goal side, stick in the passing lane. The opponent on the boards passes towards the goal.',
       'The puck lies at the Wächter’s stick in front of the goal.',
+    ],
+  },
+  'goalie-rebound': {
+    caption: 'Push across, save, follow the puck',
+    steps: [
+      {
+        title: 'The pass across',
+        text: 'The goalie stands on the line to the puck. The opponent passes across to the other side.',
+      },
+      {
+        title: 'T-push',
+        text: 'The goalie follows the puck with their eyes and pushes across with a T-push. They are back on the line to the puck before the shot comes.',
+      },
+      {
+        title: 'Rebound',
+        text: 'The puck bounces off the goalie and lies in front of the goal. The goalie keeps watching it. LD skates to it.',
+      },
+      {
+        title: 'Ready again',
+        text: 'The goalie has turned to the puck and is ready again. LD plays the puck out of the danger zone into the corner.',
+      },
+    ],
+    labels: [
+      'Own zone. An opponent with the puck on the left in front of the faceoff circle, a second opponent on the right. Our left defender stands between the left opponent and the goal. The puck carrier passes across to the right.',
+      'The right opponent has the puck. Our goalie has moved to the right side of the goal. The opponent shoots at them.',
+      'After the shot the puck lies on the left in front of the goal. Our goalie looks at the puck, our left defender skates to it.',
+      'Our left defender has the puck and plays it into the left corner. Our goalie is back on the line to the puck.',
     ],
   },
 };
