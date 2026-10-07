@@ -1,0 +1,190 @@
+---
+/**
+ * The goal seen from the shooter, with the spots the slang words name: top shelf,
+ * bar down, five-hole, glove side and blocker side. The goalie catches with the left
+ * hand, like most goalies, so the glove is on the right from the shooter's view.
+ *
+ * Numbered markers in the drawing, the words in the list below. The drawing is
+ * decoration for screen readers; the list has the meaning. Static: no JavaScript.
+ */
+import { localeFromUrl } from '../lib/i18n';
+
+const de = {
+  caption: 'Das Tor aus der Sicht des Schützen',
+  targets: {
+    top: { name: 'Top shelf', meaning: 'Oben in die Ecke, knapp unter die Latte. Ganz oben im Regal.' },
+    bar: { name: 'Bar down', meaning: 'Der Puck trifft die Unterkante der Latte und springt nach unten ins Tor.' },
+    five: { name: 'Five-hole', meaning: 'Zwischen den Beinschonern des Torhüters hindurch.' },
+    glove: { name: 'Glove side', meaning: 'Auf der Seite der Fanghand.' },
+    blocker: { name: 'Blocker side', meaning: 'Auf der Seite der Stockhand mit dem Blocker.' },
+  },
+  note: 'Dieser Torhüter fängt mit links, wie die meisten. Fängt er mit rechts, sind Glove side und Blocker side vertauscht.',
+};
+const en: typeof de = {
+  caption: 'The goal as the shooter sees it',
+  targets: {
+    top: { name: 'Top shelf', meaning: 'High in the corner, just under the crossbar. The top shelf of the cupboard.' },
+    bar: { name: 'Bar down', meaning: 'The puck hits the underside of the crossbar and drops down into the net.' },
+    five: { name: 'Five-hole', meaning: 'Between the goalie’s pads.' },
+    glove: { name: 'Glove side', meaning: 'On the side of the catching hand.' },
+    blocker: { name: 'Blocker side', meaning: 'On the side of the stick hand with the blocker.' },
+  },
+  note: 'This goalie catches with the left hand, like most. If they catch with the right, glove side and blocker side swap.',
+};
+
+const s = { de, en }[localeFromUrl(Astro.url)];
+
+/* Markers in a 220 × 150 box: posts at x 20 and 200, crossbar at y 20, ice at y 140. */
+const markers = [
+  { key: 'top', n: 1, at: [38, 36] },
+  { key: 'top', n: 1, at: [182, 36] },
+  { key: 'bar', n: 2, at: [110, 28] },
+  { key: 'five', n: 3, at: [110, 126] },
+  { key: 'glove', n: 4, at: [182, 104] },
+  { key: 'blocker', n: 5, at: [38, 104] },
+] as const;
+const list = ['top', 'bar', 'five', 'glove', 'blocker'] as const;
+---
+
+<figure class="targets">
+  <figcaption>{s.caption}</figcaption>
+  <svg viewBox="0 0 220 150" aria-hidden="true">
+    <rect x="20" y="20" width="180" height="120" class="net" />
+    {[50, 80, 110, 140, 170].map((x) => <line x1={x} y1="20" x2={x} y2="140" class="mesh" />)}
+    {[50, 80, 110].map((y) => <line x1="20" y1={y} x2="200" y2={y} class="mesh" />)}
+    <line x1="4" y1="140" x2="216" y2="140" class="ice" />
+
+    <!-- Goalie: pads, body, mask, blocker with stick, glove. -->
+    <polygon points="78,140 100,140 106,96 88,94" class="gear" />
+    <polygon points="120,140 142,140 132,94 114,96" class="gear" />
+    <rect x="88" y="58" width="44" height="40" rx="8" class="jersey" />
+    <circle cx="110" cy="47" r="10" class="gear" />
+    <polyline points="90,66 72,76" class="arm" />
+    <polyline points="130,66 146,78" class="arm" />
+    <rect x="61" y="70" width="14" height="22" rx="2" class="gear" />
+    <polyline points="68,92 76,137 98,137" class="stick" />
+    <circle cx="151" cy="82" r="11" class="gear" />
+
+    <path d="M20 140 V20 H200 V140" class="frame" />
+
+    {
+      markers.map((m) => (
+        <g class="marker">
+          <circle cx={m.at[0]} cy={m.at[1]} r="7.5" />
+          <text x={m.at[0]} y={m.at[1]}>
+            {m.n}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+  <ol>
+    {
+      list.map((key) => (
+        <li>
+          <strong>{s.targets[key].name}</strong> {s.targets[key].meaning}
+        </li>
+      ))
+    }
+  </ol>
+  <p class="note">{s.note}</p>
+</figure>
+
+<style>
+  .targets {
+    margin: var(--s-6) 0;
+    padding: var(--s-5);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  figcaption {
+    margin-bottom: var(--s-4);
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 26rem;
+    height: auto;
+    margin: 0 auto var(--s-4);
+  }
+  .net {
+    fill: var(--c-surface-2);
+  }
+  .mesh {
+    stroke: var(--c-border);
+    stroke-width: 1;
+  }
+  .ice {
+    stroke: var(--c-accent);
+    stroke-width: 2;
+  }
+  .frame {
+    fill: none;
+    stroke: var(--c-signal);
+    stroke-width: 5;
+    stroke-linejoin: round;
+  }
+  .gear,
+  .jersey {
+    stroke: var(--c-text);
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+  .gear {
+    fill: var(--c-surface);
+  }
+  .jersey {
+    fill: var(--c-steel);
+  }
+  .arm,
+  .stick {
+    fill: none;
+    stroke: var(--c-text);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .arm {
+    stroke-width: 6;
+  }
+  .stick {
+    stroke-width: 3;
+  }
+  .marker circle {
+    fill: var(--c-accent);
+  }
+  .marker text {
+    fill: var(--c-surface);
+    font-size: 10px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  ol {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding-left: var(--s-5);
+    font-size: var(--t-sm);
+  }
+  ol > li {
+    margin: 0;
+  }
+  ol > li::marker {
+    font-weight: 700;
+    color: var(--c-accent);
+  }
+  .note {
+    margin: var(--s-3) 0 0;
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+</style>
