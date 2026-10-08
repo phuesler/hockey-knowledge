@@ -777,6 +777,7 @@ export const mixQuizzes: QuizId[] = [
   'gegenlaufen',
   'cycles',
   'forecheck',
+  'hockey-sprache',
 ];
 
 const de: Record<QuizId, QuizText> = {
