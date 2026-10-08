@@ -734,6 +734,28 @@ const geometry = {
     /* 6. After a goal against. */
     { correct: 2 },
   ],
+  'hockey-sprache': [
+    /* 1. What is an apple? */
+    { correct: 1 },
+    /* 2. Goal, goal, opponent's goal, goal: a natural hat trick? */
+    { correct: 1 },
+    /* 3. Where is Gretzky's office? */
+    { correct: 0 },
+    /* 4. The five-hole. */
+    { correct: 2 },
+    /* 5. The whistle has gone, the puck is in front of you. */
+    { correct: 1 },
+    /* 6. Leading 9:0. */
+    { correct: 1 },
+    /* 7. An injured opponent gets up. */
+    { correct: 0 },
+    /* 8. Rebound goals and "pigeon". */
+    { correct: 1 },
+    /* 9. An opponent crashes into our goalie. */
+    { correct: 1 },
+    /* 10. A puck slides over the red line in the warm-up. */
+    { correct: 1 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -755,6 +777,7 @@ export const mixQuizzes: QuizId[] = [
   'gegenlaufen',
   'cycles',
   'forecheck',
+  'hockey-sprache',
 ];
 
 const de: Record<QuizId, QuizText> = {
@@ -2341,6 +2364,226 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  'hockey-sprache': {
+    title: 'Quiz: Hockey-Sprache',
+    name: 'Hockey-Sprache',
+    article: 'hockey-sprache',
+    questions: [
+      {
+        prompt: 'Nach dem Spiel sagt deine Mitspielerin: „Ich hatte zwei Apples.“ Was meint sie?',
+        options: [
+          {
+            text: 'Sie hat zwei Tore geschossen.',
+            feedback: 'Ein Tor heisst Gino oder Tuck. Ein Apple ist etwas anderes.',
+          },
+          {
+            text: 'Sie hat zwei Vorlagen gegeben.',
+            feedback: 'Genau. Ein Apple ist eine Vorlage, also ein Pass, aus dem ein Tor entsteht.',
+          },
+          {
+            text: 'Sie hat zwei Schüsse oben in die Ecke gesetzt.',
+            feedback: 'Oben in die Ecke heisst Top shelf. Ein Apple ist eine Vorlage.',
+          },
+        ],
+        section: 'tore-vorlagen-und-der-puck',
+        topic: 'Tore und Vorlagen',
+      },
+      {
+        prompt:
+          'Lea trifft zum 1:0 und zum 2:0. Dann trifft der Gegner zum 2:1. Danach trifft Lea zum 3:1. Ist das ein Natural Hattrick?',
+        options: [
+          {
+            text: 'Ja, Lea hat drei Tore geschossen.',
+            feedback: 'Drei Tore sind ein Hattrick. Für einen Natural Hattrick darf aber dazwischen kein anderes Tor fallen.',
+          },
+          {
+            text: 'Nein, weil dazwischen der Gegner getroffen hat.',
+            feedback:
+              'Richtig. Ein normaler Hattrick ist es trotzdem. Natural heisst: drei Tore hintereinander, ohne irgendein Tor dazwischen.',
+          },
+          {
+            text: 'Nein, weil ein Natural Hattrick nur in der Verlängerung zählt.',
+            feedback:
+              'Mit der Verlängerung hat das nichts zu tun. Es fehlt etwas anderes: Dazwischen hat der Gegner getroffen.',
+          },
+        ],
+        section: 'hattricks',
+        topic: 'Hattricks',
+      },
+      {
+        prompt: 'Wo ist „Gretzkys Büro“?',
+        options: [
+          {
+            text: 'Hinter dem gegnerischen Tor.',
+            feedback:
+              'Genau. Von dort sieht man das ganze Feld, und die Gegner müssen sich umdrehen, um den Puck zu sehen.',
+          },
+          {
+            text: 'Auf der Strafbank.',
+            feedback:
+              'Die Strafbank heisst Sin bin. Gretzky war dort selten. Sein Büro war hinter dem gegnerischen Tor.',
+          },
+          {
+            text: 'An der blauen Linie, wo die Verteidiger stehen.',
+            feedback:
+              'Gretzky war Stürmer. Sein Lieblingsplatz war hinter dem gegnerischen Tor, von wo er Pässe vors Tor spielte.',
+          },
+        ],
+        section: 'orte-auf-dem-eis',
+        topic: 'Gretzkys Büro',
+      },
+      {
+        prompt: 'Der Trainer sagt: „Schiess ins Five-hole.“ Wohin zielst du?',
+        options: [
+          {
+            text: 'Oben in die Ecke.',
+            feedback: 'Das ist Top shelf. Das Five-hole ist unten.',
+          },
+          {
+            text: 'An die Unterkante der Latte.',
+            feedback: 'Das ist Bar down. Das Five-hole liegt beim Torhüter ganz unten.',
+          },
+          {
+            text: 'Zwischen die Beinschoner des Torhüters.',
+            feedback:
+              'Richtig. Geht der Torhüter in die Knie, öffnet sich zwischen den Beinschonern oft kurz eine Lücke.',
+          },
+        ],
+        section: 'tore-vorlagen-und-der-puck',
+        topic: 'Five-hole',
+      },
+      {
+        prompt: 'Der Schiedsrichter hat gepfiffen. Der Puck liegt frei vor dir, drei Meter vor dem Tor. Was machst du?',
+        options: [
+          {
+            text: 'Schnell schiessen. Vielleicht zählt es ja doch.',
+            feedback:
+              'Nach dem Pfiff zählt kein Tor. Der Schuss ist nur gefährlich für den Torhüter, und der Schiedsrichter kann dafür eine Strafe geben.',
+          },
+          {
+            text: 'Den Puck liegen lassen und abdrehen.',
+            feedback: 'Genau. Nach dem Pfiff ist Schluss. Das ist eine der wichtigsten ungeschriebenen Regeln.',
+          },
+          {
+            text: 'Einen leichten Schuss machen, damit der Torhüter warm bleibt.',
+            feedback:
+              'Auch ein leichter Schuss nach dem Pfiff ist respektlos. Der Torhüter rechnet nicht damit und kann sich verletzen.',
+          },
+        ],
+        section: 'der-code-ungeschriebene-regeln',
+        topic: 'Nach dem Pfiff',
+      },
+      {
+        prompt: 'Deine Mannschaft führt 9:0. Was ist fair gegenüber dem Gegner?',
+        options: [
+          {
+            text: 'Absichtlich daneben schiessen, damit es nicht noch höher wird.',
+            feedback:
+              'Absichtlich schlecht spielen nimmt den Gegner nicht ernst. Das ist auch respektlos.',
+          },
+          {
+            text: 'Normal weiterspielen, ohne Showeinlagen und ohne grossen Jubel.',
+            feedback:
+              'Richtig. Man spielt sein Spiel, passt den Puck und freut sich still. Den Gegner blamiert man nicht.',
+          },
+          {
+            text: 'Jedes Tor gross feiern. Ihr habt es euch verdient.',
+            feedback:
+              'Freuen darf man sich. Aber ein grosser Jubel beim 9:0 blamiert den Gegner. Das gehört sich nicht.',
+          },
+        ],
+        section: 'der-code-ungeschriebene-regeln',
+        topic: 'Den Gegner nicht blamieren',
+      },
+      {
+        prompt: 'Ein Spieler der anderen Mannschaft lag verletzt auf dem Eis. Jetzt steht er auf. Was machen die Spieler?',
+        options: [
+          {
+            text: 'Beide Mannschaften klopfen mit dem Stock aufs Eis.',
+            feedback: 'Genau. Das ist Applaus unter Spielern, für jeden, der wieder aufsteht, auch für einen Gegner.',
+          },
+          {
+            text: 'Nur seine eigene Mannschaft klopft, er ist ja ein Gegner.',
+            feedback:
+              'Beim Stockklopfen für einen Verletzten machen alle mit. Auf dem Eis sind alle Gegner, aber keine Feinde.',
+          },
+          {
+            text: 'Nichts. Das Spiel geht weiter.',
+            feedback:
+              'Es geht gleich weiter, aber vorher klopfen beide Mannschaften mit dem Stock aufs Eis. Das zeigt Respekt.',
+          },
+        ],
+        section: 'der-code-ungeschriebene-regeln',
+        topic: 'Stock aufs Eis klopfen',
+      },
+      {
+        prompt:
+          'Dein Mitspieler steht immer vor dem Tor und macht viele Tore aus Abprallern. Jemand nennt ihn „Pigeon“. Was stimmt?',
+        options: [
+          {
+            text: 'Abpraller-Tore zählen weniger. Er sollte lieber von weit schiessen.',
+            feedback: 'Jedes Tor zählt gleich. Und aus der Distanz ist es viel schwerer, zu treffen.',
+          },
+          {
+            text: 'Vor dem Tor nachsetzen ist gutes Hockey. Das Wort ist trotzdem unfreundlich.',
+            feedback:
+              'Richtig. Viele Tore fallen aus Abprallern. Pigeon ist eine Beleidigung und gehört nicht in die Kabine.',
+          },
+          {
+            text: 'Pigeon ist ein Lob für einen guten Torjäger.',
+            feedback:
+              'Pigeon klingt harmlos, ist aber abschätzig gemeint: einer, der nur „Krümel aufpickt“. Ein Lob wäre Sniper.',
+          },
+        ],
+        section: 'spielertypen',
+        topic: 'Pigeon',
+      },
+      {
+        prompt: 'Nach dem Pfiff fährt ein Gegner in unseren Torhüter und stochert weiter nach dem Puck. Was machst du?',
+        options: [
+          {
+            text: 'Den Gegner zurückschubsen. Niemand fasst unseren Torhüter an.',
+            feedback:
+              'Der Schiedsrichter sieht fast immer die zweite Aktion. Dann sitzt du auf der Strafbank, und dem Team fehlt ein Spieler.',
+          },
+          {
+            text: 'Hinfahren, dich ruhig zwischen Gegner und Torhüter stellen und die Hände am Schläger lassen.',
+            feedback:
+              'Genau. So schützt du den Torhüter, ohne eine Strafe zu riskieren. Gibt es etwas zu klären, spricht der Kapitän mit dem Schiedsrichter.',
+          },
+          {
+            text: 'Nichts. Das ist Sache des Schiedsrichters.',
+            feedback:
+              'Den Schiedsrichter braucht es, aber den Torhüter lässt man nicht allein. Einer fährt hin und stellt sich ruhig dazwischen.',
+          },
+        ],
+        section: 'der-code-ungeschriebene-regeln',
+        topic: 'Den Torhüter schützen',
+      },
+      {
+        prompt: 'Beim Aufwärmen rutscht dir ein Puck über die rote Linie in die Hälfte des Gegners. Was machst du?',
+        options: [
+          {
+            text: 'Schnell rüberfahren und ihn holen. Es ist ja nur ein Puck.',
+            feedback:
+              'Beim Aufwärmen fährt niemand über die rote Linie. In manchen Ligen gilt das als Herausforderung, auch wenn du es gar nicht so meinst.',
+          },
+          {
+            text: 'Ihn liegen lassen. Er wird nach dem Aufwärmen eingesammelt, oder die Gegner schieben ihn zurück.',
+            feedback:
+              'Genau. Die rote Linie ist beim Aufwärmen eine unsichtbare Wand. Ein Puck mehr oder weniger spielt keine Rolle.',
+          },
+          {
+            text: 'Ihn mit einem Schuss zurückholen: ein kurzer Schuss aufs leere Tor der Gegner.',
+            feedback:
+              'Ein Schuss aufs Tor der Gegner ist beim Aufwärmen genau das, was man nie macht. Deswegen gab es schon Schlägereien vor dem Spiel.',
+          },
+        ],
+        section: 'der-code-ungeschriebene-regeln',
+        topic: 'Die rote Linie beim Aufwärmen',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -3887,6 +4130,221 @@ const en: typeof de = {
         ],
         section: 'after-a-goal-against',
         topic: 'After a goal against',
+      },
+    ],
+  },
+  'hockey-sprache': {
+    title: 'Quiz: Hockey talk',
+    name: 'Hockey talk',
+    article: 'hockey-talk',
+    questions: [
+      {
+        prompt: 'After the game your teammate says: “I had two apples.” What does she mean?',
+        options: [
+          {
+            text: 'She scored two goals.',
+            feedback: 'A goal is a gino or a tuck. An apple is something else.',
+          },
+          {
+            text: 'She made two assists.',
+            feedback: 'Exactly. An apple is an assist, a pass that leads to a goal.',
+          },
+          {
+            text: 'She put two shots high into the corner.',
+            feedback: 'High into the corner is top shelf. An apple is an assist.',
+          },
+        ],
+        section: 'goals-assists-and-the-puck',
+        topic: 'Goals and assists',
+      },
+      {
+        prompt:
+          'Lea scores to make it 1–0 and 2–0. Then the opponents score to make it 2–1. After that Lea scores to make it 3–1. Is that a natural hat trick?',
+        options: [
+          {
+            text: 'Yes, Lea scored three goals.',
+            feedback: 'Three goals are a hat trick. For a natural hat trick, though, no other goal may come in between.',
+          },
+          {
+            text: 'No, because the opponents scored in between.',
+            feedback:
+              'Right. It is still an ordinary hat trick. Natural means three goals in a row, with no goal at all in between.',
+          },
+          {
+            text: 'No, because a natural hat trick only counts in overtime.',
+            feedback: 'Overtime has nothing to do with it. Something else is missing: the opponents scored in between.',
+          },
+        ],
+        section: 'hat-tricks',
+        topic: 'Hat tricks',
+      },
+      {
+        prompt: 'Where is “Gretzky’s office”?',
+        options: [
+          {
+            text: 'Behind the opponents’ net.',
+            feedback: 'Exactly. From there you see the whole ice, and the opponents have to turn round to see the puck.',
+          },
+          {
+            text: 'In the penalty box.',
+            feedback:
+              'The penalty box is the sin bin. Gretzky was rarely there. His office was behind the opponents’ net.',
+          },
+          {
+            text: 'At the blue line, where the defenders stand.',
+            feedback:
+              'Gretzky was a forward. His favourite spot was behind the opponents’ net, where he passed the puck out in front.',
+          },
+        ],
+        section: 'places-on-the-ice',
+        topic: 'Gretzky’s office',
+      },
+      {
+        prompt: 'The coach says: “Shoot five-hole.” Where do you aim?',
+        options: [
+          {
+            text: 'High into the corner.',
+            feedback: 'That is top shelf. The five-hole is low.',
+          },
+          {
+            text: 'At the underside of the crossbar.',
+            feedback: 'That is bar down. The five-hole is right down low by the goalie.',
+          },
+          {
+            text: 'Between the goalie’s pads.',
+            feedback: 'Right. When the goalie drops to the knees, a gap often opens between the pads for a moment.',
+          },
+        ],
+        section: 'goals-assists-and-the-puck',
+        topic: 'Five-hole',
+      },
+      {
+        prompt: 'The referee has blown the whistle. The puck is loose in front of you, three metres from the net. What do you do?',
+        options: [
+          {
+            text: 'Shoot quickly. Maybe it counts after all.',
+            feedback:
+              'No goal counts after the whistle. The shot is only dangerous for the goalie, and the referee can give a penalty for it.',
+          },
+          {
+            text: 'Leave the puck and turn away.',
+            feedback: 'Exactly. After the whistle, play is over. That is one of the most important unwritten rules.',
+          },
+          {
+            text: 'Take a soft shot to keep the goalie warm.',
+            feedback:
+              'Even a soft shot after the whistle is disrespectful. The goalie isn’t expecting it and can get hurt.',
+          },
+        ],
+        section: 'the-code-unwritten-rules',
+        topic: 'After the whistle',
+      },
+      {
+        prompt: 'Your team leads 9–0. What is fair to the opponents?',
+        options: [
+          {
+            text: 'Miss on purpose, so the score doesn’t get any higher.',
+            feedback: 'Playing badly on purpose doesn’t take the opponents seriously. That is disrespectful too.',
+          },
+          {
+            text: 'Keep playing normally, without showing off and without big celebrations.',
+            feedback:
+              'Right. You play your game, pass the puck and celebrate quietly. You don’t embarrass the opponents.',
+          },
+          {
+            text: 'Celebrate every goal big. You have earned it.',
+            feedback:
+              'You can be happy. But a big celebration at 9–0 embarrasses the opponents. That isn’t done.',
+          },
+        ],
+        section: 'the-code-unwritten-rules',
+        topic: 'Don’t embarrass the opponents',
+      },
+      {
+        prompt: 'A player from the other team was lying hurt on the ice. Now he gets up. What do the players do?',
+        options: [
+          {
+            text: 'Both teams tap their sticks on the ice.',
+            feedback: 'Exactly. That is applause between players, for anyone who gets back up, opponents too.',
+          },
+          {
+            text: 'Only his own team taps, he is an opponent after all.',
+            feedback:
+              'Everyone joins in the stick tap for an injured player. On the ice everyone is an opponent, but nobody is an enemy.',
+          },
+          {
+            text: 'Nothing. The game goes on.',
+            feedback: 'It goes on straight away, but first both teams tap their sticks on the ice. That shows respect.',
+          },
+        ],
+        section: 'the-code-unwritten-rules',
+        topic: 'Stick taps',
+      },
+      {
+        prompt:
+          'Your teammate always stands in front of the net and scores lots of goals from rebounds. Someone calls him a “pigeon”. What is true?',
+        options: [
+          {
+            text: 'Rebound goals count for less. He should shoot from further out.',
+            feedback: 'Every goal counts the same. And scoring from further out is much harder.',
+          },
+          {
+            text: 'Going to the net for rebounds is good hockey. The word is still unkind.',
+            feedback:
+              'Right. Lots of goals come from rebounds. Pigeon is a put-down and has no place in the dressing room.',
+          },
+          {
+            text: 'Pigeon is praise for a good goal scorer.',
+            feedback:
+              'Pigeon sounds harmless, but it is meant as a put-down: someone who only “picks up crumbs”. Praise would be sniper.',
+          },
+        ],
+        section: 'player-types',
+        topic: 'Pigeon',
+      },
+      {
+        prompt: 'After the whistle an opponent crashes into our goalie and keeps poking at the puck. What do you do?',
+        options: [
+          {
+            text: 'Push the opponent back. Nobody touches our goalie.',
+            feedback:
+              'The referee nearly always sees the second action. Then you are in the penalty box, and the team is a player short.',
+          },
+          {
+            text: 'Skate over, stand calmly between the opponent and the goalie and keep your hands on your stick.',
+            feedback:
+              'Exactly. That protects the goalie without risking a penalty. If something needs sorting out, the captain talks to the referee.',
+          },
+          {
+            text: 'Nothing. That is the referee’s job.',
+            feedback:
+              'You need the referee, but you never leave the goalie on their own. Someone skates over and calmly stands in between.',
+          },
+        ],
+        section: 'the-code-unwritten-rules',
+        topic: 'Protecting the goalie',
+      },
+      {
+        prompt: 'In the warm-up a puck slides over the red line into the opponents’ half. What do you do?',
+        options: [
+          {
+            text: 'Quickly skate over and get it. It’s only a puck.',
+            feedback:
+              'In the warm-up nobody skates over the red line. In some leagues that counts as a challenge, even if you don’t mean it that way.',
+          },
+          {
+            text: 'Leave it. It gets collected after the warm-up, or the opponents push it back.',
+            feedback:
+              'Exactly. In the warm-up the red line is an invisible wall. One puck more or less doesn’t matter.',
+          },
+          {
+            text: 'Get it back with a shot: a quick shot at the opponents’ empty net.',
+            feedback:
+              'A shot at the opponents’ net in the warm-up is exactly what you never do. Fights have started before games because of it.',
+          },
+        ],
+        section: 'the-code-unwritten-rules',
+        topic: 'The red line in the warm-up',
       },
     ],
   },

@@ -26,7 +26,7 @@ export function articlePath(entry: Article): string {
  * overview hides them unless the URL has ?drafts=true (see BaseLayout), published pages
  * never link to them, and they get noindex and no sitemap entry.
  */
-export const categoryOrder = ['team', 'ausruestung', 'theorie'] as const;
+export const categoryOrder = ['team', 'ausruestung', 'theorie', 'kultur'] as const;
 
 export async function getArticles(locale: Locale): Promise<Article[]> {
   const entries = await getCollection('articles');

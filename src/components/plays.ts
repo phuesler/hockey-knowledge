@@ -1106,6 +1106,33 @@ const geometry = {
       },
     },
   ],
+  /* Hockey-Sprache: "Gretzky's office", the carrier behind the opponents' net with passes
+     to the slot, the far post and the point. Our left side is at positive x. */
+  'gretzky-office': [
+    {
+      zone: 'attack',
+      scene: {
+        areas: [{ kind: 'open', ellipse: { at: [1.2, 1.9], rx: 3.4, ry: 1.6 } }],
+        players: [
+          { team: 'them', at: [0, 5] },
+          { team: 'them', at: [5.4, 9.6] },
+          { team: 'them', at: [-6, 9.5] },
+          { team: 'them', at: [6.5, 15.5] },
+          { team: 'them', at: [-6.5, 16] },
+          { team: 'us', label: 'C', at: [1.6, 1.9] },
+          { team: 'us', label: 'LW', at: [-0.8, 11] },
+          { team: 'us', label: 'RW', at: [-3.8, 5.6] },
+          { team: 'us', label: 'LD', at: [9, 20.5] },
+          { team: 'us', label: 'RD', at: [-9, 20.5] },
+        ],
+        puck: [0.4, 1.5],
+        moves: [
+          { kind: 'pass', path: [[1.6, 1.9], [3.6, 6], [-0.8, 11]], trim: 1.6, step: 1 },
+          { kind: 'pass', path: [[1.6, 1.9], [-3, 1.6], [-3.8, 5.6]], trim: 1.6, step: 2, stepSide: -1 },
+        ],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -1583,6 +1610,18 @@ const de: Record<PlayId, PlayText> = {
     ],
     note: 'Die gepunktete Linie ist der Blick des Torhüters zum Puck.',
   },
+  'gretzky-office': {
+    caption: 'Gretzkys Büro',
+    panels: [
+      {
+        title: 'Hinter dem Tor hat man Zeit',
+        text: 'C steht mit dem Puck hinter dem gegnerischen Tor. Der Torhüter muss sich umdrehen, die Verteidiger sehen Puck und Gegenspieler nicht gleichzeitig. C passt in den Slot (1) oder an den langen Pfosten (2).',
+      },
+    ],
+    labels: [
+      'Die Angriffszone. Unser Center steht mit dem Puck hinter dem gegnerischen Tor. Pfeile zeigen Pässe zum linken Flügel im Slot und zum rechten Flügel am langen Pfosten.',
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -2041,6 +2080,18 @@ const en: typeof de = {
       'Same situation. Our left defender stands further left, beside the line between the goalie and the puck.',
     ],
     note: 'The dotted line is the goalie’s view of the puck.',
+  },
+  'gretzky-office': {
+    caption: 'Gretzky’s office',
+    panels: [
+      {
+        title: 'Behind the net you have time',
+        text: 'C has the puck behind the opponents’ net. The goalie has to turn round, and the defenders can’t watch the puck and their player at the same time. C passes into the slot (1) or to the far post (2).',
+      },
+    ],
+    labels: [
+      'The attacking zone. Our centre has the puck behind the opponents’ net. Arrows show passes to the left wing in the slot and to the right wing at the far post.',
+    ],
   },
 };
 
