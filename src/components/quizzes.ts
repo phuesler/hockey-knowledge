@@ -786,6 +786,20 @@ const geometry = {
     /* 7. A player in the video makes a mistake. */
     { correct: 1 },
   ],
+  teamgeist: [
+    /* 1. A teammate loses the puck and we concede. */
+    { correct: 1 },
+    /* 2. Racing heart before the game. */
+    { correct: 0 },
+    /* 3. Self-talk before taking a pass. */
+    { correct: 2 },
+    /* 4. A friend scores far more goals. */
+    { correct: 1 },
+    /* 5. After a goal against. */
+    { correct: 0 },
+    /* 6. Why the best hospital teams reported more mistakes. */
+    { correct: 2 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -808,6 +822,7 @@ export const mixQuizzes: QuizId[] = [
   'gegenlaufen',
   'cycles',
   'forecheck',
+  'teamgeist',
   'spiele-schauen',
   'hockey-sprache',
 ];
@@ -2877,6 +2892,127 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  teamgeist: {
+    title: 'Quiz: Teamgeist',
+    name: 'Teamgeist',
+    article: 'teamgeist',
+    questions: [
+      {
+        prompt: 'Dein Mitspieler verliert an der blauen Linie den Puck, der Gegner schiesst ein Tor. Was machst du?',
+        options: [
+          {
+            text: 'Ich erkläre ihm sofort, was er falsch gemacht hat, damit es nicht wieder passiert.',
+            feedback: 'Er weiss schon, dass es schiefging. Mitten im Spiel hilft ein Vortrag nicht. Besprechen kann man es später in Ruhe.',
+          },
+          {
+            text: 'Ich klopfe mit dem Stock aufs Eis und sage: „Nächster!“',
+            feedback: 'Genau. Das Zeichen sagt: Wir sind ein Team. So kann er den Fehler abhaken und ist beim nächsten Einsatz wieder ganz da.',
+          },
+          {
+            text: 'Ich sage nichts und schaue weg, dann ist es ihm weniger peinlich.',
+            feedback: 'Schweigen fühlt sich für ihn wie ein Vorwurf an. Ein kurzes Zeichen wie Stockklopfen oder ein Faustcheck hilft mehr.',
+          },
+        ],
+        section: 'wenn-ein-mitspieler-einen-fehler-macht',
+        topic: 'Mitspieler nach einem Fehler',
+      },
+      {
+        prompt: 'Vor dem Spiel klopft dein Herz schnell, und der Bauch kribbelt. Was bedeutet das?',
+        options: [
+          {
+            text: 'Das ist normal. Mein Körper macht sich bereit. Lange ausatmen hilft.',
+            feedback: 'Richtig. Aufregung ist Energie und zeigt, dass dir das Spiel wichtig ist. Länger aus- als einatmen beruhigt den Körper.',
+          },
+          {
+            text: 'Ich bin nicht bereit für das Spiel.',
+            feedback: 'Nein. Auch die besten Spieler sind vor Spielen aufgeregt. Das Kribbeln heisst nur, dass sich dein Körper bereit macht.',
+          },
+          {
+            text: 'Ich muss das Gefühl verstecken, sonst merken die anderen etwas.',
+            feedback: 'Verstecken kostet Kraft. Besser: sagen, was du fühlst, und lange ausatmen. Ein Gefühl wird schwächer, wenn man ihm einen Namen gibt.',
+          },
+        ],
+        section: 'hockey-ist-ein-gefühlsspiel',
+        topic: 'Aufregung',
+      },
+      {
+        prompt: 'Gleich kommt ein Pass zu dir. Welcher Satz im Kopf hilft am meisten?',
+        options: [
+          {
+            text: '„Bloss nicht vermasseln.“',
+            feedback: 'Dieser Satz lenkt den Kopf auf den Fehler statt auf die Bewegung. Eine kurze Anweisung hilft mehr.',
+          },
+          {
+            text: '„Ich bin der Beste hier.“',
+            feedback: 'Mutmacher helfen, wenn es anstrengend wird. Für eine Technik wie das Annehmen hilft eine kurze Anweisung mehr.',
+          },
+          {
+            text: '„Weich annehmen.“',
+            feedback: 'Genau. Kurze Anweisungen helfen am meisten bei der Technik. Sie sagen dem Körper, was er tun soll.',
+          },
+        ],
+        section: 'was-du-zu-dir-selbst-sagst',
+        topic: 'Selbstgespräche',
+      },
+      {
+        prompt: 'Dein Freund im Team schiesst viel mehr Tore als du. Was stimmt?',
+        options: [
+          {
+            text: 'Dann bin ich einfach schlechter als er.',
+            feedback: 'Das stimmt fast nie. Jeder wächst zu einer anderen Zeit, und jeder hat andere Stärken. Tore sind nur eine davon.',
+          },
+          {
+            text: 'Ich kann mir von ihm etwas abschauen und messe mich an mir vom letzten Monat.',
+            feedback: 'Richtig. Von anderen lernen ist ein guter Vergleich. Und wer sich am eigenen Fortschritt misst, hat mehr Spass.',
+          },
+          {
+            text: 'Ich sollte nicht mehr schiessen und den Puck immer ihm geben.',
+            feedback: 'Dann lernst du das Schiessen nie. Fehler sind erlaubt, solange man etwas versucht.',
+          },
+        ],
+        section: 'dein-weg-nicht-der-weg-der-anderen',
+        topic: 'Vergleichen',
+      },
+      {
+        prompt: 'Der Gegner schiesst ein Tor. Was machst du mit deinem Torhüter?',
+        options: [
+          {
+            text: 'Hinfahren, kurz auf die Schoner klopfen: „Der nächste gehört dir.“',
+            feedback: 'Genau. Fast jedes Gegentor hat mehrere Gründe. Dein Klopfen hilft dem Torhüter, das Tor abzuhaken.',
+          },
+          {
+            text: 'Ich lasse ihn in Ruhe, es ist ihm sicher peinlich.',
+            feedback: 'Allein gelassen fühlt sich ein Torhüter schuldig. Ein kurzer Klaps zeigt ihm, dass das Team hinter ihm steht.',
+          },
+          {
+            text: 'Ich zeige ihm, wie er den Schuss hätte halten können.',
+            feedback: 'Mitten im Spiel hilft das nicht. Tore werden geschossen, nicht reingelassen. Was schiefging, schaut man später im Training an.',
+          },
+        ],
+        section: 'dein-torhüter-nach-einem-gegentor',
+        topic: 'Torhüter nach einem Gegentor',
+      },
+      {
+        prompt: 'Die besten Teams in Krankenhäusern meldeten mehr Fehler als die anderen. Warum?',
+        options: [
+          {
+            text: 'Weil sie eigentlich schlechter waren.',
+            feedback: 'Nein, es waren die besten Teams. Sie machten nicht mehr falsch, sie redeten nur offener darüber.',
+          },
+          {
+            text: 'Weil sie es mussten, sonst gab es Ärger.',
+            feedback: 'Im Gegenteil: In diesen Teams hatte niemand Angst vor Ärger. Darum sagten alle, wenn etwas schiefging.',
+          },
+          {
+            text: 'Weil sich niemand schämte, Fehler zu sagen. So konnten sie es besser machen.',
+            feedback: 'Richtig. Nur über einen Fehler, den man ausspricht, kann man reden und ihn beim nächsten Mal vermeiden. Das gilt auch in der Kabine.',
+          },
+        ],
+        section: 'fehler-gehören-dazu',
+        topic: 'Über Fehler reden',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -4899,6 +5035,127 @@ const en: typeof de = {
         ],
         section: 'for-parents-watching-together',
         topic: 'Respect',
+      },
+    ],
+  },
+  teamgeist: {
+    title: 'Quiz: team spirit',
+    name: 'Team spirit',
+    article: 'team-spirit',
+    questions: [
+      {
+        prompt: 'Your teammate loses the puck at the blue line and the other team scores. What do you do?',
+        options: [
+          {
+            text: 'I explain straight away what they did wrong, so it doesn’t happen again.',
+            feedback: 'They already know it went wrong. A speech in the middle of the game doesn’t help. You can talk it through calmly later.',
+          },
+          {
+            text: 'I tap my stick on the ice and say: “Next one!”',
+            feedback: 'Exactly. The sign says: we’re a team. That way they can let the mistake go and are fully there on the next shift.',
+          },
+          {
+            text: 'I say nothing and look away, so it’s less embarrassing for them.',
+            feedback: 'Silence feels like blame. A short sign like a stick tap or a fist bump helps more.',
+          },
+        ],
+        section: 'when-a-teammate-makes-a-mistake',
+        topic: 'A teammate after a mistake',
+      },
+      {
+        prompt: 'Before the game your heart is racing and your stomach tingles. What does that mean?',
+        options: [
+          {
+            text: 'That’s normal. My body is getting ready. Breathing out long helps.',
+            feedback: 'Right. Nerves are energy and show that the game matters to you. Breathing out longer than in calms the body.',
+          },
+          {
+            text: 'I’m not ready for the game.',
+            feedback: 'No. Even the best players are nervous before games. The tingling only means your body is getting ready.',
+          },
+          {
+            text: 'I have to hide the feeling, otherwise the others will notice.',
+            feedback: 'Hiding it costs energy. Better: say what you feel and breathe out long. A feeling gets weaker when you give it a name.',
+          },
+        ],
+        section: 'hockey-is-a-game-of-feelings',
+        topic: 'Nerves',
+      },
+      {
+        prompt: 'A pass is about to come to you. Which sentence in your head helps most?',
+        options: [
+          {
+            text: '“Just don’t mess it up.”',
+            feedback: 'This sentence points your head at the mistake instead of the movement. A short instruction helps more.',
+          },
+          {
+            text: '“I’m the best player here.”',
+            feedback: 'Pep talk helps when things get tough. For a technique like taking a pass, a short instruction helps more.',
+          },
+          {
+            text: '“Soft hands.”',
+            feedback: 'Exactly. Short instructions help most with technique. They tell your body what to do.',
+          },
+        ],
+        section: 'what-you-say-to-yourself',
+        topic: 'Self-talk',
+      },
+      {
+        prompt: 'Your friend on the team scores far more goals than you. What’s true?',
+        options: [
+          {
+            text: 'Then I’m simply worse than them.',
+            feedback: 'That’s almost never true. Everyone grows at a different time, and everyone has different strengths. Goals are only one of them.',
+          },
+          {
+            text: 'I can learn something from them, and I measure myself against me from last month.',
+            feedback: 'Right. Learning from others is a good comparison. And people who measure themselves by their own progress enjoy it more.',
+          },
+          {
+            text: 'I should stop shooting and always give them the puck.',
+            feedback: 'Then you’ll never learn to shoot. Mistakes are allowed, as long as you try something.',
+          },
+        ],
+        section: 'your-path-not-everyone-elses',
+        topic: 'Comparing',
+      },
+      {
+        prompt: 'The other team scores. What do you do for your goalie?',
+        options: [
+          {
+            text: 'Skate over, give the pads a quick tap: “The next one’s yours.”',
+            feedback: 'Exactly. Almost every goal against has several causes. Your tap helps the goalie let the goal go.',
+          },
+          {
+            text: 'I leave them alone, they’re bound to be embarrassed.',
+            feedback: 'Left alone, a goalie feels guilty. A quick tap shows them the team is behind them.',
+          },
+          {
+            text: 'I show them how they could have stopped the shot.',
+            feedback: 'That doesn’t help in the middle of a game. Goals are scored, not let in. What went wrong, you look at later in practice.',
+          },
+        ],
+        section: 'your-goalie-after-a-goal-against',
+        topic: 'The goalie after a goal against',
+      },
+      {
+        prompt: 'The best hospital teams reported more mistakes than the others. Why?',
+        options: [
+          {
+            text: 'Because they were actually worse.',
+            feedback: 'No, they were the best teams. They didn’t get more wrong, they just talked about it more openly.',
+          },
+          {
+            text: 'Because they had to, or they would get into trouble.',
+            feedback: 'The opposite: in these teams nobody was afraid of getting into trouble. That’s why everyone spoke up when something went wrong.',
+          },
+          {
+            text: 'Because nobody was ashamed to admit a mistake. So they could do better.',
+            feedback: 'Right. Only a mistake that is said out loud can be talked about and avoided next time. The same goes for the dressing room.',
+          },
+        ],
+        section: 'mistakes-are-part-of-it',
+        topic: 'Talking about mistakes',
       },
     ],
   },
