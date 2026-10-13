@@ -43,6 +43,7 @@ export const articleSlugs = {
   regeln: 'rules',
   torhueter: 'goalies',
   aufstellung: 'lineup',
+  spielbeginn: 'game-start',
 } as const;
 
 export const games: Game[] = [
@@ -72,7 +73,16 @@ export const games: Game[] = [
       de: 'Unsere U13 aus der letzten Saison. FASS spielt in Weiss.',
       en: 'Our U13 from last season. FASS play in white.',
     },
-    scenes: [],
+    scenes: [
+      {
+        at: 647,
+        article: 'spielbeginn',
+        text: {
+          de: 'Die Begrüssung: Aufstellen auf der blauen Linie, Stock hoch, Handschlag, Kreis am Tor. Etwa zwei Minuten bis zum ersten Bully.',
+          en: 'The greeting: lining up on the blue line, sticks up, handshakes, huddle at the net. About two minutes until the first face-off.',
+        },
+      },
+    ],
   },
 ];
 
