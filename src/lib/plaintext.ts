@@ -2,6 +2,7 @@ import type { Article } from './articles';
 import { absoluteUrl } from './href';
 import { parseEntryId, t } from './i18n';
 import { quizMarkdown, quizzes, type QuizId } from '../components/quizzes';
+import { gameListMarkdown } from '../components/games';
 
 /**
  * An article body as plain Markdown, for the llms-full.txt files that people hand to
@@ -12,6 +13,7 @@ import { quizMarkdown, quizzes, type QuizId } from '../components/quizzes';
  *   <Callout type title>…</Callout>       -> blockquote with the title in bold
  *   <details><summary>Q</summary>A        -> **Q** followed by A (quiz questions)
  *   <Quiz quiz="x" />                     -> every question with options and answer
+ *   <GameList />                          -> every game with its video link and scenes
  *   <AskAi />, <Prompt>text</Prompt>      -> the prompt as a quote
  *   <a href={href('/de/x')}>…</a>         -> [text](absolute URL)
  *   <AnyComponent … />                    -> a note that the diagram is on the website
@@ -38,6 +40,7 @@ export function articleMarkdown(entry: Article, site: URL | undefined): string {
     .replace(/<Prompt>([\s\S]*?)<\/Prompt>/g, (_, text: string) => `> ${text.trim().replace(/\s*\n\s*/g, ' ')}`)
     .replace(/<Quiz\b[^>]*?quiz="([\w-]+)"[^>]*?\/>/g, (tag: string, id: string) =>
       id in quizzes ? quizMarkdown(id as QuizId, locale) : tag)
+    .replace(/<GameList\b[^>]*\/>/g, () => gameListMarkdown(locale, (path) => absoluteUrl(path, site)))
     .replace(/<a href=\{href\('([^']*)'\)\}>([\s\S]*?)<\/a>/g, (_, path: string, text: string) =>
       `[${text}](${absoluteUrl(path, site)})`)
     .replace(/<a href="([^"]*)">([\s\S]*?)<\/a>/g, '[$2]($1)')

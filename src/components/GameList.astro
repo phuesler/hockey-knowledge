@@ -1,0 +1,145 @@
+---
+/**
+ * The recorded games from games.ts as cards: who played, the class, a link to the video
+ * and, where there are any, scenes with a timestamp link and the matching article.
+ * Static: plain links, no YouTube player, so nothing loads from YouTube until a reader
+ * taps a link.
+ */
+import { href } from '../lib/href';
+import { localeFromUrl, t } from '../lib/i18n';
+import { articleSlug, games, timestamp, videoUrl } from './games';
+
+const de = {
+  caption: 'Spiele zum Anschauen',
+  watch: 'Spiel auf YouTube ansehen',
+  source: 'Aufnahme',
+  scenes: 'Szenen',
+  article: 'Zum Artikel',
+};
+
+const en: typeof de = {
+  caption: 'Games to watch',
+  watch: 'Watch the game on YouTube',
+  source: 'Filmed by',
+  scenes: 'Scenes',
+  article: 'Read the article',
+};
+
+const locale = localeFromUrl(Astro.url);
+const s = { de, en }[locale];
+const dateFormat = new Intl.DateTimeFormat(t(locale).dateLocale, { dateStyle: 'long' });
+---
+
+<figure class="games">
+  <figcaption>{s.caption}</figcaption>
+  <ul>
+    {
+      games.map((game) => (
+        <li>
+          <p class="meta">
+            {game.level[locale]} · <time datetime={game.date}>{dateFormat.format(new Date(game.date))}</time>
+          </p>
+          <p class="teams">{game.home} – {game.away}</p>
+          {game.note && <p>{game.note[locale]}</p>}
+          <p>
+            <a class="watch" href={videoUrl(game)}>{s.watch}</a>
+          </p>
+          {game.scenes.length > 0 && (
+            <>
+              <p class="label">{s.scenes}</p>
+              <ol class="scenes">
+                {game.scenes.map((scene) => (
+                  <li>
+                    <a class="time" href={videoUrl(game, scene.at)}>{timestamp(scene.at)}</a>
+                    <span>
+                      {scene.text[locale]}{' '}
+                      <a href={href(`/${locale}/${articleSlug(scene, locale)}/`)}>{s.article}</a>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
+          <p class="source">
+            {s.source}: <a href={game.channel.url}>{game.channel.name}</a>
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .games {
+    margin: var(--s-6) 0;
+  }
+  figcaption {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    font-weight: 700;
+    margin-bottom: var(--s-3);
+  }
+  ul {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* .prose spaces consecutive list items; ul > li outranks it. */
+  ul > li {
+    margin: 0;
+    padding: var(--s-4);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-top: 4px solid var(--c-accent);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  p {
+    margin: 0;
+  }
+  p + p,
+  p + ol,
+  ol + p {
+    margin-top: var(--s-2);
+  }
+  .meta,
+  .source,
+  .label {
+    font-size: var(--t-sm);
+    color: var(--c-text-muted);
+  }
+  .label {
+    font-weight: 700;
+    margin-top: var(--s-3);
+  }
+  .teams {
+    font-size: var(--t-lg);
+    font-weight: 700;
+  }
+  .watch {
+    font-weight: 700;
+  }
+  .scenes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--t-sm);
+  }
+  .scenes > li {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: var(--s-2);
+    margin: 0;
+  }
+  .scenes > li + li {
+    margin-top: var(--s-2);
+  }
+  .time {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+</style>
