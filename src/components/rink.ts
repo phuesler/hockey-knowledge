@@ -17,7 +17,8 @@
 
 export type Pt = readonly [x: number, d: number];
 
-export type Team = 'us' | 'them';
+/** `ref` is a referee: no team, drawn black and white. */
+export type Team = 'us' | 'them' | 'ref';
 
 export interface Player {
   team: Team;
@@ -60,7 +61,8 @@ export interface Move {
  * gap    — an area nobody covers.
  * shot   — what a shooter sees of the goal.
  * near / far — near and far support.
- * bench  — our players' bench along the boards.
+ * bench  — our players' bench along the boards; bench-them the opponents' bench.
+ * ref-crease — the referees' half circle on the boards at the centre line.
  * open   — open ice: space no opponent covers, where a player can skate or get a pass.
  * shadow — a passing shadow: the space behind an opponent that no pass reaches.
  * view   — where a player is looking (see viewCone).
@@ -76,6 +78,8 @@ export type AreaKind =
   | 'near'
   | 'far'
   | 'bench'
+  | 'bench-them'
+  | 'ref-crease'
   | 'open'
   | 'shadow'
   | 'view'

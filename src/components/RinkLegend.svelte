@@ -12,6 +12,7 @@
     title: 'Legende',
     us: 'wir',
     them: 'Gegner',
+    ref: 'Schiedsrichter',
     ghost: 'vorher',
     puck: 'Puck',
     skate: 'fahren',
@@ -26,6 +27,8 @@
     far: 'weite Unterstützung',
     gap: 'niemand da',
     bench: 'unsere Spielerbank',
+    'bench-them': 'Bank der Gegner',
+    'ref-crease': 'Schiedsrichterkreis',
     open: 'freies Eis',
     shadow: 'Passschatten',
     view: 'Blick',
@@ -39,6 +42,7 @@
     title: 'Key',
     us: 'us',
     them: 'opponents',
+    ref: 'referee',
     ghost: 'before',
     puck: 'puck',
     skate: 'skate',
@@ -53,6 +57,8 @@
     far: 'far support',
     gap: 'nobody there',
     bench: 'our bench',
+    'bench-them': 'opponents’ bench',
+    'ref-crease': 'referee’s crease',
     open: 'open ice',
     shadow: 'passing shadow',
     view: 'where the player looks',
@@ -77,7 +83,7 @@
       }
     }
     const order: Key[] = [
-      'us', 'them', 'ghost', 'puck', 'skate', 'carry', 'pass', 'shot', 'stick', 'lane', 'sight', 'danger', 'near', 'far', 'gap', 'open', 'shadow', 'view', 'bench',
+      'us', 'them', 'ref', 'ghost', 'puck', 'skate', 'carry', 'pass', 'shot', 'stick', 'lane', 'sight', 'danger', 'near', 'far', 'gap', 'open', 'shadow', 'view', 'bench', 'bench-them', 'ref-crease',
       'cover-lw', 'cover-rw', 'cover-ld', 'cover-rd', 'cover-c',
     ];
     return order.filter((k) => keys.has(k));
@@ -88,7 +94,7 @@
   {#each used as key}
     <li>
       <svg viewBox="0 0 24 12" aria-hidden="true">
-        {#if key === 'us' || key === 'them' || key === 'ghost'}
+        {#if key === 'us' || key === 'them' || key === 'ref' || key === 'ghost'}
           <circle cx="12" cy="6" r="5" class={key} />
         {:else if key === 'puck'}
           <circle cx="12" cy="6" r="2.4" class="puck" />
@@ -146,6 +152,11 @@
   }
   .them {
     fill: var(--c-text);
+  }
+  .ref {
+    fill: var(--c-steel);
+    stroke: var(--c-text);
+    stroke-width: 1.2;
   }
   .ghost {
     fill: var(--c-surface);
@@ -213,6 +224,14 @@
   .area.bench {
     fill: var(--c-good-soft);
     stroke: var(--c-good);
+  }
+  .area.bench-them {
+    fill: var(--c-surface-2);
+    stroke: var(--c-text-muted);
+  }
+  .area.ref-crease {
+    fill: none;
+    stroke: var(--c-brand);
   }
   .area.cover-ld {
     fill: var(--c-zone-ld);
