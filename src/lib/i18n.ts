@@ -56,12 +56,14 @@ const de = {
     ausruestung: 'Ausrüstung',
     theorie: 'Theorie',
     spiele: 'Spiele schauen',
+    kultur: 'Hockey-Kultur',
   },
   categoryIntros: {
     team: 'Wie wir in der U13 arbeiten: unsere Ziele, unsere Spielweise und wie ein Spieltag abläuft.',
     ausruestung: 'Was ihr beim Kauf und beim Unterhalt der Ausrüstung wissen müsst.',
     theorie: 'Regeln, Spielverständnis und Taktik zum Nachlesen.',
     spiele: 'Echte Spiele anschauen und darin wiederfinden, was in den Artikeln steht.',
+    kultur: 'Wörter, Bräuche und Geschichten, die man in der Kabine und im Stadion hört.',
   },
   callouts: {
     tipp: 'Tipp',
@@ -143,12 +145,14 @@ const en: UiStrings = {
     ausruestung: 'Equipment',
     theorie: 'Theory',
     spiele: 'Watching games',
+    kultur: 'Hockey culture',
   },
   categoryIntros: {
     team: 'How we work in U13: our goals, our style of play and how a game day works.',
     ausruestung: 'What you need to know when buying and looking after equipment.',
     theorie: 'Rules, game sense and tactics to read up on.',
     spiele: 'Watch real games and spot what the articles explain.',
+    kultur: 'Words, customs and stories you hear in the dressing room and in the stands.',
   },
   callouts: {
     tipp: 'Tip',
