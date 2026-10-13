@@ -55,11 +55,13 @@ const de = {
     team: 'Unser Team',
     ausruestung: 'Ausrüstung',
     theorie: 'Theorie',
+    spiele: 'Spiele schauen',
   },
   categoryIntros: {
     team: 'Wie wir in der U13 arbeiten: unsere Ziele, unsere Spielweise und wie ein Spieltag abläuft.',
     ausruestung: 'Was ihr beim Kauf und beim Unterhalt der Ausrüstung wissen müsst.',
     theorie: 'Regeln, Spielverständnis und Taktik zum Nachlesen.',
+    spiele: 'Echte Spiele anschauen und darin wiederfinden, was in den Artikeln steht.',
   },
   callouts: {
     tipp: 'Tipp',
@@ -140,11 +142,13 @@ const en: UiStrings = {
     team: 'Our team',
     ausruestung: 'Equipment',
     theorie: 'Theory',
+    spiele: 'Watching games',
   },
   categoryIntros: {
     team: 'How we work in U13: our goals, our style of play and how a game day works.',
     ausruestung: 'What you need to know when buying and looking after equipment.',
     theorie: 'Rules, game sense and tactics to read up on.',
+    spiele: 'Watch real games and spot what the articles explain.',
   },
   callouts: {
     tipp: 'Tip',
