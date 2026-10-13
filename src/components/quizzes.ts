@@ -756,6 +756,36 @@ const geometry = {
     /* 10. A puck slides over the red line in the warm-up. */
     { correct: 1 },
   ],
+  spielbeginn: [
+    /* 1. When do the sticks go up? */
+    { correct: 1 },
+    /* 2. Who shakes whose hand before the game? */
+    { correct: 0 },
+    /* 3. What everyone else does while the captains shake hands. */
+    { correct: 1 },
+    /* 4. Not in the first line: after the team chant. */
+    { correct: 2 },
+    /* 5. Trouble with this team last time. */
+    { correct: 0 },
+    /* 6. The captain is ill. */
+    { correct: 1 },
+  ],
+  'spiele-schauen': [
+    /* 1. Whom to watch. */
+    { correct: 1 },
+    /* 2. Why pause just before something happens. */
+    { correct: 0 },
+    /* 3. How long to watch with one task. */
+    { correct: 2 },
+    /* 4. When to look for dog, fox and hawk. */
+    { correct: 0 },
+    /* 5. Comparing MK1 with our game: what to look for. */
+    { correct: 1 },
+    /* 6. A play in the video differs from the article. */
+    { correct: 2 },
+    /* 7. A player in the video makes a mistake. */
+    { correct: 1 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -767,6 +797,7 @@ export const quizzes: Record<QuizId, QuestionGeometry[]> = geometry;
  */
 export const mixQuizzes: QuizId[] = [
   'aufstellung',
+  'spielbeginn',
   'regeln',
   'bully',
   'rollen',
@@ -777,6 +808,7 @@ export const mixQuizzes: QuizId[] = [
   'gegenlaufen',
   'cycles',
   'forecheck',
+  'spiele-schauen',
   'hockey-sprache',
 ];
 
@@ -2584,6 +2616,267 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  spielbeginn: {
+    title: 'Quiz: Spielbeginn',
+    name: 'Spielbeginn',
+    article: 'spielbeginn',
+    questions: [
+      {
+        prompt: 'Ihr steht auf der blauen Linie, die Schiedsrichter sind bereit. Wann hebst du den Stock?',
+        options: [
+          {
+            text: 'Wenn der Schiedsrichter pfeift.',
+            feedback: 'Für den Gruss gibt es keinen Pfiff und kein Zeichen. Darum machen die Kapitäne vorher ab, wann es losgeht.',
+          },
+          {
+            text: 'Wenn dein Kapitän den Stock hebt.',
+            feedback: 'Genau. Alle schauen auf ihren Kapitän: Hebt er den Stock, heben alle. Senkt er ihn, klopfen alle aufs Eis.',
+          },
+          {
+            text: 'Sobald du auf der Linie stehst.',
+            feedback: 'Zu früh. Erst warten alle, bis die Schiedsrichter in ihrem Kreis stehen. Dann gibt der Kapitän das Zeichen.',
+          },
+        ],
+        section: 'die-begrüssung',
+        topic: 'Die Begrüssung',
+      },
+      {
+        prompt: 'Wer gibt vor dem Spiel wem die Hand?',
+        options: [
+          {
+            text: 'Die Kapitäne: einander, dann den Schiedsrichtern, dann den Trainern der anderen Mannschaft.',
+            feedback: 'Richtig. Vor dem Spiel machen nur die Kapitäne die Handschläge. Alle anderen bleiben auf der blauen Linie.',
+          },
+          {
+            text: 'Alle Spieler fahren in die Mitte und geben sich die Hand.',
+            feedback: 'Das passiert nach dem Spiel. Vor dem Spiel geben nur die Kapitäne die Hand, alle anderen bleiben stehen.',
+          },
+          {
+            text: 'Die Kapitäne geben den eigenen Trainern die Hand.',
+            feedback: 'Die eigenen Trainer kennt man schon. Jeder Kapitän fährt zur Bank der anderen Mannschaft und wünscht dort ein gutes Spiel.',
+          },
+        ],
+        section: 'die-begrüssung',
+        topic: 'Die Handschläge',
+      },
+      {
+        prompt: 'Die Kapitäne fahren zum Handschlag in die Mitte. Was machst du?',
+        options: [
+          {
+            text: 'Ich schiesse noch ein paar Pucks, damit ich warm bleibe.',
+            feedback: 'Während der Begrüssung spielt niemand mit dem Puck. Das Aufwärmen ist vorbei.',
+          },
+          {
+            text: 'Ich bleibe ruhig auf der blauen Linie stehen.',
+            feedback: 'Genau. Alle stehen still in der Reihe, bis der Kapitän mit den Fist Bumps zurückkommt.',
+          },
+          {
+            text: 'Ich fahre schon zum eigenen Tor, damit wir Zeit sparen.',
+            feedback: 'Zum Tor geht es erst nach den Fist Bumps. Der Kapitän holt jeden in der Reihe ab, dazu musst du dort stehen.',
+          },
+        ],
+        section: 'worauf-du-achten-musst',
+        topic: 'Ruhig stehen',
+      },
+      {
+        prompt: 'Du spielst nicht in der ersten Reihe. Was machst du nach dem Teamruf?',
+        options: [
+          {
+            text: 'Ich bleibe am Tor stehen, bis der Trainer mich ruft.',
+            feedback: 'Dann kann das Spiel nicht beginnen. Nur die erste Reihe und der erste Torhüter bleiben auf dem Eis.',
+          },
+          {
+            text: 'Ich fahre an die Bande und warte dort, bis das Bully vorbei ist.',
+            feedback: 'An der Bande ist nicht auf der Bank. Der Schiedsrichter wirft den Puck erst ein, wenn alle Türen zu sind.',
+          },
+          {
+            text: 'Ich fahre zügig auf die Bank und mache die Tür zu.',
+            feedback: 'Richtig. Das Spiel beginnt erst, wenn alle Türen zu sind. Wer trödelt, lässt alle warten.',
+          },
+        ],
+        section: 'kreis-am-tor-und-los',
+        topic: 'Erste Reihe aufs Eis',
+      },
+      {
+        prompt: 'Beim letzten Spiel gegen diese Mannschaft gab es Ärger. Wie läuft die Begrüssung heute?',
+        options: [
+          {
+            text: 'Genau gleich wie immer.',
+            feedback: 'Genau. Die Begrüssung ist bei jedem Spiel gleich. Respekt gilt auch, wenn es letztes Mal Ärger gab.',
+          },
+          {
+            text: 'Kurz und ohne Stock hoch, damit es keinen neuen Ärger gibt.',
+            feedback: 'Der Gruss zeigt Respekt. Ihn wegzulassen macht Ärger eher grösser als kleiner.',
+          },
+          {
+            text: 'Der Kapitän entscheidet, ob wir heute grüssen.',
+            feedback: 'Der Kapitän gibt das Zeichen, aber gegrüsst wird immer. Das ist bei jedem Gegner gleich.',
+          },
+        ],
+        section: 'worauf-du-achten-musst',
+        topic: 'Gleich, wer der Gegner ist',
+      },
+      {
+        prompt: 'Euer Kapitän ist krank. Wer macht heute die Handschläge?',
+        options: [
+          {
+            text: 'Der Torhüter, weil er sowieso mit in der Reihe steht.',
+            feedback: 'Der Torhüter steht zwar in der Reihe, aber er übernimmt nicht. Dafür gibt es die Assistenten.',
+          },
+          {
+            text: 'Ein Assistent, der ein „A“ auf dem Trikot trägt.',
+            feedback: 'Richtig. Fehlt der Kapitän mit dem „C“, übernimmt ein Assistent mit dem „A“.',
+          },
+          {
+            text: 'Niemand. Dann fallen die Handschläge aus.',
+            feedback: 'Die Handschläge gehören zu jedem Spiel. Fehlt der Kapitän, übernimmt ein Assistent mit dem „A“.',
+          },
+        ],
+        section: 'was-der-kapitän-macht',
+        topic: 'Was der Kapitän macht',
+      },
+    ],
+  },
+  'spiele-schauen': {
+    title: 'Quiz: Spiele schauen',
+    name: 'Spiele schauen',
+    article: 'spiele-schauen',
+    questions: [
+      {
+        prompt: 'Du schaust ein Spiel auf Video, um etwas zu lernen. Wem schaust du zu?',
+        options: [
+          {
+            text: 'Immer dem Puck, dort passiert ja alles.',
+            feedback: 'Wer nur dem Puck folgt, sieht ein spannendes Spiel und lernt wenig. Viel passiert weit weg vom Puck.',
+          },
+          {
+            text: 'Einem Spieler, einen ganzen Einsatz lang, auch wenn er weit weg vom Puck ist.',
+            feedback: 'Genau. Am besten einem auf deiner Position. Du wirst staunen, wie viel ein Spieler ohne Puck tut.',
+          },
+          {
+            text: 'Jedes Mal einem anderen Spieler, damit ich alle sehe.',
+            feedback: 'Dann siehst du von jedem nur ein Stück. Bleib einen ganzen Einsatz lang bei einem Spieler.',
+          },
+        ],
+        section: 'so-schaust-du-richtig',
+        topic: 'Einen Spieler verfolgen',
+      },
+      {
+        prompt: 'Warum hältst du das Video an, kurz bevor etwas passiert?',
+        options: [
+          {
+            text: 'Um zu raten, was als Nächstes passiert, und dann zu prüfen, ob ich recht hatte.',
+            feedback: 'Richtig. Wer rät und dann nachschaut, denkt mit wie ein Spieler auf dem Eis.',
+          },
+          {
+            text: 'Damit ich nicht zu viel auf einmal sehe.',
+            feedback: 'Anhalten hilft nicht beim Weniger-Sehen, sondern beim Mitdenken: Du rätst, was passiert, und prüfst es dann.',
+          },
+          {
+            text: 'Anhalten ist nur für Erwachsene, die etwas erklären wollen.',
+            feedback: 'Anhalten ist für dich. Du rätst selbst, wohin der Pass geht, und schaust dann, ob du recht hattest.',
+          },
+        ],
+        section: 'so-schaust-du-richtig',
+        topic: 'Anhalten und raten',
+      },
+      {
+        prompt: 'Wie schaust du am besten?',
+        options: [
+          {
+            text: 'Das ganze Spiel am Stück, dann sehe ich am meisten.',
+            feedback: 'Ein Spiel dauert mit Pausen über zwei Stunden. Nebenbei schauen bringt wenig.',
+          },
+          {
+            text: 'Mit allen Aufträgen gleichzeitig, dann lohnt es sich.',
+            feedback: 'Wer alles auf einmal sucht, findet wenig. Nimm dir pro Mal einen Auftrag vor.',
+          },
+          {
+            text: 'Etwa zehn Minuten mit einem Auftrag.',
+            feedback: 'Genau. Zehn Minuten mit einem Auftrag bringen mehr als eine Stunde nebenbei schauen.',
+          },
+        ],
+        section: 'so-schaust-du-richtig',
+        topic: 'Lieber kurz als lang',
+      },
+      {
+        prompt: 'Dein Auftrag ist Forecheck: Du suchst Hund, Fuchs und Falke. Wann hältst du an?',
+        options: [
+          {
+            text: 'Wenn eine Mannschaft den Puck in ihrer eigenen Ecke hat.',
+            feedback: 'Richtig. Dann macht die andere Mannschaft Forecheck, und du kannst die drei Tiere suchen.',
+          },
+          {
+            text: 'Wenn eine Mannschaft aufs Tor schiesst.',
+            feedback: 'Dann greift eine Mannschaft an. Forecheck ist, wenn der Gegner den Puck in seiner eigenen Zone hat.',
+          },
+          {
+            text: 'Beim Bully in der Mitte.',
+            feedback: 'Beim Bully hat noch niemand den Puck. Warte, bis eine Mannschaft den Puck in ihrer eigenen Ecke hat.',
+          },
+        ],
+        section: 'aufträge-für-jedes-spiel',
+        topic: 'Aufträge',
+      },
+      {
+        prompt: 'Du vergleichst das Spiel aus der MK1 mit unserem Spiel. Worauf achtest du?',
+        options: [
+          {
+            text: 'Wer am Ende gewinnt.',
+            feedback: 'Das Resultat verrät wenig darüber, wie gespielt wird. Schau lieber, wie die Spieler den Puck bewegen.',
+          },
+          {
+            text: 'Wie lange ein Spieler den Puck hat und wie viele Pässe hintereinander gelingen.',
+            feedback: 'Genau. Dazu: wie weit die Spieler auseinander stehen und wie schnell sie nach einem Puckverlust zurückkommen.',
+          },
+          {
+            text: 'Welche Schläger und Schlittschuhe die Spieler haben.',
+            feedback: 'Die Ausrüstung macht den Unterschied nicht. Schau, wie die Spieler den Puck bewegen und wo sie stehen.',
+          },
+        ],
+        section: 'vergleichen-was-ist-anders',
+        topic: 'Vergleichen',
+      },
+      {
+        prompt: 'Im Video spielt eine Mannschaft etwas anders, als es im Artikel steht. Was heisst das?',
+        options: [
+          {
+            text: 'Der Artikel ist falsch.',
+            feedback: 'Nicht unbedingt. Jede Mannschaft hat ihr eigenes System, und jede Situation ist etwas anders.',
+          },
+          {
+            text: 'Ich mache es ab jetzt wie im Video, die sind ja eine Klasse höher.',
+            feedback: 'Nicht jeder Spielzug im Video passt zu unserem System. Frag lieber zuerst im Training nach.',
+          },
+          {
+            text: 'Ich frage im Training nach, warum es anders ist.',
+            feedback: 'Richtig. Nicht jeder Spielzug passt zu unserem System. Darüber zu reden lohnt sich immer.',
+          },
+        ],
+        section: 'für-eltern-gemeinsam-schauen',
+        topic: 'Nachfragen',
+      },
+      {
+        prompt: 'Im Video macht ein Spieler einen dicken Fehler. Was machst du?',
+        options: [
+          {
+            text: 'Ich schreibe einen witzigen Kommentar unter das Video.',
+            feedback: 'Auch im Video stehen Kinder auf dem Eis. Wir lästern nicht über Fehler, auch nicht in den Kommentaren.',
+          },
+          {
+            text: 'Ich überlege, was er hätte anders machen können, und rede über den Spielzug.',
+            feedback: 'Genau. Wir reden über Spielzüge, nicht über einzelne Spieler. Aus Fehlern lernt man am meisten.',
+          },
+          {
+            text: 'Ich schicke die Stelle meinen Freunden, damit sie auch lachen.',
+            feedback: 'Auch im Video stehen Kinder auf dem Eis. Über Fehler lacht man nicht, man lernt daraus.',
+          },
+        ],
+        section: 'für-eltern-gemeinsam-schauen',
+        topic: 'Respekt',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -4345,6 +4638,267 @@ const en: typeof de = {
         ],
         section: 'the-code-unwritten-rules',
         topic: 'The red line in the warm-up',
+      },
+    ],
+  },
+  spielbeginn: {
+    title: 'Quiz: game start',
+    name: 'Game start',
+    article: 'game-start',
+    questions: [
+      {
+        prompt: 'You are standing on the blue line and the referees are ready. When do you raise your stick?',
+        options: [
+          {
+            text: 'When the referee blows the whistle.',
+            feedback: 'There is no whistle or signal for the greeting. That is why the captains agree beforehand when to start.',
+          },
+          {
+            text: 'When your captain raises their stick.',
+            feedback: 'Exactly. Everyone watches their captain: stick up, everyone raises theirs. Stick down, everyone taps the ice.',
+          },
+          {
+            text: 'As soon as you are standing on the line.',
+            feedback: 'Too early. First everyone waits until the referees are in their crease. Then the captain gives the signal.',
+          },
+        ],
+        section: 'the-greeting',
+        topic: 'The greeting',
+      },
+      {
+        prompt: 'Who shakes whose hand before the game?',
+        options: [
+          {
+            text: 'The captains: each other, then the referees, then the other team’s coaches.',
+            feedback: 'Right. Before the game only the captains do the handshakes. Everyone else stays on the blue line.',
+          },
+          {
+            text: 'All the players skate to the middle and shake hands.',
+            feedback: 'That happens after the game. Before the game only the captains shake hands, everyone else stays put.',
+          },
+          {
+            text: 'The captains shake hands with their own coaches.',
+            feedback: 'You already know your own coaches. Each captain skates to the other team’s bench and wishes them a good game.',
+          },
+        ],
+        section: 'the-greeting',
+        topic: 'The handshakes',
+      },
+      {
+        prompt: 'The captains skate to the middle for the handshake. What do you do?',
+        options: [
+          {
+            text: 'Take a few more shots so I stay warm.',
+            feedback: 'During the greeting nobody plays with the puck. The warm-up is over.',
+          },
+          {
+            text: 'Stand still on the blue line.',
+            feedback: 'Exactly. Everyone stands still in the line until the captain comes back with the fist bumps.',
+          },
+          {
+            text: 'Skate to our net already to save time.',
+            feedback: 'The team goes to the net only after the fist bumps. The captain picks up everyone in the line, so you need to be there.',
+          },
+        ],
+        section: 'what-to-watch-out-for',
+        topic: 'Stand still',
+      },
+      {
+        prompt: 'You are not in the first line. What do you do after the team chant?',
+        options: [
+          {
+            text: 'Stay at the net until the coach calls me.',
+            feedback: 'Then the game can’t start. Only the first line and the first goalie stay on the ice.',
+          },
+          {
+            text: 'Skate to the boards and wait there until the face-off is over.',
+            feedback: 'The boards are not the bench. The referee only drops the puck once every door is shut.',
+          },
+          {
+            text: 'Skate straight to the bench and shut the door.',
+            feedback: 'Right. The game only starts once every door is shut. Dawdling keeps everyone waiting.',
+          },
+        ],
+        section: 'huddle-and-go',
+        topic: 'First line on the ice',
+      },
+      {
+        prompt: 'Last time against this team there was trouble. How does the greeting go today?',
+        options: [
+          {
+            text: 'Exactly the same as always.',
+            feedback: 'Exactly. The greeting is the same at every game. Respect counts even when there was trouble last time.',
+          },
+          {
+            text: 'Short and without sticks up, so there is no new trouble.',
+            feedback: 'The greeting shows respect. Leaving it out tends to make trouble bigger, not smaller.',
+          },
+          {
+            text: 'The captain decides whether we greet today.',
+            feedback: 'The captain gives the signal, but the greeting always happens. It is the same against every team.',
+          },
+        ],
+        section: 'what-to-watch-out-for',
+        topic: 'Whoever the opponent is',
+      },
+      {
+        prompt: 'Your captain is ill. Who does the handshakes today?',
+        options: [
+          {
+            text: 'The goalie, because they stand in the line anyway.',
+            feedback: 'The goalie does stand in the line, but doesn’t take over. That is what the assistants are for.',
+          },
+          {
+            text: 'An assistant, wearing an “A” on the jersey.',
+            feedback: 'Right. If the captain with the “C” is missing, an assistant with the “A” takes over.',
+          },
+          {
+            text: 'Nobody. The handshakes are skipped.',
+            feedback: 'The handshakes are part of every game. If the captain is missing, an assistant with the “A” takes over.',
+          },
+        ],
+        section: 'what-the-captain-does',
+        topic: 'What the captain does',
+      },
+    ],
+  },
+  'spiele-schauen': {
+    title: 'Quiz: watching games',
+    name: 'Watching games',
+    article: 'watching-games',
+    questions: [
+      {
+        prompt: 'You watch a game on video to learn something. Who do you watch?',
+        options: [
+          {
+            text: 'Always the puck, that’s where everything happens.',
+            feedback: 'If you only follow the puck, you see an exciting game and learn little. A lot happens far from the puck.',
+          },
+          {
+            text: 'One player, for a whole shift, even when they are far from the puck.',
+            feedback: 'Exactly. Ideally one in your position. You will be surprised how much a player does without the puck.',
+          },
+          {
+            text: 'A different player each time, so I see everyone.',
+            feedback: 'Then you only see a bit of each. Stay with one player for a whole shift.',
+          },
+        ],
+        section: 'how-to-watch-properly',
+        topic: 'Follow one player',
+      },
+      {
+        prompt: 'Why do you pause the video just before something happens?',
+        options: [
+          {
+            text: 'To guess what happens next, then check whether I was right.',
+            feedback: 'Right. Guessing and then checking makes you think along like a player on the ice.',
+          },
+          {
+            text: 'So I don’t see too much at once.',
+            feedback: 'Pausing isn’t about seeing less, it’s about thinking along: you guess what happens, then check.',
+          },
+          {
+            text: 'Pausing is only for grown-ups who want to explain something.',
+            feedback: 'Pausing is for you. You guess where the pass goes yourself, then see whether you were right.',
+          },
+        ],
+        section: 'how-to-watch-properly',
+        topic: 'Pause and guess',
+      },
+      {
+        prompt: 'What is the best way to watch?',
+        options: [
+          {
+            text: 'The whole game in one go, then I see the most.',
+            feedback: 'A game with breaks lasts over two hours. Watching on the side does little.',
+          },
+          {
+            text: 'With all the tasks at once, so it’s worth it.',
+            feedback: 'Looking for everything at once, you find little. Take one task at a time.',
+          },
+          {
+            text: 'About ten minutes with one task.',
+            feedback: 'Exactly. Ten minutes with one task do more than an hour of watching on the side.',
+          },
+        ],
+        section: 'how-to-watch-properly',
+        topic: 'Short beats long',
+      },
+      {
+        prompt: 'Your task is the forecheck: you look for the dog, the fox and the hawk. When do you pause?',
+        options: [
+          {
+            text: 'When a team has the puck in its own corner.',
+            feedback: 'Right. Then the other team forechecks, and you can look for the three animals.',
+          },
+          {
+            text: 'When a team shoots at the goal.',
+            feedback: 'Then a team is attacking. The forecheck is when the opponents have the puck in their own zone.',
+          },
+          {
+            text: 'At the face-off in the middle.',
+            feedback: 'At the face-off nobody has the puck yet. Wait until a team has the puck in its own corner.',
+          },
+        ],
+        section: 'tasks-for-any-game',
+        topic: 'Tasks',
+      },
+      {
+        prompt: 'You compare the MK1 game with our game. What do you look for?',
+        options: [
+          {
+            text: 'Who wins in the end.',
+            feedback: 'The score says little about how a team plays. Watch how the players move the puck instead.',
+          },
+          {
+            text: 'How long a player keeps the puck and how many passes in a row work.',
+            feedback: 'Exactly. Also: how far apart the players are and how quickly they get back after losing the puck.',
+          },
+          {
+            text: 'Which sticks and skates the players have.',
+            feedback: 'The equipment doesn’t make the difference. Watch how the players move the puck and where they stand.',
+          },
+        ],
+        section: 'comparing-what-is-different',
+        topic: 'Comparing',
+      },
+      {
+        prompt: 'In the video a team plays something differently from the article. What does that mean?',
+        options: [
+          {
+            text: 'The article is wrong.',
+            feedback: 'Not necessarily. Every team has its own system, and every situation is a little different.',
+          },
+          {
+            text: 'From now on I’ll do it like in the video, they play a level higher.',
+            feedback: 'Not every play in the video fits our system. Ask at practice first.',
+          },
+          {
+            text: 'I ask at practice why it is different.',
+            feedback: 'Right. Not every play fits our system. Talking about it is always worth it.',
+          },
+        ],
+        section: 'for-parents-watching-together',
+        topic: 'Ask',
+      },
+      {
+        prompt: 'In the video a player makes a big mistake. What do you do?',
+        options: [
+          {
+            text: 'Write a funny comment under the video.',
+            feedback: 'The players in the video are children too. We don’t mock mistakes, not in the comments either.',
+          },
+          {
+            text: 'Think about what they could have done differently and talk about the play.',
+            feedback: 'Exactly. We talk about plays, not about individual players. Mistakes are where you learn the most.',
+          },
+          {
+            text: 'Send the clip to my friends so they can laugh too.',
+            feedback: 'The players in the video are children too. You don’t laugh at mistakes, you learn from them.',
+          },
+        ],
+        section: 'for-parents-watching-together',
+        topic: 'Respect',
       },
     ],
   },

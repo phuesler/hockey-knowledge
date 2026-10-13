@@ -10,6 +10,7 @@ draft: false
 ---
 
 import RinkSequence from '../../../components/RinkSequence.svelte';
+import Quiz from '../../../components/Quiz.svelte';
 import Callout from '../../../components/Callout.astro';
 import { href } from '../../../lib/href';
 
@@ -100,6 +101,14 @@ Then the captains shake hands with the referees once more.
 There is more about it in the article
 <a href={href('/en/hockey-talk#the-code-unwritten-rules')}>Hockey talk</a>.
 </Callout>
+
+## Test yourself
+
+Six questions on this article. Go ahead and guess, even if you're not sure: after each
+answer you'll see why it is right or wrong. It works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="spielbeginn" locale="en" />
 
 <Callout type="merke" title="Every tournament does it a little differently">
 This order is a rule of thumb. Some leagues and tournaments do the greeting a little

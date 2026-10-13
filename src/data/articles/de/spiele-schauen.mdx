@@ -9,6 +9,7 @@ draft: false
 ---
 
 import GameList from '../../../components/GameList.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import Callout from '../../../components/Callout.astro';
 import { href } from '../../../lib/href';
 
@@ -120,6 +121,14 @@ Szenen finden, die bei uns schon gut klappen.
 - Fragen helfen mehr als Antworten: „Wo würdest du jetzt hinfahren?“
 - Auf dem Eis stehen auch in diesen Videos Kinder. Wir reden über Spielzüge, nicht über
   einzelne Spieler, und lästern nicht über Fehler. Auch nicht in den Kommentaren auf YouTube.
+
+## Teste dich
+
+Sieben Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="spiele-schauen" />
 
 <Callout type="merke" title="Faustregeln, keine Vorschriften">
 „Etwa eine Minute pro Einsatz“, „zehn Minuten mit einem Auftrag“: Das sind Richtwerte.

@@ -9,6 +9,7 @@ draft: false
 ---
 
 import RinkSequence from '../../../components/RinkSequence.svelte';
+import Quiz from '../../../components/Quiz.svelte';
 import Callout from '../../../components/Callout.astro';
 import { href } from '../../../lib/href';
 
@@ -99,6 +100,14 @@ Sieg genauso wie nach einer Niederlage. Danach geben die Kapitäne auch den
 Schiedsrichtern noch einmal die Hand. Mehr dazu steht im Artikel
 <a href={href('/de/hockey-sprache#der-code-ungeschriebene-regeln')}>Hockey-Sprache</a>.
 </Callout>
+
+## Teste dich
+
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="spielbeginn" />
 
 <Callout type="merke" title="Jedes Turnier macht es etwas anders">
 Dieser Ablauf ist eine Faustregel. In manchen Ligen und Turnieren läuft die Begrüssung

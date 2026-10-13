@@ -10,6 +10,7 @@ draft: false
 ---
 
 import GameList from '../../../components/GameList.astro';
+import Quiz from '../../../components/Quiz.svelte';
 import Callout from '../../../components/Callout.astro';
 import { href } from '../../../lib/href';
 
@@ -119,6 +120,14 @@ will also find scenes that already work well for us.
 - Questions help more than answers: "Where would you skate now?"
 - The players in these videos are children too. We talk about plays, not about individual
   players, and we don't mock mistakes. Not in the YouTube comments either.
+
+## Test yourself
+
+Seven questions on this article. Go ahead and guess, even if you're not sure: after each
+answer you'll see why it is right or wrong. It works best in pairs: the child answers and
+explains to an adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="spiele-schauen" locale="en" />
 
 <Callout type="merke" title="Rules of thumb, not regulations">
 "About a minute per shift", "ten minutes with one task": these are guideline values. Every
