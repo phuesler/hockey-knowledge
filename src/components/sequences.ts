@@ -5,7 +5,7 @@
  *
  * Positions are rink metres, see rink.ts. In the attacking zone our left is at positive x.
  */
-import { DANGER_ZONE, passShadow, viewCone, type Player, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, passShadow, viewCone, type Area, type Move, type Player, type Pt, type Scene, type View } from './rink';
 import type { PlayPanel } from './plays';
 
 export interface Sequence {
@@ -33,6 +33,90 @@ const shadowDefender: Pt = [3, 10];
 
 /* scan: the winger on the left half-boards in our zone, before the breakout pass. */
 const scanWinger: Pt = [-12.5, 12];
+
+
+/* greeting: the start of a game on the full rink. Each team lines up on its blue line,
+   both benches are on the left boards, the referee's crease is on the right boards at the
+   centre line. Players keep their ids from the line-up to the huddle at their own net to
+   their spot at the opening face-off (or on the bench). */
+/* The captain stands at x = -1.5, between the others. */
+const lineXs = [-10.5, -7.5, -4.5, 1.5, 4.5, 7.5, 10.5];
+const OUR_LINE = 22;
+const THEIR_LINE = 38;
+const greetingAreas: Area[] = [
+  { kind: 'bench', poly: [[-15, 22], [-13.8, 22], [-13.8, 29.9], [-15, 29.9]] },
+  { kind: 'bench-them', poly: [[-15, 30.1], [-13.8, 30.1], [-13.8, 38], [-15, 38]] },
+  {
+    kind: 'ref-crease',
+    poly: Array.from({ length: 13 }, (_, i): Pt => {
+      const a = (i / 12) * Math.PI;
+      return [15 - 3 * Math.sin(a), 30 - 3 * Math.cos(a)];
+    }),
+  },
+];
+const coaches: Player[] = [
+  { id: 'coach-u1', team: 'us', at: [-13.6, 24.5] },
+  { id: 'coach-u2', team: 'us', at: [-13.6, 27.5] },
+  { id: 'coach-t1', team: 'them', at: [-13.6, 32.5] },
+  { id: 'coach-t2', team: 'them', at: [-13.6, 35.5] },
+];
+/* Index of the goalie in lineXs. */
+const GOALIE = 5;
+type Spots = { us: Pt[]; them: Pt[]; ourC: Pt; theirC: Pt; refs: [Pt, Pt]; labels?: (string | undefined)[] };
+const onLines = { us: lineXs.map((x): Pt => [x, OUR_LINE]), them: lineXs.map((x): Pt => [x, THEIR_LINE]) };
+function greetingFrame({ us, them, ourC, theirC, refs, labels }: Spots, moves: Move[], puck?: Pt): Scene {
+  const label = (i: number) => (labels ? labels[i] : i === GOALIE ? 'G' : undefined);
+  return {
+    areas: greetingAreas,
+    players: [
+      ...coaches,
+      ...us.map((at, i): Player => ({ id: `u${i}`, team: 'us', label: label(i), at })),
+      ...them.map((at, i): Player => ({ id: `t${i}`, team: 'them', label: i === GOALIE ? 'G' : undefined, at })),
+      { id: 'cu', team: 'us', label: 'C', at: ourC },
+      { id: 'ct', team: 'them', label: 'C', at: theirC },
+      { id: 'r1', team: 'ref', at: refs[0] },
+      { id: 'r2', team: 'ref', at: refs[1] },
+    ],
+    moves,
+    puck,
+  };
+}
+const REFS_AT_CREASE: [Pt, Pt] = [[13.2, 28.4], [13.2, 31.6]];
+/* Every player's stick raised towards the other team. */
+const salute: Move[] = [-1.5, ...lineXs].flatMap((x): Move[] => [
+  { kind: 'stick', path: [[x, OUR_LINE], [x, OUR_LINE + 2.8]] },
+  { kind: 'stick', team: 'them', path: [[x, THEIR_LINE], [x, THEIR_LINE - 2.8]] },
+]);
+const OUR_C_LINE: Pt = [-1.5, OUR_LINE];
+const THEIR_C_LINE: Pt = [-1.5, THEIR_LINE];
+const OUR_C_CENTRE: Pt = [-1.5, 30];
+const THEIR_C_CENTRE: Pt = [1.5, 30];
+const OUR_C_REFS: Pt = [10.2, 31.6];
+const THEIR_C_REFS: Pt = [10.2, 28.4];
+const OUR_C_BENCH: Pt = [-10.8, 34];
+const THEIR_C_BENCH: Pt = [-10.8, 26];
+/* In front of the own line, at its left end, ready for the fist bumps. */
+const OUR_C_BUMPS: Pt = [-10.5, OUR_LINE + 3];
+const THEIR_C_BUMPS: Pt = [-10.5, THEIR_LINE - 3];
+const OUR_C_BUMPS_END: Pt = [10.5, OUR_LINE + 3];
+const THEIR_C_BUMPS_END: Pt = [10.5, THEIR_LINE - 3];
+/* A huddle: the goalie in the middle, everyone else in a ring around them. */
+function huddle(centre: Pt): { players: Pt[]; captain: Pt } {
+  const ring = Array.from({ length: 7 }, (_, i): Pt => {
+    const a = (i / 7) * 2 * Math.PI;
+    return [centre[0] + 3.4 * Math.cos(a), centre[1] + 3.4 * Math.sin(a)];
+  });
+  const players = lineXs.map((_, i): Pt => (i === GOALIE ? centre : ring[i < GOALIE ? i : i - 1]));
+  return { players, captain: ring[6] };
+}
+const ourHuddle = huddle([0, 8.6]);
+const theirHuddle = huddle([0, 51.4]);
+/* The opening face-off: line 1 and the goalie on the ice, three players on each bench.
+   Index order follows lineXs; the captain is our centre. */
+const ourStart: Pt[] = [[-11, 22.6], [-5, 24], [-7, 27.6], [-11, 25.6], [7, 27.6], [0, 5.6], [5, 24]];
+const theirStart: Pt[] = [[-11, 34.4], [5, 36], [7, 32.4], [-11, 37.4], [-7, 32.4], [0, 54.4], [-5, 36]];
+const startLabels = [undefined, 'LD', 'LW', undefined, 'RW', 'G', 'RD'];
+const BENCH_PLAYERS = [0, 3];
 
 const geometry = {
   'role-switch': {
@@ -376,6 +460,52 @@ const geometry = {
       },
     ],
   },
+
+  greeting: {
+    zone: 'full',
+    view: 'full',
+    frames: [
+      greetingFrame({ ...onLines, ourC: OUR_C_LINE, theirC: THEIR_C_LINE, refs: [[3, 26], [3, 34]] }, [
+        { kind: 'skate', team: 'ref', path: [[3, 26], REFS_AT_CREASE[0]], trim: 1.6 },
+        { kind: 'skate', team: 'ref', path: [[3, 34], REFS_AT_CREASE[1]], trim: 1.6 },
+      ]),
+      greetingFrame({ ...onLines, ourC: OUR_C_LINE, theirC: THEIR_C_LINE, refs: REFS_AT_CREASE }, salute),
+      greetingFrame({ ...onLines, ourC: OUR_C_LINE, theirC: THEIR_C_LINE, refs: REFS_AT_CREASE }, [
+        { kind: 'skate', path: [OUR_C_LINE, OUR_C_CENTRE], trim: 1.6 },
+        { kind: 'skate', team: 'them', path: [THEIR_C_LINE, THEIR_C_CENTRE], trim: 1.6 },
+      ]),
+      greetingFrame({ ...onLines, ourC: OUR_C_CENTRE, theirC: THEIR_C_CENTRE, refs: REFS_AT_CREASE }, [
+        { kind: 'skate', path: [OUR_C_CENTRE, [4, 32.4], OUR_C_REFS], trim: 1.6 },
+        { kind: 'skate', team: 'them', path: [THEIR_C_CENTRE, [6, 28.6], THEIR_C_REFS], trim: 1.6 },
+      ]),
+      greetingFrame({ ...onLines, ourC: OUR_C_REFS, theirC: THEIR_C_REFS, refs: REFS_AT_CREASE }, [
+        { kind: 'skate', path: [OUR_C_REFS, [0, 35.5], OUR_C_BENCH], trim: 1.6 },
+        { kind: 'skate', team: 'them', path: [THEIR_C_REFS, [0, 24.5], THEIR_C_BENCH], trim: 1.6 },
+      ]),
+      /* No arrows back to the line: the two would cross right at the benches. */
+      greetingFrame({ ...onLines, ourC: OUR_C_BENCH, theirC: THEIR_C_BENCH, refs: REFS_AT_CREASE }, []),
+      greetingFrame({ ...onLines, ourC: OUR_C_BUMPS, theirC: THEIR_C_BUMPS, refs: REFS_AT_CREASE }, [
+        { kind: 'skate', path: [OUR_C_BUMPS, OUR_C_BUMPS_END], trim: 1.6 },
+        { kind: 'skate', team: 'them', path: [THEIR_C_BUMPS, THEIR_C_BUMPS_END], trim: 1.6 },
+      ]),
+      greetingFrame({ ...onLines, ourC: OUR_C_BUMPS_END, theirC: THEIR_C_BUMPS_END, refs: REFS_AT_CREASE }, [
+        { kind: 'skate', path: [[0, OUR_LINE - 1.5], [0, 13.5]], trim: 0 },
+        { kind: 'skate', team: 'them', path: [[0, THEIR_LINE + 1.5], [0, 46.5]], trim: 0 },
+      ]),
+      greetingFrame(
+        { us: ourHuddle.players, them: theirHuddle.players, ourC: ourHuddle.captain, theirC: theirHuddle.captain, refs: REFS_AT_CREASE },
+        BENCH_PLAYERS.flatMap((i): Move[] => [
+          { kind: 'skate', path: [ourHuddle.players[i], [-8, 16], ourStart[i]], trim: 1.6 },
+          { kind: 'skate', team: 'them', path: [theirHuddle.players[i], [-8, 44], theirStart[i]], trim: 1.6 },
+        ]),
+      ),
+      greetingFrame(
+        { us: ourStart, them: theirStart, ourC: [0, 28.4], theirC: [0, 31.6], refs: [[2.6, 30], [9, 30]], labels: startLabels },
+        [],
+        [0, 30],
+      ),
+    ],
+  },
 } satisfies Record<string, Sequence>;
 
 export type SequenceId = keyof typeof geometry;
@@ -562,6 +692,33 @@ const de: Record<SequenceId, SequenceText> = {
       'Unser linker Verteidiger ist beim Puck und spielt ihn in die linke Ecke. Unser Torhüter steht wieder auf der Linie zum Puck.',
     ],
   },
+  greeting: {
+    caption: 'Vom Aufstellen bis zum ersten Bully',
+    steps: [
+      { title: 'Aufstellen und warten', text: 'Beide Mannschaften stehen auf ihrer blauen Linie, mit dem Gesicht zum Gegner. Der Torhüter steht mit in der Reihe. Alle warten, bis die Schiedsrichter in ihrem Halbkreis an der Bande stehen.' },
+      { title: 'Stock hoch, dann klopfen', text: 'Wenn die Schiedsrichter bereit sind, heben alle den Stock in Richtung Gegner. So grüsst man die andere Mannschaft. Danach klopfen alle mit dem Stock aufs Eis. Wann, zeigt der Kapitän: Die beiden Kapitäne haben es vorher abgemacht.' },
+      { title: 'Die Kapitäne fahren los', text: 'Nur die beiden Kapitäne (C) fahren zur Mitte. Alle anderen bleiben ruhig auf der blauen Linie stehen.' },
+      { title: 'Handschlag in der Mitte', text: 'Die Kapitäne geben sich die Hand. Dann fahren sie zusammen zu den Schiedsrichtern.' },
+      { title: 'Handschlag mit den Schiedsrichtern', text: 'Die Kapitäne geben beiden Schiedsrichtern die Hand. Dann fährt jeder Kapitän zur Bank der anderen Mannschaft.' },
+      { title: 'Handschlag mit den Trainern', text: 'Jeder Kapitän gibt den Trainern der anderen Mannschaft die Hand und sagt: „Gutes Spiel!“ Dann fährt er zurück zur eigenen Mannschaft.' },
+      { title: 'Faust an Faust', text: 'Der Kapitän fährt an der Reihe entlang und gibt jedem Mitspieler einen Fist Bump: Faust an Faust, mit Handschuh.' },
+      { title: 'Ab zum eigenen Tor', text: 'Jetzt fährt die ganze Mannschaft zum eigenen Tor.' },
+      { title: 'Der Kreis am Tor', text: 'Alle stehen eng im Kreis um den Torhüter. Es gibt ein paar letzte Worte, dann kommt der Teamruf. Danach bleiben die erste Reihe und der erste Torhüter auf dem Eis. Alle anderen fahren auf die Bank.' },
+      { title: 'Türen zu, Spiel los', text: 'Die erste Reihe stellt sich zum Bully in der Mitte auf. Sind alle Türen der Spielerbänke zu, wirft der Schiedsrichter den Puck ein. Das Spiel beginnt.' },
+    ],
+    labels: [
+      'Das ganze Eis. Unsere Mannschaft steht unten auf der blauen Linie, die Gegner oben auf ihrer blauen Linie. Beide Kapitäne stehen in der Mitte ihrer Reihe. Zwei Schiedsrichter fahren zu ihrem Halbkreis an der rechten Bande. Beide Spielerbänke liegen an der linken Bande.',
+      'Die Schiedsrichter stehen in ihrem Halbkreis. Alle Spieler halten den Stock in Richtung der anderen Mannschaft.',
+      'Die beiden Kapitäne fahren von ihrer blauen Linie zum Mittelkreis.',
+      'Die Kapitäne stehen im Mittelkreis nebeneinander und fahren zu den Schiedsrichtern an der rechten Bande.',
+      'Die Kapitäne stehen bei den Schiedsrichtern. Pfeile zeigen, wie jeder Kapitän zur Bank der anderen Mannschaft fährt.',
+      'Unser Kapitän steht bei den Trainern der Gegner, der gegnerische Kapitän bei unseren Trainern.',
+      'Jeder Kapitän fährt vor seiner Reihe von links nach rechts an allen Mitspielern vorbei.',
+      'Pfeile zeigen, wie jede Mannschaft zu ihrem eigenen Tor fährt.',
+      'Jede Mannschaft steht im Kreis um ihren Torhüter vor dem eigenen Tor. Zwei Spieler jeder Mannschaft fahren zur Bank.',
+      'Bully im Mittelkreis: Die beiden Center stehen sich gegenüber, der Schiedsrichter steht daneben. Je fünf Spieler und ein Torhüter sind auf dem Eis, die anderen auf der Bank.',
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -728,6 +885,33 @@ const en: typeof de = {
       'The right opponent has the puck. Our goalie has moved to the right side of the goal. The opponent shoots at them.',
       'After the shot the puck lies on the left in front of the goal. Our goalie looks at the puck, our left defender skates to it.',
       'Our left defender has the puck and plays it into the left corner. Our goalie is back on the line to the puck.',
+    ],
+  },
+  greeting: {
+    caption: 'From the line-up to the first face-off',
+    steps: [
+      { title: 'Line up and wait', text: 'Both teams stand on their blue line, facing the other team. The goalie stands in the line too. Everyone waits until the referees are standing in their half circle on the boards.' },
+      { title: 'Sticks up, then tap', text: 'When the referees are ready, everyone raises their stick towards the other team. That is how you greet them. Then everyone taps their stick on the ice. The captain shows when: the two captains agreed on it beforehand.' },
+      { title: 'The captains set off', text: 'Only the two captains (C) skate to the middle. Everyone else stays still on the blue line.' },
+      { title: 'Handshake in the middle', text: 'The captains shake hands. Then they skate together to the referees.' },
+      { title: 'Handshake with the referees', text: 'The captains shake hands with both referees. Then each captain skates to the other team’s bench.' },
+      { title: 'Handshake with the coaches', text: 'Each captain shakes hands with the other team’s coaches and says: “Have a good game!” Then they skate back to their own team.' },
+      { title: 'Fist bumps', text: 'The captain skates along the line and gives every teammate a fist bump: fist to fist, gloves on.' },
+      { title: 'Off to our net', text: 'Now the whole team skates to its own net.' },
+      { title: 'The huddle at the net', text: 'Everyone stands close in a circle around the goalie. There are a few last words, then the team chant. After that the first line and the first goalie stay on the ice. Everyone else goes to the bench.' },
+      { title: 'Doors shut, game on', text: 'The first line sets up for the face-off in the middle. When all the bench doors are shut, the referee drops the puck. The game begins.' },
+    ],
+    labels: [
+      'The whole rink. Our team stands on the blue line at the bottom, the opponents on their blue line at the top. Both captains stand in the middle of their line. Two referees skate to their half circle on the right boards. Both benches are on the left boards.',
+      'The referees stand in their half circle. Every player holds their stick out towards the other team.',
+      'The two captains skate from their blue line to the centre circle.',
+      'The captains stand side by side in the centre circle and skate to the referees on the right boards.',
+      'The captains stand with the referees. Arrows show each captain skating to the other team’s bench.',
+      'Our captain stands with the opponents’ coaches, their captain with our coaches.',
+      'Each captain skates along the front of their line from left to right, past every teammate.',
+      'Arrows show each team skating to its own net.',
+      'Each team stands in a circle around its goalie in front of its own net. Two players from each team skate to the bench.',
+      'Face-off in the centre circle: the two centres face each other, the referee stands next to them. Five players and a goalie per team are on the ice, the rest on the bench.',
     ],
   },
 };

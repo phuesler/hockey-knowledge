@@ -287,6 +287,17 @@
     stroke: var(--c-good);
     stroke-width: 0.2;
   }
+  .area.bench-them {
+    fill: var(--c-surface-2);
+    stroke: var(--c-text-muted);
+    stroke-width: 0.2;
+  }
+  .area.ref-crease {
+    fill: none;
+    stroke: var(--c-brand);
+    stroke-width: 0.15;
+    opacity: 0.7;
+  }
   .area.shot {
     fill: var(--c-accent);
     stroke: none;
@@ -346,6 +357,12 @@
   }
   .move.them polygon {
     fill: var(--c-text-muted);
+  }
+  .move.ref path {
+    stroke: var(--c-steel);
+  }
+  .move.ref polygon {
+    fill: var(--c-steel);
   }
   .move.pass path {
     stroke-dasharray: 0.7 0.45;
@@ -407,6 +424,12 @@
   }
   .player.them text {
     fill: var(--c-surface);
+  }
+  /* Referees: grey with a dark ring, so they don't read as either team. */
+  .player.ref circle {
+    fill: var(--c-steel);
+    stroke: var(--c-text);
+    stroke-width: 0.3;
   }
   .player.ghost circle {
     fill: var(--c-surface);
