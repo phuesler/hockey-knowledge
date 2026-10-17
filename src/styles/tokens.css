@@ -40,6 +40,12 @@
   --c-zone-c: #f1b3ae;
   --c-zone-lw: #bfe3b8;
   --c-zone-rw: #b1d3ee;
+  /* The officials' figures (SignalFigure.svelte) only: skin, the referees' armbands
+     and the dashed stick. The rest of the figure uses --c-text and --c-surface. */
+  --c-skin: #f2c9a0;
+  --c-skin-line: #c99a70;
+  --c-armband: #e8641a;
+  --c-wood: #a0703c;
 
   /* Spacing — a 4px scale. */
   --s-1: 0.25rem;
@@ -100,6 +106,10 @@
     --c-zone-c: #5e2b28;
     --c-zone-lw: #234a2b;
     --c-zone-rw: #1f3e59;
+    --c-skin: #e3b88e;
+    --c-skin-line: #a87c52;
+    --c-armband: #ff8a47;
+    --c-wood: #c9955c;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -10px rgb(0 0 0 / 0.6);
   }
 }
