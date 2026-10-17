@@ -3034,15 +3034,15 @@ const de: Record<QuizId, QuizText> = {
     article: 'handzeichen',
     questions: [
       {
-        prompt: 'Ein Offizieller ohne Armbinden hebt den Arm. Der Puck ist gerade in die Angriffszone gekommen. Was heisst das?',
+        prompt: 'Ihr greift an. Ein Mitspieler ist schon in der Zone, dann kommt der Puck rein. Der Schiedsrichter hebt den Arm. Was heisst das?',
         options: [
           {
             text: 'Verzögertes Abseits: Alle Angreifer müssen raus aus der Zone.',
-            feedback: 'Genau. Keine Armbinden heisst Linienrichter, und der Puck ist gerade in die Zone gekommen. Fahren alle Angreifer raus, geht der Arm runter.',
+            feedback: 'Genau. Ein Angreifer war vor dem Puck in der Zone, der Gegner hat den Puck. Fahren alle Angreifer raus, geht der Arm runter.',
           },
           {
             text: 'Angezeigte Strafe: Unser Torhüter kann zur Bank.',
-            feedback: 'Eine Strafe zeigt der Schiedsrichter an, und der trägt orange Armbinden. Ohne Armbinden ist es der Linienrichter: Abseits oder Icing.',
+            feedback: 'Dann hätte es gerade ein Foul gegeben. Hier ist der Puck gerade erst in die Zone gekommen, und ein Angreifer war zu früh drin: Das ist ein verzögertes Abseits.',
           },
           {
             text: 'Tor: Er zeigt an, dass der Puck drin war.',
@@ -3053,7 +3053,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Arm hoch',
       },
       {
-        prompt: 'Ein Offizieller mit orangen Armbinden hebt den Arm, aber das Spiel läuft weiter. Wann pfeift er?',
+        prompt: 'Der Gegner foult einen Mitspieler. Der Schiedsrichter hebt den Arm, aber das Spiel läuft weiter. Wann pfeift er?',
         options: [
           {
             text: 'Sofort, sobald er den Arm hebt.',
@@ -3072,7 +3072,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Angezeigte Strafe',
       },
       {
-        prompt: 'Der Linienrichter pfeift und verschränkt beide Arme vor der Brust. Was war das?',
+        prompt: 'Der Schiedsrichter pfeift und verschränkt beide Arme vor der Brust. Was war das?',
         options: [
           {
             text: 'Icing.',
@@ -3080,7 +3080,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Behinderung: Jemand hat einen Spieler ohne Puck gestört.',
-            feedback: 'Das Zeichen sieht ähnlich aus, aber bei der Behinderung sind es Fäuste, zu einem X gekreuzt. Und Strafen zeigt der Schiedsrichter, nicht der Linienrichter.',
+            feedback: 'Das Zeichen sieht ähnlich aus, aber bei der Behinderung sind es Fäuste, zu einem X gekreuzt, und es gibt eine Strafe. Verschränkte Arme nach dem Pfiff heissen Icing: Bully, keine Strafe.',
           },
           {
             text: 'Auszeit.',
@@ -5301,15 +5301,15 @@ const en: typeof de = {
     article: 'hand-signals',
     questions: [
       {
-        prompt: 'An official without armbands raises an arm. The puck has just come into the attacking zone. What does it mean?',
+        prompt: 'You are attacking. A teammate is already in the zone, then the puck comes in. The referee raises an arm. What does it mean?',
         options: [
           {
             text: 'Delayed offside: all attackers have to get out of the zone.',
-            feedback: 'Exactly. No armbands means linesperson, and the puck has just entered the zone. Once all attackers skate out, the arm comes down.',
+            feedback: 'Exactly. An attacker was in the zone before the puck, and the opponents have the puck. Once all attackers skate out, the arm comes down.',
           },
           {
             text: 'Delayed penalty: our goalie can go to the bench.',
-            feedback: 'A penalty is signalled by the referee, who wears orange armbands. Without armbands it is the linesperson: offside or icing.',
+            feedback: 'Then there would just have been a foul. Here the puck has only just come into the zone and an attacker was in too early: that is a delayed offside.',
           },
           {
             text: 'Goal: they are showing the puck went in.',
@@ -5320,7 +5320,7 @@ const en: typeof de = {
         topic: 'Arm up',
       },
       {
-        prompt: 'An official with orange armbands raises an arm, but play goes on. When do they blow the whistle?',
+        prompt: 'An opponent fouls a teammate. The referee raises an arm, but play goes on. When do they blow the whistle?',
         options: [
           {
             text: 'Straight away, as soon as the arm goes up.',
@@ -5339,7 +5339,7 @@ const en: typeof de = {
         topic: 'Delayed penalty',
       },
       {
-        prompt: 'The linesperson blows the whistle and crosses both arms over the chest. What was that?',
+        prompt: 'The referee blows the whistle and crosses both arms over the chest. What was that?',
         options: [
           {
             text: 'Icing.',
@@ -5347,7 +5347,7 @@ const en: typeof de = {
           },
           {
             text: 'Interference: someone got in the way of a player without the puck.',
-            feedback: 'The signal looks similar, but for interference it is fists crossed in an X. And penalties are shown by the referee, not the linesperson.',
+            feedback: 'The signal looks similar, but for interference it is fists crossed in an X, and there is a penalty. Arms crossed after the whistle mean icing: a face-off, no penalty.',
           },
           {
             text: 'Time-out.',
