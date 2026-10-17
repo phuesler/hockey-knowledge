@@ -800,6 +800,20 @@ const geometry = {
     /* 6. Why the best hospital teams reported more mistakes. */
     { correct: 2 },
   ],
+  handzeichen: [
+    /* 1. No armbands, arm up, puck just entered the zone. */
+    { correct: 0 },
+    /* 2. Armbands, arm up: when does the whistle come? */
+    { correct: 1 },
+    /* 3. Linesperson, arms crossed over the chest. */
+    { correct: 0 },
+    /* 4. Puck in the net, referee swings both arms out. */
+    { correct: 1 },
+    /* 5. Both arms tug towards the stomach. */
+    { correct: 0 },
+    /* 6. Penalty called against you: what now? */
+    { correct: 1 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -813,6 +827,7 @@ export const mixQuizzes: QuizId[] = [
   'aufstellung',
   'spielbeginn',
   'regeln',
+  'handzeichen',
   'bully',
   'rollen',
   'torhueter',
@@ -3013,6 +3028,127 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  handzeichen: {
+    title: 'Quiz: Handzeichen',
+    name: 'Handzeichen',
+    article: 'handzeichen',
+    questions: [
+      {
+        prompt: 'Ein Offizieller ohne Armbinden hebt den Arm. Der Puck ist gerade in die Angriffszone gekommen. Was heisst das?',
+        options: [
+          {
+            text: 'Verzögertes Abseits: Alle Angreifer müssen raus aus der Zone.',
+            feedback: 'Genau. Keine Armbinden heisst Linienrichter, und der Puck ist gerade in die Zone gekommen. Fahren alle Angreifer raus, geht der Arm runter.',
+          },
+          {
+            text: 'Angezeigte Strafe: Unser Torhüter kann zur Bank.',
+            feedback: 'Eine Strafe zeigt der Schiedsrichter an, und der trägt orange Armbinden. Ohne Armbinden ist es der Linienrichter: Abseits oder Icing.',
+          },
+          {
+            text: 'Tor: Er zeigt an, dass der Puck drin war.',
+            feedback: 'Beim Tor zeigt der Schiedsrichter mit dem Arm auf das Tor, nicht nach oben. Ein Arm gerade nach oben heisst: warten, da ist etwas im Gang.',
+          },
+        ],
+        section: 'arm-hoch-strafe-abseits-oder-icing',
+        topic: 'Arm hoch',
+      },
+      {
+        prompt: 'Ein Offizieller mit orangen Armbinden hebt den Arm, aber das Spiel läuft weiter. Wann pfeift er?',
+        options: [
+          {
+            text: 'Sofort, sobald er den Arm hebt.',
+            feedback: 'Dann würde der Arm nichts bringen. Der Arm oben heisst gerade: Es geht weiter, die Strafe kommt später.',
+          },
+          {
+            text: 'Wenn das Team mit dem Foul den Puck berührt.',
+            feedback: 'Richtig. Solange das andere Team den Puck hat, läuft das Spiel weiter. Darum kann der Torhüter dieses Teams zur Bank fahren.',
+          },
+          {
+            text: 'Wenn der nächste Puck ins Tor geht.',
+            feedback: 'Ein Tor beendet die Situation auch, aber nicht nur. Gepfiffen wird, sobald das Team mit dem Foul den Puck berührt.',
+          },
+        ],
+        section: 'arm-hoch-strafe-abseits-oder-icing',
+        topic: 'Angezeigte Strafe',
+      },
+      {
+        prompt: 'Der Linienrichter pfeift und verschränkt beide Arme vor der Brust. Was war das?',
+        options: [
+          {
+            text: 'Icing.',
+            feedback: 'Genau. Verschränkte Arme vor der Brust heissen Icing. Das Bully ist in der Zone des Teams, das den Puck geschossen hat.',
+          },
+          {
+            text: 'Behinderung: Jemand hat einen Spieler ohne Puck gestört.',
+            feedback: 'Das Zeichen sieht ähnlich aus, aber bei der Behinderung sind es Fäuste, zu einem X gekreuzt. Und Strafen zeigt der Schiedsrichter, nicht der Linienrichter.',
+          },
+          {
+            text: 'Auszeit.',
+            feedback: 'Bei der Auszeit formen die Hände ein T. Verschränkte Arme vor der Brust heissen Icing.',
+          },
+        ],
+        section: 'zeichen-im-spiel',
+        topic: 'Icing',
+      },
+      {
+        prompt: 'Der Puck liegt im Tor. Der Schiedsrichter streckt beide Arme seitlich aus und schwenkt sie. Was heisst das?',
+        options: [
+          {
+            text: 'Tor!',
+            feedback: 'Beim Tor zeigt der Schiedsrichter mit einem Arm auf das Tor. Beide Arme seitlich geschwenkt heissen das Gegenteil: Das zählt nicht.',
+          },
+          {
+            text: 'Kein Tor.',
+            feedback: 'Richtig. Das ist das Auswinken: kein Tor. Vielleicht war der Puck mit der Hand oder einem hohen Stock im Tor, oder es war vorher ein Pfiff.',
+          },
+          {
+            text: 'Penaltyschuss.',
+            feedback: 'Beim Penaltyschuss kreuzt der Schiedsrichter beide Arme über dem Kopf. Seitlich geschwenkte Arme heissen: kein Tor.',
+          },
+        ],
+        section: 'zeichen-im-spiel',
+        topic: 'Auswinken',
+      },
+      {
+        prompt: 'Der Schiedsrichter zieht mit beiden Armen etwas von vorne zum Bauch. Welche Strafe zeigt er an?',
+        options: [
+          {
+            text: 'Haken.',
+            feedback: 'Genau. Die Arme ziehen wie ein Haken, der jemanden zurückzieht.',
+          },
+          {
+            text: 'Stockstich (Spearing).',
+            feedback: 'Beim Stockstich geht die Bewegung in die andere Richtung: Die Hände stossen vom Körper weg nach vorne.',
+          },
+          {
+            text: 'Halten.',
+            feedback: 'Beim Halten umklammert eine Hand das andere Handgelenk. Die ziehende Bewegung mit beiden Armen ist das Haken.',
+          },
+        ],
+        section: 'fouls-mit-dem-stock',
+        topic: 'Haken',
+      },
+      {
+        prompt: 'Der Schiedsrichter pfeift gegen dich, zeigt das Zeichen für Beinstellen und dann zur Strafbank. Was machst du?',
+        options: [
+          {
+            text: 'Ich erkläre ihm, dass ich den Puck gespielt habe.',
+            feedback: 'Diskutieren ändert nichts und kann eine zweite Strafe geben. Mit dem Schiedsrichter redet nur der Kapitän.',
+          },
+          {
+            text: 'Ich fahre direkt zur Strafbank.',
+            feedback: 'Richtig. Direkt zur Strafbank, ohne Diskussion. Wenn jemand etwas fragen will, macht das der Kapitän.',
+          },
+          {
+            text: 'Ich fahre zur Spielerbank und wechsle.',
+            feedback: 'Die Strafe sitzt du auf der Strafbank ab, nicht auf der Spielerbank. Dein Team spielt so lange in Unterzahl.',
+          },
+        ],
+        section: 'so-wird-eine-strafe-angezeigt',
+        topic: 'Zur Strafbank',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -5156,6 +5292,127 @@ const en: typeof de = {
         ],
         section: 'mistakes-are-part-of-it',
         topic: 'Talking about mistakes',
+      },
+    ],
+  },
+  handzeichen: {
+    title: 'Quiz: Hand signals',
+    name: 'Hand signals',
+    article: 'hand-signals',
+    questions: [
+      {
+        prompt: 'An official without armbands raises an arm. The puck has just come into the attacking zone. What does it mean?',
+        options: [
+          {
+            text: 'Delayed offside: all attackers have to get out of the zone.',
+            feedback: 'Exactly. No armbands means linesperson, and the puck has just entered the zone. Once all attackers skate out, the arm comes down.',
+          },
+          {
+            text: 'Delayed penalty: our goalie can go to the bench.',
+            feedback: 'A penalty is signalled by the referee, who wears orange armbands. Without armbands it is the linesperson: offside or icing.',
+          },
+          {
+            text: 'Goal: they are showing the puck went in.',
+            feedback: 'For a goal the referee points the arm at the net, not up. One arm straight up means: wait, something is pending.',
+          },
+        ],
+        section: 'arm-up-penalty-offside-or-icing',
+        topic: 'Arm up',
+      },
+      {
+        prompt: 'An official with orange armbands raises an arm, but play goes on. When do they blow the whistle?',
+        options: [
+          {
+            text: 'Straight away, as soon as the arm goes up.',
+            feedback: 'Then the arm would be pointless. The raised arm means exactly this: play goes on, the penalty comes later.',
+          },
+          {
+            text: 'When the team that fouled touches the puck.',
+            feedback: 'Right. As long as the other team has the puck, play continues. That is why that team’s goalie can skate to the bench.',
+          },
+          {
+            text: 'When the next puck goes into the net.',
+            feedback: 'A goal ends the situation too, but not only a goal. The whistle comes as soon as the team that fouled touches the puck.',
+          },
+        ],
+        section: 'arm-up-penalty-offside-or-icing',
+        topic: 'Delayed penalty',
+      },
+      {
+        prompt: 'The linesperson blows the whistle and crosses both arms over the chest. What was that?',
+        options: [
+          {
+            text: 'Icing.',
+            feedback: 'Exactly. Arms crossed over the chest mean icing. The face-off is in the zone of the team that shot the puck.',
+          },
+          {
+            text: 'Interference: someone got in the way of a player without the puck.',
+            feedback: 'The signal looks similar, but for interference it is fists crossed in an X. And penalties are shown by the referee, not the linesperson.',
+          },
+          {
+            text: 'Time-out.',
+            feedback: 'For a time-out the hands form a T. Arms crossed over the chest mean icing.',
+          },
+        ],
+        section: 'signals-during-play',
+        topic: 'Icing',
+      },
+      {
+        prompt: 'The puck is in the net. The referee stretches both arms out to the sides and swings them. What does it mean?',
+        options: [
+          {
+            text: 'Goal!',
+            feedback: 'For a goal the referee points one arm at the net. Both arms swung out to the sides mean the opposite: it does not count.',
+          },
+          {
+            text: 'No goal.',
+            feedback: 'Right. That is the wash-out: no goal. Maybe the puck went in off a hand or a high stick, or the whistle had gone before.',
+          },
+          {
+            text: 'Penalty shot.',
+            feedback: 'For a penalty shot the referee crosses both arms above the head. Arms swung out to the sides mean: no goal.',
+          },
+        ],
+        section: 'signals-during-play',
+        topic: 'Wash-out',
+      },
+      {
+        prompt: 'The referee tugs something from in front towards the stomach with both arms. Which penalty is it?',
+        options: [
+          {
+            text: 'Hooking.',
+            feedback: 'Exactly. The arms pull like a hook dragging someone back.',
+          },
+          {
+            text: 'Spearing.',
+            feedback: 'For spearing the movement goes the other way: the hands thrust forward, away from the body.',
+          },
+          {
+            text: 'Holding.',
+            feedback: 'For holding, one hand clasps the other wrist. The tugging movement with both arms is hooking.',
+          },
+        ],
+        section: 'fouls-with-the-stick',
+        topic: 'Hooking',
+      },
+      {
+        prompt: 'The referee blows the whistle against you, shows the tripping signal and then points at the penalty box. What do you do?',
+        options: [
+          {
+            text: 'I explain that I played the puck.',
+            feedback: 'Arguing changes nothing and can earn a second penalty. Only the captain talks to the referee.',
+          },
+          {
+            text: 'I skate straight to the penalty box.',
+            feedback: 'Right. Straight to the penalty box, no arguing. If anyone wants to ask something, the captain does it.',
+          },
+          {
+            text: 'I skate to the players’ bench and change.',
+            feedback: 'You sit the penalty out in the penalty box, not on the players’ bench. Your team is short-handed until then.',
+          },
+        ],
+        section: 'how-a-penalty-is-called',
+        topic: 'To the penalty box',
       },
     ],
   },
