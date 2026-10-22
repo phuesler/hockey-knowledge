@@ -3,7 +3,7 @@ title: "Skates: buying, fit and blade"
 description: "What really matters when buying skates for U13 – fit, fit sizes, model lines and second-hand skates. How to lace them properly. Plus: what profiling and pitch do and which replacement steel fits."
 category: ausruestung
 order: 20
-updated: 2026-10-01
+updated: 2026-10-22
 tags: ["Skates", "Buying guide", "Lacing", "Blades", "Profiling"]
 translationOf: schlittschuhe
 draft: false
@@ -11,6 +11,7 @@ draft: false
 
 import BladeProfile from '../../../components/BladeProfile.astro';
 import Callout from '../../../components/Callout.astro';
+import SkateLacing from '../../../components/SkateLacing.astro';
 import { href } from '../../../lib/href';
 
 Everything depends on the skate: how a child stands, how they take corners, how quickly they
@@ -130,14 +131,26 @@ where the lacing holds the foot in the boot.
 forward**. If it's too tight at the top, the movement is held back. On top of that, the
 tongue then presses into the front of the shin. This pain is called **lace bite**.
 
+How far forward? In the skating position the knees are bent. The knee comes forward to
+roughly **above the toes**. The boot leans with it.
+
+<SkateLacing variant="knee" />
+
+Try it after lacing up: bend the knees, as on the ice. If the knee doesn't get as far as
+the toes, the boot is too tight at the top.
+
 What often helps: **leave out the top eyelet** or **skip the second one from the top**. That
 way the boot stays stable at the top but leaves the knee room to move forward.
+
+<SkateLacing variant="eyelets" />
 
 <Callout type="achtung" title="Don't wrap the laces around the ankles">
 Many kids wrap the long ends around the top of the boot so that it feels tighter. That
 locks the ankles. But to learn to skate properly, the ankles have to stay **mobile**. So
 leave out the wrapping.
 </Callout>
+
+<SkateLacing variant="wrap" />
 
 ### Secure long ends
 
