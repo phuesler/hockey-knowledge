@@ -1,0 +1,184 @@
+---
+title: "Time and space: the big idea in ice hockey"
+description: "Almost everything in ice hockey comes down to one question: who has time and room? With the puck you make your bubble bigger, without it you make the opponent’s smaller."
+category: theorie
+order: 8.5
+updated: 2026-10-23
+tags: ["Game sense", "Big idea"]
+translationOf: zeit-und-raum
+draft: false
+---
+
+import RinkPlay from '../../../components/RinkPlay.svelte';
+import RinkSequence from '../../../components/RinkSequence.svelte';
+import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
+import { href } from '../../../lib/href';
+
+Ice hockey looks wild. But almost everything that happens on the ice comes down to one
+simple question: **who has time and space?**
+
+**Time** means: how long until an opponent reaches you? **Space** means: how much free ice
+is around you? With both, you can look, pass and shoot calmly. Without them, you make
+mistakes.
+
+<Callout type="merke" title="The short version">
+Picture a **bubble** around the player with the puck. It is as big as the free ice around
+them.
+
+- **We have the puck:** make the bubble **bigger**. Look beforehand for where the room is,
+  skate into open ice, pass to a free teammate.
+- **The opponents have the puck:** make their bubble **smaller**. Close the gap, cover the
+  passing lanes, push them to the boards.
+</Callout>
+
+## What time and space mean
+
+Time and space belong together. If the nearest opponent is far away, you have lots of
+room. And because it takes them a long time to reach you, you also have lots of time. If
+they are close, you have little of either.
+
+A **rule of thumb** helps you estimate it: an opponent at speed covers about **5 metres a
+second**. At 10 metres away you have roughly 2 seconds. At 5 metres, about one second is
+left. That sounds short. But one second is enough for a good pass.
+
+<RinkPlay play="bubble-size" locale="en" />
+
+In the drawings on this page, the bubble is a **purple circle** around the player with the
+puck. The number next to it says roughly how many seconds they have.
+
+## Gaining time and space
+
+When our team has the puck, the player with the puck is the
+<a href={href('/en/roles')}>König</a> (king), K in the drawings. They and all their
+teammates want the same thing: a big bubble around the puck. There are several ways to get it.
+
+### Spotting open ice
+
+There is almost always **open ice** – you just have to see it. Good spots are where **no
+opponent is responsible**. These are often called *soft areas*: soft spots in the
+defence. Three are typical:
+
+- **In the corner on the puck side.** The opponent attacking the König stands between them
+  and the goal. Behind that opponent the corner is often empty. The puck gets there off the
+  boards: with a bank pass or a *rim*, a pass that slides along the boards. Behind the
+  net, the teammate from the far post picks it up.
+- **High in the slot**, in front of the goal between the faceoff circles. When the opponents
+  stand deep in front of their goal, there is often nobody there.
+- **At the faceoff circle, next to the passing shadow.** The **passing shadow** is the space
+  behind an opponent that no pass gets through to. One or two steps to the side and you are
+  free.
+
+Skate there without the puck and the pass gives you a big bubble straight away. Stand right
+next to an opponent and you are no help to the puck carrier.
+
+<RinkPlay play="soft-areas" locale="en" />
+
+With the puck it works the same way: away from the opponent, into open ice. The opponent
+has to chase you, and that costs them time. But you only see open ice if you look over your
+shoulder beforehand. That is called **scanning** – more on it under
+<a href={href('/en/roles')}>König</a>.
+
+### The pass is faster
+
+A pass is two to three times as fast as a player on skates. That makes the pass the
+quickest way to more time: the bubble travels with the puck. If your bubble is small and a
+free teammate’s is big, play the puck to them.
+
+<Callout type="tipp" title="The fastest teammate">
+Who is the fastest teammate that never gets tired? **The puck.** Let it do the work.
+</Callout>
+
+For that, the teammate without the puck, the Satellit (satellite, S), needs a free spot where they can
+take a pass. That is the idea behind <a href={href('/en/support')}>support</a> and
+<a href={href('/en/skating-to-the-puck')}>skating to the puck</a>.
+
+<RinkSequence client:visible sequence="bubble-pass" locale="en" />
+
+### Making space without the puck
+
+A player without the puck can win time for the König too. They skate to where an opponent
+has to react. If the opponent follows, they are missing at the König. If they stay, our
+player is free.
+
+A classic: right after entering the attacking zone, the teammate without the puck skates
+**between the two defenders** straight to the net – known as splitting the D. While the
+defenders decide who takes them, the König’s bubble grows.
+
+<RinkSequence client:visible sequence="split-d" locale="en" />
+
+### Slowing down: time for the teammates
+
+Gaining time doesn’t always mean being fast. Sometimes the König is alone up front and the
+teammates are still far behind. Skate alone into three opponents and the puck is gone.
+
+Better: **slow the play down.** The König turns away on the boards, keeps the puck and faces
+the play again. This is called a *delay*. The seconds gained this way belong to the whole
+team: the teammates catch up and find open ice. Then comes the pass.
+
+<RinkSequence client:visible sequence="delay" locale="en" />
+
+## Taking time and space away
+
+When the opponents have the puck, it is the other way round. Now **their** bubble should
+shrink. An opponent without time has to guess. They pass badly or lose the puck.
+
+### Closing the gap
+
+The **gap** is the distance between you and the opponent with the puck. The bigger it is,
+the more time they have. The player defending the puck carrier is called the
+<a href={href('/en/roles')}>Jäger</a> (hunter, J) in our team. They close the gap with a
+few quick strides.
+
+They stay on the <a href={href('/en/defensive-side')}>defensive side</a>, between the
+opponent and the goal. Just before reaching the opponent, they slow down. That way the
+opponent can’t simply skate past. All that is left for the opponent is the way wide, to the
+**boards**. The boards are like a wall: on that side they have no room at all.
+
+<RinkSequence client:visible sequence="bubble-shrink" locale="en" />
+
+### Covering the passing lanes
+
+An opponent with a small bubble looks for a way out: a pass to a free teammate. That way
+can be closed. That is the job of the <a href={href('/en/roles')}>Wächter</a> (guard, W):
+they hold their stick in the **passing lane** – where the pass would have to go through.
+Behind it lies the passing shadow. No pass gets there, and the opponent loses their last
+option.
+
+So even a player who never touches the puck helps. A teammate with a big bubble is no use
+to the opponents if no pass can get through to them.
+
+<RinkSequence client:visible sequence="close-lane" locale="en" />
+
+Both together are the idea behind the <a href={href('/en/forecheck')}>forecheck</a>: one
+player herds the opponent towards the boards, the others cover the passing lanes.
+
+## Common mistakes
+
+- **Standing still with the puck.** Standing still gives the opponent time to come closer.
+  The bubble shrinks by itself.
+- **Hitting the puck away blindly.** That gains no time. Usually the opponents then have
+  the puck – and a big bubble.
+- **Everyone skates to the puck.** Then the ice everywhere else is free. One pass, and the
+  opponent has a huge bubble. That is why one attacks, one helps, and the others stay in
+  their <a href={href('/en/coverage')}>area</a>.
+
+<Callout type="tipp" title="For parents in the stands">
+At the next game, watch the player with the puck and ask yourself: how big is their bubble
+right now? Is it growing or shrinking? You will see: good plays make the bubble bigger.
+Good defence makes it smaller. That holds even when nobody scores.
+</Callout>
+
+## Test yourself
+
+Six questions on this article. Go ahead and guess if you are unsure: after each answer it
+says why it is right or wrong. It works best in pairs: the child answers and explains to an
+adult why.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="zeit-und-raum" locale="en" />
+
+<Callout type="merke" title="Rules of thumb, not laws">
+5 metres a second, a pass two to three times as fast: these are rough guide values to help
+you picture the bubble. How much time you really have depends on how fast the opponent is,
+where they are looking and how well you control the puck.
+</Callout>

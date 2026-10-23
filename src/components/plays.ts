@@ -5,7 +5,7 @@
  * A play has one or more panels. Each panel is one zone; `zone` says whose goal is at
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
-import { DANGER_ZONE, POST_X, GOAL_LINE, viewCone, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, POST_X, GOAL_LINE, bubble, passShadow, viewCone, type Pt, type Scene, type View } from './rink';
 import { animals } from './stories';
 
 export interface PlayPanel {
@@ -43,6 +43,19 @@ const halfwallReadThem: Scene['players'] = [
   { team: 'them', at: [-3, 6] },
   { team: 'them', at: [1.6, 11.6] },
 ];
+
+/* Five defenders in their own zone, one goal-side on the puck carrier on our left boards
+   (soft-areas). His passing shadow points at the low slot. */
+const softAreaPuck: Pt = [11.3, 16.8];
+const softAreaChecker: Pt = [8.6, 14.4];
+const softAreaThem: Scene['players'] = [
+  { team: 'them', at: softAreaChecker },
+  { team: 'them', at: [1.8, 6.6] },
+  { team: 'them', at: [-5.6, 9.4] },
+  { team: 'them', at: [4.6, 18.8] },
+  { team: 'them', at: [-6.4, 18.4] },
+];
+const softAreaShadow = { kind: 'shadow', poly: passShadow(softAreaPuck, softAreaChecker) } as const;
 
 const geometry = {
   /* Abwehrseite: the defender on the wrong side, then between the puck carrier and the goal. */
@@ -1133,6 +1146,88 @@ const geometry = {
       },
     },
   ],
+  /* Zeit und Raum: the same König, an opponent far away and close by. Attacking zone,
+     our left at positive x. */
+  'bubble-size': [
+    {
+      zone: 'attack',
+      scene: {
+        areas: [bubble([8, 17], 5, '≈ 2 s', [8, 13.4])],
+        players: [
+          { team: 'them', at: [0, 9.5] },
+          { team: 'us', label: 'K', at: [8, 17] },
+        ],
+        puck: [7, 16],
+        moves: [{ kind: 'skate', team: 'them', path: [[0, 9.5], [3.4, 12.4]], trim: 0.2 }],
+      },
+    },
+    {
+      zone: 'attack',
+      scene: {
+        areas: [bubble([8, 17], 2.2, '< 1 s', [12, 19.6])],
+        players: [
+          { team: 'them', at: [5.6, 14] },
+          { team: 'us', label: 'K', at: [8, 17] },
+        ],
+        puck: [7, 16],
+        moves: [{ kind: 'skate', team: 'them', path: [[5.6, 14], [6.4, 15]], trim: 0 }],
+      },
+    },
+  ],
+  /* Zeit und Raum: soft areas in the attacking zone. The same five defenders; our two
+     forwards without the puck stand next to opponents (bad) or in the gaps (good). Our
+     left at positive x. */
+  'soft-areas': [
+    {
+      zone: 'attack',
+      verdict: 'bad',
+      scene: {
+        areas: [softAreaShadow],
+        players: [
+          ...softAreaThem,
+          { team: 'us', label: 'K', at: [12, 17.4] },
+          { team: 'us', label: 'S', at: [2.4, 16.8] },
+          { team: 'us', label: 'S', at: [5.2, 11.2] },
+          { team: 'us', label: 'S', at: [-3.4, 11.4] },
+          { team: 'us', label: 'S', at: [-0.8, 8.4] },
+        ],
+        puck: softAreaPuck,
+      },
+    },
+    {
+      zone: 'attack',
+      verdict: 'good',
+      scene: {
+        areas: [
+          softAreaShadow,
+          { kind: 'open', ellipse: { at: [0.4, 15.4], rx: 2.6, ry: 1.9 } },
+          { kind: 'open', ellipse: { at: [10.6, 9.6], rx: 1.9, ry: 1.5 } },
+          { kind: 'open', ellipse: { at: [10.6, 3.6], rx: 1.8, ry: 1.5 } },
+        ],
+        players: [
+          ...softAreaThem,
+          { team: 'us', label: 'K', at: [12, 17.4] },
+          { team: 'us', label: 'S', at: [0.4, 15.4] },
+          { team: 'us', label: 'S', at: [10.6, 9.6] },
+          { team: 'us', label: 'S', at: [10.6, 3.6] },
+          { team: 'us', label: 'S', at: [-2.6, 6.2] },
+        ],
+        puck: softAreaPuck,
+        moves: [
+          { kind: 'lane', path: [softAreaPuck, [1.9, 15.6]] },
+          { kind: 'lane', path: [softAreaPuck, [10.8, 11.2]] },
+          /* The bank pass: off the boards, past the checker, into the near corner. */
+          { kind: 'lane', path: [softAreaPuck, [14.6, 10.6]] },
+          { kind: 'lane', path: [[14.6, 10.6], [11.5, 5.1]] },
+          /* The rim: along the boards, behind the corner satellite, to behind the net, where
+             the satellite from the far post picks it up. */
+          { kind: 'lane', path: [[14.6, 10.6], [15.4, 0.4], [6, 0.9]] },
+          { kind: 'lane', path: [[6, 0.9], [-3, 0.9]] },
+          { kind: 'skate', path: [[-2.6, 6.2], [-4, 1.5]], trim: 0.2 },
+        ],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -1622,6 +1717,41 @@ const de: Record<PlayId, PlayText> = {
       'Die Angriffszone. Unser Center steht mit dem Puck hinter dem gegnerischen Tor. Pfeile zeigen Pässe zum linken Flügel im Slot und zum rechten Flügel am langen Pfosten.',
     ],
   },
+  'bubble-size': {
+    caption: 'Die Blase: Wie viel Zeit und Raum hast du?',
+    panels: [
+      {
+        title: 'Gegenüber weit weg: grosse Blase',
+        text: 'K hat den Puck. Das nächste Gegenüber ist etwa 10 Meter weg. Bis es da ist, dauert es ungefähr 2 Sekunden. Genug Zeit zum Schauen, Passen oder Schiessen.',
+      },
+      {
+        title: 'Gegenüber nah: kleine Blase',
+        text: 'Das Gegenüber ist nur noch 3 bis 4 Meter weg. Jetzt bleibt weniger als eine Sekunde. K muss sofort etwas tun.',
+      },
+    ],
+    labels: [
+      'Die Angriffszone. K hat den Puck an der linken Seite, rundherum ist ein grosser Kreis: etwa 2 Sekunden. Das andere Team ist weit weg in der Mitte.',
+      'Derselbe Platz. Das Gegenüber steht nah vor K, der Kreis um K ist klein: weniger als eine Sekunde.',
+    ],
+    note: 'Die Sekunden sind grobe Richtwerte: Wer mit Tempo fährt, schafft etwa 5 Meter pro Sekunde.',
+  },
+  'soft-areas': {
+    caption: 'Freies Eis erkennen',
+    panels: [
+      {
+        title: 'Neben dem Gegenüber',
+        text: 'Drei Satelliten stehen direkt bei jemandem aus dem anderen Team, der vierte im Passschatten (grau) hinter der Person, die K angreift. Ein Pass zu ihnen wird abgefangen oder sofort gestört. K hat niemanden zum Anspielen.',
+      },
+      {
+        title: 'Im freien Eis',
+        text: 'Ein Satellit steht oben im Slot, einer am Bullykreis neben dem Passschatten, einer in der Ecke. Die Ecke erreicht K mit einem Pass über die Bande. Der vierte steht vor dem Tor am langen Pfosten: Spielt K einen Pass ins Rund hinter dem Tor durch, holt der Satellit den Puck hinter dem Tor. Für niemanden ist jemand aus dem anderen Team zuständig. Mit dem Pass gibt es gleich eine grosse Blase.',
+      },
+    ],
+    labels: [
+      'Angriffszone. K hat den Puck an der linken Bande, jemand aus dem anderen Team steht zwischen K und dem Tor. Dahinter liegt ein grauer Passschatten. Unsere vier Satelliten stehen oben neben einem Gegenüber, im Passschatten, rechts neben einem Gegenüber und vor dem Tor neben einem Gegenüber.',
+      'Dieselbe Situation. Drei grüne Flächen zeigen das freie Eis: oben im Slot, am linken Bullykreis neben dem Passschatten und in der linken Ecke. Dort stehen drei Satelliten. Gepunktete Linien zeigen die freien Passwege von K, in die Ecke über die Bande. Der vierte Satellit steht am rechten Pfosten. Eine gepunktete Linie zeigt den Pass ins Rund der Bande entlang bis hinter das Tor. Ein Pfeil zeigt, wie der Satellit dorthin fährt.',
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -2091,6 +2221,41 @@ const en: typeof de = {
     ],
     labels: [
       'The attacking zone. Our centre has the puck behind the opponents’ net. Arrows show passes to the left wing in the slot and to the right wing at the far post.',
+    ],
+  },
+  'bubble-size': {
+    caption: 'The bubble: how much time and space do you have?',
+    panels: [
+      {
+        title: 'Opponent far away: big bubble',
+        text: 'K has the puck. The nearest opponent is about 10 metres away. It takes them roughly 2 seconds to get there. Enough time to look, pass or shoot.',
+      },
+      {
+        title: 'Opponent close: small bubble',
+        text: 'The opponent is only 3 to 4 metres away. That leaves less than a second. K has to act straight away.',
+      },
+    ],
+    labels: [
+      'The attacking zone. K has the puck on the left, with a big circle around them: about 2 seconds. One opponent is far away in the middle.',
+      'The same spot. The opponent is close in front of K, and the circle around K is small: less than a second.',
+    ],
+    note: 'The seconds are rough guide values: an opponent at speed covers about 5 metres a second.',
+  },
+  'soft-areas': {
+    caption: 'Spotting open ice',
+    panels: [
+      {
+        title: 'Next to an opponent',
+        text: 'Three teammates stand right next to an opponent, the fourth in the passing shadow (grey) of the opponent attacking K. A pass to them is picked off or disrupted at once. K has nobody to pass to.',
+      },
+      {
+        title: 'In open ice',
+        text: 'One is high in the slot, one at the faceoff circle next to the passing shadow, one in the corner. K reaches the corner with a pass off the boards. The fourth stands in front of the goal at the far post: if K plays a rim behind the net, they skate behind the net and pick up the puck. No opponent is responsible for any of them. With the pass they get a big bubble straight away.',
+      },
+    ],
+    labels: [
+      'Attacking zone. K has the puck on the left boards, with an opponent between them and the goal. Behind that opponent is a grey passing shadow. Our four teammates stand next to an opponent up high, in the passing shadow, next to an opponent on the right, and next to an opponent in front of the goal.',
+      'The same situation. Three green areas show the open ice: high in the slot, at the left faceoff circle next to the passing shadow, and in the left-hand corner. Three teammates stand there. Dotted lines show K’s open passing lanes, the one to the corner off the boards. The fourth teammate stands at the right-hand post. A dotted line shows the rim along the boards to behind the net. An arrow shows that teammate skating there.',
     ],
   },
 };

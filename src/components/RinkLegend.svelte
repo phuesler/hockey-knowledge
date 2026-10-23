@@ -32,6 +32,7 @@
     open: 'freies Eis',
     shadow: 'Passschatten',
     view: 'Blick',
+    bubble: 'Zeit und Raum am Puck',
     'cover-ld': 'Bereich LD',
     'cover-rd': 'Bereich RD',
     'cover-c': 'Bereich C',
@@ -62,6 +63,7 @@
     open: 'open ice',
     shadow: 'passing shadow',
     view: 'where the player looks',
+    bubble: 'the puck carrier’s time and space',
     'cover-ld': 'LD’s area',
     'cover-rd': 'RD’s area',
     'cover-c': 'C’s area',
@@ -83,7 +85,7 @@
       }
     }
     const order: Key[] = [
-      'us', 'them', 'ref', 'ghost', 'puck', 'skate', 'carry', 'pass', 'shot', 'stick', 'lane', 'sight', 'danger', 'near', 'far', 'gap', 'open', 'shadow', 'view', 'bench', 'bench-them', 'ref-crease',
+      'us', 'them', 'ref', 'ghost', 'puck', 'skate', 'carry', 'pass', 'shot', 'stick', 'lane', 'sight', 'danger', 'near', 'far', 'gap', 'open', 'shadow', 'view', 'bubble', 'bench', 'bench-them', 'ref-crease',
       'cover-lw', 'cover-rw', 'cover-ld', 'cover-rd', 'cover-c',
     ];
     return order.filter((k) => keys.has(k));
@@ -257,6 +259,10 @@
     fill: var(--c-good-soft);
     stroke: var(--c-good);
     stroke-dasharray: 2 1.5;
+  }
+  .area.bubble {
+    fill: var(--c-bubble-soft);
+    stroke: var(--c-bubble);
   }
   .area.shadow {
     fill: var(--c-steel);
