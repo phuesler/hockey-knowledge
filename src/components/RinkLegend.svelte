@@ -11,7 +11,7 @@
   const de = {
     title: 'Legende',
     us: 'wir',
-    them: 'Gegner',
+    them: 'anderes Team',
     ref: 'Schiedsrichter',
     ghost: 'vorher',
     puck: 'Puck',
@@ -27,7 +27,7 @@
     far: 'weite Unterstützung',
     gap: 'niemand da',
     bench: 'unsere Spielerbank',
-    'bench-them': 'Bank der Gegner',
+    'bench-them': 'Bank des anderen Teams',
     'ref-crease': 'Schiedsrichterkreis',
     open: 'freies Eis',
     shadow: 'Passschatten',

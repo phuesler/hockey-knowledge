@@ -491,7 +491,7 @@ const de = {
     },
     offside: {
       name: 'Abseits',
-      meaning: 'Ein Angreifer hat den Puck in der Zone gespielt, obwohl er im Abseits war. Bully vor der blauen Linie.',
+      meaning: 'Ein Angreifer stand im Abseits und hat den Puck in der Zone gespielt. Bully vor der blauen Linie.',
       looks: 'Erst der Pfiff, dann zeigt ein Arm waagrecht zur blauen Linie.',
     },
     icing: {
@@ -516,72 +516,72 @@ const de = {
     },
     'penalty-shot': {
       name: 'Penaltyschuss',
-      meaning: 'Ein Spieler bekommt einen freien Schuss, allein gegen den Torhüter.',
+      meaning: 'Jemand bekommt einen freien Schuss, allein gegen den Torhüter.',
       looks: 'Beide Arme über dem Kopf gekreuzt.',
     },
     'hand-pass': {
       name: 'Handpass',
-      meaning: 'Ein Spieler hat den Puck mit der Hand zu einem Mitspieler gespielt. Das ist nicht erlaubt.',
+      meaning: 'Jemand hat den Puck mit der Hand zum eigenen Team gespielt. Das ist nicht erlaubt.',
       looks: 'Die offene Hand schiebt ein- oder zweimal nach vorne.',
     },
     'face-off-violation': {
       name: 'Warnung beim Bully',
-      meaning: 'Ein Spieler hat sich beim Bully nicht richtig hingestellt. Das ist eine Warnung.',
+      meaning: 'Jemand hat sich beim Bully nicht richtig hingestellt. Das ist eine Warnung.',
       looks: 'Ein Arm angewinkelt zur Seite, die Handfläche nach oben, auf der Seite des Teams mit dem Fehler.',
     },
     boarding: {
       name: 'Bandencheck',
-      meaning: 'Ein Spieler hat jemanden hart in die Bande gestossen.',
+      meaning: 'Jemand wurde hart in die Bande gestossen.',
       looks: 'Die Faust schlägt vor der Brust in die offene Hand.',
     },
     charging: {
       name: 'Unerlaubter Körperangriff (Charging)',
-      meaning: 'Ein Spieler hat Anlauf genommen und ist in jemanden hineingefahren.',
+      meaning: 'Jemand hat Anlauf genommen und ist in ein Gegenüber hineingefahren.',
       looks: 'Beide Fäuste kreisen vor der Brust umeinander.',
     },
     'checking-from-behind': {
       name: 'Check von hinten',
-      meaning: 'Ein Spieler hat jemanden von hinten gestossen oder gecheckt. Das ist sehr gefährlich!',
+      meaning: 'Jemand wurde von hinten gestossen oder gecheckt. Das ist sehr gefährlich!',
       looks: 'Beide Arme stossen auf Schulterhöhe nach vorne, die Handflächen offen.',
     },
     'check-to-the-head': {
       name: 'Check gegen den Kopf',
-      meaning: 'Ein Spieler hat jemanden am Kopf oder am Hals getroffen. Der Kopf ist tabu!',
+      meaning: 'Jemand wurde am Kopf oder am Hals getroffen. Der Kopf ist tabu!',
       looks: 'Die flache Hand klopft an die Seite des Kopfes.',
     },
     elbowing: {
       name: 'Ellbogencheck',
-      meaning: 'Ein Spieler hat jemanden mit dem Ellbogen getroffen.',
+      meaning: 'Jemand wurde mit dem Ellbogen getroffen.',
       looks: 'Die eine Hand klopft auf den anderen Ellbogen.',
     },
     kneeing: {
       name: 'Kniecheck',
-      meaning: 'Ein Spieler hat jemanden mit dem Knie getroffen.',
+      meaning: 'Jemand wurde mit dem Knie getroffen.',
       looks: 'Die Hand schlägt auf das eigene Knie, beide Schlittschuhe bleiben auf dem Eis.',
     },
     clipping: {
       name: 'Tiefer Check (Clipping)',
-      meaning: 'Ein Spieler hat jemanden tief getroffen, am Knie oder darunter.',
+      meaning: 'Jemand wurde tief getroffen, am Knie oder darunter.',
       looks: 'Nach vorne gebeugt, die Hand klopft hinter das Knie.',
     },
     tripping: {
       name: 'Beinstellen',
-      meaning: 'Ein Spieler hat jemanden mit dem Stock, dem Bein oder dem Körper zu Fall gebracht.',
+      meaning: 'Jemand wurde mit dem Stock, dem Bein oder dem Körper zu Fall gebracht.',
       looks: 'Die Hand schlägt unterhalb des Knies ans Bein.',
     },
     roughing: {
       name: 'Übertriebene Härte',
-      meaning: 'Spieler haben geschubst, gerangelt oder mit den Händen geschlagen.',
+      meaning: 'Auf dem Eis wurde geschubst, gerangelt oder mit den Händen geschlagen.',
       looks: 'Die Faust geballt, der Arm seitlich ausgestreckt.',
     },
     holding: {
       name: 'Halten',
-      meaning: 'Ein Spieler hat jemanden festgehalten, statt den Puck zu spielen.',
+      meaning: 'Jemand hat ein Gegenüber festgehalten, statt den Puck zu spielen.',
       looks: 'Die eine Hand umklammert vor der Brust das andere Handgelenk.',
     },
     interference: {
       name: 'Behinderung',
-      meaning: 'Ein Spieler hat jemanden gestört, der den Puck gar nicht hatte.',
+      meaning: 'Jemand hat ein Gegenüber gestört, das den Puck gar nicht hatte.',
       looks: 'Die Arme vor der Brust zu einem X gekreuzt, ohne Bewegung.',
     },
     'illegal-hit-women': {
@@ -591,22 +591,22 @@ const de = {
     },
     hooking: {
       name: 'Haken',
-      meaning: 'Ein Spieler hat den Stock wie einen Haken benutzt und jemanden zurückgezogen.',
+      meaning: 'Jemand hat den Stock wie einen Haken benutzt und ein Gegenüber zurückgezogen.',
       looks: 'Beide Arme ziehen etwas von vorne zum Bauch.',
     },
     'holding-the-stick': {
       name: 'Stockhalten',
-      meaning: 'Ein Spieler hat den Stock eines Gegners festgehalten.',
+      meaning: 'Jemand hat den Stock eines Gegenübers festgehalten.',
       looks: 'Erst das Zeichen für Halten, dann beide Hände, als hielten sie einen Stock.',
     },
     slashing: {
       name: 'Stockschlag (Slashing)',
-      meaning: 'Ein Spieler hat mit dem Stock nach jemandem geschlagen.',
+      meaning: 'Jemand hat mit dem Stock nach einem Gegenüber geschlagen.',
       looks: 'Die Handkante hackt auf den anderen Unterarm.',
     },
     'cross-checking': {
       name: 'Cross-Check',
-      meaning: 'Ein Spieler hat jemanden mit dem Stock gestossen, den er mit beiden Händen hielt.',
+      meaning: 'Jemand hat ein Gegenüber mit dem Stock gestossen, beide Hände am Stock.',
       looks: 'Beide Fäuste stossen von der Brust nach vorne und zurück, als hielten sie einen Stock.',
     },
     'high-sticking': {
@@ -616,17 +616,17 @@ const de = {
     },
     'butt-ending': {
       name: 'Stockendenstoss (Butt-Ending)',
-      meaning: 'Ein Spieler hat jemanden mit dem oberen Ende des Stocks gestossen.',
+      meaning: 'Jemand hat ein Gegenüber mit dem oberen Ende des Stocks gestossen.',
       looks: 'Die Faust des einen Arms stösst unter dem anderen Unterarm nach vorne.',
     },
     spearing: {
       name: 'Stockstich (Spearing)',
-      meaning: 'Ein Spieler hat mit der Schaufel des Stocks nach jemandem gestochen.',
+      meaning: 'Jemand hat mit der Schaufel des Stocks nach einem Gegenüber gestochen.',
       looks: 'Beide Hände stossen vor dem Körper nach vorne, dann fallen sie an die Seite.',
     },
     'too-many-players': {
       name: 'Zu viele Spieler',
-      meaning: 'Ein Team hatte zu viele Spieler gleichzeitig auf dem Eis.',
+      meaning: 'Ein Team hatte zu viele Leute gleichzeitig auf dem Eis.',
       looks: 'Sechs Finger vor der Brust: eine Hand offen, dazu ein Finger.',
     },
     'delaying-the-game': {
@@ -636,12 +636,12 @@ const de = {
     },
     'unsportsmanlike-conduct': {
       name: 'Unsportliches Verhalten',
-      meaning: 'Ein Spieler war nicht fair oder nicht respektvoll. Dasselbe Zeichen gilt für eine Schwalbe (so tun, als wäre man gefoult worden).',
+      meaning: 'Jemand war nicht fair oder nicht respektvoll. Dasselbe Zeichen gilt für eine Schwalbe (so tun, als wäre man gefoult worden).',
       looks: 'Beide Hände in die Hüften gestemmt.',
     },
     'time-out': {
       name: 'Auszeit (Time-out)',
-      meaning: 'Ein Team nimmt 30 Sekunden Pause, um mit dem Trainer zu reden.',
+      meaning: 'Ein Team nimmt 30 Sekunden Pause, um mit dem Trainerteam zu reden.',
       looks: 'Beide Hände formen vor der Brust ein T.',
     },
   } satisfies Record<SignalId, SignalText>,
