@@ -37,13 +37,13 @@
         LD: 'Der Puck ist im eigenen Bereich: Druck auf den Puck, auf der Abwehrseite.',
         C: 'Nahe Unterstützung für LD: tief neben dem Zweikampf, bereit zu helfen.',
         RD: 'Vor dem Tor auf der eigenen Seite. Deckt das Gegenüber vor dem Tor, Stock auf dem Eis.',
-        LW: 'Hoch auf der Puckseite. Hat die Person vom anderen Team an der Bande und die an der blauen Linie im Blick.',
+        LW: 'Hoch auf der Puckseite. Hat die anderen an der Bande und an der blauen Linie im Blick.',
         RW: 'Hoch auf der anderen Seite, nah an der Mitte. Hält den hohen Slot zu.',
       },
       pointLeft: {
         LW: 'Der Puck ist im eigenen Bereich: geht auf den Verteidiger mit dem Puck, Stock in die Schussbahn.',
         LD: 'Rückt im eigenen Bereich nach oben und deckt das Gegenüber an der Bande.',
-        C: 'Vor dem Tor: Dort steht jemand vom anderen Team frei, weil RD schon jemanden deckt.',
+        C: 'Vor dem Tor: Dort steht eins von den anderen frei, weil RD schon ein Gegenüber deckt.',
         RD: 'Nah am Tor auf der eigenen Seite. Deckt das Gegenüber dort.',
         RW: 'Hoch auf der anderen Seite. Bereit, falls der Puck zum zweiten Verteidiger geht.',
       },
@@ -58,11 +58,11 @@
         RD: 'Der Puck ist im eigenen Bereich: Druck auf den Puck, auf der Abwehrseite.',
         C: 'Nahe Unterstützung für RD: tief neben dem Zweikampf, bereit zu helfen.',
         LD: 'Vor dem Tor auf der eigenen Seite. Deckt das Gegenüber vor dem Tor, Stock auf dem Eis.',
-        RW: 'Hoch auf der Puckseite. Hat die Person vom anderen Team an der Bande und die an der blauen Linie im Blick.',
+        RW: 'Hoch auf der Puckseite. Hat die anderen an der Bande und an der blauen Linie im Blick.',
         LW: 'Hoch auf der anderen Seite, nah an der Mitte. Hält den hohen Slot zu.',
       },
     } satisfies Record<Spot, Record<Role, string>>,
-    note: 'Alle haben ihren eigenen Bereich. Ist der Puck in deinem Bereich, machst du Druck. Der Center ist die nahe Unterstützung beim Puck. Vor das Tor geht der Center nur, wenn dort jemand vom anderen Team frei steht, den der Verteidiger der anderen Seite nicht deckt.',
+    note: 'Alle haben ihren eigenen Bereich. Ist der Puck in deinem Bereich, machst du Druck. Der Center ist die nahe Unterstützung beim Puck. Vor das Tor geht der Center nur, wenn dort eins von den anderen frei steht und der Verteidiger der anderen Seite es nicht deckt.',
   };
 
   const en: typeof de = {

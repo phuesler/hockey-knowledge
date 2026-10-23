@@ -911,15 +911,15 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Der Linienrichter hebt den Arm. Das andere Team hat den Puck tief in seiner Zone. Du bist LW und noch in der Zone, genau wie C und RW. Was machst du?',
+          'Der Linienrichter hebt den Arm. Die anderen haben den Puck tief in ihrer Zone. Du bist LW und noch in der Zone, genau wie C und RW. Was machst du?',
         label:
-          'Angriffszone. Das andere Team hat den Puck tief in seiner Zone. LW, C und RW sind noch in der Zone, LD und RD stehen vor der blauen Linie.',
+          'Angriffszone. Die anderen haben den Puck tief in ihrer Zone. LW, C und RW sind noch in der Zone, LD und RD stehen vor der blauen Linie.',
         afterLabel: 'LW, C und RW haben die Zone verlassen. Jetzt ist kein Angreifer mehr drin.',
         options: [
           {
-            text: 'Die Person mit dem Puck angreifen, bevor sie wegkommt.',
+            text: 'Sofort angreifen, wer den Puck hat.',
             feedback:
-              'Dann pfeift der Linienrichter. Solange der Arm oben ist, darfst du weder den Puck spielen noch die Person mit dem Puck angreifen.',
+              'Dann pfeift der Linienrichter. Solange der Arm oben ist, darfst du weder den Puck spielen noch angreifen, wer ihn hat.',
           },
           {
             text: 'So schnell wie möglich raus, bis niemand von uns mehr in der Zone ist.',
@@ -948,7 +948,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Der Schuss von {2}',
             feedback:
-              'Platz {2} steht schon hinter der roten Mittellinie, in der Hälfte des anderen Teams. Von dort ist es nie Icing.',
+              'Platz {2} steht schon hinter der roten Mittellinie, in der Hälfte der anderen. Von dort ist es nie Icing.',
           },
           {
             text: 'Beide',
@@ -979,14 +979,14 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Der Puck kommt aus unserer Hälfte und rutscht Richtung gegnerische Torlinie. Der Linienrichter hebt den Arm. Du bist C und ein Stück schneller als der Verteidiger. Was machst du?',
+          'Der Puck kommt aus unserer Hälfte und rutscht Richtung gegnerische Torlinie. Der Linienrichter hebt den Arm. Du bist C und ein Stück schneller als die Verteidigerin der anderen. Was machst du?',
         label:
-          'Angriffszone, oben das gegnerische Tor. Der Puck rutscht in die linke Ecke. C und ein gegnerischer Verteidiger fahren auf den Puck zu. Eine gepunktete Linie zeigt die Höhe der Bullypunkte.',
+          'Angriffszone, oben das gegnerische Tor. Der Puck rutscht in die linke Ecke. C und eine gegnerische Verteidigerin fahren auf den Puck zu. Eine gepunktete Linie zeigt die Höhe der Bullypunkte.',
         options: [
           {
             text: 'Austrudeln lassen. Der Arm ist oben, also ist es sowieso Icing.',
             feedback:
-              'Der Arm zeigt nur ein mögliches Icing. Entschieden wird erst, wenn die erste Person auf Höhe der Bullypunkte ist.',
+              'Der Arm zeigt nur ein mögliches Icing. Entschieden wird erst auf Höhe der Bullypunkte: Wer ist dort zuerst?',
           },
           {
             text: 'Zum Puck sprinten. Wäre ich zuerst dort, gibt es kein Icing.',
@@ -1027,24 +1027,24 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Jemand vom anderen Team foult, und der Schiedsrichter hebt den Arm. Wir haben den Puck in der Angriffszone. Was macht unser Torhüter?',
+          'Eins von den anderen foult, und der Schiedsrichter hebt den Arm. Wir haben den Puck in der Angriffszone. Was macht unsere Torhüterin?',
         label:
-          'Das ganze Eis, unser Tor unten. Wir haben den Puck in der Angriffszone. Unser Torhüter G steht im Tor, die Spielerbank ist links an der Bande.',
+          'Das ganze Eis, unser Tor unten. Wir haben den Puck in der Angriffszone. Unsere Torhüterin G steht im Tor, die Spielerbank ist links an der Bande.',
         afterLabel:
-          'Der Torhüter ist an der Bank. Ein sechster Feldspieler, +1, fährt aufs Eis. Unser Tor ist leer.',
+          'Die Torhüterin ist an der Bank. Ein sechster Feldspieler, +1, fährt aufs Eis. Unser Tor ist leer.',
         options: [
           {
-            text: 'Der Torhüter bleibt im Tor. Ohne Torhüter ist es zu gefährlich.',
+            text: 'Die Torhüterin bleibt im Tor. Ohne sie ist es zu gefährlich.',
             feedback:
-              'Solange der Arm oben ist, kann das andere Team kein Tor schiessen: Sobald es den Puck kontrolliert, wird gepfiffen. Darum kann der Torhüter raus.',
+              'Solange der Arm oben ist, können die anderen kein Tor schiessen: Sobald sie den Puck kontrollieren, wird gepfiffen. Darum kann die Torhüterin raus.',
           },
           {
-            text: 'Der Torhüter fährt zur Bank. Ein sechster Feldspieler springt aufs Eis, wenn der Torhüter fast da ist.',
+            text: 'Die Torhüterin fährt zur Bank. Ein sechster Feldspieler springt aufs Eis, wenn sie fast da ist.',
             feedback:
-              'So spielen wir sechs gegen fünf. Der sechste Feldspieler springt erst, wenn der Torhüter ganz nah an der Bank ist, etwa 1.5 Meter.',
+              'So spielen wir sechs gegen fünf. Der sechste Feldspieler springt erst, wenn die Torhüterin ganz nah an der Bank ist, etwa 1.5 Meter.',
           },
           {
-            text: 'Der Torhüter fährt zur Bank, und sofort springt ein Feldspieler aufs Eis.',
+            text: 'Die Torhüterin fährt zur Bank, und sofort springt ein Feldspieler aufs Eis.',
             feedback:
               'Fast. Springt der sechste Feldspieler zu früh, sind zu viele auf dem Eis. Das ist selbst eine Strafe.',
           },
@@ -1059,16 +1059,16 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Nein, während der angezeigten Strafe zählt kein Tor gegen uns.',
             feedback:
-              'Das andere Team kann kein Tor schiessen. Spielen wir den Puck aber selbst ins eigene Tor, zählt es.',
+              'Die anderen können kein Tor schiessen. Spielen wir den Puck aber selbst ins eigene Tor, zählt es.',
           },
           {
             text: 'Ja, ein Eigentor zählt.',
             feedback: 'Leider ja. Darum spielen wir nie zurück zum eigenen Tor, solange es leer ist.',
           },
           {
-            text: 'Nur wenn jemand vom anderen Team den Puck vorher berührt hat.',
+            text: 'Nur wenn die anderen den Puck vorher berührt haben.',
             feedback:
-              'Umgekehrt: Lenkt jemand vom anderen Team den Puck in unser Tor, zählt es nicht. Spielen wir ihn selbst hinein, zählt es.',
+              'Umgekehrt: Lenken die anderen den Puck in unser Tor, zählt es nicht. Spielen wir ihn selbst hinein, zählt es.',
           },
         ],
         section: 'torhüter-raus-sechster-feldspieler-rein',
@@ -1082,9 +1082,9 @@ const de: Record<QuizId, QuizText> = {
     article: 'abwehrseite',
     questions: [
       {
-        prompt: 'Jemand vom anderen Team kommt mit dem Puck auf unser Tor zu. Du bist LD. Wo stehst du am besten: 1, 2 oder 3?',
+        prompt: 'Dein Gegenüber kommt mit dem Puck auf unser Tor zu. Du bist LD. Wo stehst du am besten: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten, die Gefahrenzone ist markiert. Jemand vom anderen Team mit Puck links oberhalb des Bullykreises. Platz {1} ist weiter weg vom Tor als diese Person. Platz {2} steht zwischen ihr und dem Tor, ein Stück nach innen. Platz {3} steht zwischen ihr und dem Tor, aber weiter aussen.',
+          'Eigene Zone, unser Tor unten, die Gefahrenzone ist markiert. Das Gegenüber mit Puck ist links oberhalb des Bullykreises. Platz {1} ist weiter weg vom Tor als das Gegenüber. Platz {2} steht zwischen ihm und dem Tor, ein Stück nach innen. Platz {3} steht zwischen ihm und dem Tor, aber weiter aussen.',
         afterLabel:
           'LD steht auf Platz {2}, zwischen Gegenüber und Tor und etwas innen. Der Weg zum Tor ist zu, das Gegenüber muss aussen an der Bande entlang.',
         options: [
@@ -1127,7 +1127,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Beide sind gleich gefährlich',
             feedback:
-              'Je weiter aussen, desto kleiner wird das Tor beim Schuss. Darum halten wir das andere Team ausserhalb der Bullypunkte.',
+              'Je weiter aussen, desto kleiner wird das Tor beim Schuss. Darum halten wir die anderen ausserhalb der Bullypunkte.',
           },
         ],
         section: 'das-andere-team-ausserhalb-der-bullypunkte-halten',
@@ -1135,7 +1135,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Jemand vom anderen Team fährt mit dem Puck an der Bande, ausserhalb der Bullypunkte. Dein Gegenüber schaut dich an und hat den Puck unter Kontrolle. Was machst du?',
+          'Dein Gegenüber fährt mit dem Puck an der Bande, ausserhalb der Bullypunkte. Es schaut dich an und hat den Puck unter Kontrolle. Was machst du?',
         options: [
           {
             text: 'Mit vollem Tempo los und den Puck abnehmen.',
@@ -1179,21 +1179,21 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Wir haben den Puck verloren. Du bist RW und fährst zurück. Jemand vom anderen Team fährt ohne Puck Richtung Tor. Welchen Weg nimmst du: 1 oder 2?',
+          'Wir haben den Puck verloren. Du bist RW und fährst zurück. Ein Stürmer der anderen fährt ohne Puck Richtung Tor. Welchen Weg nimmst du: 1 oder 2?',
         label:
-          'Eigene Zone. Jemand vom anderen Team hat den Puck links an der Bande, LD steht davor. RW kommt oben rechts zurück. Eine zweite Person vom anderen Team fährt ohne Puck Richtung Tor. Platz {1} liegt innen, in der Mitte, Platz {2} aussen an der rechten Bande.',
+          'Eigene Zone. Eine gegnerische Stürmerin hat den Puck links an der Bande, LD steht davor. RW kommt oben rechts zurück. Ein zweiter Stürmer fährt ohne Puck Richtung Tor. Platz {1} liegt innen, in der Mitte, Platz {2} aussen an der rechten Bande.',
         afterLabel:
-          'RW ist innen zurückgefahren und steht zwischen der Person ohne Puck und dem Tor, im Weg des Passes.',
+          'RW ist innen zurückgefahren und steht zwischen dem Stürmer ohne Puck und dem Tor, im Weg des Passes.',
         options: [
           {
             text: 'Platz {1}, innen durch die Mitte',
             feedback:
-              'Innen zurück, über die Schulter schauen und als Erstes zwischen Gegenüber und Tor sein. Der Pass dorthin geht dann nicht mehr durch.',
+              'Innen zurück, über die Schulter schauen und als Erstes zwischen Stürmer und Tor sein. Der Pass dorthin geht dann nicht mehr durch.',
           },
           {
             text: 'Platz {2}, aussen an der Bande',
             feedback:
-              'Wer aussen zurückfährt, lässt dem Gegenüber innen freie Bahn zum Tor. Ein Pass, und dein Gegenüber steht allein vor dem Torhüter.',
+              'Wer aussen zurückfährt, lässt dem Stürmer innen freie Bahn zum Tor. Ein Pass, und er steht allein vor dem Torhüter.',
           },
         ],
         section: 'abwehrseite-ohne-puck',
@@ -1201,7 +1201,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Jemand vom anderen Team holt den Puck in der Ecke. Dein Gegenüber steht mit dem Rücken zu dir und hat den Puck noch nicht unter Kontrolle. Was machst du?',
+          'Dein Gegenüber holt den Puck in der Ecke. Es steht mit dem Rücken zu dir und hat den Puck noch nicht unter Kontrolle. Was machst du?',
         options: [
           {
             text: 'Schnell angreifen.',
@@ -1211,7 +1211,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Langsam zufahren und abwarten.',
             feedback:
-              'Langsam fährt man auf ein Gegenüber zu, das dich anschaut und den Puck kontrolliert. Hier ist beides nicht so. Das ist deine Chance.',
+              'Langsam fährst du auf ein Gegenüber zu, das dich anschaut und den Puck kontrolliert. Hier ist beides nicht so. Das ist deine Chance.',
           },
           {
             text: 'Vor dem Tor warten.',
@@ -1233,8 +1233,8 @@ const de: Record<QuizId, QuizText> = {
         prompt:
           'Drei von uns sind beim Puck in der linken Ecke. Du bist RW und kommst gerade in die Zone. Wohin fährst du: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten. LD, RD und C sind in der linken Ecke beim Puck, LW steht oben links. Vor dem Tor steht jemand vom anderen Team frei. RW kommt oben rechts in die Zone. Platz {1} liegt neben der Ecke, Platz {2} vor dem Tor, Platz {3} oben rechts.',
-        afterLabel: 'RW ist vor das Tor gefahren und steht bei der freien Person vom anderen Team.',
+          'Eigene Zone, unser Tor unten. LD, RD und C sind in der linken Ecke beim Puck, LW steht oben links. Vor dem Tor steht eine Stürmerin der anderen frei. RW kommt oben rechts in die Zone. Platz {1} liegt neben der Ecke, Platz {2} vor dem Tor, Platz {3} oben rechts.',
+        afterLabel: 'RW ist vor das Tor gefahren und steht bei der freien Stürmerin.',
         options: [
           {
             text: 'Platz {1}, in die Ecke helfen',
@@ -1244,7 +1244,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Platz {2}, vor das Tor',
             feedback:
-              'Vor dem Tor steht jemand vom anderen Team frei, und von dort fallen die meisten Tore. Ist mehr als ein Bereich frei: zuerst vor das Tor.',
+              'Vor dem Tor steht eine Stürmerin der anderen frei, und von dort fallen die meisten Tore. Ist mehr als ein Bereich frei: zuerst vor das Tor.',
           },
           {
             text: 'Platz {3}, in meinen Bereich oben rechts',
@@ -1258,7 +1258,7 @@ const de: Record<QuizId, QuizText> = {
       {
         prompt: 'Der Puck ist in der rechten Ecke unserer Zone. Wer macht Druck auf den Puck?',
         label:
-          'Eigene Zone in fünf farbigen Bereichen. Der Puck ist in der rechten Ecke, im Bereich von RD. Das andere Team hat ihn.',
+          'Eigene Zone in fünf farbigen Bereichen. Der Puck ist in der rechten Ecke, im Bereich von RD. Die anderen haben ihn.',
         options: [
           {
             text: 'RD',
@@ -1287,14 +1287,14 @@ const de: Record<QuizId, QuizText> = {
               'Die Mitte ist der Ausgangspunkt, aber dort bleibt der Center nicht stehen. Meistens ist der Center die nahe Unterstützung beim Puck.',
           },
           {
-            text: 'Wenn dort jemand vom anderen Team frei steht, den der Verteidiger der anderen Seite nicht decken kann.',
+            text: 'Wenn dort eins von den anderen frei steht und niemand aus der Verteidigung es decken kann.',
             feedback:
-              'Eine freie Person vom anderen Team vor dem Tor ist gefährlicher als ein Zweikampf in der Ecke. Sonst hilft der Center beim Puck.',
+              'Ein freies Gegenüber vor dem Tor ist gefährlicher als ein Zweikampf in der Ecke. Sonst hilft der Center beim Puck.',
           },
           {
             text: 'Nie. Der Center bleibt immer beim Puck.',
             feedback:
-              'Meistens ja. Steht aber vor dem Tor jemand vom anderen Team frei, den niemand deckt, geht der Center dorthin.',
+              'Meistens ja. Steht aber vor dem Tor eins von den anderen frei, und niemand deckt es, geht der Center dorthin.',
           },
         ],
         section: 'der-center-unterstützung-zuerst',
@@ -1303,9 +1303,9 @@ const de: Record<QuizId, QuizText> = {
       {
         prompt: 'RD macht Druck in der rechten Ecke, C hilft. Du bist LD. Wo stehst du: 1, 2 oder 3?',
         label:
-          'Eigene Zone in fünf farbigen Bereichen. Der Puck ist in der rechten Ecke, RD und C sind dort. Vor dem Tor steht jemand vom anderen Team. Platz {1} liegt in der linken Ecke, Platz {2} vor dem Tor, Platz {3} neben RD in der rechten Ecke.',
+          'Eigene Zone in fünf farbigen Bereichen. Der Puck ist in der rechten Ecke, RD und C sind dort. Vor dem Tor steht ein Stürmer der anderen. Platz {1} liegt in der linken Ecke, Platz {2} vor dem Tor, Platz {3} neben RD in der rechten Ecke.',
         afterLabel:
-          'LD steht vor dem Tor bei der Person vom anderen Team. LW und RW stehen oben in ihren Bereichen, nah an der Mitte.',
+          'LD steht vor dem Tor beim Stürmer. LW und RW stehen oben in ihren Bereichen, nah an der Mitte.',
         options: [
           {
             text: 'Platz {1}, unten links in meinem Bereich',
@@ -1315,12 +1315,12 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Platz {2}, vor dem Tor',
             feedback:
-              'Der Verteidiger der anderen Seite geht vor das Tor. Dort deckst du dein Gegenüber, mit dem Schläger auf dem Eis.',
+              'Du bist auf der anderen Seite, also gehst du vor das Tor. Dort deckst du den Stürmer, mit dem Schläger auf dem Eis.',
           },
           {
             text: 'Platz {3}, neben RD in der Ecke',
             feedback:
-              'Bei RD sind schon zwei: RD und C. Als Dritter in der Ecke fehlst du vor dem Tor.',
+              'Bei RD sind schon zwei: RD und C. Kommst du noch dazu, fehlst du vor dem Tor.',
           },
         ],
         section: 'die-fünf-bereiche',
@@ -1333,7 +1333,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Ich fahre schnell quer übers Eis zurück in die Mitte, damit LD in die eigene Ecke kann.',
             feedback:
-              'Wer quer übers Eis zur eigenen Position fährt, öffnet eine Lücke, die das andere Team nutzt.',
+              'Wer quer übers Eis zur eigenen Position fährt, öffnet eine Lücke, die die anderen nutzen.',
           },
           {
             text: 'Wir tauschen: Ich spiele LD, LD spielt C. Zurück getauscht wird, wenn es ruhig ist.',
@@ -1353,9 +1353,9 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Zwei von uns sind schon beim Puck. Du kommst nach dem Wechsel in die Zone. Was machst du?',
         options: [
           {
-            text: 'Als dritte Person zum Puck. Zu dritt gewinnen wir ihn sicher.',
+            text: 'Auch noch zum Puck. Zu dritt gewinnen wir ihn sicher.',
             feedback:
-              'Eine dritte Person am Puck hilft fast nie. Sie fehlt aber immer woanders, meistens vor dem Tor.',
+              'Zu dritt am Puck hilft fast nie. Wer dazukommt, fehlt aber immer woanders, meistens vor dem Tor.',
           },
           {
             text: 'Kopf hoch, zählen, und in den Bereich fahren, der noch frei ist.',
@@ -1380,11 +1380,11 @@ const de: Record<QuizId, QuizText> = {
     questions: [
       {
         prompt:
-          'LD hat den Puck in der Ecke, jemand vom anderen Team kommt auf LD zu. Du bist LW. Wo bist du die beste nahe Unterstützung: 1, 2 oder 3?',
+          'LD hat den Puck in der Ecke, eine Stürmerin der anderen kommt auf LD zu. Du bist LW. Wo bist du die beste nahe Unterstützung: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten. LD hat den Puck in der linken Ecke, jemand vom anderen Team fährt auf LD zu. Platz {1} liegt an der linken Bande auf Höhe der Hashmarks. Platz {2} liegt in der Mitte, direkt hinter dieser Person. Platz {3} liegt oben an der blauen Linie.',
+          'Eigene Zone, unser Tor unten. LD hat den Puck in der linken Ecke, eine Stürmerin der anderen fährt auf LD zu. Platz {1} liegt an der linken Bande auf Höhe der Hashmarks. Platz {2} liegt in der Mitte, direkt hinter ihr. Platz {3} liegt oben an der blauen Linie.',
         afterLabel:
-          'LW steht auf Platz {1} an der Bande. Der Pass von LD kommt frei an. Hinter dem Gegenüber ist ein grauer Passschatten, dorthin kommt kein Pass.',
+          'LW steht auf Platz {1} an der Bande. Der Pass von LD kommt frei an. Hinter der Stürmerin ist ein grauer Passschatten, dorthin kommt kein Pass.',
         options: [
           {
             text: 'Platz {1}, an der Bande',
@@ -1394,12 +1394,12 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Platz {2}, in der Mitte',
             feedback:
-              'Zwischen dir und LD steht jemand vom anderen Team. Den Pass bringt LD nicht durch. Siehst du die Kelle des Puckführers nicht, geh ein, zwei Schritte zur Seite.',
+              'Zwischen dir und LD steht die Stürmerin. Den Pass bringt LD nicht durch. Siehst du die Kelle des Puckführers nicht, geh ein, zwei Schritte zur Seite.',
           },
           {
             text: 'Platz {3}, an der blauen Linie',
             feedback:
-              'Zu weit weg. Ein kurzer, sicherer Pass muss reichen, solange das andere Team drückt. Und so weit oben bist du zu früh raus.',
+              'Zu weit weg. Ein kurzer, sicherer Pass muss reichen, solange die anderen drücken. Und so weit oben bist du zu früh raus.',
           },
         ],
         section: 'nahe-unterstützung',
@@ -1407,22 +1407,22 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Das andere Team hat den Puck an der Bande in unserer Zone. LD greift an. Du bist C und hilfst. Was machst du?',
+          'Eine Stürmerin der anderen hat den Puck an der Bande in unserer Zone. LD greift sie an. Du bist C und hilfst. Was machst du?',
         options: [
           {
-            text: 'Auch auf den Puckführer losgehen. Zu zweit ist es sicherer.',
+            text: 'Auch auf die Stürmerin losgehen. Zu zweit ist es sicherer.',
             feedback:
-              'Dann seid ihr beide beim selben Gegenüber, und die freie Person vom anderen Team hat Platz. Nur eine Person greift an.',
+              'Dann seid ihr beide bei ihr, und der freie Stürmer hat Platz. Nur eine Person greift an.',
           },
           {
-            text: 'Ein paar Meter weg bleiben, bereit zu helfen, und die freie Person vom anderen Team im Blick behalten.',
+            text: 'Ein paar Meter weg bleiben, bereit zu helfen, und den freien Stürmer im Blick behalten.',
             feedback:
-              'Pinnt LD das Gegenüber, holst du den Puck. Verliert LD den Zweikampf, bist du sofort da. Und geht der Puck zur freien Person vom anderen Team, bist du als Erstes dort.',
+              'Pinnt LD die Stürmerin, holst du den Puck. Verliert LD den Zweikampf, bist du sofort da. Und geht der Puck zum freien Stürmer, bist du als Erstes dort.',
           },
           {
             text: 'Vor das Tor fahren und dort warten.',
             feedback:
-              'Vor dem Tor steht schon RD. Bist du weit weg, ist LD allein: Verliert LD den Zweikampf, hat das andere Team freie Bahn.',
+              'Vor dem Tor steht schon RD. Bist du weit weg, ist LD allein: Verliert LD den Zweikampf, haben die anderen freie Bahn.',
           },
         ],
         section: 'overload-eine-person-greift-an-eine-hilft',
@@ -1437,14 +1437,14 @@ const de: Record<QuizId, QuizText> = {
               'Wer pinnt, kann den Puck nicht spielen. Lässt LD los, um ihn zu holen, ist das Gegenüber wieder frei.',
           },
           {
-            text: 'Eine zweite Person, zum Beispiel C.',
+            text: 'Wer hilft, zum Beispiel C.',
             feedback:
-              'Pinnen funktioniert nur mit Support. LD hält das Gegenüber fest, die zweite Person holt den Puck.',
+              'Pinnen funktioniert nur mit Support. LD hält das Gegenüber fest, wer hilft, holt den Puck.',
           },
           {
             text: 'Niemand. Man wartet, bis der Schiedsrichter pfeift.',
             feedback:
-              'Der Schiedsrichter pfeift nicht. Eine zweite Person holt den Puck, solange LD das Gegenüber festhält.',
+              'Der Schiedsrichter pfeift nicht. Wer hilft, holt den Puck, solange LD das Gegenüber festhält.',
           },
         ],
         section: 'pinnen-festhalten-und-den-puck-holen-lassen',
@@ -1452,9 +1452,9 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'C steckt in der Ecke fest, zwei vom anderen Team drücken C an die Bande. Du bist LW und stehst vor dem Tor. Was machst du?',
+          'C steckt in der Ecke fest, zwei von den anderen drücken C an die Bande. Du bist LW und stehst vor dem Tor. Was machst du?',
         label:
-          'Angriffszone, oben das gegnerische Tor. C hat den Puck in der linken Ecke, zwei vom anderen Team drücken C an die Bande. LW und RW stehen vor dem Tor und warten.',
+          'Angriffszone, oben das gegnerische Tor. C hat den Puck in der linken Ecke, zwei von den anderen drücken C an die Bande. LW und RW stehen vor dem Tor und warten.',
         afterLabel:
           'LW ist zum Zweikampf gefahren und steht ein paar Meter neben C, nahe Unterstützung. RW steht weiter weg im Slot, weite Unterstützung.',
         options: [
@@ -1471,7 +1471,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Ganz dicht zu C an die Bande.',
             feedback:
-              'Zu nah. Stehst du direkt daneben, stört jemand vom anderen Team euch beide. Ein paar Meter Abstand, in die freie Lücke.',
+              'Zu nah. Stehst du direkt daneben, stört eins von ihnen euch beide. Ein paar Meter Abstand, in die freie Lücke.',
           },
         ],
         section: 'wenn-der-puckführer-festsitzt',
@@ -1486,14 +1486,14 @@ const de: Record<QuizId, QuizText> = {
               'Meistens ja, aber nicht immer. Darum setzt man den Overload mit Bedacht ein.',
           },
           {
-            text: 'Spielt das andere Team den Puck an der Bande entlang zur freien Person, hat es dort ein 2-gegen-1.',
+            text: 'Spielen die anderen den Puck an der Bande entlang zum freien Gegenüber, haben sie dort ein 2-gegen-1.',
             feedback:
-              'Das ist die Kehrseite: Zwei von uns sind auf der Puckseite. Darum behält, wer hilft, die freie Person vom anderen Team im Blick.',
+              'Das ist die Kehrseite: Zwei von uns sind auf der Puckseite. Darum behält, wer hilft, das freie Gegenüber im Blick.',
           },
           {
             text: 'Der Schiedsrichter pfeift Behinderung.',
             feedback:
-              'Eine Person greift an, eine hilft: Das ist erlaubt. Die Gefahr ist eine andere: Spielt das andere Team den Puck zur freien Person, hat es dort ein 2-gegen-1.',
+              'Eine Person greift an, eine hilft: Das ist erlaubt. Die Gefahr ist eine andere: Spielen die anderen den Puck zum freien Gegenüber, haben sie dort ein 2-gegen-1.',
           },
         ],
         section: 'overload-eine-person-greift-an-eine-hilft',
@@ -1508,7 +1508,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Dann stehen alle schön nah beieinander.',
-            feedback: 'Zu nah ist schlecht: Zwei aus dem eigenen Team auf einem Fleck stören sich gegenseitig.',
+            feedback: 'Zu nah ist schlecht: Zwei von uns auf einem Fleck stören sich gegenseitig.',
           },
           {
             text: 'Dann muss niemand mehr fahren.',
@@ -1554,19 +1554,19 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Wir verlieren das Bully in unserer Zone. Du bist RW. Was machst du sofort?',
         options: [
           {
-            text: 'Zum gegnerischen Verteidiger an der blauen Linie.',
+            text: 'Zur gegnerischen Verteidigerin an der blauen Linie.',
             feedback:
-              'Das andere Team will den Puck schnell zum Verteidiger an der blauen Linie bringen und schiessen. LW und RW fahren sofort hin, dann bleibt für den Schuss keine Zeit.',
+              'Die anderen wollen den Puck schnell zur Verteidigerin an der blauen Linie bringen und schiessen. LW und RW fahren sofort hin, dann bleibt für den Schuss keine Zeit.',
           },
           {
             text: 'Vor dem Tor stehen bleiben und den Slot decken.',
             feedback:
-              'Dann hat der Verteidiger an der blauen Linie Zeit und Platz für einen Schuss. Die Flügel fahren sofort zu den beiden Verteidigern.',
+              'Dann hat die Verteidigerin an der blauen Linie Zeit und Platz für einen Schuss. Die Flügel fahren sofort zu den beiden an der blauen Linie.',
           },
           {
             text: 'Zum Puck fahren.',
             feedback:
-              'Um den Puck kämpft schon der C. Deine Aufgabe ist der Verteidiger an der blauen Linie, bevor der Schuss kommt.',
+              'Um den Puck kämpft schon der C. Deine Aufgabe ist die Verteidigerin an der blauen Linie, bevor der Schuss kommt.',
           },
         ],
         section: 'bully-in-der-eigenen-zone',
@@ -1643,21 +1643,21 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Bully in der neutralen Zone gewonnen. Du bist Verteidiger und bekommst den Puck. Ein gegnerischer Flügel kommt schnell auf dich zu. Was machst du?',
+          'Bully in der neutralen Zone gewonnen. Du bist LD und bekommst den Puck. Ein gegnerischer Flügel kommt schnell auf dich zu. Was machst du?',
         options: [
           {
-            text: 'Querpass zum anderen Verteidiger.',
-            feedback: 'Der andere Verteidiger hat dann mehr Zeit und Platz. Schnell entscheiden: weiterpassen oder losfahren.',
+            text: 'Querpass zu RD.',
+            feedback: 'RD hat dann mehr Zeit und Platz. Schnell entscheiden: weiterpassen oder losfahren.',
           },
           {
             text: 'Den Puck stoppen und abwarten, was passiert.',
             feedback:
-              'Das andere Team weiss, dass der Puck zu dir kommt. Wer wartet, wird gestört. Schnell entscheiden: passen oder losfahren.',
+              'Die anderen wissen, dass der Puck zu dir kommt. Wer wartet, wird gestört. Schnell entscheiden: passen oder losfahren.',
           },
           {
             text: 'Den Puck weit nach vorn schiessen.',
             feedback:
-              'Den Puck blind wegschlagen schenkt ihn meistens dem anderen Team. Der Querpass zum anderen Verteidiger ist sicherer.',
+              'Den Puck blind wegschlagen schenkt ihn meistens den anderen. Der Querpass zu RD ist sicherer.',
           },
         ],
         section: 'bully-in-der-neutralen-zone',
@@ -1675,22 +1675,22 @@ const de: Record<QuizId, QuizText> = {
         options: [
           {
             text: 'König',
-            feedback: 'Wer den Puck hat, ist König. Die Rolle hängt nicht von der Position ab: Auch ein Verteidiger kann König sein.',
+            feedback: 'Wer den Puck hat, ist König. Die Rolle hängt nicht von der Position ab: Auch LD kann König sein.',
           },
           {
             text: 'Jäger',
-            feedback: 'Der Jäger verteidigt gegen die Person mit dem Puck. Hier hat aber unser LD den Puck. Wer den Puck hat, ist König.',
+            feedback: 'Den Jäger gibt es nur, wenn die anderen den Puck haben. Hier hat aber unser LD den Puck. Wer den Puck hat, ist König.',
           },
           {
-            text: 'Wächter, weil LD ein Verteidiger ist',
-            feedback: 'Die Rollen sind keine Positionen. Wer den Puck hat, ist König, auch als Verteidiger.',
+            text: 'Wächter, weil LD in der Verteidigung spielt',
+            feedback: 'Die Rollen sind keine Positionen. Wer den Puck hat, ist König, auch in der Verteidigung.',
           },
         ],
         section: 'könig-wer-den-puck-hat',
         topic: 'König',
       },
       {
-        prompt: 'Du bist König und passt den Puck zu jemandem aus deinem Team. Welche Rolle hast du jetzt?',
+        prompt: 'Du bist König und passt den Puck zu C. Welche Rolle hast du jetzt?',
         options: [
           {
             text: 'Immer noch König',
@@ -1699,11 +1699,11 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Satellit',
             feedback:
-              'Jetzt ist die Person mit dem Puck König, und du bist Satellit. Also gleich wieder anspielbar machen.',
+              'Jetzt ist C König, und du bist Satellit. Also gleich wieder anspielbar machen.',
           },
           {
             text: 'Wächter',
-            feedback: 'Wächter gibt es nur, wenn das andere Team den Puck hat. Wir haben ihn noch: Du bist Satellit.',
+            feedback: 'Wächter gibt es nur, wenn die anderen den Puck haben. Wir haben ihn noch: Du bist Satellit.',
           },
         ],
         section: 'rollen-wechseln-ständig',
@@ -1712,14 +1712,14 @@ const de: Record<QuizId, QuizText> = {
       {
         prompt: 'LW ist König. Du bist C, also Satellit. Wo bist du anspielbar: 1, 2 oder 3?',
         label:
-          'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande. Jemand vom anderen Team steht zwischen LW und der Mitte. Platz {1} liegt direkt hinter dieser Person, Platz {2} etwas höher daneben, Platz {3} ganz nah bei LW.',
+          'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande. Ein Verteidiger der anderen steht zwischen LW und der Mitte. Platz {1} liegt direkt hinter ihm, Platz {2} etwas höher daneben, Platz {3} ganz nah bei LW.',
         afterLabel:
-          'C steht auf Platz {2} und bekommt den Pass. Hinter dem Gegenüber ist ein grauer Passschatten, dorthin kommt kein Pass.',
+          'C steht auf Platz {2} und bekommt den Pass. Hinter dem Verteidiger ist ein grauer Passschatten, dorthin kommt kein Pass.',
         options: [
           {
             text: 'Platz {1}',
             feedback:
-              'Platz {1} liegt im Passschatten, direkt hinter der Person vom anderen Team. Dorthin kommt kein Pass durch. Siehst du die Kelle des Königs nicht, stehst du im Schatten.',
+              'Platz {1} liegt im Passschatten, direkt hinter dem Verteidiger. Dorthin kommt kein Pass durch. Siehst du die Kelle des Königs nicht, stehst du im Schatten.',
           },
           {
             text: 'Platz {2}',
@@ -1727,14 +1727,14 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Platz {3}',
-            feedback: 'Zu nah. Stehst du direkt neben dem König, stört eine einzige Person vom anderen Team euch beide.',
+            feedback: 'Zu nah. Stehst du direkt neben dem König, stört dieser eine Verteidiger euch beide.',
           },
         ],
         section: 'satellit-angreifer-ohne-puck',
         topic: 'Satellit',
       },
       {
-        prompt: 'Du bist Jäger. Die Person mit dem Puck schaut zum Spiel und sieht dich. Was machst du?',
+        prompt: 'Du bist Jäger. Dein Gegenüber hat den Puck, schaut zum Spiel und sieht dich. Was machst du?',
         options: [
           {
             text: 'Mit Vollgas losstürmen.',
@@ -1746,7 +1746,7 @@ const de: Record<QuizId, QuizText> = {
               'Ein paar schnelle Schritte nehmen deinem Gegenüber Zeit und Platz. Der Schläger zeigt zum Puck. Und du bleibst zwischen Gegenüber und unserem Tor.',
           },
           {
-            text: 'Warten, bis die Person mit dem Puck zu mir kommt.',
+            text: 'Warten, bis mein Gegenüber zu mir kommt.',
             feedback: 'Je grösser die Lücke, desto mehr Zeit und Platz bleibt dort. Schliess sie schnell.',
           },
         ],
@@ -1779,15 +1779,15 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Jäger',
             feedback:
-              'Wer dem Puck am nächsten ist, wird Jäger. Je schneller du umschaltest, desto weniger Zeit hat das andere Team.',
+              'Wer dem Puck am nächsten ist, wird Jäger. Je schneller du umschaltest, desto weniger Zeit haben die anderen.',
           },
           {
             text: 'Satellit',
-            feedback: 'Satelliten gibt es nur, wenn wir den Puck haben. Jetzt hat ihn das andere Team. Du bist Jäger.',
+            feedback: 'Satelliten gibt es nur, wenn wir den Puck haben. Jetzt haben ihn die anderen. Du bist Jäger.',
           },
           {
             text: 'Wächter',
-            feedback: 'Wächter verteidigen gegen alle vom anderen Team ohne Puck. Wer dem Puckführer am nächsten ist, wird Jäger.',
+            feedback: 'Wächter verteidigen gegen alle von den anderen ohne Puck. Wer dem Puckführer am nächsten ist, wird Jäger.',
           },
         ],
         section: 'schnell-umschalten',
@@ -1801,7 +1801,7 @@ const de: Record<QuizId, QuizText> = {
     article: 'forecheck',
     questions: [
       {
-        prompt: 'Du bist als Erster beim Puckführer. Welches Tier bist du?',
+        prompt: 'Du bist zuerst beim Puckführer. Welches Tier bist du?',
         options: [
           {
             text: 'Hund',
@@ -1820,9 +1820,9 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Vier Tiere, vier Aufgaben',
       },
       {
-        prompt: 'LW jagt den Puckführer in der Ecke, LW ist also der Hund. Du bist C und kommst als Zweiter. Wohin fährst du: 1, 2 oder 3?',
+        prompt: 'LW jagt den Puckführer in der Ecke, LW ist also der Hund. Du bist C und kommst als Nummer zwei. Wohin fährst du: 1, 2 oder 3?',
         label:
-          'Angriffszone, oben das gegnerische Tor. Das andere Team hat den Puck in der linken Ecke, LW ist dort. Jemand vom anderen Team wartet weiter oben an der linken Bande. Platz {1} liegt nah beim Puckführer, Platz {2} an der linken Bande zwischen Puck und der Person weiter oben, Platz {3} hoch in der Mitte.',
+          'Angriffszone, oben das gegnerische Tor. Die anderen haben den Puck in der linken Ecke, LW ist dort. Ein Stürmer der anderen wartet weiter oben an der linken Bande. Platz {1} liegt nah beim Puckführer, Platz {2} an der linken Bande zwischen Puck und Stürmer, Platz {3} hoch in der Mitte.',
         afterLabel:
           'LW ist der Hund beim Puckführer, C der Fuchs an der Bande, RW der Falke hoch in der Mitte. Der Pass an der Bande hoch ist zu.',
         options: [
@@ -1833,11 +1833,11 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Platz {2}, an die Bande',
             feedback:
-              'Du bist der Fuchs: an die Bande auf der Puckseite, zwischen den Puck und die nächste Person vom anderen Team. Dort machst du Tür 1 zu.',
+              'Du bist der Fuchs: an die Bande auf der Puckseite, zwischen den Puck und den Stürmer weiter oben. Dort machst du Tür 1 zu.',
           },
           {
             text: 'Platz {3}, hoch in die Mitte',
-            feedback: 'Hoch in der Mitte bleibt der Falke, das ist der Dritte. Als Zweiter bist du der Fuchs und machst die Bande zu.',
+            feedback: 'Hoch in der Mitte bleibt der Falke, das ist der Dritte. Als Nummer zwei bist du der Fuchs und machst die Bande zu.',
           },
         ],
         section: 'der-fuchs-vor-dem-mauseloch-warten',
@@ -1865,7 +1865,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Du bist der Falke. Das andere Team spielt den Puck hinter dem Tor durch auf deine Seite. Jetzt bist du am nächsten. Was tust du?',
+          'Du bist der Falke. Die anderen spielen den Puck hinter dem Tor durch auf deine Seite. Jetzt bist du am nächsten. Was tust du?',
         options: [
           {
             text: 'Hoch in der Mitte bleiben. Ich bin ja der Falke.',
@@ -1873,7 +1873,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Warten, bis der Hund von der anderen Seite herüberkommt.',
-            feedback: 'Bis dahin hat das andere Team Zeit und Platz. Wer am nächsten ist, jagt.',
+            feedback: 'Bis dahin haben die anderen Zeit und Platz. Wer am nächsten ist, jagt.',
           },
           {
             text: 'Ich werde zum Hund und jage den neuen Puckführer.',
@@ -1933,17 +1933,17 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Du bist LW in der 2. Reihe. Das Spiel läuft. Wann gehst du aufs Eis?',
         options: [
           {
-            text: 'Wenn der LW der 1. Reihe vom Eis kommt.',
-            feedback: 'Im normalen Spiel reicht es zu wissen, wer in der Reihe vor dir auf deiner Position spielt. Kommt diese Person vom Eis, gehst du rein.',
+            text: 'Wenn LW der 1. Reihe vom Eis kommt.',
+            feedback: 'Im normalen Spiel reicht es zu wissen, wer in der Reihe vor dir auf deiner Position spielt. Kommt LW der 1. Reihe vom Eis, gehst du rein.',
           },
           {
             text: 'Wenn die ganze 1. Reihe auf der Bank ist.',
-            feedback: 'Sturm und Verteidigung wechseln getrennt. Du wartest auf den LW der 1. Reihe, nicht auf alle.',
+            feedback: 'Sturm und Verteidigung wechseln getrennt. Du wartest auf LW der 1. Reihe, nicht auf alle.',
           },
           {
             text: 'Wenn jemand vom Trainerteam meinen Namen ruft.',
             feedback:
-              'Nach einer Unterbrechung ruft das Trainerteam manchmal „Reihe 1!“. Im laufenden Spiel weisst du selbst, wann du dran bist: wenn der LW der 1. Reihe vom Eis kommt.',
+              'Nach einer Unterbrechung ruft das Trainerteam manchmal „Reihe 1!“. Im laufenden Spiel weisst du selbst, wann du dran bist: wenn LW der 1. Reihe vom Eis kommt.',
           },
         ],
         section: 'kenne-deine-reihe',
@@ -1988,7 +1988,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Die erste Reihe ist nicht die beste Reihe',
       },
       {
-        prompt: 'Die 1. Reihe ist auf dem Eis. Unser Torhüter fährt raus für einen sechsten Feldspieler. Wer springt aufs Eis?',
+        prompt: 'Die 1. Reihe ist auf dem Eis. Unsere Torhüterin fährt raus für einen sechsten Feldspieler. Wer springt aufs Eis?',
         options: [
           {
             text: 'Wer auf der Bank am schnellsten ist.',
@@ -2055,25 +2055,25 @@ const de: Record<QuizId, QuizText> = {
     questions: [
       {
         prompt:
-          'LD hat den Puck hinter unserem Tor. Jemand vom anderen Team fährt auf LD zu. Du bist LW. Wohin fährst du, damit LD dich anspielen kann: 1, 2 oder 3?',
+          'LD hat den Puck hinter unserem Tor. Ein Stürmer der anderen fährt auf LD zu. Du bist LW. Wohin fährst du, damit LD dich anspielen kann: 1, 2 oder 3?',
         label:
-          'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, jemand vom anderen Team fährt auf LD zu. Platz {1} liegt an der linken Bande auf Höhe der Bullykreise. Platz {2} liegt oben an der Bande bei der blauen Linie, neben jemandem vom anderen Team. Platz {3} liegt in der Mitte, hinter der Person, die auf LD zufährt.',
+          'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, ein Stürmer der anderen fährt auf LD zu. Platz {1} liegt an der linken Bande auf Höhe der Bullykreise. Platz {2} liegt oben an der Bande bei der blauen Linie, neben einer Verteidigerin der anderen. Platz {3} liegt in der Mitte, hinter dem Stürmer.',
         afterLabel:
-          'LW ist an der Bande von der blauen Linie nach unten gefahren, auf Platz {1}. LD passt kurz zu LW. Hinter dem Gegenüber ist ein grauer Passschatten.',
+          'LW ist an der Bande von der blauen Linie nach unten gefahren, auf Platz {1}. LD passt kurz zu LW. Hinter dem Stürmer ist ein grauer Passschatten.',
         options: [
           {
             text: 'Platz {1}, an der Bande',
-            feedback: 'Genau. Der Pass ist kurz und schnell da, bevor das andere Team ihn erreicht.',
+            feedback: 'Genau. Der Pass ist kurz und schnell da, bevor die anderen ihn erreichen.',
           },
           {
             text: 'Platz {2}, an der blauen Linie',
             feedback:
-              'Der Pass dorthin ist lang, und jemand vom anderen Team steht schon neben dir und ist gleichzeitig beim Puck. Fahr dem Puck entgegen.',
+              'Der Pass dorthin ist lang, und die Verteidigerin der anderen steht schon neben dir und ist gleichzeitig beim Puck. Fahr dem Puck entgegen.',
           },
           {
             text: 'Platz {3}, in der Mitte',
             feedback:
-              'Dort stehst du hinter der Person, die auf LD zufährt, im Passschatten. Dorthin kommt kein Pass durch.',
+              'Dort stehst du hinter dem Stürmer, der auf LD zufährt, im Passschatten. Dorthin kommt kein Pass durch.',
           },
         ],
         section: 'warum-dem-puck-entgegenfahren',
@@ -2085,7 +2085,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Nach vorne wegfahren und über die Schulter zurückschauen.',
             feedback:
-              'Dann siehst du nicht, was vor dir passiert. Wartet dort jemand vom anderen Team, fährst du blind in einen Check, sobald der Pass kommt: ein Krankenhauspass. Und der Pass kommt steil von hinten, schwer zu passen und schwer anzunehmen.',
+              'Dann siehst du nicht, was vor dir passiert. Wartet dort eins von den anderen, fährst du blind in einen Check, sobald der Pass kommt: ein Krankenhauspass. Und der Pass kommt steil von hinten, schwer zu passen und schwer anzunehmen.',
           },
           {
             text: 'LD entgegenfahren und mit einem Swing drehen.',
@@ -2093,7 +2093,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Bis zur gegnerischen blauen Linie fahren und dort warten.',
-            feedback: 'Dann ist der Pass sehr lang, und du stehst still. Das andere Team hat Zeit, dazwischenzufahren.',
+            feedback: 'Dann ist der Pass sehr lang, und du stehst still. Die anderen haben Zeit, dazwischenzufahren.',
           },
         ],
         section: 'warum-dem-puck-entgegenfahren',
@@ -2101,21 +2101,21 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'LD fährt mit dem Puck Richtung 10 Uhr, jemand vom anderen Team greift LD an. Du fährst LD schräg entgegen, für einen Drop-Pass. Wo fährst du an LD vorbei?',
+          'LD fährt mit dem Puck Richtung 10 Uhr, eine Stürmerin der anderen greift LD an. Du fährst LD schräg entgegen, für einen Drop-Pass. Wo fährst du an LD vorbei?',
         options: [
           {
-            text: 'Aussen, zwischen LD und der Person vom anderen Team.',
+            text: 'Aussen, zwischen LD und der Stürmerin.',
             feedback:
-              'Dann fährst du der Person vom anderen Team in die Arme, und der Pass zu dir geht an ihr vorbei. Beim Drop-Pass fährst du innen an LD vorbei.',
+              'Dann fährst du der Stürmerin in die Arme, und der Pass zu dir geht an ihr vorbei. Beim Drop-Pass fährst du innen an LD vorbei.',
           },
           {
             text: 'Innen, auf der Abwehrseite, zwischen LD und unserem Tor.',
             feedback:
-              'Genau. LD spielt dir den Puck kurz zurück, wenn ihr aneinander vorbeifahrt, und du drehst mit dem Puck nach vorne. Geht er verloren, bist du schon zwischen Gegenüber und Tor.',
+              'Genau. LD spielt dir den Puck kurz zurück, wenn ihr aneinander vorbeifahrt, und du drehst mit dem Puck nach vorne. Geht er verloren, bist du schon zwischen Stürmerin und Tor.',
           },
           {
             text: 'Gar nicht: Du hältst neben LD an und wartest auf den Puck.',
-            feedback: 'Wer anhält, muss wieder anfahren, und das andere Team hat Zeit. Fahr schräg entgegen und innen an LD vorbei.',
+            feedback: 'Wer anhält, muss wieder anfahren, und die anderen haben Zeit. Fahr schräg entgegen und innen an LD vorbei.',
           },
         ],
         section: 'der-drop-pass',
@@ -2125,8 +2125,8 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Du fährst dem Puckführer entgegen und machst dann einen Swing, eine Kurve. Warum?',
         options: [
           {
-            text: 'Damit das andere Team schwindlig wird.',
-            feedback: 'Der Swing ist für dich, nicht gegen das andere Team. Nach der Kurve schaust du schon nach vorne.',
+            text: 'Damit den anderen schwindlig wird.',
+            feedback: 'Der Swing ist für dich, nicht gegen die anderen. Nach der Kurve schaust du schon nach vorne.',
           },
           {
             text: 'Damit der Pass länger wird.',
@@ -2134,22 +2134,22 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Du bekommst den Puck, wenn du schon nach vorne fährst, mit Schwung.',
-            feedback: 'Genau. Du musst nicht anhalten und umdrehen. Wer vom anderen Team steht, kommt nicht mehr mit.',
+            feedback: 'Genau. Du musst nicht anhalten und umdrehen. Wer von den anderen steht, kommt nicht mehr mit.',
           },
         ],
         section: 'nicht-anhalten-der-swing',
         topic: 'Swing',
       },
       {
-        prompt: 'Beim Kreuzen zieht der Puckführer schräg in die Mitte. Wie fährt die zweite Person?',
+        prompt: 'Beim Kreuzen zieht der Puckführer schräg in die Mitte. Du kreuzt mit. Wie fährst du?',
         options: [
           {
             text: 'Schräg in die andere Richtung, hinter dem Puckführer durch.',
-            feedback: 'Genau. So kann der Puckführer den Puck liegen lassen, und die zweite Person fährt direkt darüber.',
+            feedback: 'Genau. So kann der Puckführer den Puck liegen lassen, und du fährst direkt darüber.',
           },
           {
             text: 'Schräg in die andere Richtung, vor dem Puckführer durch.',
-            feedback: 'Dann fahrt ihr euch in den Weg, und der Puck liegt hinter dir. Die zweite Person fährt hinter dem Puckführer durch.',
+            feedback: 'Dann fahrt ihr euch in den Weg, und der Puck liegt hinter dir. Fahr hinter dem Puckführer durch.',
           },
           {
             text: 'Auf der eigenen Seite bleiben und warten.',
@@ -2172,7 +2172,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Der Verteidiger fährt mit dem Puckführer mit. Bleibt der Puck liegen, ist der Verteidiger auf der falschen Seite.',
-            feedback: 'Genau. Der Verteidiger schaut auf den Puckführer. Wenn die zweite Person den Puck übernimmt, ist der Verteidiger zu weit weg.',
+            feedback: 'Genau. Der Verteidiger schaut auf den Puckführer. Nimmt jemand anders den Puck mit, ist der Verteidiger zu weit weg.',
           },
         ],
         section: 'kreuzen',
@@ -2187,30 +2187,30 @@ const de: Record<QuizId, QuizText> = {
     questions: [
       {
         prompt:
-          'LW ist an der Bande hochgefahren und zieht nach innen. Jemand vom anderen Team fährt auf LW zu. Du bist LD. Wohin fährst du, damit LW dich anspielen kann: 1, 2 oder 3?',
+          'LW ist an der Bande hochgefahren und zieht nach innen. Eine Stürmerin der anderen fährt auf LW zu. Du bist LD. Wohin fährst du, damit LW dich anspielen kann: 1, 2 oder 3?',
         label:
-          'Angriffszone, oben das gegnerische Tor. LW hat den Puck über dem linken Bullykreis, jemand vom anderen Team kommt von oben auf LW zu. Platz {1} liegt an der linken Bande, etwas unterhalb der blauen Linie. Platz {2} liegt an der blauen Linie, direkt hinter dieser Person. Platz {3} liegt vor dem Tor, zwischen zwei vom anderen Team.',
+          'Angriffszone, oben das gegnerische Tor. LW hat den Puck über dem linken Bullykreis, eine Stürmerin der anderen kommt von oben auf LW zu. Platz {1} liegt an der linken Bande, etwas unterhalb der blauen Linie. Platz {2} liegt an der blauen Linie, direkt hinter ihr. Platz {3} liegt vor dem Tor, zwischen zwei von den anderen.',
         afterLabel:
-          'LD steht auf Platz {1} an der Bande. Der Pass von LW kommt frei an. Hinter dem Gegenüber ist ein grauer Passschatten.',
+          'LD steht auf Platz {1} an der Bande. Der Pass von LW kommt frei an. Hinter der Stürmerin ist ein grauer Passschatten.',
         options: [
           {
             text: 'Platz {1}, an der Bande',
-            feedback: 'Genau. Dort ist der Platz, den LW frei gemacht hat. Die Person vom anderen Team ist bei LW, du bist frei.',
+            feedback: 'Genau. Dort ist der Platz, den LW frei gemacht hat. Die Stürmerin ist bei LW, du bist frei.',
           },
           {
             text: 'Platz {2}, an der blauen Linie',
-            feedback: 'Dort stehst du hinter der Person vom anderen Team, im Passschatten. Der Pass kommt nicht durch.',
+            feedback: 'Dort stehst du hinter der Stürmerin, im Passschatten. Der Pass kommt nicht durch.',
           },
           {
             text: 'Platz {3}, vor dem Tor',
-            feedback: 'Vor dem Tor stehen schon zwei vom anderen Team und jemand aus deinem Team. Und die blaue Linie ist leer.',
+            feedback: 'Vor dem Tor stehen schon zwei von den anderen und jemand von uns. Und die blaue Linie ist leer.',
           },
         ],
         section: 'an-der-bande-hoch-wenn-platz-ist',
         topic: 'Platz an der Bande',
       },
       {
-        prompt: 'Du hast den Puck an der Bande, jemand vom anderen Team klebt innen an dir. Was macht dein Verteidiger?',
+        prompt: 'Du hast den Puck an der Bande, dein Gegenüber klebt innen an dir. Was macht dein Verteidiger?',
         options: [
           {
             text: 'Der Verteidiger bleibt an der blauen Linie und wartet auf einen Pass.',
@@ -2251,12 +2251,12 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Beim Cycle fährst du mit dem Puck an der Bande hoch, dein Gegenüber hinter dir her. Wohin geht der Puck?',
         options: [
           {
-            text: 'An der Bande zurück in die Ecke, zu jemandem aus deinem Team, der von dort kommt.',
+            text: 'An der Bande zurück in die Ecke, wo jemand von uns nachkommt.',
             feedback: 'Genau. Der Puck geht hinter deinem Gegenüber durch, und dein Team nimmt ihn mit.',
           },
           {
             text: 'Quer durch die Mitte zum anderen Verteidiger.',
-            feedback: 'In der Mitte steht fast das ganze andere Team mit seinen Schlägern. Beim Cycle bleibt der Puck an der Bande.',
+            feedback: 'In der Mitte stehen fast alle von den anderen mit ihren Schlägern. Beim Cycle bleibt der Puck an der Bande.',
           },
           {
             text: 'Von der Bande direkt aufs Tor.',
@@ -2271,11 +2271,11 @@ const de: Record<QuizId, QuizText> = {
         options: [
           {
             text: 'Du bleibst an der Bande stehen.',
-            feedback: 'Dann stehst du der Person im Weg, die jetzt mit dem Puck hochfährt.',
+            feedback: 'Dann stehst du im Weg: Hier fährt jetzt der Puckführer hoch.',
           },
           {
             text: 'Du fährst dem Puck nach in die Ecke.',
-            feedback: 'Dort ist schon jemand aus deinem Team. Zu zweit am Puck stört ihr euch.',
+            feedback: 'Dort ist schon jemand von uns. Zu zweit am Puck stört ihr euch.',
           },
           {
             text: 'Du fährst weiter und drehst nach innen ab, Richtung Tor.',
@@ -2305,7 +2305,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Cycle',
       },
       {
-        prompt: 'Alle fünf vom anderen Team stehen eng vor ihrem Tor, sie igeln sich ein. Wo ist jetzt Platz?',
+        prompt: 'Alle fünf von den anderen stehen eng vor ihrem Tor, sie igeln sich ein. Wo ist jetzt Platz?',
         options: [
           {
             text: 'Oben an der blauen Linie und auf der anderen Seite, hinter dem Tor durch.',
@@ -2314,7 +2314,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Im Slot, direkt vor dem Tor.',
-            feedback: 'Genau dort stehen jetzt alle fünf vom anderen Team. Der Platz ist oben an der blauen Linie und auf der anderen Seite.',
+            feedback: 'Genau dort stehen jetzt alle fünf von den anderen. Der Platz ist oben an der blauen Linie und auf der anderen Seite.',
           },
           {
             text: 'Nirgends. Am besten von der Bande einfach aufs Tor schiessen.',
@@ -2333,9 +2333,9 @@ const de: Record<QuizId, QuizText> = {
     article: 'torhueter',
     questions: [
       {
-        prompt: 'Jemand vom anderen Team hat den Puck links vor dem Bullykreis. Wo steht der Torhüter besser: auf {1} oder auf {2}?',
+        prompt: 'Eine Stürmerin der anderen hat den Puck links vor dem Bullykreis. Wo steht der Torhüter besser: auf {1} oder auf {2}?',
         label:
-          'Eigene Zone, unser Tor unten. Jemand vom anderen Team mit Puck links vor dem Bullykreis. Platz {1} liegt links vor dem Tor, auf der Linie zwischen Puck und Tormitte. Platz {2} liegt rechts von der Tormitte.',
+          'Eigene Zone, unser Tor unten. Eine Stürmerin der anderen hat den Puck links vor dem Bullykreis. Platz {1} liegt links vor dem Tor, auf der Linie zwischen Puck und Tormitte. Platz {2} liegt rechts von der Tormitte.',
         afterLabel:
           'Der Torhüter steht auf Platz {1}, auf der Linie zwischen Puck und Tormitte. Der Keil, den man beim Schuss vom Tor sieht, ist fast ganz zu.',
         options: [
@@ -2354,7 +2354,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Der Winkel',
       },
       {
-        prompt: 'Soll ein Torhüter bei jedem Schuss in den Butterfly gehen?',
+        prompt: 'Solltest du im Tor bei jedem Schuss in den Butterfly gehen?',
         options: [
           {
             text: 'Ja, dann ist unten immer alles zu',
@@ -2376,17 +2376,17 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Der Butterfly',
       },
       {
-        prompt: 'Zwei vom anderen Team kommen auf dein Tor zu, eine Person hat den Puck. Was machst du?',
+        prompt: 'Zwei von den anderen kommen auf dein Tor zu: eine Stürmerin mit Puck, ein Stürmer ohne. Was machst du?',
         options: [
           {
-            text: 'Weit herausfahren und den Puckführer angreifen',
+            text: 'Weit herausfahren und die Stürmerin mit dem Puck angreifen',
             feedback:
-              'Dann ist der Weg zurück zu lang. Kommt der Querpass, schiesst die zweite Person aufs leere Tor.',
+              'Dann ist der Weg zurück zu lang. Kommt der Querpass, schiesst der Stürmer aufs leere Tor.',
           },
           {
-            text: 'Die Person ohne Puck anschauen, die schiesst sowieso',
+            text: 'Den Stürmer ohne Puck anschauen, der schiesst sowieso',
             feedback:
-              'Schiessen kann nur, wer den Puck hat. Der Torhüter richtet sich immer nach dem Puck.',
+              'Schiessen kann nur, wer den Puck hat. Du richtest dich immer nach dem Puck.',
           },
           {
             text: 'Tiefer im Torraum bleiben und den Puck anschauen',
@@ -2408,10 +2408,10 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Kurz durchatmen, die Abwehr ist geschafft',
             feedback:
-              'Solange der Puck vor dem Tor liegt, ist es nicht vorbei. Jemand vom anderen Team kann ihn sofort noch einmal schiessen.',
+              'Solange der Puck vor dem Tor liegt, ist es nicht vorbei. Eins von den anderen kann ihn sofort noch einmal schiessen.',
           },
           {
-            text: 'Schauen, was die Person nach dem Schuss als Nächstes macht',
+            text: 'Schauen, was die Schützin nach dem Schuss als Nächstes macht',
             feedback:
               'Wer geschossen hat, hat den Puck nicht mehr. Gefährlich ist, wer zuerst beim Puck ist. Darum bleiben die Augen beim Puck.',
           },
@@ -2442,12 +2442,12 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Sichtlinie',
       },
       {
-        prompt: 'Das andere Team hat ein Tor geschossen. Was hilft dir jetzt am meisten?',
+        prompt: 'Die anderen haben ein Tor geschossen. Was hilft dir jetzt am meisten?',
         options: [
           {
             text: 'Dem Team sagen, wer den Fehler gemacht hat',
             feedback:
-              'Ein Gegentor ist nie die Schuld von einer Person allein. Wer Schuldige sucht, macht das Team schwächer.',
+              'An einem Gegentor ist nie jemand allein schuld. Wer Schuldige sucht, macht das Team schwächer.',
           },
           {
             text: 'Im Kopf genau durchgehen, was du falsch gemacht hast',
@@ -2491,21 +2491,21 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Lea trifft zum 1:0 und zum 2:0. Dann trifft das andere Team zum 2:1. Danach trifft Lea zum 3:1. Ist das ein Natural Hattrick?',
+          'Lea trifft zum 1:0 und zum 2:0. Dann treffen die anderen zum 2:1. Danach trifft Lea zum 3:1. Ist das ein Natural Hattrick?',
         options: [
           {
             text: 'Ja, Lea hat drei Tore geschossen.',
             feedback: 'Drei Tore sind ein Hattrick. Für einen Natural Hattrick darf aber dazwischen kein anderes Tor fallen.',
           },
           {
-            text: 'Nein, weil dazwischen das andere Team getroffen hat.',
+            text: 'Nein, weil dazwischen die anderen getroffen haben.',
             feedback:
               'Richtig. Ein normaler Hattrick ist es trotzdem. Natural heisst: drei Tore hintereinander, ohne irgendein Tor dazwischen.',
           },
           {
             text: 'Nein, weil ein Natural Hattrick nur in der Verlängerung zählt.',
             feedback:
-              'Mit der Verlängerung hat das nichts zu tun. Es fehlt etwas anderes: Dazwischen hat das andere Team getroffen.',
+              'Mit der Verlängerung hat das nichts zu tun. Es fehlt etwas anderes: Dazwischen haben die anderen getroffen.',
           },
         ],
         section: 'hattricks',
@@ -2517,7 +2517,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Hinter dem gegnerischen Tor.',
             feedback:
-              'Genau. Von dort sieht man das ganze Feld, und das andere Team muss sich umdrehen, um den Puck zu sehen.',
+              'Genau. Von dort sieht man das ganze Feld, und die anderen müssen sich umdrehen, um den Puck zu sehen.',
           },
           {
             text: 'Auf der Strafbank.',
@@ -2542,12 +2542,12 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'An die Unterkante der Latte.',
-            feedback: 'Das ist Bar down. Das Five-hole liegt beim Torhüter ganz unten.',
+            feedback: 'Das ist Bar down. Das Five-hole liegt bei der Torhüterin ganz unten.',
           },
           {
-            text: 'Zwischen die Beinschoner des Torhüters.',
+            text: 'Zwischen die Beinschoner der Torhüterin.',
             feedback:
-              'Richtig. Geht der Torhüter in die Knie, öffnet sich zwischen den Beinschonern oft kurz eine Lücke.',
+              'Richtig. Geht die Torhüterin in die Knie, öffnet sich zwischen den Beinschonern oft kurz eine Lücke.',
           },
         ],
         section: 'tore-vorlagen-und-der-puck',
@@ -2575,36 +2575,36 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Nach dem Pfiff',
       },
       {
-        prompt: 'Deine Mannschaft führt 9:0. Was ist fair gegenüber dem anderen Team?',
+        prompt: 'Deine Mannschaft führt 9:0. Was ist fair gegenüber den anderen?',
         options: [
           {
             text: 'Absichtlich daneben schiessen, damit es nicht noch höher wird.',
             feedback:
-              'Absichtlich schlecht spielen nimmt das andere Team nicht ernst. Das ist auch respektlos.',
+              'Absichtlich schlecht spielen nimmt die anderen nicht ernst. Das ist auch respektlos.',
           },
           {
             text: 'Normal weiterspielen, ohne Showeinlagen und ohne grossen Jubel.',
             feedback:
-              'Richtig. Man spielt sein Spiel, passt den Puck und freut sich still. Das andere Team blamiert man nicht.',
+              'Richtig. Man spielt sein Spiel, passt den Puck und freut sich still. Die anderen blamiert man nicht.',
           },
           {
             text: 'Jedes Tor gross feiern. Ihr habt es euch verdient.',
             feedback:
-              'Freuen darf man sich. Aber ein grosser Jubel beim 9:0 blamiert das andere Team. Das gehört sich nicht.',
+              'Freuen darf man sich. Aber ein grosser Jubel beim 9:0 blamiert die anderen. Das gehört sich nicht.',
           },
         ],
         section: 'der-code-ungeschriebene-regeln',
         topic: 'Das andere Team nicht blamieren',
       },
       {
-        prompt: 'Jemand aus der anderen Mannschaft lag verletzt auf dem Eis. Jetzt steht die Person wieder auf. Was machen alle auf dem Eis?',
+        prompt: 'Ein Stürmer der anderen lag verletzt auf dem Eis. Jetzt steht er wieder auf. Was machen alle auf dem Eis?',
         options: [
           {
             text: 'Beide Mannschaften klopfen mit dem Stock aufs Eis.',
-            feedback: 'Genau. Das ist Applaus auf dem Eis, für alle, die wieder aufstehen, auch vom anderen Team.',
+            feedback: 'Genau. Das ist Applaus auf dem Eis, für alle, die wieder aufstehen, auch bei den anderen.',
           },
           {
-            text: 'Nur das Team der verletzten Person klopft. Sie gehört ja zum anderen Team.',
+            text: 'Nur sein Team klopft. Er gehört ja zu den anderen.',
             feedback:
               'Beim Stockklopfen für Verletzte machen alle mit. Auf dem Eis spielt man gegeneinander, aber niemand ist ein Feind.',
           },
@@ -2619,7 +2619,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Jemand aus deinem Team steht immer vor dem Tor und macht viele Tore aus Abprallern. Dafür gibt es den Spitznamen „Pigeon“. Was stimmt?',
+          'Ein Mitspieler steht immer vor dem Tor und macht viele Tore aus Abprallern. Dafür gibt es den Spitznamen „Pigeon“. Was stimmt?',
         options: [
           {
             text: 'Abpraller-Tore zählen weniger. Besser wäre, von weit zu schiessen.',
@@ -2640,29 +2640,29 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Pigeon',
       },
       {
-        prompt: 'Nach dem Pfiff fährt jemand vom anderen Team in unseren Torhüter und stochert weiter nach dem Puck. Was machst du?',
+        prompt: 'Nach dem Pfiff fährt ein Stürmer der anderen in unsere Torhüterin und stochert weiter nach dem Puck. Was machst du?',
         options: [
           {
-            text: 'Die Person zurückschubsen. Niemand fasst unseren Torhüter an.',
+            text: 'Den Stürmer zurückschubsen. Niemand fasst unsere Torhüterin an.',
             feedback:
               'Der Schiedsrichter sieht fast immer die zweite Aktion. Dann sitzt du auf der Strafbank, und dem Team fehlt jemand.',
           },
           {
-            text: 'Hinfahren, dich ruhig zwischen Gegenüber und Torhüter stellen und die Hände am Schläger lassen.',
+            text: 'Hinfahren, dich ruhig zwischen Stürmer und Torhüterin stellen und die Hände am Schläger lassen.',
             feedback:
-              'Genau. So schützt du den Torhüter, ohne eine Strafe zu riskieren. Gibt es etwas zu klären, spricht der Kapitän mit dem Schiedsrichter.',
+              'Genau. So schützt du die Torhüterin, ohne eine Strafe zu riskieren. Gibt es etwas zu klären, spricht der Kapitän mit dem Schiedsrichter.',
           },
           {
             text: 'Nichts. Das ist Sache des Schiedsrichters.',
             feedback:
-              'Den Schiedsrichter braucht es, aber den Torhüter lässt man nicht allein. Jemand fährt hin und stellt sich ruhig dazwischen.',
+              'Den Schiedsrichter braucht es, aber die Torhüterin lässt man nicht allein. Jemand fährt hin und stellt sich ruhig dazwischen.',
           },
         ],
         section: 'der-code-ungeschriebene-regeln',
         topic: 'Den Torhüter schützen',
       },
       {
-        prompt: 'Beim Aufwärmen rutscht dir ein Puck über die rote Linie in die Hälfte des anderen Teams. Was machst du?',
+        prompt: 'Beim Aufwärmen rutscht dir ein Puck über die rote Linie in die Hälfte der anderen. Was machst du?',
         options: [
           {
             text: 'Schnell rüberfahren und ihn holen. Es ist ja nur ein Puck.',
@@ -2670,14 +2670,14 @@ const de: Record<QuizId, QuizText> = {
               'Beim Aufwärmen fährt niemand über die rote Linie. In manchen Ligen gilt das als Herausforderung, auch wenn du es gar nicht so meinst.',
           },
           {
-            text: 'Ihn liegen lassen. Er wird nach dem Aufwärmen eingesammelt, oder das andere Team schiebt ihn zurück.',
+            text: 'Ihn liegen lassen. Er wird nach dem Aufwärmen eingesammelt, oder die anderen schieben ihn zurück.',
             feedback:
               'Genau. Die rote Linie ist beim Aufwärmen eine unsichtbare Wand. Ein Puck mehr oder weniger spielt keine Rolle.',
           },
           {
-            text: 'Ihn mit einem Schuss zurückholen: ein kurzer Schuss aufs leere Tor des anderen Teams.',
+            text: 'Ihn mit einem Schuss zurückholen: ein kurzer Schuss aufs leere Tor der anderen.',
             feedback:
-              'Ein Schuss aufs Tor des anderen Teams ist beim Aufwärmen genau das, was man nie macht. Deswegen gab es schon Schlägereien vor dem Spiel.',
+              'Ein Schuss aufs Tor der anderen ist beim Aufwärmen genau das, was man nie macht. Deswegen gab es schon Schlägereien vor dem Spiel.',
           },
         ],
         section: 'der-code-ungeschriebene-regeln',
@@ -2786,7 +2786,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Gleich, gegen wen wir spielen',
       },
       {
-        prompt: 'Euer Kapitän ist krank. Wer macht heute die Handschläge?',
+        prompt: 'Eure Kapitänin ist krank. Wer macht heute die Handschläge?',
         options: [
           {
             text: 'Der Torhüter, der steht ja sowieso mit in der Reihe.',
@@ -2794,11 +2794,11 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Ein Assistent, der ein „A“ auf dem Trikot trägt.',
-            feedback: 'Richtig. Fehlt der Kapitän mit dem „C“, übernimmt ein Assistent mit dem „A“.',
+            feedback: 'Richtig. Fehlt die Kapitänin mit dem „C“, übernimmt ein Assistent mit dem „A“.',
           },
           {
             text: 'Niemand. Dann fallen die Handschläge aus.',
-            feedback: 'Die Handschläge gehören zu jedem Spiel. Fehlt der Kapitän, übernimmt ein Assistent mit dem „A“.',
+            feedback: 'Die Handschläge gehören zu jedem Spiel. Fehlt die Kapitänin, übernimmt ein Assistent mit dem „A“.',
           },
         ],
         section: 'was-der-kapitän-macht',
@@ -2819,12 +2819,12 @@ const de: Record<QuizId, QuizText> = {
             feedback: 'Wer nur dem Puck folgt, sieht ein spannendes Spiel und lernt wenig. Viel passiert weit weg vom Puck.',
           },
           {
-            text: 'Einer Person, einen ganzen Einsatz lang, auch weit weg vom Puck.',
+            text: 'Immer derselben Nummer, einen ganzen Einsatz lang, auch weit weg vom Puck.',
             feedback: 'Genau. Am besten jemandem auf deiner Position. Du wirst staunen, wie viel man ohne Puck tut.',
           },
           {
-            text: 'Jedes Mal einer anderen Person, damit ich alle sehe.',
-            feedback: 'Dann siehst du von allen nur ein Stück. Bleib einen ganzen Einsatz lang bei einer Person.',
+            text: 'Jedes Mal einer anderen Nummer, damit ich alle sehe.',
+            feedback: 'Dann siehst du von allen nur ein Stück. Bleib einen ganzen Einsatz lang bei einer Nummer.',
           },
         ],
         section: 'so-schaust-du-richtig',
@@ -2952,7 +2952,7 @@ const de: Record<QuizId, QuizText> = {
     article: 'teamgeist',
     questions: [
       {
-        prompt: 'Jemand aus deinem Team verliert an der blauen Linie den Puck, das andere Team schiesst ein Tor. Was machst du?',
+        prompt: 'Eine Mitspielerin verliert an der blauen Linie den Puck, die anderen schiessen ein Tor. Was machst du?',
         options: [
           {
             text: 'Ich erkläre sofort, was falsch war, damit es nicht wieder passiert.',
@@ -2997,7 +2997,7 @@ const de: Record<QuizId, QuizText> = {
             feedback: 'Dieser Satz lenkt den Kopf auf den Fehler statt auf die Bewegung. Eine kurze Anweisung hilft mehr.',
           },
           {
-            text: '„Ich bin der Beste hier.“',
+            text: '„Ich bin heute unschlagbar.“',
             feedback: 'Mutmacher helfen, wenn es anstrengend wird. Für eine Technik wie das Annehmen hilft eine kurze Anweisung mehr.',
           },
           {
@@ -3009,7 +3009,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Selbstgespräche',
       },
       {
-        prompt: 'Jemand, mit dem du im Team befreundet bist, schiesst viel mehr Tore als du. Was stimmt?',
+        prompt: 'Dein bester Freund im Team schiesst viel mehr Tore als du. Was stimmt?',
         options: [
           {
             text: 'Dann bin ich einfach schlechter.',
@@ -3028,7 +3028,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Vergleichen',
       },
       {
-        prompt: 'Das andere Team schiesst ein Tor. Was machst du mit deinem Torhüter?',
+        prompt: 'Die anderen schiessen ein Tor. Was machst du mit deinem Torhüter?',
         options: [
           {
             text: 'Hinfahren, kurz auf die Schoner klopfen: „Der nächste gehört dir.“',
@@ -3036,7 +3036,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Ich lasse den Torhüter in Ruhe, es ist sicher peinlich.',
-            feedback: 'Allein gelassen fühlt sich ein Torhüter schuldig. Ein kurzer Klaps zeigt: Das Team steht dahinter.',
+            feedback: 'Allein gelassen fühlt er sich schuldig. Ein kurzer Klaps zeigt: Das Team steht dahinter.',
           },
           {
             text: 'Ich zeige dem Torhüter, wie der Schuss zu halten gewesen wäre.',
@@ -3073,11 +3073,11 @@ const de: Record<QuizId, QuizText> = {
     article: 'handzeichen',
     questions: [
       {
-        prompt: 'Ihr greift an. Jemand aus deinem Team ist schon in der Zone, dann kommt der Puck rein. Der Schiedsrichter hebt den Arm. Was heisst das?',
+        prompt: 'Ihr greift an. Ein Stürmer von euch ist schon in der Zone, dann kommt der Puck rein. Der Schiedsrichter hebt den Arm. Was heisst das?',
         options: [
           {
             text: 'Verzögertes Abseits: Alle Angreifer müssen raus aus der Zone.',
-            feedback: 'Genau. Ein Angreifer war vor dem Puck in der Zone, das andere Team hat den Puck. Fahren alle Angreifer raus, geht der Arm runter.',
+            feedback: 'Genau. Ein Angreifer war vor dem Puck in der Zone, die anderen haben den Puck. Fahren alle Angreifer raus, geht der Arm runter.',
           },
           {
             text: 'Angezeigte Strafe: Unser Torhüter kann zur Bank.',
@@ -3092,7 +3092,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Arm hoch',
       },
       {
-        prompt: 'Jemand vom anderen Team foult jemanden aus deinem Team. Der Schiedsrichter hebt den Arm, aber das Spiel läuft weiter. Wann kommt der Pfiff?',
+        prompt: 'Eine Stürmerin der anderen foult deinen Center. Der Schiedsrichter hebt den Arm, aber das Spiel läuft weiter. Wann kommt der Pfiff?',
         options: [
           {
             text: 'Sofort, sobald der Arm oben ist.',
@@ -3100,7 +3100,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Wenn das Team mit dem Foul den Puck berührt.',
-            feedback: 'Richtig. Solange das andere Team den Puck hat, läuft das Spiel weiter. Darum kann der Torhüter dieses Teams zur Bank fahren.',
+            feedback: 'Richtig. Solange wir den Puck haben, läuft das Spiel weiter. Darum kann unser Torhüter zur Bank fahren.',
           },
           {
             text: 'Wenn der nächste Puck ins Tor geht.',
@@ -3118,7 +3118,7 @@ const de: Record<QuizId, QuizText> = {
             feedback: 'Genau. Verschränkte Arme vor der Brust heissen Icing. Das Bully ist in der Zone des Teams, das den Puck geschossen hat.',
           },
           {
-            text: 'Behinderung: Jemand hat eine Person ohne Puck gestört.',
+            text: 'Behinderung: Jemand wurde ohne Puck gestört.',
             feedback: 'Das Zeichen sieht ähnlich aus, aber bei der Behinderung sind es Fäuste, zu einem X gekreuzt, und es gibt eine Strafe. Verschränkte Arme nach dem Pfiff heissen Icing: Bully, keine Strafe.',
           },
           {
@@ -3196,23 +3196,23 @@ const de: Record<QuizId, QuizText> = {
       {
         prompt: 'Du bist K und hast den Puck. Wohin fährst du, damit du am meisten Zeit und Raum hast: 1, 2 oder 3?',
         label:
-          'Angriffszone, das gegnerische Tor oben. K hat den Puck links an der blauen Linie. Platz {1} liegt oben in der Mitte, weit weg vom anderen Team. Platz {2} liegt vor dem Tor zwischen zwei aus dem anderen Team. Platz {3} liegt an der linken Bande weiter unten, neben jemandem aus dem anderen Team.',
+          'Angriffszone, das gegnerische Tor oben. K hat den Puck links an der blauen Linie. Platz {1} liegt oben in der Mitte, weit weg von den anderen. Platz {2} liegt vor dem Tor zwischen zwei von den anderen. Platz {3} liegt an der linken Bande weiter unten, neben einem Verteidiger der anderen.',
         afterLabel:
           'K ist mit dem Puck nach Platz {1} gefahren, oben in die Mitte. Um K ist ein grosser Kreis: etwa 2 Sekunden.',
         options: [
           {
             text: 'Platz {1}, oben in der Mitte',
-            feedback: 'Genau. Dort ist niemand vom anderen Team in der Nähe. Die Blase ist gross: Du hast Zeit zum Schauen, Passen oder Schiessen.',
+            feedback: 'Genau. Dort ist niemand von den anderen in der Nähe. Die Blase ist gross: Du hast Zeit zum Schauen, Passen oder Schiessen.',
           },
           {
             text: 'Platz {2}, direkt Richtung Tor',
             feedback:
-              'Zum Tor wollen ist richtig. Aber dort stehen zwei aus dem anderen Team, und dazwischen ist deine Blase sofort klein. Erst freies Eis finden, dann zum Tor.',
+              'Zum Tor wollen ist richtig. Aber dort stehen zwei von den anderen, und dazwischen ist deine Blase sofort klein. Erst freies Eis finden, dann zum Tor.',
           },
           {
             text: 'Platz {3}, an der Bande entlang',
             feedback:
-              'An der Bande fühlt man sich sicher. Aber dort wartet schon jemand aus dem anderen Team, und die Bande nimmt dir auf einer Seite den ganzen Platz.',
+              'An der Bande fühlt man sich sicher. Aber dort wartet schon ein Verteidiger der anderen, und die Bande nimmt dir auf einer Seite den ganzen Platz.',
           },
         ],
         section: 'zeit-und-raum-gewinnen',
@@ -3233,14 +3233,14 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Gar keine, der Puck muss sofort weg.',
             feedback:
-              'Eine Sekunde ist kurz, aber genug für einen gezielten Pass oder eine Drehung weg vom Druck. Wer den Puck blind wegschlägt, schenkt ihn meistens dem anderen Team.',
+              'Eine Sekunde ist kurz, aber genug für einen gezielten Pass oder eine Drehung weg vom Druck. Wer den Puck blind wegschlägt, schenkt ihn meistens den anderen.',
           },
         ],
         section: 'was-zeit-und-raum-heisst',
         topic: 'Die Blase',
       },
       {
-        prompt: 'Du hast den Puck an der Bande, zwei aus dem anderen Team sind ganz nah. Auf der anderen Seite steht jemand aus deinem Team frei. Was bringt am meisten Zeit?',
+        prompt: 'Du hast den Puck an der Bande, zwei von den anderen sind ganz nah. Auf der anderen Seite steht deine Mitspielerin frei. Was bringt am meisten Zeit?',
         options: [
           {
             text: 'Dorthin passen, wo jemand frei steht.',
@@ -3254,7 +3254,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Den Puck nach vorne schiessen, Hauptsache weg.',
-            feedback: 'Dann hat meistens das andere Team den Puck. Ein Puck ohne Ziel bringt niemandem Zeit – ausser dem anderen Team.',
+            feedback: 'Dann haben meistens die anderen den Puck. Ein Puck ohne Ziel bringt niemandem Zeit – ausser den anderen.',
           },
         ],
         section: 'zeit-und-raum-gewinnen',
@@ -3262,7 +3262,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Das andere Team kommt mit dem Puck über unsere blaue Linie. Du bist Jäger und noch weit weg. Wie nimmst du am meisten Zeit und Raum weg?',
+          'Die anderen kommen mit dem Puck über unsere blaue Linie. Du bist Jäger und noch weit weg. Wie nimmst du am meisten Zeit und Raum weg?',
         options: [
           {
             text: 'Schnell hinfahren, kurz vorher bremsen, auf der Abwehrseite bleiben, Schläger zum Puck.',
@@ -3270,7 +3270,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Vor dem Tor warten, bis der Puck kommt.',
-            feedback: 'Dann hat das andere Team alle Zeit der Welt: schauen, passen und sich die beste Stelle zum Schiessen aussuchen.',
+            feedback: 'Dann haben die anderen alle Zeit der Welt: schauen, passen und sich die beste Stelle zum Schiessen aussuchen.',
           },
           {
             text: 'Mit vollem Tempo direkt auf den Puck los.',
@@ -3282,21 +3282,21 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Lücke schliessen',
       },
       {
-        prompt: 'Das andere Team hat den Puck in der Ecke. Alle fünf von uns fahren hin. Was ist das Problem?',
+        prompt: 'Die anderen haben den Puck in der Ecke. Alle fünf von uns fahren hin. Was ist das Problem?',
         options: [
           {
             text: 'Kein Problem: Je mehr Druck, desto besser.',
             feedback:
-              'Druck auf den Puck ist gut – von einer Person, mit Hilfe in der Nähe. Die anderen fehlen dann woanders.',
+              'Druck auf den Puck ist gut – von einer Person, mit Hilfe in der Nähe. Wer sonst noch hinfährt, fehlt woanders.',
           },
           {
-            text: 'Überall sonst ist das Eis frei. Ein Pass, und das andere Team hat eine riesige Blase.',
+            text: 'Überall sonst ist das Eis frei. Ein Pass, und die anderen haben eine riesige Blase.',
             feedback:
-              'Genau. Wer den Raum am Puck zumacht, darf den Rest nicht aufmachen. Eine Person greift an, eine hilft, die anderen decken ihren Bereich.',
+              'Genau. Wer den Raum am Puck zumacht, darf den Rest nicht aufmachen. Eine Person greift an, eine hilft, der Rest deckt seinen Bereich.',
           },
           {
             text: 'Das ist gegen die Regeln.',
-            feedback: 'Erlaubt ist es. Es ist nur keine gute Idee: Das andere Team braucht nur einen guten Pass.',
+            feedback: 'Erlaubt ist es. Es ist nur keine gute Idee: Die anderen brauchen nur einen guten Pass.',
           },
         ],
         section: 'typische-fehler',
@@ -3304,12 +3304,12 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Du kommst mit dem Puck allein in die Angriffszone. Drei aus dem anderen Team warten vor dem Tor, der Rest von deinem Team ist noch weit hinten. Was machst du?',
+          'Du kommst mit dem Puck allein in die Angriffszone. Drei von den anderen warten vor dem Tor, dein Team ist noch weit hinten. Was machst du?',
         options: [
           {
             text: 'Sofort schiessen, egal von wo.',
             feedback:
-              'Von weit draussen ist fast jeder Schuss gehalten. Dann hat das andere Team den Puck, und dein Team war noch nicht einmal da.',
+              'Von weit draussen ist fast jeder Schuss gehalten. Dann haben die anderen den Puck, und dein Team war noch nicht einmal da.',
           },
           {
             text: 'Allein an allen drei vorbeifahren.',
@@ -3318,7 +3318,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'An der Bande abdrehen, den Puck behalten und warten, bis das Team da ist.',
             feedback:
-              'Genau. Verzögern schenkt deinem Team Zeit. Die anderen kommen nach, suchen freies Eis, und dann kommt der Pass.',
+              'Genau. Verzögern schenkt deinem Team Zeit. Es kommt nach, sucht freies Eis, und dann kommt der Pass.',
           },
         ],
         section: 'zeit-und-raum-gewinnen',

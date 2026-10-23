@@ -521,7 +521,7 @@ const de = {
     },
     'hand-pass': {
       name: 'Handpass',
-      meaning: 'Jemand hat den Puck mit der Hand zu jemandem aus dem eigenen Team gespielt. Das ist nicht erlaubt.',
+      meaning: 'Jemand hat den Puck mit der Hand zum eigenen Team gespielt. Das ist nicht erlaubt.',
       looks: 'Die offene Hand schiebt ein- oder zweimal nach vorne.',
     },
     'face-off-violation': {
