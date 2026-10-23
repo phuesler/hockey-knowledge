@@ -115,7 +115,9 @@
       <polygon points={points(area.poly, L)} class="area {area.kind}" />
     {:else if area.ellipse}
       {@const [cx, cy] = at(area.ellipse.at)}
-      <ellipse {cx} {cy} rx={area.ellipse.rx} ry={area.ellipse.ry} class="area {area.kind}" />
+      {@const { rx, ry } = area.ellipse}
+      <!-- Geometry as CSS too, so a bubble can grow, shrink and move between steps. -->
+      <ellipse {cx} {cy} {rx} {ry} style="cx: {cx}px; cy: {cy}px; rx: {rx}px; ry: {ry}px" class="area {area.kind}" />
     {/if}
   {/each}
 
@@ -314,6 +316,12 @@
     stroke: none;
     opacity: 0.35;
   }
+  .area.bubble {
+    fill: var(--c-bubble-soft);
+    stroke: var(--c-bubble);
+    stroke-width: 0.2;
+    fill-opacity: 0.85;
+  }
   .area.view {
     fill: var(--c-accent);
     stroke: var(--c-accent);
@@ -338,6 +346,9 @@
   .area-label.near,
   .area-label.open {
     fill: var(--c-good);
+  }
+  .area-label.bubble {
+    fill: var(--c-bubble);
   }
 
   .move path {
@@ -446,10 +457,15 @@
     stroke-width: 0.15;
   }
 
-  /* Only CoverageExplorer and RinkSequence move players; the static diagrams never change. */
+  /* Only CoverageExplorer and RinkSequence move players and areas; the static diagrams never change. */
   @media (prefers-reduced-motion: no-preference) {
     .player {
       transition: transform 450ms ease-in-out;
+    }
+    ellipse.area {
+      transition-property: cx, cy, rx, ry;
+      transition-duration: 450ms;
+      transition-timing-function: ease-in-out;
     }
     .still .player {
       transition: none;
