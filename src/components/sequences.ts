@@ -5,7 +5,7 @@
  *
  * Positions are rink metres, see rink.ts. In the attacking zone our left is at positive x.
  */
-import { DANGER_ZONE, passShadow, viewCone, type Area, type Move, type Player, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, bubble, passShadow, viewCone, type Area, type Move, type Player, type Pt, type Scene, type View } from './rink';
 import type { PlayPanel } from './plays';
 
 export interface Sequence {
@@ -30,6 +30,11 @@ const roleSwitchThem = [
 /* pass-shadow: the puck on the left boards, a defender in the slot. */
 const shadowPuck: Pt = [10.4, 11];
 const shadowDefender: Pt = [3, 10];
+
+/* close-lane: the carrier's puck on our left half-boards, and the Wächter's stick blade in
+   the lane to the free opponent at the right dot. */
+const laneCarrierPuck: Pt = [-10.2, 13.4];
+const laneStickBlade: Pt = [-0.5, 12.6];
 
 /* scan: the winger on the left half-boards in our zone, before the breakout pass. */
 const scanWinger: Pt = [-12.5, 12];
@@ -332,36 +337,6 @@ const geometry = {
     ],
   },
 
-  'close-gap': {
-    zone: 'own',
-    frames: [
-      {
-        areas: [danger],
-        players: [them('o1', [-9, 20]), us('j', 'J', [-3.6, 11])],
-        puck: [-8.4, 18.9],
-        moves: [
-          { kind: 'carry', team: 'them', path: [[-8.4, 18.9], [-5, 13]], trim: 0.4 },
-          { kind: 'skate', path: [[-3.6, 11], [-6.4, 15.6]], trim: 0.4 },
-        ],
-      },
-      {
-        areas: [danger],
-        players: [them('o1', [-9, 17.4]), us('j', 'J', [-6.6, 15.4])],
-        puck: [-8.6, 16.2],
-        moves: [
-          { kind: 'stick', path: [[-6.6, 15.4], [-7.8, 15.8]] },
-          { kind: 'carry', team: 'them', path: [[-8.6, 16.2], [-11.6, 13], [-12.4, 9]], trim: 0.4 },
-          { kind: 'skate', path: [[-6.6, 15.4], [-9.2, 12.4], [-10, 8.4]], trim: 0.4 },
-        ],
-      },
-      {
-        areas: [danger],
-        players: [them('o1', [-12.8, 9.6]), us('j', 'J', [-10, 8.4])],
-        puck: [-12.6, 8.2],
-        moves: [{ kind: 'stick', path: [[-10, 8.4], [-11.6, 8]] }],
-      },
-    ],
-  },
 
   'guard-tight': {
     zone: 'own',
@@ -506,6 +481,208 @@ const geometry = {
       ),
     ],
   },
+
+  /* Zeit und Raum: the bubble is always the second area, so it grows and shrinks between
+     frames. bubble-pass is in the attacking zone (our left at positive x), bubble-shrink is
+     the Jäger closing the gap in our zone, seen from the puck carrier. */
+
+  'bubble-pass': {
+    zone: 'attack',
+    frames: [
+      {
+        areas: [danger, bubble([12, 14], 2, '< 1 s', [12.6, 9.6])],
+        players: [
+          them('o1', [9, 12]),
+          them('o2', [11.6, 18.6]),
+          them('o3', [0, 8]),
+          us('k', 'K', [12, 14]),
+          us('s', 'S', [-5, 15]),
+        ],
+        puck: [11.2, 13.4],
+        moves: [{ kind: 'pass', path: [[11.2, 13.4], [-4.2, 13.6]], trim: 0.6 }],
+      },
+      {
+        areas: [danger, bubble([-5, 15], 4.3, '≈ 2 s', [-8, 14])],
+        players: [
+          them('o1', [9, 12]),
+          them('o2', [11.6, 18.6]),
+          them('o3', [0, 8]),
+          us('k', 'K', [12, 14]),
+          us('s', 'S', [-5, 15]),
+        ],
+        puck: [-4.4, 13.4],
+        moves: [
+          { kind: 'carry', path: [[-4.4, 13.4], [-3.2, 9.6]], trim: 0.2 },
+          { kind: 'skate', team: 'them', path: [[9, 12], [3.6, 12.8]], trim: 0.2 },
+        ],
+      },
+      {
+        areas: [danger, bubble([-3, 11], 3.2, '≈ 1 s', [-3, 15.4])],
+        players: [
+          them('o1', [4, 13]),
+          them('o2', [11.6, 18.6]),
+          them('o3', [2.6, 8.4]),
+          us('k', 'K', [12, 14]),
+          us('s', 'S', [-3, 11]),
+        ],
+        puck: [-2.6, 10],
+        moves: [{ kind: 'shot', path: [[-2.6, 10], [-0.5, 4.4]], trim: 0.2 }],
+      },
+    ],
+  },
+
+  'bubble-shrink': {
+    zone: 'own',
+    frames: [
+      {
+        areas: [danger, bubble([-9, 20], 4.8, '≈ 2 s', [-12, 17.2])],
+        players: [them('o1', [-9, 20]), us('j', 'J', [-3.6, 11])],
+        puck: [-8.4, 18.9],
+        moves: [
+          { kind: 'carry', team: 'them', path: [[-8.4, 18.9], [-5, 13]], trim: 0.4 },
+          { kind: 'skate', path: [[-3.6, 11], [-6.4, 15.6]], trim: 0.4 },
+        ],
+      },
+      {
+        areas: [danger, bubble([-9, 17.4], 2, '< 1 s', [-9.4, 21])],
+        players: [them('o1', [-9, 17.4]), us('j', 'J', [-6.6, 15.4])],
+        puck: [-8.6, 16.2],
+        moves: [
+          { kind: 'stick', path: [[-6.6, 15.4], [-7.8, 15.8]] },
+          { kind: 'carry', team: 'them', path: [[-8.6, 16.2], [-11.6, 13], [-12.4, 9]], trim: 0.4 },
+          { kind: 'skate', path: [[-6.6, 15.4], [-9.2, 12.4], [-10, 8.4]], trim: 0.4 },
+        ],
+      },
+      {
+        areas: [danger, bubble([-12.8, 9.6], 1.9, '< 1 s', [-12.4, 13.4])],
+        players: [them('o1', [-12.8, 9.6]), us('j', 'J', [-10, 8.4])],
+        puck: [-12.6, 8.2],
+        moves: [{ kind: 'stick', path: [[-10, 8.4], [-11.6, 8]] }],
+      },
+    ],
+  },
+
+  /* close-lane: our zone, the Jäger presses the carrier on the left half-boards. The
+     Wächter puts their stick into the lane to the free opponent on the right; the shadow
+     is cast by the stick blade, so the free opponent stands inside it; when the puck moves
+     in the last frame, the Wächter moves the stick with it. */
+  'close-lane': {
+    zone: 'own',
+    frames: [
+      {
+        areas: [danger, bubble([-11, 14], 1.9, '< 1 s', [-11.4, 17.4])],
+        players: [them('o1', [-11, 14]), them('o2', [6.5, 12]), us('j', 'J', [-9, 11.4]), us('w', 'W', [1.6, 5.6])],
+        puck: laneCarrierPuck,
+        moves: [
+          { kind: 'lane', path: [laneCarrierPuck, [6.5, 12]] },
+          { kind: 'skate', path: [[1.6, 5.6], [-0.5, 10.2]], trim: 0.4 },
+        ],
+      },
+      {
+        areas: [danger, bubble([-11, 14], 1.9, '< 1 s', [-11.4, 17.4]), { kind: 'shadow', poly: passShadow(laneCarrierPuck, laneStickBlade, 8) }],
+        players: [them('o1', [-11, 14]), them('o2', [6.5, 12]), us('j', 'J', [-9, 11.4]), us('w', 'W', [-0.6, 10.4])],
+        puck: laneCarrierPuck,
+        moves: [
+          { kind: 'stick', path: [[-0.6, 10.4], laneStickBlade] },
+          { kind: 'carry', team: 'them', path: [laneCarrierPuck, [-12.6, 11.4]], trim: 0.4 },
+        ],
+      },
+      {
+        areas: [danger, bubble([-12.8, 12.2], 1.6, '< 1 s', [-12, 15.6]), { kind: 'shadow', poly: passShadow([-12.4, 11.2], [-0.4, 11.7], 8) }],
+        players: [them('o1', [-12.8, 12.2]), them('o2', [6.5, 12]), us('j', 'J', [-10.6, 11]), us('w', 'W', [-0.7, 9.8])],
+        puck: [-12.4, 11.2],
+        moves: [
+          { kind: 'stick', path: [[-0.7, 9.8], [-0.4, 11.7]] },
+          { kind: 'stick', path: [[-10.6, 11], [-11.8, 11]] },
+        ],
+      },
+    ],
+  },
+
+  /* delay: K comes into the attacking zone alone, turns away on the boards and keeps the
+     puck until both Satelliten have arrived, then passes into the high slot. */
+  delay: {
+    zone: 'attack',
+    frames: [
+      {
+        areas: [danger, bubble([10, 19], 2.8, '≈ 1 s', [5.2, 20.8])],
+        players: [
+          them('o1', [5.6, 14.6]),
+          them('o2', [-1.4, 9]),
+          them('o3', [3, 6.4]),
+          us('k', 'K', [10, 19]),
+          us('s1', 'S', [2, 24.2]),
+          us('s2', 'S', [-7, 24.4]),
+        ],
+        puck: [9.4, 18],
+        moves: [
+          { kind: 'carry', path: [[9.4, 18], [15.6, 8.4], [12.4, 16]], trim: 0.4 },
+          { kind: 'skate', team: 'them', path: [[5.6, 14.6], [8.8, 14.4]], trim: 0 },
+          { kind: 'skate', path: [[2, 24.2], [1.2, 19.4]], trim: 0.4 },
+          { kind: 'skate', path: [[-7, 24.4], [-8.4, 16.4]], trim: 0.4 },
+        ],
+      },
+      {
+        areas: [danger, bubble([12.8, 16.6], 2.4, '≈ 1 s', [12.8, 20.4])],
+        players: [
+          them('o1', [9.2, 13.8]),
+          them('o2', [-1.4, 9]),
+          them('o3', [3, 6.4]),
+          us('k', 'K', [12.8, 16.6]),
+          us('s1', 'S', [1.2, 19.4]),
+          us('s2', 'S', [-8.4, 16.4]),
+        ],
+        puck: [12, 15.8],
+        moves: [
+          { kind: 'skate', path: [[1.2, 19.4], [0.6, 14.4]], trim: 0.4 },
+          { kind: 'skate', path: [[-8.4, 16.4], [-9.6, 7]], trim: 0.4 },
+        ],
+      },
+      {
+        areas: [danger, bubble([12.8, 16.6], 2, '< 1 s', [12.8, 20.2])],
+        players: [
+          them('o1', [10.4, 14.4]),
+          them('o2', [-1.4, 9]),
+          them('o3', [3, 6.4]),
+          us('k', 'K', [12.8, 16.6]),
+          us('s1', 'S', [0.6, 14.4]),
+          us('s2', 'S', [-9.6, 7]),
+        ],
+        puck: [12, 15.8],
+        moves: [{ kind: 'pass', path: [[12, 15.8], [1.6, 14.6]], trim: 0.6 }],
+      },
+    ],
+  },
+
+  /* split-d: a 2-on-2 just after the zone entry. S skates between the two defenders to the
+     net; one defender follows, and K's bubble grows. */
+  'split-d': {
+    zone: 'attack',
+    frames: [
+      {
+        areas: [danger, bubble([8.6, 20.6], 3, '≈ 1 s', [3.6, 21])],
+        players: [them('o1', [5, 15]), them('o2', [-4, 15]), us('k', 'K', [8.6, 20.6]), us('s', 'S', [0, 23.4])],
+        puck: [8.2, 19.4],
+        moves: [
+          { kind: 'skate', path: [[0, 23.4], [0.8, 15], [0.2, 9.2]], trim: 0.4 },
+          { kind: 'carry', path: [[8.2, 19.4], [9.6, 14.6]], trim: 0.2 },
+          { kind: 'skate', team: 'them', path: [[5, 15], [3.2, 12.2]], trim: 0.2 },
+        ],
+      },
+      {
+        areas: [danger, bubble([9.6, 15.6], 4, '≈ 2 s', [9.6, 20.6])],
+        players: [them('o1', [2.8, 11.6]), them('o2', [-3.6, 11.6]), us('k', 'K', [9.6, 15.6]), us('s', 'S', [0.2, 9.2])],
+        puck: [9, 14.8],
+        moves: [{ kind: 'carry', path: [[9, 14.8], [7.4, 12.4]], trim: 0.4 }],
+      },
+      {
+        areas: [danger, bubble([7.8, 13], 2.8, '≈ 1 s', [7.8, 17])],
+        players: [them('o1', [2.8, 11.6]), them('o2', [-3.6, 11.6]), us('k', 'K', [7.8, 13]), us('s', 'S', [0.2, 9.2])],
+        puck: [7, 12.2],
+        moves: [{ kind: 'shot', path: [[7, 12.2], [0.8, 4.4]], trim: 0.2 }],
+      },
+    ],
+  },
 } satisfies Record<string, Sequence>;
 
 export type SequenceId = keyof typeof geometry;
@@ -621,28 +798,6 @@ const de: Record<SequenceId, SequenceText> = {
       'Der König schiesst aus dem Slot aufs Tor. Der Satellit steht vor dem Torhüter.',
     ],
   },
-  'close-gap': {
-    caption: 'Jäger: Lücke schliessen und nach aussen drängen',
-    steps: [
-      {
-        title: 'Grosse Lücke',
-        text: 'Ein Gegner kommt mit dem Puck über die blaue Linie. Der Jäger ist weit weg: Der Gegner hätte Zeit und Platz für den Weg zum Tor. Der Jäger schliesst die Lücke mit ein paar schnellen Schritten.',
-      },
-      {
-        title: 'Schläger zum Puck',
-        text: 'Der Jäger ist nah dran, auf der Abwehrseite und etwas innen. Der Schläger zeigt zum Puck. Dem Gegner bleibt nur der Weg nach aussen.',
-      },
-      {
-        title: 'Aussen an der Bande',
-        text: 'Der Gegner ist an der Bande, ausserhalb der Bullypunkte. Von dort ist er kaum gefährlich. Der Jäger bleibt innen, Schläger zum Puck.',
-      },
-    ],
-    labels: [
-      'Eigenes Drittel. Ein Gegner mit Puck an der linken blauen Linie fährt Richtung Tor. Der Jäger fährt ihm entgegen.',
-      'Der Jäger steht nah vor dem Gegner, etwas zur Mitte hin, Schläger zum Puck. Der Gegner weicht nach aussen zur Bande aus.',
-      'Der Gegner ist an der linken Bande neben dem Bullykreis. Der Jäger steht innen neben ihm, Schläger zum Puck.',
-    ],
-  },
   'guard-tight': {
     caption: 'Wächter: je näher am Tor, desto enger',
     steps: [
@@ -718,6 +873,118 @@ const de: Record<SequenceId, SequenceText> = {
       'Jede Mannschaft steht im Kreis um ihren Torhüter vor dem eigenen Tor. Zwei Spieler jeder Mannschaft fahren zur Bank.',
       'Bully im Mittelkreis: Die beiden Center stehen sich gegenüber, der Schiedsrichter steht daneben. Je fünf Spieler und ein Torhüter sind auf dem Eis, die anderen auf der Bank.',
     ],
+  },
+  'bubble-pass': {
+    caption: 'Zeit und Raum gewinnen: Der Pass ist schneller',
+    steps: [
+      {
+        title: 'Eingeklemmt',
+        text: 'K hat den Puck an der Bande, zwei aus dem anderen Team sind nah. Die Blase ist winzig. Auf der anderen Seite steht S ganz frei. K passt.',
+      },
+      {
+        title: 'Die Blase wandert mit',
+        text: 'Jetzt hat S den Puck – und eine grosse Blase. Das andere Team muss quer über das Eis. Der Pass war viel schneller, als jemand fahren kann.',
+      },
+      {
+        title: 'Freie Bahn',
+        text: 'S nutzt die Zeit, fährt in den Slot und schiesst, bevor jemand da ist.',
+      },
+    ],
+    labels: [
+      'Angriffszone. K hat den Puck an der linken Bande, zwei aus dem anderen Team stehen nah bei K. Der Kreis um K ist klein. Ein gestrichelter Pfeil zeigt den Pass quer übers Eis zu S auf der rechten Seite.',
+      'S hat den Puck, der Kreis ist jetzt gross und um S. Jemand aus dem anderen Team fährt von links herüber, S fährt Richtung Tor.',
+      'S steht mit dem Puck vor dem Tor und schiesst. Das andere Team ist noch ein paar Meter weg.',
+    ],
+  },
+  'bubble-shrink': {
+    caption: 'Zeit und Raum wegnehmen: Lücke schliessen',
+    steps: [
+      {
+        title: 'Grosse Blase',
+        text: 'Das andere Team kommt mit dem Puck über die blaue Linie. Der Jäger ist weit weg: Mit dem Puck bleiben etwa 2 Sekunden zum Schauen und für den Weg zum Tor. Der Jäger fährt schnell auf den Puck zu.',
+      },
+      {
+        title: 'Die Blase schrumpft',
+        text: 'Der Jäger ist nah dran, auf der Abwehrseite und etwas innen. Der Schläger zeigt zum Puck. Jetzt bleibt weniger als eine Sekunde – und nur der Weg nach aussen.',
+      },
+      {
+        title: 'Die Bande hilft',
+        text: 'Der Puck ist an der Bande. Die Bande ist wie eine Wand: Auf dieser Seite ist gar kein Platz. Von hier droht kaum Gefahr.',
+      },
+    ],
+    labels: [
+      'Eigenes Drittel. Jemand aus dem anderen Team hat den Puck an der linken blauen Linie, mit einem grossen Kreis drumherum. Der Jäger fährt entgegen.',
+      'Der Jäger steht nah vor dem Puck, etwas zur Mitte hin, Schläger zum Puck. Der Kreis ist klein. Mit dem Puck geht es nach aussen zur Bande.',
+      'Der Puck ist an der linken Bande neben dem Bullykreis, mit einem kleinen Kreis. Der Jäger steht innen daneben, Schläger zum Puck.',
+    ],
+    note: 'Der Jäger bremst kurz vorher ab. Wer mit vollem Tempo hineinfährt, wird leicht umfahren – und lässt hinter sich viel Platz.',
+  },
+  'close-lane': {
+    caption: 'Zeit und Raum wegnehmen: Passweg zumachen',
+    steps: [
+      {
+        title: 'Der Passweg ist offen',
+        text: 'Der Jäger macht Druck auf den Puck. Die Blase ist klein. Aber auf der anderen Seite steht jemand aus dem anderen Team frei. Ein Pass dorthin, und dort wäre viel Zeit. Der Wächter (W) sieht das.',
+      },
+      {
+        title: 'Schläger in den Passweg',
+        text: 'Der Wächter fährt in den Passweg, bleibt aber zwischen seinem Gegenüber und dem Tor. Der Schläger liegt auf dem Eis, genau dort, wo der Pass durch müsste. Dahinter ist der Passschatten: Dort kommt kein Pass an.',
+      },
+      {
+        title: 'Kein Ausweg',
+        text: 'Mit dem Puck findet sich kein Pass mehr. Der Jäger drängt an die Bande. Die Blase ist fast weg.',
+      },
+    ],
+    labels: [
+      'Eigenes Drittel. Das andere Team hat den Puck an der linken Bande, der Jäger steht nah davor. Eine gepunktete Linie zeigt den freien Passweg zu jemandem aus dem anderen Team beim rechten Bullypunkt. Der Wächter fährt vom Tor nach oben.',
+      'Der Wächter steht rechts vor seinem Gegenüber, Schläger in den Passweg. Hinter dem Schläger ist ein grauer Passschatten, das Gegenüber steht darin.',
+      'Der Puck ist an der linken Bande, der Jäger daneben, Schläger zum Puck. Der Kreis um den Puck ist sehr klein. Der Passweg nach rechts bleibt zu.',
+    ],
+  },
+  delay: {
+    caption: 'Verzögern: Zeit für das Team',
+    steps: [
+      {
+        title: 'Allein vorne',
+        text: 'K kommt mit dem Puck allein in die Angriffszone. Drei aus dem anderen Team warten, der Rest von unserem Team ist noch an der blauen Linie. K fährt nicht allein in die Abwehr, sondern dreht an der Bande ab.',
+      },
+      {
+        title: 'Puck behalten',
+        text: 'K hat abgedreht und schaut wieder zum Spiel. Der Puck ist noch da. Das Team hat jetzt Zeit, nachzukommen und freies Eis zu suchen.',
+      },
+      {
+        title: 'Jetzt der Pass',
+        text: 'Beide Satelliten sind da, eine Person oben im Slot, eine am langen Pfosten. Die Blase von K wird klein, aber jetzt braucht K sie nicht mehr: Der Pass geht in den Slot.',
+      },
+    ],
+    labels: [
+      'Angriffszone. K fährt mit dem Puck an der linken Seite in die Zone. Drei aus dem anderen Team sind vor dem Tor, eine Person fährt auf K zu. Zwei aus unserem Team sind noch an der blauen Linie. Pfeile zeigen: K fährt zur Bande und dreht nach oben ab, die beiden fahren nach.',
+      'K steht an der linken Bande mit dem Gesicht zum Spiel und wird verfolgt. Die beiden aus unserem Team sind in der Zone und fahren weiter: eine Person in den Slot, eine zum rechten Pfosten.',
+      'Eine Person aus unserem Team steht oben im Slot, eine rechts am Tor. Das Gegenüber ist nah bei K. K passt quer in den Slot.',
+    ],
+  },
+  'split-d': {
+    caption: 'Ohne Puck Platz machen: zwischen der Verteidigung durch',
+    steps: [
+      {
+        title: 'Zwei gegen zwei',
+        text: 'K kommt mit dem Puck über die blaue Linie, S fährt in der Mitte mit. Zwei aus dem anderen Team verteidigen. S fährt ohne Puck zwischen den beiden hindurch, direkt zum Tor.',
+      },
+      {
+        title: 'Die Abwehr muss entscheiden',
+        text: 'Wer nimmt S? Eine Person fährt mit S zum Tor, die andere bleibt in der Mitte. Bei K ist niemand mehr. Die Blase von K ist gross.',
+      },
+      {
+        title: 'Platz für den Schuss',
+        text: 'K fährt in den freien Platz und schiesst. S steht vor dem Tor: Im Tor ist der Puck schlecht zu sehen, und ein Abpraller landet bei S.',
+      },
+    ],
+    labels: [
+      'Angriffszone. K kommt mit dem Puck an der linken Seite über die blaue Linie, S in der Mitte. Zwei aus dem anderen Team stehen vor den Bullykreisen. Ein Pfeil zeigt, wie S zwischen den beiden hindurch zum Tor fährt.',
+      'S steht vor dem Tor, eine Person aus dem anderen Team ist mitgefahren, die andere steht rechts davon. K ist links allein, mit einem grossen Kreis.',
+      'K steht links neben dem Bullykreis und schiesst aufs Tor. S steht vor dem Tor.',
+    ],
+    note: 'Bleiben beide bei K, ist S vor dem Tor frei. Dann kommt der Pass zu S.',
   },
 };
 
@@ -816,28 +1083,6 @@ const en: typeof de = {
       'The König shoots from the slot. The Satellit stands in front of the goalie.',
     ],
   },
-  'close-gap': {
-    caption: 'Jäger: close the gap and push outside',
-    steps: [
-      {
-        title: 'Big gap',
-        text: 'An opponent carries the puck over the blue line. The Jäger is far away: the opponent would have time and space to go to the goal. The Jäger closes the gap with a few quick strides.',
-      },
-      {
-        title: 'Stick on puck',
-        text: 'The Jäger is close, on the defensive side and a little inside. His stick points at the puck. The only way left for the opponent is outside.',
-      },
-      {
-        title: 'Outside on the boards',
-        text: 'The opponent is on the boards, outside the faceoff dots. From there he is hardly dangerous. The Jäger stays inside, stick on the puck.',
-      },
-    ],
-    labels: [
-      'Our zone. An opponent with the puck at the left blue line skates towards the goal. The Jäger skates towards him.',
-      'The Jäger is close in front of the opponent, a little towards the middle, stick on the puck. The opponent veers outside towards the boards.',
-      'The opponent is on the left boards next to the faceoff circle. The Jäger is inside next to him, stick on the puck.',
-    ],
-  },
   'guard-tight': {
     caption: 'Wächter: the closer to the goal, the tighter',
     steps: [
@@ -913,6 +1158,118 @@ const en: typeof de = {
       'Each team stands in a circle around its goalie in front of its own net. Two players from each team skate to the bench.',
       'Face-off in the centre circle: the two centres face each other, the referee stands next to them. Five players and a goalie per team are on the ice, the rest on the bench.',
     ],
+  },
+  'bubble-pass': {
+    caption: 'Gaining time and space: the pass is faster',
+    steps: [
+      {
+        title: 'Hemmed in',
+        text: 'K has the puck on the boards, with two opponents close by. The bubble is tiny. On the other side, S is completely free. K passes.',
+      },
+      {
+        title: 'The bubble travels with the puck',
+        text: 'Now S has the puck – and a big bubble. The opponents have to cross the whole ice. The pass was much faster than they can skate.',
+      },
+      {
+        title: 'A clear path',
+        text: 'S uses the time, skates into the slot and shoots before an opponent arrives.',
+      },
+    ],
+    labels: [
+      'Attacking zone. K has the puck on the left boards, two opponents are close to K. The circle around K is small. A dashed arrow shows the pass across the ice to S on the right.',
+      'S has the puck, and the circle is now big and around S. An opponent skates across from the left, S skates towards the goal.',
+      'S is in front of the goal with the puck and shoots. The opponents are still a few metres away.',
+    ],
+  },
+  'bubble-shrink': {
+    caption: 'Taking time and space away: closing the gap',
+    steps: [
+      {
+        title: 'Big bubble',
+        text: 'An opponent brings the puck over the blue line. The Jäger is far away: the opponent has about 2 seconds to look and head for the goal. The Jäger skates towards them quickly.',
+      },
+      {
+        title: 'The bubble shrinks',
+        text: 'The Jäger is close, on the defensive side and a little inside. The stick points at the puck. The opponent has less than a second left – and only the way wide.',
+      },
+      {
+        title: 'The boards help',
+        text: 'The opponent is on the boards. The boards are like a wall: on that side they have no room at all. From here they are hardly dangerous.',
+      },
+    ],
+    labels: [
+      'Our zone. An opponent with the puck at the left blue line has a big circle around them. The Jäger skates towards them.',
+      'The Jäger is close in front of the opponent, a little towards the middle, stick to the puck. The circle around the opponent is small. The opponent goes wide towards the boards.',
+      'The opponent is on the left boards next to the faceoff circle, with a small circle. The Jäger is inside next to them, stick to the puck.',
+    ],
+    note: 'The Jäger slows down just before reaching the opponent. Anyone who charges in at full speed is easy to skate around – and leaves lots of room behind them.',
+  },
+  'close-lane': {
+    caption: 'Taking time and space away: closing the passing lane',
+    steps: [
+      {
+        title: 'The lane is open',
+        text: 'The Jäger presses the opponent with the puck. Their bubble is small. But on the other side an opponent is free. One pass there and they would have lots of time. The Wächter (W) sees it.',
+      },
+      {
+        title: 'Stick in the lane',
+        text: 'The Wächter moves into the passing lane but stays between their opponent and the goal. Their stick is on the ice, exactly where the pass would have to go. Behind it is the passing shadow: no pass gets there.',
+      },
+      {
+        title: 'No way out',
+        text: 'The opponent with the puck finds no pass. The Jäger pushes them to the boards. Their bubble is almost gone.',
+      },
+    ],
+    labels: [
+      'Our zone. An opponent has the puck on the left boards, the Jäger is close in front of them. A dotted line shows the open passing lane to an opponent at the right faceoff dot. The Wächter skates up from the goal.',
+      'The Wächter stands in front of the opponent on the right, stick in the passing lane. Behind the stick is a grey passing shadow, and the opponent stands in it.',
+      'The opponent with the puck is on the left boards, the Jäger next to them, stick to the puck. The circle around the opponent is very small. The lane to the right stays closed.',
+    ],
+  },
+  delay: {
+    caption: 'Slowing down: time for the teammates',
+    steps: [
+      {
+        title: 'Alone up front',
+        text: 'K brings the puck into the attacking zone alone. Three opponents are waiting, the teammates are still at the blue line. K doesn’t skate into the opponents alone but turns away on the boards.',
+      },
+      {
+        title: 'Keep the puck',
+        text: 'K has turned and faces the play again. The puck is still there. The teammates now have time to catch up and find open ice.',
+      },
+      {
+        title: 'Now the pass',
+        text: 'Both teammates have arrived, one high in the slot, one at the far post. K’s bubble gets small, but K doesn’t need it any more: K passes into the slot.',
+      },
+    ],
+    labels: [
+      'Attacking zone. K skates into the zone on the left with the puck. Three opponents are in front of the goal, one skates towards K. Two teammates are still at the blue line. Arrows show K skating to the boards and turning back up, and the teammates following.',
+      'K stands on the left boards facing the play. An opponent follows. The teammates are in the zone and keep going: one to the slot, one to the right post.',
+      'One teammate is high in the slot, one on the right at the goal. The opponent is close to K. K passes across into the slot.',
+    ],
+  },
+  'split-d': {
+    caption: 'Making space without the puck: between the defenders',
+    steps: [
+      {
+        title: 'Two on two',
+        text: 'K brings the puck over the blue line, S comes along in the middle. Two opponents defend. S skates between them without the puck, straight to the net.',
+      },
+      {
+        title: 'The opponents have to decide',
+        text: 'Who takes S? One opponent follows S to the net, the other stays in the middle. Nobody is with K any more. K’s bubble is big.',
+      },
+      {
+        title: 'Room to shoot',
+        text: 'K skates into the free space and shoots. S is in front of the net: the goalie can hardly see the puck, and a rebound lands with S.',
+      },
+    ],
+    labels: [
+      'Attacking zone. K brings the puck over the blue line on the left, S is in the middle. Two opponents stand in front of the faceoff circles. An arrow shows S skating between the two opponents to the net.',
+      'S is in front of the net, one opponent has followed, the other stands to the right. K is alone on the left, with a big circle.',
+      'K stands to the left of the faceoff circle and shoots at the goal. S is in front of the net.',
+    ],
+    note: 'If both opponents stay with K, S is free in front of the net. Then the pass goes to S.',
   },
 };
 

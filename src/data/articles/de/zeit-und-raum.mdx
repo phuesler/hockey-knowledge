@@ -1,0 +1,182 @@
+---
+title: "Zeit und Raum: die Grundidee im Eishockey"
+description: "Fast alles im Eishockey dreht sich um eine Frage: Wer hat Zeit und Platz? Mit dem Puck machst du deine Blase grösser, ohne Puck machst du die des anderen Teams kleiner."
+category: theorie
+order: 8.5
+updated: 2026-10-23
+tags: ["Spielverständnis", "Grundidee"]
+draft: false
+---
+
+import RinkPlay from '../../../components/RinkPlay.svelte';
+import RinkSequence from '../../../components/RinkSequence.svelte';
+import Callout from '../../../components/Callout.astro';
+import Quiz from '../../../components/Quiz.svelte';
+import { href } from '../../../lib/href';
+
+Eishockey sieht wild aus. Aber fast alles, was auf dem Eis passiert, dreht sich um eine
+einfache Frage: **Wer hat Zeit und Raum?**
+
+**Zeit** heisst: Wie lange dauert es, bis jemand vom anderen Team bei dir ist? **Raum**
+heisst: Wie viel freies Eis ist um dich herum? Wer beides hat, kann in Ruhe schauen, passen
+und schiessen. Wer beides nicht hat, macht Fehler.
+
+<Callout type="merke" title="Die Kurzfassung">
+Stell dir eine **Blase** um den Puck vor. Sie ist so gross wie das freie Eis um die Person,
+die ihn gerade hat.
+
+- **Wir haben den Puck:** Mach die Blase **grösser**. Schau vorher, wo Platz ist, fahr ins freie
+  Eis, pass dorthin, wo jemand frei steht.
+- **Das andere Team hat den Puck:** Mach die Blase **kleiner**. Lücke schliessen, Passwege
+  zumachen, an die Bande drängen.
+</Callout>
+
+## Was Zeit und Raum heisst
+
+Zeit und Raum gehören zusammen. Ist dein nächstes **Gegenüber** weit weg, hast du viel
+Platz. Und weil es lange dauert, bis es bei dir ist, hast du auch viel Zeit. Ist es nah,
+hast du wenig von beidem.
+
+Eine **Faustregel** hilft, das zu schätzen: Wer mit Tempo fährt, schafft etwa **5 Meter pro
+Sekunde**. Bei 10 Metern Abstand hast du ungefähr 2 Sekunden. Bei 5 Metern bleibt etwa eine
+Sekunde. Das klingt kurz. Aber in einer Sekunde kann man einen guten Pass spielen.
+
+<RinkPlay play="bubble-size" />
+
+In den Zeichnungen auf dieser Seite ist die Blase ein **violetter Kreis** um den Puck. Die
+Zahl daneben sagt, wie viele Sekunden ungefähr bleiben.
+
+## Zeit und Raum gewinnen
+
+Hat unser Team den Puck, heisst die Person mit dem Puck bei uns
+<a href={href('/de/rollen')}>König</a>, in den Zeichnungen K. Das ganze Team will dasselbe: dass die Blase um den Puck gross bleibt.
+Dafür gibt es mehrere Wege.
+
+### Freies Eis erkennen
+
+**Freies Eis** gibt es fast immer, man muss es nur sehen. Gute Stellen sind dort, wo in der
+Abwehr **niemand zuständig** ist. Typisch sind drei:
+
+- **In der Ecke auf der Puckseite.** Wer den König angreift, steht zwischen König und Tor.
+  Dahinter ist die Ecke oft leer. Dorthin kommt der Puck über die Bande: mit einem
+  Bandenpass oder einem **Pass ins Rund**. Dabei rutscht der Puck der Bande entlang bis
+  hinter das Tor. Dort holt ihn ab, wer am langen Pfosten steht.
+- **Oben im Slot**, also vor dem Tor zwischen den Bullykreisen. Steht die Abwehr tief vor
+  dem eigenen Tor, ist dort oft niemand.
+- **Am Bullykreis, neben dem Passschatten.** Der **Passschatten** ist der Raum hinter
+  jemandem aus dem anderen Team, in den kein Pass durchkommt. Ein, zwei Schritte daneben
+  bist du frei.
+
+Wer ohne Puck dorthin fährt, bekommt mit dem Pass gleich eine grosse Blase. Wer direkt neben
+einem Gegenüber steht, hilft dem König nicht.
+
+<RinkPlay play="soft-areas" />
+
+Mit dem Puck gilt dasselbe: Weg vom Druck, hin zum freien Eis. Wer dich angreift, muss dir
+hinterherfahren, und das kostet Zeit. Freies Eis sieht aber nur, wer schon vorher über die
+Schulter schaut. Das heisst **scannen**, mehr dazu beim
+<a href={href('/de/rollen')}>König</a>.
+
+### Der Pass ist schneller
+
+Ein Pass ist zwei- bis dreimal so schnell wie jemand auf Schlittschuhen. Darum ist der Pass
+der schnellste Weg zu mehr Zeit: Die Blase wandert mit dem Puck. Ist sie bei dir klein und
+bei jemandem aus deinem Team gross, spiel den Puck dorthin.
+
+<Callout type="tipp" title="Wer ist am schnellsten?">
+Wer im Team ist am schnellsten und wird nie müde? **Der Puck.** Lass ihn laufen.
+</Callout>
+
+Dafür braucht es auf dem Eis Satelliten (S): alle aus unserem Team ohne Puck. Sie suchen
+sich einen freien Platz, an dem man sie anspielen kann. Das ist die Idee hinter
+<a href={href('/de/support')}>Support</a> und
+<a href={href('/de/gegenlaufen')}>Gegenlaufen</a>.
+
+<RinkSequence client:visible sequence="bubble-pass" />
+
+### Ohne Puck Platz machen
+
+Auch ohne Puck kann man dem König Zeit verschaffen: Fahr dorthin, wo die Abwehr reagieren
+muss. Fährt dein Gegenüber mit, fehlt es beim König. Bleibt es stehen, bist du frei.
+
+Ein Klassiker: Gleich nach dem Einfahren in die Angriffszone fährt ein Satellit **zwischen
+den zwei Verteidigungsleuten hindurch** direkt zum Tor. Während die beiden entscheiden, wer
+mitfährt, wird die Blase des Königs grösser.
+
+<RinkSequence client:visible sequence="split-d" />
+
+### Verzögern: Zeit für das Team
+
+Zeit gewinnen heisst nicht immer, schnell zu sein. Manchmal ist der König allein vorne, und
+der Rest des Teams ist noch weit hinten. Allein gegen drei ist der Puck schnell weg.
+
+Besser ist: **verzögern**, also Tempo rausnehmen. Der König dreht an der Bande ab, behält
+den Puck und schaut wieder zum Spiel. Die Sekunden, die so dazukommen, gehören dem ganzen Team: Die anderen kommen nach und suchen sich freies Eis.
+Dann kommt der Pass.
+
+<RinkSequence client:visible sequence="delay" />
+
+## Zeit und Raum wegnehmen
+
+Hat das andere Team den Puck, ist es umgekehrt. Jetzt soll die Blase **klein** werden.
+Wer keine Zeit hat, muss raten, passt ungenau oder verliert den Puck.
+
+### Lücke schliessen
+
+Die **Lücke** ist der Abstand zwischen dir und deinem Gegenüber mit dem Puck. Je grösser sie
+ist, desto mehr Zeit bleibt dort. Wer den Puck verteidigt, heisst bei uns
+<a href={href('/de/rollen')}>Jäger</a> (J). Der Jäger schliesst die Lücke mit ein paar
+schnellen Schritten.
+
+Dabei bleibt der Jäger auf der <a href={href('/de/abwehrseite')}>Abwehrseite</a>, also
+zwischen Puck und Tor, und bremst kurz vorher ab. So kommt niemand einfach vorbei. Übrig
+bleibt nur der Weg nach aussen, an die **Bande**. Die ist wie eine Wand: Auf dieser Seite
+ist gar kein Platz.
+
+<RinkSequence client:visible sequence="bubble-shrink" />
+
+### Passwege zumachen
+
+Mit kleiner Blase sucht das andere Team einen Ausweg: den Pass dorthin, wo jemand frei
+steht. Diesen Weg kann man zumachen. Das ist die Aufgabe der
+<a href={href('/de/rollen')}>Wächter</a> (W): Sie halten den Schläger in den **Passweg**,
+also dorthin, wo der Pass durch müsste. Dahinter liegt der Passschatten. Dort kommt kein
+Pass an, und die letzte Möglichkeit ist weg.
+
+So hilft auch, wer den Puck nie berührt. Eine grosse Blase nützt dem anderen Team nichts,
+wenn kein Pass dorthin durchkommt.
+
+<RinkSequence client:visible sequence="close-lane" />
+
+Beides zusammen ist die Idee hinter dem <a href={href('/de/forecheck')}>Forecheck</a>: Eine
+Person treibt den Puck an die Bande, die anderen machen die Passwege zu.
+
+## Typische Fehler
+
+- **Mit dem Puck stehen bleiben.** Wer steht, gibt dem anderen Team Zeit, näherzukommen.
+  Die Blase schrumpft von allein.
+- **Den Puck blind wegschlagen.** Das bringt keine Zeit. Meistens hat dann das andere Team
+  den Puck – und eine grosse Blase.
+- **Alle fahren zum Puck.** Dann ist überall sonst das Eis frei. Ein Pass, und das andere
+  Team hat eine riesige Blase. Darum greift eine Person an, eine hilft, und die anderen
+  bleiben in ihrem <a href={href('/de/zuordnung')}>Bereich</a>.
+
+<Callout type="tipp" title="Für Eltern auf der Tribüne">
+Achtet beim nächsten Spiel auf den Puck und fragt euch: Wie gross ist die Blase gerade? Wird
+sie grösser oder kleiner? Ihr werdet sehen: Gute Spielzüge machen die Blase grösser. Gute
+Verteidigung macht sie kleiner. Das gilt auch dann, wenn niemand ein Tor schiesst.
+</Callout>
+
+## Teste dich
+
+Sechs Fragen zu diesem Artikel. Rate ruhig, auch wenn du unsicher bist: Nach jeder Antwort
+steht, warum sie richtig oder falsch ist. Am besten macht ihr das Quiz zu zweit: Das Kind
+antwortet und erklärt einem Erwachsenen, warum.
+
+<Quiz client:visible={{ rootMargin: '300px' }} quiz="zeit-und-raum" />
+
+<Callout type="merke" title="Faustregeln, keine Gesetze">
+5 Meter pro Sekunde, ein Pass zwei- bis dreimal so schnell: Das sind grobe Richtwerte, damit
+man sich die Blase besser vorstellen kann. Wie viel Zeit du wirklich hast, hängt davon ab,
+wie schnell das andere Team ist, wohin es schaut und wie gut du den Puck kontrollierst.
+</Callout>

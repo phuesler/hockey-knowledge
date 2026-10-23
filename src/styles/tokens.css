@@ -40,6 +40,9 @@
   --c-zone-c: #f1b3ae;
   --c-zone-lw: #bfe3b8;
   --c-zone-rw: #b1d3ee;
+  /* The time-and-space bubble around the puck carrier (rink diagrams only). */
+  --c-bubble: #6a4bb5;
+  --c-bubble-soft: #efeafb;
   /* The officials' figures (SignalFigure.svelte) only: skin, the referees' armbands
      and the dashed stick. The rest of the figure uses --c-text and --c-surface. */
   --c-skin: #f2c9a0;
@@ -106,6 +109,8 @@
     --c-zone-c: #5e2b28;
     --c-zone-lw: #234a2b;
     --c-zone-rw: #1f3e59;
+    --c-bubble: #b8a2f2;
+    --c-bubble-soft: #2a2340;
     --c-skin: #e3b88e;
     --c-skin-line: #a87c52;
     --c-armband: #ff8a47;

@@ -9,7 +9,7 @@
  *
  * Positions are rink metres, see rink.ts. In the attacking zone our left is at positive x.
  */
-import { COVERAGE_AREAS, DANGER_ZONE, GOAL_LINE, POST_X, passShadow, type Player, type Pt, type Scene, type View } from './rink';
+import { COVERAGE_AREAS, DANGER_ZONE, GOAL_LINE, POST_X, bubble, passShadow, type Player, type Pt, type Scene, type View } from './rink';
 import { animals } from './stories';
 import type { Locale } from '../lib/i18n';
 
@@ -163,6 +163,9 @@ const towardChaser: Pt = [-2.4, 7.4];
 const cyclesPuck: Pt = [6.4, 13.6];
 const cyclesChaser: Pt = [7.9, 18.6];
 const cyclesQuizThem = [them('o1', [4.5, 6]), them('o2', [-3.5, 6]), them('o4', [1, 12]), them('o5', [-7, 16])];
+
+/* Zeit und Raum: K has the puck high on the left (attacking zone, our left at positive x). */
+const spaceThem = [them('o1', [8.5, 11]), them('o2', [1, 8]), them('o3', [-7, 16])];
 
 const geometry = {
   regeln: [
@@ -814,6 +817,41 @@ const geometry = {
     /* 6. Penalty called against you: what now? */
     { correct: 1 },
   ],
+  'zeit-und-raum': [
+    /* 1. Where does K find the biggest bubble? A: high in the middle, away from everyone. */
+    {
+      correct: 0,
+      figure: {
+        zone: 'attack',
+        candidates: [[1.5, 17.5], [4, 10.4], [12.2, 9.8]],
+        scene: {
+          players: [...spaceThem, us('K', [9, 18])],
+          puck: [8.4, 17],
+        },
+        after: {
+          areas: [bubble([1.5, 17.5], 4.3, '≈ 2 s', [1.5, 14.6])],
+          players: [...spaceThem, { team: 'us', label: 'K', at: [9, 18], ghost: true }, us('K', [1.5, 17.5])],
+          puck: [1.2, 16.4],
+          moves: [{ kind: 'carry', path: [[7.4, 17.4], [3.2, 17.2]], trim: 0.2 }],
+        },
+      },
+    },
+
+    /* 2. An opponent 5 m away: how much time? */
+    { correct: 1 },
+
+    /* 3. Stuck on the boards, a teammate free on the other side. */
+    { correct: 0 },
+
+    /* 4. Taking the bubble away: close the gap, slow down, defensive side. */
+    { correct: 0 },
+
+    /* 5. All five to the puck. */
+    { correct: 1 },
+
+    /* 6. Alone in the zone, teammates far behind: slow down and wait. */
+    { correct: 2 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -830,6 +868,7 @@ export const mixQuizzes: QuizId[] = [
   'handzeichen',
   'bully',
   'rollen',
+  'zeit-und-raum',
   'torhueter',
   'abwehrseite',
   'zuordnung',
@@ -3149,6 +3188,144 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  'zeit-und-raum': {
+    title: 'Quiz: Zeit und Raum',
+    name: 'Zeit und Raum',
+    article: 'zeit-und-raum',
+    questions: [
+      {
+        prompt: 'Du bist K und hast den Puck. Wohin fährst du, damit du am meisten Zeit und Raum hast: 1, 2 oder 3?',
+        label:
+          'Angriffszone, das gegnerische Tor oben. K hat den Puck links an der blauen Linie. Platz {1} liegt oben in der Mitte, weit weg vom anderen Team. Platz {2} liegt vor dem Tor zwischen zwei aus dem anderen Team. Platz {3} liegt an der linken Bande weiter unten, neben jemandem aus dem anderen Team.',
+        afterLabel:
+          'K ist mit dem Puck nach Platz {1} gefahren, oben in die Mitte. Um K ist ein grosser Kreis: etwa 2 Sekunden.',
+        options: [
+          {
+            text: 'Platz {1}, oben in der Mitte',
+            feedback: 'Genau. Dort ist niemand vom anderen Team in der Nähe. Die Blase ist gross: Du hast Zeit zum Schauen, Passen oder Schiessen.',
+          },
+          {
+            text: 'Platz {2}, direkt Richtung Tor',
+            feedback:
+              'Zum Tor wollen ist richtig. Aber dort stehen zwei aus dem anderen Team, und dazwischen ist deine Blase sofort klein. Erst freies Eis finden, dann zum Tor.',
+          },
+          {
+            text: 'Platz {3}, an der Bande entlang',
+            feedback:
+              'An der Bande fühlt man sich sicher. Aber dort wartet schon jemand aus dem anderen Team, und die Bande nimmt dir auf einer Seite den ganzen Platz.',
+          },
+        ],
+        section: 'zeit-und-raum-gewinnen',
+        topic: 'Freies Eis',
+      },
+      {
+        prompt: 'Dein Gegenüber fährt mit Tempo auf dich zu und ist etwa 5 Meter weg. Wie viel Zeit hast du ungefähr?',
+        options: [
+          {
+            text: 'Etwa 5 Sekunden.',
+            feedback: 'So langsam ist niemand auf dem Eis. Wer mit Tempo fährt, schafft etwa 5 Meter pro Sekunde.',
+          },
+          {
+            text: 'Etwa eine Sekunde.',
+            feedback:
+              'Genau, als Faustregel: 5 Meter, etwa eine Sekunde. Darum lohnt es sich, schon vorher zu wissen, was du mit dem Puck machst.',
+          },
+          {
+            text: 'Gar keine, der Puck muss sofort weg.',
+            feedback:
+              'Eine Sekunde ist kurz, aber genug für einen gezielten Pass oder eine Drehung weg vom Druck. Wer den Puck blind wegschlägt, schenkt ihn meistens dem anderen Team.',
+          },
+        ],
+        section: 'was-zeit-und-raum-heisst',
+        topic: 'Die Blase',
+      },
+      {
+        prompt: 'Du hast den Puck an der Bande, zwei aus dem anderen Team sind ganz nah. Auf der anderen Seite steht jemand aus deinem Team frei. Was bringt am meisten Zeit?',
+        options: [
+          {
+            text: 'Dorthin passen, wo jemand frei steht.',
+            feedback:
+              'Genau. Der Pass ist viel schneller, als jemand fahren kann. Mit dem Puck wandert die Blase mit – und dort, wo jemand frei steht, ist sie gross.',
+          },
+          {
+            text: 'Den Puck behalten und an beiden vorbeifahren.',
+            feedback:
+              'Gegen zwei klappt das selten. Deine Blase ist schon klein und wird mit jedem Meter kleiner. Der Pass dorthin, wo jemand frei steht, ist schneller.',
+          },
+          {
+            text: 'Den Puck nach vorne schiessen, Hauptsache weg.',
+            feedback: 'Dann hat meistens das andere Team den Puck. Ein Puck ohne Ziel bringt niemandem Zeit – ausser dem anderen Team.',
+          },
+        ],
+        section: 'zeit-und-raum-gewinnen',
+        topic: 'Der Pass ist schneller',
+      },
+      {
+        prompt:
+          'Das andere Team kommt mit dem Puck über unsere blaue Linie. Du bist Jäger und noch weit weg. Wie nimmst du am meisten Zeit und Raum weg?',
+        options: [
+          {
+            text: 'Schnell hinfahren, kurz vorher bremsen, auf der Abwehrseite bleiben, Schläger zum Puck.',
+            feedback: 'Genau. So wird die Blase klein, und der Weg zum Tor ist zu. Übrig bleibt nur der Weg nach aussen.',
+          },
+          {
+            text: 'Vor dem Tor warten, bis der Puck kommt.',
+            feedback: 'Dann hat das andere Team alle Zeit der Welt: schauen, passen und sich die beste Stelle zum Schiessen aussuchen.',
+          },
+          {
+            text: 'Mit vollem Tempo direkt auf den Puck los.',
+            feedback:
+              'Wer ungebremst hineinfährt, wird leicht umfahren. Dann ist hinter dir plötzlich viel Platz – die Blase am Puck wird grösser, nicht kleiner.',
+          },
+        ],
+        section: 'zeit-und-raum-wegnehmen',
+        topic: 'Lücke schliessen',
+      },
+      {
+        prompt: 'Das andere Team hat den Puck in der Ecke. Alle fünf von uns fahren hin. Was ist das Problem?',
+        options: [
+          {
+            text: 'Kein Problem: Je mehr Druck, desto besser.',
+            feedback:
+              'Druck auf den Puck ist gut – von einer Person, mit Hilfe in der Nähe. Die anderen fehlen dann woanders.',
+          },
+          {
+            text: 'Überall sonst ist das Eis frei. Ein Pass, und das andere Team hat eine riesige Blase.',
+            feedback:
+              'Genau. Wer den Raum am Puck zumacht, darf den Rest nicht aufmachen. Eine Person greift an, eine hilft, die anderen decken ihren Bereich.',
+          },
+          {
+            text: 'Das ist gegen die Regeln.',
+            feedback: 'Erlaubt ist es. Es ist nur keine gute Idee: Das andere Team braucht nur einen guten Pass.',
+          },
+        ],
+        section: 'typische-fehler',
+        topic: 'Alle zum Puck',
+      },
+      {
+        prompt:
+          'Du kommst mit dem Puck allein in die Angriffszone. Drei aus dem anderen Team warten vor dem Tor, der Rest von deinem Team ist noch weit hinten. Was machst du?',
+        options: [
+          {
+            text: 'Sofort schiessen, egal von wo.',
+            feedback:
+              'Von weit draussen ist fast jeder Schuss gehalten. Dann hat das andere Team den Puck, und dein Team war noch nicht einmal da.',
+          },
+          {
+            text: 'Allein an allen drei vorbeifahren.',
+            feedback: 'Gegen drei ist deine Blase sofort weg. Meistens ist dann auch der Puck weg.',
+          },
+          {
+            text: 'An der Bande abdrehen, den Puck behalten und warten, bis das Team da ist.',
+            feedback:
+              'Genau. Verzögern schenkt deinem Team Zeit. Die anderen kommen nach, suchen freies Eis, und dann kommt der Pass.',
+          },
+        ],
+        section: 'zeit-und-raum-gewinnen',
+        topic: 'Verzögern',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -5413,6 +5590,143 @@ const en: typeof de = {
         ],
         section: 'how-a-penalty-is-called',
         topic: 'To the penalty box',
+      },
+    ],
+  },
+  'zeit-und-raum': {
+    title: 'Quiz: Time and space',
+    name: 'Time and space',
+    article: 'time-and-space',
+    questions: [
+      {
+        prompt: 'You are K and have the puck. Where do you skate to get the most time and space: 1, 2 or 3?',
+        label:
+          'Attacking zone, the opponents’ goal at the top. K has the puck on the left at the blue line. Spot {1} is high in the middle, far from every opponent. Spot {2} is in front of the goal between two opponents. Spot {3} is further down the left boards, next to an opponent.',
+        afterLabel: 'K has skated with the puck to spot {1}, high in the middle. There is a big circle around K: about 2 seconds.',
+        options: [
+          {
+            text: 'Spot {1}, high in the middle',
+            feedback: 'Exactly. No opponent is close. The bubble is big: you have time to look, pass or shoot.',
+          },
+          {
+            text: 'Spot {2}, straight towards the goal',
+            feedback:
+              'Wanting to get to the goal is right. But two opponents stand there, and between them your bubble is small at once. Find open ice first, then go to the goal.',
+          },
+          {
+            text: 'Spot {3}, along the boards',
+            feedback:
+              'The boards feel safe. But an opponent is already waiting there, and the boards take away all the room on one side.',
+          },
+        ],
+        section: 'gaining-time-and-space',
+        topic: 'Open ice',
+      },
+      {
+        prompt: 'An opponent skates at you at speed. They are about 5 metres away. Roughly how much time do you have?',
+        options: [
+          {
+            text: 'About 5 seconds.',
+            feedback: 'Nobody on the ice is that slow. An opponent at speed covers about 5 metres a second.',
+          },
+          {
+            text: 'About one second.',
+            feedback:
+              'Exactly, as a rule of thumb: 5 metres, about one second. That is why it pays to know what you will do with the puck before it arrives.',
+          },
+          {
+            text: 'None – the puck has to go right away.',
+            feedback:
+              'One second is short, but enough for an aimed pass or a turn away from the opponent. Hitting the puck away blindly usually hands it to the opponent.',
+          },
+        ],
+        section: 'what-time-and-space-mean',
+        topic: 'The bubble',
+      },
+      {
+        prompt: 'You have the puck on the boards, with two opponents very close. A teammate is free on the other side. What gains the most time?',
+        options: [
+          {
+            text: 'Pass to the free teammate.',
+            feedback:
+              'Exactly. The pass is much faster than any opponent. The bubble travels with the puck to your teammate – and there it is big.',
+          },
+          {
+            text: 'Keep the puck and skate past both of them.',
+            feedback:
+              'Against two opponents that rarely works. Your bubble is already small and gets smaller with every metre. The pass to the free teammate is faster.',
+          },
+          {
+            text: 'Shoot the puck up the ice – just get rid of it.',
+            feedback: 'Then the opponents usually get the puck. A puck without a target gives nobody time – except the opponents.',
+          },
+        ],
+        section: 'gaining-time-and-space',
+        topic: 'The pass is faster',
+      },
+      {
+        prompt:
+          'An opponent brings the puck over our blue line. You are the Jäger and still far away. How do you take away the most time and space?',
+        options: [
+          {
+            text: 'Skate there fast, slow down just before, stay on the defensive side, stick to the puck.',
+            feedback: 'Exactly. That makes their bubble small and closes the way to the goal. All they have left is the way wide.',
+          },
+          {
+            text: 'Wait in front of the goal until they come.',
+            feedback: 'Then they have all the time in the world: they can look, pass and pick the best spot to shoot from.',
+          },
+          {
+            text: 'Charge straight at them at full speed.',
+            feedback:
+              'Charge in without slowing down and you are easy to skate around. Suddenly there is lots of room behind you – the opponent’s bubble gets bigger, not smaller.',
+          },
+        ],
+        section: 'taking-time-and-space-away',
+        topic: 'Closing the gap',
+      },
+      {
+        prompt: 'The opponents have the puck in the corner. All five of us skate there. What is the problem?',
+        options: [
+          {
+            text: 'No problem: the more pressure, the better.',
+            feedback:
+              'Pressure on the puck carrier is good – from one player, with a helper close by. The others are then missing elsewhere.',
+          },
+          {
+            text: 'The ice everywhere else is free. One pass, and the opponent has a huge bubble.',
+            feedback:
+              'Exactly. If you close the space at the puck, you must not open up the rest. One attacks, one helps, the others cover their area.',
+          },
+          {
+            text: 'It is against the rules.',
+            feedback: 'It is allowed. It is just not a good idea: the opponents only need one good pass.',
+          },
+        ],
+        section: 'common-mistakes',
+        topic: 'Everyone to the puck',
+      },
+      {
+        prompt:
+          'You bring the puck into the attacking zone alone. Three opponents wait in front of the goal, your teammates are still far behind. What do you do?',
+        options: [
+          {
+            text: 'Shoot straight away, from wherever you are.',
+            feedback:
+              'From far out the goalie saves almost every shot. Then the opponents have the puck, and your teammates weren’t even there yet.',
+          },
+          {
+            text: 'Skate past all three on your own.',
+            feedback: 'Against three opponents your bubble is gone at once. Usually the puck is gone too.',
+          },
+          {
+            text: 'Turn away on the boards, keep the puck and wait until your teammates arrive.',
+            feedback:
+              'Exactly. Slowing down gives your teammates time. They catch up, find open ice, and then comes the pass.',
+          },
+        ],
+        section: 'gaining-time-and-space',
+        topic: 'Slowing down',
       },
     ],
   },

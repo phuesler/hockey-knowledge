@@ -66,6 +66,7 @@ export interface Move {
  * open   — open ice: space no opponent covers, where a player can skate or get a pass.
  * shadow — a passing shadow: the space behind an opponent that no pass reaches.
  * view   — where a player is looking (see viewCone).
+ * bubble — the time and space the puck carrier has: the ice they reach before an opponent.
  * cover-* — the coverage area of one position in our zone (see COVERAGE_AREAS);
  *           cover-shared is the middle strip up high that the wingers and C share.
  */
@@ -83,6 +84,7 @@ export type AreaKind =
   | 'open'
   | 'shadow'
   | 'view'
+  | 'bubble'
   | `cover-${CoverRole}`
   | 'cover-shared';
 
@@ -183,6 +185,16 @@ export function passShadow(puck: Pt, opponent: Pt, reach = 6): Pt[] {
     [end[0] - px * far, end[1] - pd * far],
     [opponent[0] - px * near, opponent[1] - pd * near],
   ];
+}
+
+/**
+ * The puck carrier's time and space, drawn round the carrier. `seconds` is a rough guide
+ * shown next to it, such as "≈ 2 s"; `labelAt` puts it outside the circle when the circle
+ * is too small for it. Keep the bubble at the same index in every frame of a sequence,
+ * so it grows, shrinks and moves instead of jumping.
+ */
+export function bubble(at: Pt, r: number, seconds?: string, labelAt?: Pt): Area {
+  return { kind: 'bubble', ellipse: { at, rx: r, ry: r }, label: seconds, labelAt };
 }
 
 /** Rink metres to SVG user units: the goal at the bottom, 1 unit = 1 m. `length` is the view's length. */
