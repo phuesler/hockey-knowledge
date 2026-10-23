@@ -615,22 +615,22 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Drei Türen',
-        text: 'Der Gegner hat den Puck in der Ecke. Er hat drei Türen nach draussen: 1 an der Bande hoch, 2 in die Mitte, 3 hinter dem Tor durch.',
-        label: 'Angriffszone. Ein gegnerischer Verteidiger hat den Puck in der linken Ecke. Drei gepunktete Wege führen von ihm weg: an der Bande hoch, in die Mitte und hinter dem Tor durch zum anderen Verteidiger.',
+        text: 'Das andere Team hat den Puck in der Ecke. Es gibt drei Türen nach draussen: 1 an der Bande hoch, 2 in die Mitte, 3 hinter dem Tor durch.',
+        label: 'Angriffszone. Ein gegnerischer Verteidiger hat den Puck in der linken Ecke. Drei gepunktete Wege führen von dort weg: an der Bande hoch, in die Mitte und hinter dem Tor durch zum anderen Verteidiger.',
       },
       {
-        title: 'Jeder ein Tier',
-        text: 'Der LW ist am nächsten: Er ist der Hund und jagt. Der C ist der Fuchs und macht Tür 1 zu. Der RW ist der Falke und bewacht Tür 2. Offen ist nur noch Tür 3.',
+        title: 'Für alle ein Tier',
+        text: 'Der LW ist am nächsten, also der Hund, und jagt. Der C ist der Fuchs und macht Tür 1 zu. Der RW ist der Falke und bewacht Tür 2. Offen ist nur noch Tür 3.',
         label: 'Der linke Flügel fährt zum Puckführer, der Center an die linke Bande, der rechte Flügel hoch in die Mitte. Nur der Weg hinter dem Tor ist noch offen.',
       },
       {
         title: 'Der Puck wechselt die Seite',
-        text: 'Der Gegner spielt den Puck hinter dem Tor durch zum anderen Verteidiger. Wer ist jetzt am nächsten?',
+        text: 'Das andere Team spielt den Puck hinter dem Tor durch zum anderen Verteidiger. Wer ist jetzt am nächsten?',
         label: 'Der gegnerische Verteidiger passt den Puck hinter dem Tor durch zum anderen Verteidiger auf der rechten Seite.',
       },
       {
         title: 'Die Tiere tauschen',
-        text: 'Jetzt ist der RW am nächsten: Er wird zum Hund. Der LW fährt durch den Slot an die andere Bande und wird zum Fuchs. Der C rückt in die Mitte und wird zum Falken.',
+        text: 'Jetzt ist der RW am nächsten und wird zum Hund. Der LW fährt durch den Slot an die andere Bande und wird zum Fuchs. Der C rückt in die Mitte und wird zum Falken.',
         label: 'Der rechte Flügel fährt zum neuen Puckführer in der rechten Ecke. Der linke Flügel fährt quer an die rechte Bande, der Center hoch in die Mitte.',
       },
       {
@@ -645,12 +645,12 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Puck verloren',
-        text: 'Der Gegner erobert den Puck in unserer Angriffszone. Hund und Fuchs sind tief in der Ecke, der Falke ist hoch. Die gelbe Fläche vor unserem Tor ist das Haus.',
-        label: 'Das ganze Eis, unser Tor unten. Der Gegner hat den Puck oben in unserer Angriffszone. Linker Flügel und Center sind tief, der rechte Flügel ist hoch, die Verteidiger an der blauen Linie.',
+        text: 'Das andere Team erobert den Puck in unserer Angriffszone. Hund und Fuchs sind tief in der Ecke, der Falke ist hoch. Die gelbe Fläche vor unserem Tor ist das Haus.',
+        label: 'Das ganze Eis, unser Tor unten. Das andere Team hat den Puck oben in unserer Angriffszone. Linker Flügel und Center sind tief, der rechte Flügel ist hoch, die Verteidiger an der blauen Linie.',
       },
       {
         title: 'Umdrehen!',
-        text: 'Hund und Fuchs werden zu Geparden und sprinten los, durch die Mitte. Der Falke ist am nächsten an unserem Tor: Er bleibt innen neben dem Puckführer.',
+        text: 'Hund und Fuchs werden zu Geparden und sprinten los, durch die Mitte. Der Falke ist am nächsten an unserem Tor und bleibt innen neben dem Puckführer.',
         label: 'Linker Flügel und Center sprinten durch die Mitte zurück. Der rechte Flügel fährt innen neben dem Puckführer. Die Verteidiger fahren rückwärts.',
       },
       {
@@ -660,8 +660,8 @@ const de: Record<StoryId, StoryText> = {
       },
       {
         title: 'Im Haus bremsen',
-        text: 'Die Geparden sind im Haus vor unserem Tor und bremsen. Mit dem Schulterblick sehen sie, wer frei ist, und übernehmen ihn. Jetzt gilt die Zuordnung.',
-        label: 'Der Puckführer ist in unserer Zone an der rechten Seite, der rechte Verteidiger vor ihm. Der linke Verteidiger deckt den Gegner auf der linken Seite. Linker Flügel und Center stehen im Haus vor unserem Tor.',
+        text: 'Die Geparden sind im Haus vor unserem Tor und bremsen. Mit dem Schulterblick sehen sie, wer frei ist, und übernehmen diese Person. Jetzt gilt die Zuordnung.',
+        label: 'Der Puckführer ist in unserer Zone an der rechten Seite, der rechte Verteidiger davor. Der linke Verteidiger deckt die Person vom anderen Team auf der linken Seite. Linker Flügel und Center stehen im Haus vor unserem Tor.',
       },
     ],
   },
@@ -670,8 +670,8 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Weit weg',
-        text: 'LD hat den Puck hinter unserem Tor. LW steht oben an der blauen Linie, ein Gegner ist in der Nähe. Der Pass dorthin wäre lang.',
-        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, ein Gegner fährt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie, ein Gegner nah bei ihm. Eine gepunktete Linie zeigt den langen Passweg.',
+        text: 'LD hat den Puck hinter unserem Tor. LW steht oben an der blauen Linie, jemand vom anderen Team ist in der Nähe. Der Pass dorthin wäre lang.',
+        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, jemand vom anderen Team fährt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie, eine zweite Person vom anderen Team nah bei LW. Eine gepunktete Linie zeigt den langen Passweg.',
       },
       {
         title: 'Entgegenfahren',
@@ -700,8 +700,8 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Weit weg',
-        text: 'LD hat den Puck hinter unserem Tor. LW steht oben an der blauen Linie, ein Gegner ist in der Nähe. Der Pass dorthin wäre lang.',
-        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, ein Gegner fährt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie, ein Gegner nah bei ihm. Eine gepunktete Linie zeigt den langen Passweg.',
+        text: 'LD hat den Puck hinter unserem Tor. LW steht oben an der blauen Linie, jemand vom anderen Team ist in der Nähe. Der Pass dorthin wäre lang.',
+        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, jemand vom anderen Team fährt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie, eine zweite Person vom anderen Team nah bei LW. Eine gepunktete Linie zeigt den langen Passweg.',
       },
       {
         title: 'Entgegenfahren',
@@ -730,8 +730,8 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Weit weg',
-        text: 'LD hat den Puck hinter unserem Tor. LW steht oben an der blauen Linie, ein Gegner ist in der Nähe. Der Pass dorthin wäre lang.',
-        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, ein Gegner fährt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie, ein Gegner nah bei ihm. Eine gepunktete Linie zeigt den langen Passweg.',
+        text: 'LD hat den Puck hinter unserem Tor. LW steht oben an der blauen Linie, jemand vom anderen Team ist in der Nähe. Der Pass dorthin wäre lang.',
+        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links hinter dem Tor, jemand vom anderen Team fährt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie, eine zweite Person vom anderen Team nah bei LW. Eine gepunktete Linie zeigt den langen Passweg.',
       },
       {
         title: 'Entgegenfahren',
@@ -760,13 +760,13 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Gedeckt',
-        text: 'RD hat den Puck. RW steht weit oben an der Bande, ein Gegner ganz nah bei ihm. So ist RW gedeckt.',
-        label: 'Eigene Zone und neutrale Zone, unser Tor unten. RD hat den Puck rechts vor dem Tor. RW steht oben an der rechten Bande bei der Mittellinie, ein Gegner direkt bei ihm.',
+        text: 'RD hat den Puck. RW steht weit oben an der Bande, jemand vom anderen Team ganz nah daneben. So ist RW gedeckt.',
+        label: 'Eigene Zone und neutrale Zone, unser Tor unten. RD hat den Puck rechts vor dem Tor. RW steht oben an der rechten Bande bei der Mittellinie, jemand vom anderen Team direkt daneben.',
       },
       {
         title: 'Entgegenfahren',
-        text: 'RW fährt an der Bande nach unten, RD entgegen. Der Gegner folgt, aber er ist schon ein paar Meter weg.',
-        label: 'RW fährt an der rechten Bande nach unten bis zur blauen Linie. Der Gegner folgt mit Abstand.',
+        text: 'RW fährt an der Bande nach unten, RD entgegen. Die Person vom anderen Team folgt, ist aber schon ein paar Meter weg.',
+        label: 'RW fährt an der rechten Bande nach unten bis zur blauen Linie. Die Person vom anderen Team folgt mit Abstand.',
       },
       {
         title: 'Swing nach innen',
@@ -775,8 +775,8 @@ const de: Record<StoryId, StoryText> = {
       },
       {
         title: 'Mit Schwung',
-        text: 'RW hat den Puck und schon Tempo. Der Gegner steht noch und kommt nicht mehr mit.',
-        label: 'RW fährt mit dem Puck schnell nach oben über die Mittellinie. Der Gegner bleibt zurück.',
+        text: 'RW hat den Puck und schon Tempo. Die Person vom anderen Team steht noch und kommt nicht mehr mit.',
+        label: 'RW fährt mit dem Puck schnell nach oben über die Mittellinie. Die Person vom anderen Team bleibt zurück.',
       },
     ],
   },
@@ -785,17 +785,17 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Gedeckt',
-        text: 'LD holt den Puck in der Ecke. LW steht oben an der Bande, ein Gegner direkt bei ihm.',
-        label: 'Eigene Zone, unser Tor unten. LD hat den Puck in der linken Ecke, ein Gegner hinter LD. LW steht oben an der linken Bande, ein Gegner direkt bei ihm.',
+        text: 'LD holt den Puck in der Ecke. LW steht oben an der Bande, jemand vom anderen Team direkt daneben.',
+        label: 'Eigene Zone, unser Tor unten. LD hat den Puck in der linken Ecke, jemand vom anderen Team hinter LD. LW steht oben an der linken Bande, eine zweite Person vom anderen Team direkt daneben.',
       },
       {
         title: 'Entgegenfahren',
-        text: 'LD fährt an der Bande hoch. LW fährt LD entgegen, der Gegner folgt LW.',
-        label: 'LD fährt mit dem Puck an der linken Bande nach oben. LW fährt nach unten, der Gegner folgt ihm.',
+        text: 'LD fährt an der Bande hoch. LW fährt LD entgegen, die Person vom anderen Team folgt LW.',
+        label: 'LD fährt mit dem Puck an der linken Bande nach oben. LW fährt nach unten, die Person vom anderen Team folgt LW.',
       },
       {
         title: 'Vor LD durch',
-        text: 'LW fährt einen weiten Swing vor LD durch, bis auf die andere Seite. An der Bande ist der Gegner, in der Mitte ist Platz.',
+        text: 'LW fährt einen weiten Swing vor LD durch, bis auf die andere Seite. An der Bande ist die Person vom anderen Team, in der Mitte ist Platz.',
         label: 'LW fährt einen weiten Bogen vor LD durch nach rechts, über die Mitte, und wieder nach oben. LD fährt mit dem Puck weiter.',
       },
       {
@@ -804,9 +804,9 @@ const de: Record<StoryId, StoryText> = {
         label: 'LD passt weit schräg nach rechts oben zu LW auf der anderen Seite.',
       },
       {
-        title: 'Weg vom Gegner',
-        text: 'LW fährt mit dem Puck durch die Mitte. Der Gegner an der Bande ist weit weg.',
-        label: 'LW fährt mit dem Puck durch die Mitte über die blaue Linie. Der Gegner steht noch an der linken Bande.',
+        title: 'Weg vom anderen Team',
+        text: 'LW fährt mit dem Puck durch die Mitte. Die Person vom anderen Team an der Bande ist weit weg.',
+        label: 'LW fährt mit dem Puck durch die Mitte über die blaue Linie. Die Person vom anderen Team steht noch an der linken Bande.',
       },
     ],
   },
@@ -815,13 +815,13 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'LD hat den Puck',
-        text: 'LD hat den Puck neben unserem Tor, ein Gegner kommt von hinten. LW fährt LD entgegen.',
-        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links neben dem Tor, ein Gegner kommt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie.',
+        text: 'LD hat den Puck neben unserem Tor, jemand vom anderen Team kommt von hinten. LW fährt LD entgegen.',
+        label: 'Eigene Zone, unser Tor unten. LD hat den Puck links neben dem Tor, jemand vom anderen Team kommt hinter dem Tor auf LD zu. LW steht oben links bei der blauen Linie.',
       },
       {
         title: 'Entgegenfahren',
-        text: 'LD fährt mit dem Puck los, der Gegner folgt. LW fährt LD entgegen.',
-        label: 'LD fährt mit dem Puck ein Stück nach oben, der Gegner folgt. LW fährt nach unten, ein paar Meter innen von der Bande.',
+        text: 'LD fährt mit dem Puck los, die Person vom anderen Team folgt. LW fährt LD entgegen.',
+        label: 'LD fährt mit dem Puck ein Stück nach oben, die Person vom anderen Team folgt. LW fährt nach unten, ein paar Meter innen von der Bande.',
       },
       {
         title: 'Der erste Pass',
@@ -830,12 +830,12 @@ const de: Record<StoryId, StoryText> = {
       },
       {
         title: 'Swing und Bande',
-        text: 'LW fährt mit dem Puck einen Swing nach innen. Der Gegner fährt zum Puck, also zu LW. LD fährt nach aussen an die Bande.',
-        label: 'LW fährt mit dem Puck eine Kurve nach innen Richtung Mitte. Der Gegner folgt LW. LD fährt nach links an die Bande.',
+        text: 'LW fährt mit dem Puck einen Swing nach innen. Die Person vom anderen Team fährt zum Puck, also zu LW. LD fährt nach aussen an die Bande.',
+        label: 'LW fährt mit dem Puck eine Kurve nach innen Richtung Mitte. Die Person vom anderen Team folgt LW. LD fährt nach links an die Bande.',
       },
       {
         title: 'Der zweite Pass',
-        text: 'LW passt den Puck zurück zu LD an der Bande. Dort ist niemand: Der Gegner ist bei LW.',
+        text: 'LW passt den Puck zurück zu LD an der Bande. Dort ist niemand: Die Person vom anderen Team ist bei LW.',
         label: 'LW passt quer nach links zu LD an der Bande. LD fährt an der Bande nach oben.',
       },
       {
@@ -850,33 +850,33 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: '10 Uhr',
-        text: 'Stell dir eine Uhr vor, 12 Uhr ist nach vorne. LD fährt mit dem Puck Richtung 10 Uhr, nach links vorne. Von vorne kommt ein Gegner. C ist oben links.',
-        label: 'Eigene Zone, unser Tor unten. LD hat den Puck rechts vor dem Tor und fährt schräg nach links oben. Oben kommt ein Gegner. C ist oben links.',
+        text: 'Stell dir eine Uhr vor, 12 Uhr ist nach vorne. LD fährt mit dem Puck Richtung 10 Uhr, nach links vorne. Von vorne kommt jemand vom anderen Team. C ist oben links.',
+        label: 'Eigene Zone, unser Tor unten. LD hat den Puck rechts vor dem Tor und fährt schräg nach links oben. Oben kommt jemand vom anderen Team. C ist oben links.',
       },
       {
-        title: 'Der Gegner kommt',
-        text: 'Der Gegner fährt auf LD zu. LD fährt weiter Richtung 10 Uhr. C fährt schräg auf LD zu, Richtung 4 Uhr.',
-        label: 'LD fährt mit dem Puck weiter schräg nach links oben. Der Gegner kommt von oben auf LD zu. C fährt schräg nach rechts unten.',
+        title: 'Das andere Team kommt',
+        text: 'Die Person vom anderen Team fährt auf LD zu. LD fährt weiter Richtung 10 Uhr. C fährt schräg auf LD zu, Richtung 4 Uhr.',
+        label: 'LD fährt mit dem Puck weiter schräg nach links oben. Die Person vom anderen Team kommt von oben auf LD zu. C fährt schräg nach rechts unten.',
       },
       {
-        title: 'Den Gegner auf sich ziehen',
-        text: 'LD fährt weiter Richtung Bande und zieht den Gegner auf sich. Der Gegner kommt ganz nah, auf der oberen Seite, und schaut nur noch auf LD und den Puck. Erst jetzt ist der Drop-Pass sicher.',
-        label: 'LD fährt mit dem Puck weiter Richtung linke Bande. Der Gegner ist jetzt ganz nah, direkt oberhalb von LD. C kommt von links oben näher.',
+        title: 'Das andere Team auf sich ziehen',
+        text: 'LD fährt weiter Richtung Bande und zieht die Person vom anderen Team auf sich. Sie kommt ganz nah, auf der oberen Seite, und schaut nur noch auf LD und den Puck. Erst jetzt ist der Drop-Pass sicher.',
+        label: 'LD fährt mit dem Puck weiter Richtung linke Bande. Die Person vom anderen Team ist jetzt ganz nah, direkt oberhalb von LD. C kommt von links oben näher.',
       },
       {
         title: 'Der Drop-Pass',
-        text: 'C fährt innen an LD vorbei, auf der Abwehrseite: zwischen LD und unserem Tor. Genau jetzt spielt LD den Puck kurz zurück. LD ist zwischen Puck und Gegner.',
-        label: 'C fährt unterhalb von LD vorbei. LD spielt den Puck kurz nach unten zu C. Der Gegner ist oberhalb von LD, auf der anderen Seite.',
+        text: 'C fährt innen an LD vorbei, auf der Abwehrseite: zwischen LD und unserem Tor. Genau jetzt spielt LD den Puck kurz zurück. LD ist zwischen Puck und der Person vom anderen Team.',
+        label: 'C fährt unterhalb von LD vorbei. LD spielt den Puck kurz nach unten zu C. Die Person vom anderen Team ist oberhalb von LD, auf der anderen Seite.',
       },
       {
         title: 'Swing nach vorne',
-        text: 'C dreht mit dem Puck einen Swing nach vorne. LD fährt weiter zur Bande, der Gegner geht mit LD mit.',
-        label: 'C fährt mit dem Puck eine Kurve nach rechts und wieder nach oben. LD fährt weiter zur linken Bande, der Gegner folgt LD.',
+        text: 'C dreht mit dem Puck einen Swing nach vorne. LD fährt weiter zur Bande, die Person vom anderen Team geht mit LD mit.',
+        label: 'C fährt mit dem Puck eine Kurve nach rechts und wieder nach oben. LD fährt weiter zur linken Bande, die Person vom anderen Team folgt LD.',
       },
       {
         title: 'C ist weg',
-        text: 'C fährt mit dem Puck nach vorne. Der Gegner ist an der Bande bei LD, weit weg vom Puck.',
-        label: 'C fährt mit dem Puck in der Mitte über die blaue Linie. Der Gegner und LD sind an der linken Bande.',
+        text: 'C fährt mit dem Puck nach vorne. Die Person vom anderen Team ist an der Bande bei LD, weit weg vom Puck.',
+        label: 'C fährt mit dem Puck in der Mitte über die blaue Linie. Die Person vom anderen Team und LD sind an der linken Bande.',
       },
     ],
   },
@@ -915,8 +915,8 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Puck an der Bande',
-        text: 'LW hat den Puck an der linken Bande. Der nächste Gegner ist ein paar Meter weg. LW hat Platz.',
-        label: 'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande auf Höhe des Bullykreises. Die Gegner stehen vor dem Tor und in der Mitte. LD und RD stehen an der blauen Linie.',
+        text: 'LW hat den Puck an der linken Bande. Die nächste Person vom anderen Team ist ein paar Meter weg. LW hat Platz.',
+        label: 'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande auf Höhe des Bullykreises. Das andere Team steht vor dem Tor und in der Mitte. LD und RD stehen an der blauen Linie.',
       },
       {
         title: 'Hochfahren',
@@ -939,24 +939,24 @@ const de: Record<StoryId, StoryText> = {
     caption: 'Der Verteidiger kreuzt innen',
     steps: [
       {
-        title: 'Ein Gegner klebt',
-        text: 'LW hat den Puck an der linken Bande. Ein Gegner ist ganz nah, innen neben LW. Nach innen ziehen geht nicht.',
-        label: 'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande, ein Gegner direkt daneben auf der Innenseite. LD steht an der blauen Linie.',
+        title: 'Jemand klebt',
+        text: 'LW hat den Puck an der linken Bande. Jemand vom anderen Team ist ganz nah, innen neben LW. Nach innen ziehen geht nicht.',
+        label: 'Angriffszone, oben das gegnerische Tor. LW hat den Puck an der linken Bande, jemand vom anderen Team direkt daneben auf der Innenseite. LD steht an der blauen Linie.',
       },
       {
         title: 'LD fährt tief',
-        text: 'LW fährt an der Bande hoch. LD fährt von der blauen Linie tief in die Zone, innen an LW und dem Gegner vorbei.',
-        label: 'LW fährt mit dem Puck an der Bande hoch, der Gegner bleibt neben ihm. LD fährt von der blauen Linie Richtung Tor, auf der Innenseite.',
+        text: 'LW fährt an der Bande hoch. LD fährt von der blauen Linie tief in die Zone, innen an LW und der Person vom anderen Team vorbei.',
+        label: 'LW fährt mit dem Puck an der Bande hoch, die Person vom anderen Team bleibt neben LW. LD fährt von der blauen Linie Richtung Tor, auf der Innenseite.',
       },
       {
         title: 'Pass an der Bande entlang',
-        text: 'LW spielt den Puck an der Bande entlang tiefer in die Zone, genau in den Weg von LD, und fährt weiter hoch. Der Gegner geht mit LW mit. LD nimmt den Puck in der Fahrt mit.',
-        label: 'LW fährt weiter Richtung blaue Linie und spielt den Puck an der Bande entlang Richtung Tor. Der Gegner folgt LW. LD fährt in einem Bogen zur Bande und nimmt den Puck mit.',
+        text: 'LW spielt den Puck an der Bande entlang tiefer in die Zone, genau in den Weg von LD, und fährt weiter hoch. Die Person vom anderen Team geht mit LW mit. LD nimmt den Puck in der Fahrt mit.',
+        label: 'LW fährt weiter Richtung blaue Linie und spielt den Puck an der Bande entlang Richtung Tor. Die Person vom anderen Team folgt LW. LD fährt in einem Bogen zur Bande und nimmt den Puck mit.',
       },
       {
         title: 'LD hat Platz',
-        text: 'LD fährt mit dem Puck ohne zu bremsen weiter Richtung Tor. Der Gegner steht oben bei LW. LD kann schiessen oder vor das Tor passen. LW übernimmt an der blauen Linie den Platz von LD.',
-        label: 'LD fährt mit dem Puck in einem Bogen von der Bande nach innen Richtung Tor. Der Gegner und LW sind oben an der blauen Linie.',
+        text: 'LD fährt mit dem Puck ohne zu bremsen weiter Richtung Tor. Die Person vom anderen Team steht oben bei LW. LD kann schiessen oder vor das Tor passen. LW übernimmt an der blauen Linie den Platz von LD.',
+        label: 'LD fährt mit dem Puck in einem Bogen von der Bande nach innen Richtung Tor. Die Person vom anderen Team und LW sind oben an der blauen Linie.',
       },
     ],
   },
@@ -965,43 +965,43 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Der Weg im Kreis',
-        text: 'LW hat den Puck in der Ecke, ein Gegner drückt. Die gepunktete Linie ist das Karussell: an der Bande hoch, innen zum Tor, tief zurück in die Ecke.',
-        label: 'Angriffszone, oben das gegnerische Tor. LW hat den Puck in der linken Ecke, ein Gegner direkt bei ihm. C steht links vor dem Tor. Eine gepunktete Linie läuft im Kreis: an der linken Bande Richtung blaue Linie, nach innen Richtung Tor und zurück in die Ecke.',
+        text: 'LW hat den Puck in der Ecke, jemand vom anderen Team drückt. Die gepunktete Linie ist das Karussell: an der Bande hoch, innen zum Tor, tief zurück in die Ecke.',
+        label: 'Angriffszone, oben das gegnerische Tor. LW hat den Puck in der linken Ecke, jemand vom anderen Team direkt daneben. C steht links vor dem Tor. Eine gepunktete Linie läuft im Kreis: an der linken Bande Richtung blaue Linie, nach innen Richtung Tor und zurück in die Ecke.',
       },
       {
         title: 'Hoch an der Bande',
         text: 'LW fährt mit dem Puck an der Bande hoch und schützt ihn mit dem Körper. C fährt tief in die Ecke.',
-        label: 'LW fährt mit dem Puck an der linken Bande hoch, der Gegner folgt innen. C fährt in die linke Ecke.',
+        label: 'LW fährt mit dem Puck an der linken Bande hoch, die Person vom anderen Team folgt innen. C fährt in die linke Ecke.',
       },
       {
         title: 'Zurück an die Bande',
-        text: 'LW spielt den Puck an der Bande zurück in die Ecke, hinter dem Gegner durch. Dort ist C. LW fährt weiter hoch, der Gegner geht mit.',
-        label: 'LW spielt den Puck an der Bande entlang zurück in die Ecke zu C. LW fährt weiter hoch, der Gegner folgt LW.',
+        text: 'LW spielt den Puck an der Bande zurück in die Ecke, hinter der Person vom anderen Team durch. Dort ist C. LW fährt weiter hoch, die Person vom anderen Team geht mit.',
+        label: 'LW spielt den Puck an der Bande entlang zurück in die Ecke zu C. LW fährt weiter hoch, die Person vom anderen Team folgt LW.',
       },
       {
         title: 'Das Karussell dreht',
         text: 'Jetzt fährt C mit dem Puck an der Bande hoch. LW dreht nach innen ab, Richtung Tor.',
-        label: 'C fährt mit dem Puck an der linken Bande hoch. Der Gegner dreht um und fährt zu C. LW fährt nach innen in den hohen Slot.',
+        label: 'C fährt mit dem Puck an der linken Bande hoch. Die Person vom anderen Team dreht um und fährt zu C. LW fährt nach innen in den hohen Slot.',
       },
       {
         title: 'Frei vor dem Tor',
-        text: 'Der Gegner ist bei C. Niemand passt auf LW auf. C passt in den Slot.',
-        label: 'C passt von der Bande in den Slot zu LW. Kein Gegner steht bei LW.',
+        text: 'Die Person vom anderen Team ist bei C. Niemand passt auf LW auf. C passt in den Slot.',
+        label: 'C passt von der Bande in den Slot zu LW. Niemand vom anderen Team steht bei LW.',
       },
       {
         title: 'Schuss',
-        text: 'LW schiesst. Der Cycle hat einen Spieler frei gemacht.',
+        text: 'LW schiesst. Der Cycle hat jemanden frei gemacht.',
         label: 'LW schiesst aus dem Slot aufs Tor.',
       },
     ],
   },
   'collapse-point': {
-    caption: 'Der Gegner igelt sich ein: hoch, quer, Schuss',
+    caption: 'Das andere Team igelt sich ein: hoch, quer, Schuss',
     steps: [
       {
         title: 'Alle vor dem Tor',
-        text: 'Alle fünf Gegner stehen vor ihrem Tor. Dort ist kein Platz. Frei ist es oben an der blauen Linie.',
-        label: 'Angriffszone, oben das gegnerische Tor. Alle fünf Gegner stehen eng vor ihrem Tor. LW hat den Puck an der linken Bande. Grüne Flächen zeigen freies Eis vor beiden Verteidigern an der blauen Linie.',
+        text: 'Alle fünf vom anderen Team stehen vor ihrem Tor. Dort ist kein Platz. Frei ist es oben an der blauen Linie.',
+        label: 'Angriffszone, oben das gegnerische Tor. Alle fünf vom anderen Team stehen eng vor ihrem Tor. LW hat den Puck an der linken Bande. Grüne Flächen zeigen freies Eis vor beiden Verteidigern an der blauen Linie.',
       },
       {
         title: 'Hoch zu LD',
@@ -1010,7 +1010,7 @@ const de: Record<StoryId, StoryText> = {
       },
       {
         title: 'Quer zu RD',
-        text: 'LD passt quer an der blauen Linie zu RD. RW stellt sich vor den Torhüter und nimmt ihm die Sicht. C und LW machen sich bereit für den Abpraller.',
+        text: 'LD passt quer an der blauen Linie zu RD. RW stellt sich vor den Torhüter und nimmt die Sicht. C und LW machen sich bereit für den Abpraller.',
         label: 'LD passt quer zu RD. RW steht direkt vor dem Tor. C fährt an den linken Pfosten, LW in den linken Slot.',
       },
       {
@@ -1021,12 +1021,12 @@ const de: Record<StoryId, StoryText> = {
     ],
   },
   'collapse-switch': {
-    caption: 'Der Gegner igelt sich ein: Seitenwechsel hinter dem Tor',
+    caption: 'Das andere Team igelt sich ein: Seitenwechsel hinter dem Tor',
     steps: [
       {
         title: 'Platz auf der anderen Seite',
-        text: 'C hat den Puck in der linken Ecke. Die Gegner stehen alle vor ihrem Tor. In der rechten Ecke wartet RW, dort ist frei.',
-        label: 'Angriffszone, oben das gegnerische Tor. C hat den Puck in der linken Ecke. Alle Gegner stehen vor dem Tor. RW wartet tief in der rechten Ecke, dort zeigt eine grüne Fläche freies Eis.',
+        text: 'C hat den Puck in der linken Ecke. Alle vom anderen Team stehen vor ihrem Tor. In der rechten Ecke wartet RW, dort ist frei.',
+        label: 'Angriffszone, oben das gegnerische Tor. C hat den Puck in der linken Ecke. Alle vom anderen Team stehen vor dem Tor. RW wartet tief in der rechten Ecke, dort zeigt eine grüne Fläche freies Eis.',
       },
       {
         title: 'Hinter dem Tor durch',
@@ -1035,13 +1035,13 @@ const de: Record<StoryId, StoryText> = {
       },
       {
         title: 'Der neue Cycle',
-        text: 'RW fährt mit dem Puck an der rechten Bande hoch. Ein Gegner kommt. C fährt hinter dem Tor nach, LW geht vor das Tor.',
-        label: 'RW fährt mit dem Puck an der rechten Bande Richtung blaue Linie, ein Gegner kommt auf RW zu. C fährt hinter dem Tor nach rechts, LW stellt sich links vor das Tor.',
+        text: 'RW fährt mit dem Puck an der rechten Bande hoch. Jemand vom anderen Team kommt. C fährt hinter dem Tor nach, LW geht vor das Tor.',
+        label: 'RW fährt mit dem Puck an der rechten Bande Richtung blaue Linie, jemand vom anderen Team kommt auf RW zu. C fährt hinter dem Tor nach rechts, LW stellt sich links vor das Tor.',
       },
       {
         title: 'Das Karussell dreht',
         text: 'RW spielt den Puck an der Bande zurück in die Ecke zu C. Jetzt dreht das Karussell auf der anderen Seite, wie beim klassischen Cycle.',
-        label: 'RW spielt den Puck an der rechten Bande zurück in die Ecke zu C. RW fährt weiter Richtung blaue Linie, der Gegner folgt RW.',
+        label: 'RW spielt den Puck an der rechten Bande zurück in die Ecke zu C. RW fährt weiter Richtung blaue Linie, die Person vom anderen Team folgt RW.',
       },
     ],
   },
@@ -1050,32 +1050,32 @@ const de: Record<StoryId, StoryText> = {
     steps: [
       {
         title: 'Puck oben',
-        text: 'Der Puck ist bei LD an der blauen Linie. Die Gegner stehen eng vor ihrem Tor.',
-        label: 'Angriffszone, oben das gegnerische Tor. LD hat den Puck an der blauen Linie. Alle Gegner stehen eng vor dem Tor. RW steht vor dem Tor, C tief in der linken Ecke, LW an der linken Bande.',
+        text: 'Der Puck ist bei LD an der blauen Linie. Alle vom anderen Team stehen eng vor ihrem Tor.',
+        label: 'Angriffszone, oben das gegnerische Tor. LD hat den Puck an der blauen Linie. Alle vom anderen Team stehen eng vor dem Tor. RW steht vor dem Tor, C tief in der linken Ecke, LW an der linken Bande.',
       },
       {
         title: 'Quer zu RD',
         text: 'LD passt quer zu RD. Ein gegnerischer Stürmer kommt heraus, auf RD zu.',
-        label: 'LD passt quer zu RD. Ein Gegner fährt aus dem Slot heraus Richtung RD, ein zweiter rückt nach rechts.',
+        label: 'LD passt quer zu RD. Jemand vom anderen Team fährt aus dem Slot heraus Richtung RD, eine zweite Person rückt nach rechts.',
       },
       {
         title: 'Und zurück',
         text: 'RD passt zurück zu LD. Jetzt kommt auch auf der anderen Seite ein Stürmer heraus. Der Igel öffnet sich.',
-        label: 'RD passt zurück zu LD. Ein Gegner fährt aus dem Slot heraus Richtung LD.',
+        label: 'RD passt zurück zu LD. Jemand vom anderen Team fährt aus dem Slot heraus Richtung LD.',
       },
       {
         title: 'Platz im Slot',
-        text: 'Die Gegner sind auseinandergezogen. Im Slot ist wieder Platz. C fährt hinein.',
+        text: 'Das andere Team ist auseinandergezogen. Im Slot ist wieder Platz. C fährt hinein.',
         label: 'C fährt aus der linken Ecke in den Slot, wo eine grüne Fläche freies Eis zeigt.',
       },
       {
         title: 'Der Pass',
         text: 'LD sieht die Lücke und passt zu C.',
-        label: 'LD passt schräg in den Slot zu C, am herausgekommenen Gegner vorbei.',
+        label: 'LD passt schräg in den Slot zu C, an der herausgekommenen Person vorbei.',
       },
       {
         title: 'Schuss',
-        text: 'C schiesst aus dem Slot. RW steht vor dem Torhüter und nimmt ihm die Sicht.',
+        text: 'C schiesst aus dem Slot. RW steht vor dem Torhüter und nimmt die Sicht.',
         label: 'C schiesst aus dem Slot aufs Tor. RW steht vor dem Tor.',
       },
     ],

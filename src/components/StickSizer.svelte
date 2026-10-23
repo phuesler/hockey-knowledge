@@ -11,7 +11,7 @@
     title: 'Schläger-Rechner',
     height: 'Körpergrösse',
     weight: 'Gewicht',
-    figureLabel: 'Schematische Darstellung: Spieler mit Schläger, der bis zur Nase reicht',
+    figureLabel: 'Schematische Darstellung: Kind mit Schläger, der bis zur Nase reicht',
     nose: 'Nase',
     stickLength: 'Schlägerlänge',
     stickHint: 'vom Boden bis zur Nase, ohne Schlittschuhe gemessen',
