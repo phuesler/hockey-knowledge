@@ -911,7 +911,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Der Linienrichter hebt den Arm. Die anderen haben den Puck tief in ihrer Zone. Du bist LW und noch in der Zone, genau wie C und RW. Was machst du?',
+          'Der Schiedsrichter hebt den Arm. Die anderen haben den Puck tief in ihrer Zone. Du bist LW und noch in der Zone, genau wie C und RW. Was machst du?',
         label:
           'Angriffszone. Die anderen haben den Puck tief in ihrer Zone. LW, C und RW sind noch in der Zone, LD und RD stehen vor der blauen Linie.',
         afterLabel: 'LW, C und RW haben die Zone verlassen. Jetzt ist kein Angreifer mehr drin.',
@@ -919,7 +919,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Sofort angreifen, wer den Puck hat.',
             feedback:
-              'Dann pfeift der Linienrichter. Solange der Arm oben ist, darfst du weder den Puck spielen noch angreifen, wer ihn hat.',
+              'Dann pfeift der Schiedsrichter. Solange der Arm oben ist, darfst du weder den Puck spielen noch angreifen, wer ihn hat.',
           },
           {
             text: 'So schnell wie möglich raus, bis niemand von uns mehr in der Zone ist.',
@@ -979,7 +979,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Der Puck kommt aus unserer Hälfte und rutscht Richtung gegnerische Torlinie. Der Linienrichter hebt den Arm. Du bist C und ein Stück schneller als die Verteidigerin der anderen. Was machst du?',
+          'Der Puck kommt aus unserer Hälfte und rutscht Richtung gegnerische Torlinie. Der Schiedsrichter hebt den Arm. Du bist C und ein Stück schneller als die Verteidigerin der anderen. Was machst du?',
         label:
           'Angriffszone, oben das gegnerische Tor. Der Puck rutscht in die linke Ecke. C und eine gegnerische Verteidigerin fahren auf den Puck zu. Eine gepunktete Linie zeigt die Höhe der Bullypunkte.',
         options: [
@@ -991,7 +991,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Zum Puck sprinten. Wäre ich zuerst dort, gibt es kein Icing.',
             feedback:
-              'Das ist das Rennen beim Hybrid-Icing. Wäre ein Angreifer zuerst am Puck, nimmt der Linienrichter den Arm herunter, und es geht weiter.',
+              'Das ist das Rennen beim Hybrid-Icing. Wäre ein Angreifer zuerst am Puck, nimmt der Schiedsrichter den Arm herunter, und es geht weiter.',
           },
           {
             text: 'Zurück an die blaue Linie, der Arm heisst Abseits.',
@@ -3357,7 +3357,7 @@ const en: typeof de = {
       },
       {
         prompt:
-          'The linesperson raises their arm. The opponents have the puck deep in their zone. You are LW and still in the zone, and so are C and RW. What do you do?',
+          'The referee raises their arm. The opponents have the puck deep in their zone. You are LW and still in the zone, and so are C and RW. What do you do?',
         label:
           'Attacking zone. The opponents have the puck deep in their zone. LW, C and RW are still in the zone, LD and RD are outside the blue line.',
         afterLabel: 'LW, C and RW have left the zone. Now no attacker is left in it.',
@@ -3365,7 +3365,7 @@ const en: typeof de = {
           {
             text: 'Go after the opponent with the puck before they get away.',
             feedback:
-              'Then the linesperson blows the whistle. While the arm is up, you may neither play the puck nor go after the opponent who has it.',
+              'Then the referee blows the whistle. While the arm is up, you may neither play the puck nor go after the opponent who has it.',
           },
           {
             text: 'Get out as fast as possible, until none of us is left in the zone.',
@@ -3425,7 +3425,7 @@ const en: typeof de = {
       },
       {
         prompt:
-          'The puck comes from our half and slides towards the opponents’ goal line. The linesperson raises their arm. You are C and a bit faster than the defender. What do you do?',
+          'The puck comes from our half and slides towards the opponents’ goal line. The referee raises their arm. You are C and a bit faster than the defender. What do you do?',
         label:
           'Attacking zone, the opponents’ goal at the top. The puck slides into the left corner. C and an opposing defender skate towards it. A dotted line marks the level of the faceoff dots.',
         options: [
@@ -3437,7 +3437,7 @@ const en: typeof de = {
           {
             text: 'Sprint to the puck. If I would get there first, it isn’t icing.',
             feedback:
-              'That is the race in hybrid icing. If an attacker would be first to the puck, the linesperson lowers the arm and play goes on.',
+              'That is the race in hybrid icing. If an attacker would be first to the puck, the referee lowers the arm and play goes on.',
           },
           {
             text: 'Back to the blue line, the arm means offside.',

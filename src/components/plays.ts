@@ -1425,7 +1425,7 @@ const de: Record<PlayId, PlayText> = {
     panels: [
       {
         title: 'Zurück an die blaue Linie',
-        text: 'Der Linienrichter hat den Arm oben, die anderen haben den Puck. Alle drei Stürmer fahren so schnell wie möglich aus der Zone. Niemand spielt den Puck. Sobald niemand mehr drin ist, dürfen sie wieder hinein.',
+        text: 'Der Schiedsrichter hat den Arm oben, die anderen haben den Puck. Alle drei Stürmer fahren so schnell wie möglich aus der Zone. Niemand spielt den Puck. Sobald niemand mehr drin ist, dürfen sie wieder hinein.',
       },
     ],
     labels: [
@@ -1454,7 +1454,7 @@ const de: Record<PlayId, PlayText> = {
     panels: [
       {
         title: 'Wer zuerst am Puck wäre',
-        text: 'Der Puck ist über die Torlinie gerutscht. Der Linienrichter entscheidet, sobald jemand die Höhe der Bullypunkte (gepunktete Linie) erreicht: Wären die anderen zuerst am Puck, gibt es Icing. Wären wir zuerst dort, geht das Spiel weiter.',
+        text: 'Der Puck ist über die Torlinie gerutscht. Der Schiedsrichter entscheidet, sobald jemand die Höhe der Bullypunkte (gepunktete Linie) erreicht: Wären die anderen zuerst am Puck, gibt es Icing. Wären wir zuerst dort, geht das Spiel weiter.',
       },
     ],
     labels: [
@@ -1931,7 +1931,7 @@ const en: typeof de = {
     panels: [
       {
         title: 'Back to the blue line',
-        text: 'The linesperson has their arm up, the opponents have the puck. All three forwards leave the zone as fast as they can. Nobody plays the puck. As soon as none of them is left inside, they may go back in.',
+        text: 'The referee has their arm up, the opponents have the puck. All three forwards leave the zone as fast as they can. Nobody plays the puck. As soon as none of them is left inside, they may go back in.',
       },
     ],
     labels: [
@@ -1960,7 +1960,7 @@ const en: typeof de = {
     panels: [
       {
         title: 'Who would get there first',
-        text: 'The puck has slid across the goal line. The linesperson decides when the first player reaches the faceoff dots (dotted line): if the opponent would touch the puck first, it is icing. If our player would get there first, play goes on.',
+        text: 'The puck has slid across the goal line. The referee decides when the first player reaches the faceoff dots (dotted line): if the opponent would touch the puck first, it is icing. If our player would get there first, play goes on.',
       },
     ],
     labels: [
