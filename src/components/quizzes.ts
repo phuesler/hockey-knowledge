@@ -911,7 +911,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Der Schiedsrichter hebt den Arm. Die anderen haben den Puck tief in ihrer Zone. Du bist LW und noch in der Zone, genau wie C und RW. Was machst du?',
+          'Die Schiedsrichterin hebt den Arm. Die anderen haben den Puck tief in ihrer Zone. Du bist LW und noch in der Zone, genau wie C und RW. Was machst du?',
         label:
           'Angriffszone. Die anderen haben den Puck tief in ihrer Zone. LW, C und RW sind noch in der Zone, LD und RD stehen vor der blauen Linie.',
         afterLabel: 'LW, C und RW haben die Zone verlassen. Jetzt ist kein Angreifer mehr drin.',
@@ -919,7 +919,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Sofort angreifen, wer den Puck hat.',
             feedback:
-              'Dann pfeift der Schiedsrichter. Solange der Arm oben ist, darfst du weder den Puck spielen noch angreifen, wer ihn hat.',
+              'Dann pfeift die Schiedsrichterin. Solange der Arm oben ist, darfst du weder den Puck spielen noch angreifen, wer ihn hat.',
           },
           {
             text: 'So schnell wie möglich raus, bis niemand von uns mehr in der Zone ist.',
@@ -1027,7 +1027,7 @@ const de: Record<QuizId, QuizText> = {
       },
       {
         prompt:
-          'Eins von den anderen foult, und der Schiedsrichter hebt den Arm. Wir haben den Puck in der Angriffszone. Was macht unsere Torhüterin?',
+          'Eins von den anderen foult, und die Schiedsrichterin hebt den Arm. Wir haben den Puck in der Angriffszone. Was macht unsere Torhüterin?',
         label:
           'Das ganze Eis, unser Tor unten. Wir haben den Puck in der Angriffszone. Unsere Torhüterin G steht im Tor, die Spielerbank ist links an der Bande.',
         afterLabel:
@@ -2035,7 +2035,7 @@ const de: Record<QuizId, QuizText> = {
           {
             text: 'Das ist der Captain.',
             feedback:
-              'Der Captain ist die Seele des Teams und das Bindeglied zum Trainerteam. Auf dem Eis dürfen nur Captain und Assistants mit dem Schiedsrichter sprechen.',
+              'Der Captain ist die Seele des Teams und das Bindeglied zum Trainerteam. Auf dem Eis dürfen nur Captain und Assistants mit den Schiedsrichtern sprechen.',
           },
           {
             text: 'Das Kind spielt immer Center.',
@@ -2554,12 +2554,12 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Five-hole',
       },
       {
-        prompt: 'Der Schiedsrichter hat gepfiffen. Der Puck liegt frei vor dir, drei Meter vor dem Tor. Was machst du?',
+        prompt: 'Die Schiedsrichterin hat gepfiffen. Der Puck liegt frei vor dir, drei Meter vor dem Tor. Was machst du?',
         options: [
           {
             text: 'Schnell schiessen. Vielleicht zählt es ja doch.',
             feedback:
-              'Nach dem Pfiff zählt kein Tor. Der Schuss ist nur gefährlich für den Torhüter, und der Schiedsrichter kann dafür eine Strafe geben.',
+              'Nach dem Pfiff zählt kein Tor. Der Schuss ist nur gefährlich für den Torhüter, und die Schiedsrichterin kann dafür eine Strafe geben.',
           },
           {
             text: 'Den Puck liegen lassen und abdrehen.',
@@ -2694,7 +2694,7 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Ihr steht auf der blauen Linie, die Schiedsrichter sind bereit. Wann hebst du den Stock?',
         options: [
           {
-            text: 'Wenn der Schiedsrichter pfeift.',
+            text: 'Beim Pfiff.',
             feedback: 'Für den Gruss gibt es keinen Pfiff und kein Zeichen. Darum machen die Kapitäne vorher ab, wann es losgeht.',
           },
           {
@@ -2756,7 +2756,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Ich fahre an die Bande und warte dort, bis das Bully vorbei ist.',
-            feedback: 'An der Bande ist nicht auf der Bank. Der Schiedsrichter wirft den Puck erst ein, wenn alle Türen zu sind.',
+            feedback: 'An der Bande ist nicht auf der Bank. Die Schiedsrichterin wirft den Puck erst ein, wenn alle Türen zu sind.',
           },
           {
             text: 'Ich fahre zügig auf die Bank und mache die Tür zu.',
@@ -3073,7 +3073,7 @@ const de: Record<QuizId, QuizText> = {
     article: 'handzeichen',
     questions: [
       {
-        prompt: 'Ihr greift an. Ein Stürmer von euch ist schon in der Zone, dann kommt der Puck rein. Der Schiedsrichter hebt den Arm. Was heisst das?',
+        prompt: 'Ihr greift an. Ein Stürmer von euch ist schon in der Zone, dann kommt der Puck rein. Die Schiedsrichterin hebt den Arm. Was heisst das?',
         options: [
           {
             text: 'Verzögertes Abseits: Alle Angreifer müssen raus aus der Zone.',
@@ -3085,7 +3085,7 @@ const de: Record<QuizId, QuizText> = {
           },
           {
             text: 'Tor: Das Zeichen heisst, dass der Puck drin war.',
-            feedback: 'Beim Tor zeigt der Schiedsrichter mit dem Arm auf das Tor, nicht nach oben. Ein Arm gerade nach oben heisst: warten, da ist etwas im Gang.',
+            feedback: 'Beim Tor zeigt die Schiedsrichterin mit dem Arm auf das Tor, nicht nach oben. Ein Arm gerade nach oben heisst: warten, da ist etwas im Gang.',
           },
         ],
         section: 'arm-hoch-strafe-abseits-oder-icing',
@@ -3111,7 +3111,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Angezeigte Strafe',
       },
       {
-        prompt: 'Der Schiedsrichter pfeift und verschränkt beide Arme vor der Brust. Was war das?',
+        prompt: 'Die Schiedsrichterin pfeift und verschränkt beide Arme vor der Brust. Was war das?',
         options: [
           {
             text: 'Icing.',
@@ -3149,7 +3149,7 @@ const de: Record<QuizId, QuizText> = {
         topic: 'Auswinken',
       },
       {
-        prompt: 'Der Schiedsrichter zieht mit beiden Armen etwas von vorne zum Bauch. Welche Strafe ist das?',
+        prompt: 'Die Schiedsrichterin zieht mit beiden Armen etwas von vorne zum Bauch. Welche Strafe ist das?',
         options: [
           {
             text: 'Haken.',

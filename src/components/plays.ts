@@ -1425,7 +1425,7 @@ const de: Record<PlayId, PlayText> = {
     panels: [
       {
         title: 'Zurück an die blaue Linie',
-        text: 'Der Schiedsrichter hat den Arm oben, die anderen haben den Puck. Alle drei Stürmer fahren so schnell wie möglich aus der Zone. Niemand spielt den Puck. Sobald niemand mehr drin ist, dürfen sie wieder hinein.',
+        text: 'Die Schiedsrichterin hat den Arm oben, die anderen haben den Puck. Alle drei Stürmer fahren so schnell wie möglich aus der Zone. Niemand spielt den Puck. Sobald niemand mehr drin ist, dürfen sie wieder hinein.',
       },
     ],
     labels: [
@@ -1467,7 +1467,7 @@ const de: Record<PlayId, PlayText> = {
     panels: [
       {
         title: 'Der sechste Feldspieler',
-        text: 'Der Schiedsrichter hat den Arm oben. Wir haben den Puck vorne. Unsere Torhüterin fährt zur Bank. Kurz vor der Bank springt der sechste Feldspieler (+1) aufs Eis. Unser Tor ist leer.',
+        text: 'Die Schiedsrichterin hat den Arm oben. Wir haben den Puck vorne. Unsere Torhüterin fährt zur Bank. Kurz vor der Bank springt der sechste Feldspieler (+1) aufs Eis. Unser Tor ist leer.',
       },
     ],
     labels: [

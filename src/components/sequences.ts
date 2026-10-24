@@ -859,10 +859,10 @@ const de: Record<SequenceId, SequenceText> = {
       { title: 'Faust an Faust', text: 'Der Kapitän fährt an der Reihe entlang und gibt allen aus dem Team einen Fist Bump: Faust an Faust, mit Handschuh.' },
       { title: 'Ab zum eigenen Tor', text: 'Jetzt fährt die ganze Mannschaft zum eigenen Tor.' },
       { title: 'Der Kreis am Tor', text: 'Alle stehen eng im Kreis um den Torhüter. Es gibt ein paar letzte Worte, dann kommt der Teamruf. Danach bleiben die erste Reihe und der erste Torhüter auf dem Eis. Alle anderen fahren auf die Bank.' },
-      { title: 'Türen zu, Spiel los', text: 'Die erste Reihe stellt sich zum Bully in der Mitte auf. Sind alle Türen der Spielerbänke zu, wirft der Schiedsrichter den Puck ein. Das Spiel beginnt.' },
+      { title: 'Türen zu, Spiel los', text: 'Die erste Reihe stellt sich zum Bully in der Mitte auf. Sind alle Türen der Spielerbänke zu, wirft die Schiedsrichterin den Puck ein. Das Spiel beginnt.' },
     ],
     labels: [
-      'Das ganze Eis. Unsere Mannschaft steht unten auf der blauen Linie, die andere Mannschaft oben auf ihrer blauen Linie. Beide Kapitäne stehen in der Mitte ihrer Reihe. Zwei Schiedsrichter fahren zu ihrem Halbkreis an der rechten Bande. Beide Spielerbänke liegen an der linken Bande.',
+      'Das ganze Eis. Unsere Mannschaft steht unten auf der blauen Linie, die andere Mannschaft oben auf ihrer blauen Linie. Beide Kapitäne stehen in der Mitte ihrer Reihe. Eine Schiedsrichterin und ein Schiedsrichter fahren zu ihrem Halbkreis an der rechten Bande. Beide Spielerbänke liegen an der linken Bande.',
       'Die Schiedsrichter stehen in ihrem Halbkreis. Alle halten den Stock in Richtung der anderen Mannschaft.',
       'Die beiden Kapitäne fahren von ihrer blauen Linie zum Mittelkreis.',
       'Die Kapitäne stehen im Mittelkreis nebeneinander und fahren zu den Schiedsrichtern an der rechten Bande.',
@@ -871,7 +871,7 @@ const de: Record<SequenceId, SequenceText> = {
       'Beide Kapitäne fahren vor der eigenen Reihe von links nach rechts an allen aus dem Team vorbei.',
       'Pfeile zeigen, wie jede Mannschaft zu ihrem eigenen Tor fährt.',
       'Jede Mannschaft steht im Kreis um ihren Torhüter vor dem eigenen Tor. Aus jeder Mannschaft fahren zwei zur Bank.',
-      'Bully im Mittelkreis: Die beiden Center stehen sich gegenüber, der Schiedsrichter steht daneben. Pro Mannschaft sind sechs auf dem Eis, mit Torhüter; die anderen sind auf der Bank.',
+      'Bully im Mittelkreis: Die beiden Center stehen sich gegenüber, die Schiedsrichterin steht daneben. Pro Mannschaft sind sechs auf dem Eis, mit Torhüter; die anderen sind auf der Bank.',
     ],
   },
   'bubble-pass': {

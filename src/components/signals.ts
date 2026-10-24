@@ -462,7 +462,10 @@ interface SignalText {
 }
 
 const de = {
-  who: { referee: 'Schiedsrichter', linesperson: 'Linienrichter' } satisfies Record<Who, string>,
+  /** The tag on a card. `i` is the card's place in its group: the referee alternates
+   *  between female and male from card to card, like the scenes in the articles. */
+  who: (who: Who, i: number): string =>
+    who === 'linesperson' ? 'Linienrichter' : i % 2 === 0 ? 'Schiedsrichterin' : 'Schiedsrichter',
   rule: (r: string) => (r.includes(',') ? `Regeln ${r}` : `Regel ${r}`),
   groups: {
     arm: 'Arm hoch: drei Bedeutungen',
@@ -506,12 +509,12 @@ const de = {
     },
     'washout-referee': {
       name: 'Auswinken (Schiedsrichter)',
-      meaning: 'Kein Tor! Oder: kein Handpass, kein hoher Stock. Der Schiedsrichter sagt: Das zählt nicht.',
+      meaning: 'Kein Tor! Oder: kein Handpass, kein hoher Stock. Das Zeichen heisst: Das zählt nicht.',
       looks: 'Beide Arme seitlich auf Schulterhöhe ausgestreckt und geschwenkt, Handflächen nach unten.',
     },
     goal: {
       name: 'Tor',
-      meaning: 'Tor! Der Schiedsrichter zeigt auf das Tor, in das der Puck gegangen ist.',
+      meaning: 'Tor! Das Zeichen zeigt, in welches Tor der Puck gegangen ist.',
       looks: 'Ein Arm zeigt auf das Tor.',
     },
     'penalty-shot': {
@@ -648,7 +651,7 @@ const de = {
 };
 
 const en: typeof de = {
-  who: { referee: 'Referee', linesperson: 'Linesperson' },
+  who: (who) => (who === 'linesperson' ? 'Linesperson' : 'Referee'),
   rule: (r) => (r.includes(',') ? `Rules ${r}` : `Rule ${r}`),
   groups: {
     arm: 'Arm up: three meanings',
@@ -839,11 +842,11 @@ export const signalsText: Record<Locale, typeof de> = { de, en };
 export function signalsMarkdown(group: Group, locale: Locale): string {
   const t = signalsText[locale];
   return inGroup(group)
-    .map((id) => {
+    .map((id, i) => {
       const s = signals[id];
       const x = t.signals[id];
       const rule = s.rule ? `, ${t.rule(s.rule)}` : '';
-      return `- **${x.name}** (${t.who[s.who]}${rule}): ${x.looks} ${x.meaning}`;
+      return `- **${x.name}** (${t.who(s.who, i)}${rule}): ${x.looks} ${x.meaning}`;
     })
     .join('\n');
 }
