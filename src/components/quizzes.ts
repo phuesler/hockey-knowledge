@@ -741,6 +741,8 @@ const geometry = {
     { correct: 2 },
     /* 7. Puck in the corner next to the trapezoid. */
     { correct: 2 },
+    /* 8. Loose puck beside the goal, nobody close: cover it? */
+    { correct: 1 },
   ],
   'hockey-sprache': [
     /* 1. What is an apple? */
@@ -2527,6 +2529,29 @@ const de: Record<QuizId, QuizText> = {
         ],
         section: 'den-puck-spielen',
         topic: 'Den Puck spielen',
+      },
+      {
+        prompt:
+          'Ein Schuss geht knapp neben das Tor. Der Puck liegt langsam neben dem Pfosten. Die anderen sind weit weg, unser Team will wechseln. Was macht unsere Torhüterin?',
+        options: [
+          {
+            text: 'Sie legt sich auf den Puck. Dann gibt es einen Pfiff, und alle können wechseln.',
+            feedback:
+              'Ist niemand in der Nähe, darf der Torhüter den Puck nicht festhalten, nur um das Spiel zu stoppen. Dafür gibt es eine kleine Strafe wegen Spielverzögerung.',
+          },
+          {
+            text: 'Sie stoppt den Puck und spielt ihn zu einer Verteidigerin.',
+            feedback:
+              'Richtig. Ohne Druck bleibt der Puck im Spiel. Gewechselt wird, wenn wir den Puck haben, nicht mit einem Pfiff.',
+          },
+          {
+            text: 'Sie nimmt den Puck in die Fanghand und wartet, bis alle gewechselt haben.',
+            feedback:
+              'Ohne Druck darf der Puck höchstens drei Sekunden in der Fanghand bleiben. Ein Wechsel dauert länger, und dann gibt es eine Strafe.',
+          },
+        ],
+        section: 'wann-der-torhüter-den-puck-festhalten-darf',
+        topic: 'Den Puck festhalten',
       },
     ],
   },
@@ -5109,6 +5134,29 @@ const en: typeof de = {
         ],
         section: 'playing-the-puck',
         topic: 'Playing the puck',
+      },
+      {
+        prompt:
+          'A shot goes just wide. The puck slows down next to the post. The opponents are far away, and our team wants to change. What does our goalie do?',
+        options: [
+          {
+            text: 'They fall on the puck. Then there is a whistle and everyone can change.',
+            feedback:
+              'If nobody is close, the goalie may not cover the puck just to stop play. That is a minor penalty for delay of game.',
+          },
+          {
+            text: 'They stop the puck and pass it to a defender.',
+            feedback:
+              'Right. Without pressure the puck stays in play. We change when we have the puck, not with a whistle.',
+          },
+          {
+            text: 'They pick the puck up in the catching glove and wait until everyone has changed.',
+            feedback:
+              'Without pressure the puck may stay in the catching glove for three seconds at most. A change takes longer, and then it is a penalty.',
+          },
+        ],
+        section: 'when-the-goalie-may-cover-the-puck',
+        topic: 'Covering the puck',
       },
     ],
   },
