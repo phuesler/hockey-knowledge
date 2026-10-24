@@ -616,7 +616,7 @@ const geometry = {
   ],
 
   /* Period 2: changing a defender while the opponents come at our goal leaves LD alone
-     against two; changing while we attack costs nothing, and RD stays back. */
+     against two; changing while we attack costs nothing, and the other defender covers. */
   'long-change': [
     {
       zone: 'turned',
@@ -1632,12 +1632,12 @@ const de: Record<PlayId, PlayText> = {
       },
       {
         title: 'Wechsel im Angriff',
-        text: 'Wir haben den Puck vorne. RD steht an der blauen Linie, die Bank ist gleich daneben. RD wechselt, LD bleibt. Der frische RD ist sofort wieder an der blauen Linie.',
+        text: 'Wir haben den Puck vorne. RD steht an der blauen Linie, die Bank ist gleich daneben. RD wechselt, LD sichert ab. Der frische RD ist sofort wieder an der blauen Linie.',
       },
     ],
     labels: [
       'Das ganze Eis im 2. Drittel, unser Tor oben, unsere Bank an der linken Bande in der gegnerischen Hälfte. Zwei von den anderen fahren mit dem Puck aus der Mitte auf unser Tor zu. Unser LD fährt zur Bank, ein frischer LD kommt von der Bank, weit hinter dem Puck. Vor unserem Tor stehen nur unsere Torhüterin und RD. Ein Ausrufezeichen markiert die Lücke.',
-      'Das ganze Eis im 2. Drittel, unser Tor oben. Wir haben den Puck unten in der gegnerischen Zone, LD und RD stehen an der blauen Linie. RD fährt die paar Meter zur Bank, ein frischer RD fährt von dort an die blaue Linie. LD bleibt stehen.',
+      'Das ganze Eis im 2. Drittel, unser Tor oben. Wir haben den Puck unten in der gegnerischen Zone, LD und RD stehen an der blauen Linie. RD fährt die paar Meter zur Bank, ein frischer RD fährt von dort an die blaue Linie. LD bleibt an der blauen Linie und sichert ab.',
     ],
     note: 'Zwei LD und zwei RD: Wer zur Bank fährt, und wer frisch von der Bank kommt.',
   },
@@ -2186,12 +2186,12 @@ const en: typeof de = {
       },
       {
         title: 'Changing while we attack',
-        text: 'We have the puck up front. RD is on the blue line, right next to the bench. RD changes, LD stays. The fresh RD is back on the blue line straight away.',
+        text: 'We have the puck up front. RD is on the blue line, right next to the bench. RD changes, LD covers. The fresh RD is back on the blue line straight away.',
       },
     ],
     labels: [
       'The whole rink in period 2, our goal at the top, our bench on the left boards in the opponents’ half. Two opponents carry the puck from the middle towards our goal. Our LD skates to the bench, a fresh LD comes off the bench far behind the puck. Only our goalie and RD are in front of our goal. An exclamation mark marks the gap.',
-      'The whole rink in period 2, our goal at the top. We have the puck down in the opponents’ zone, LD and RD are on the blue line. RD skates the few metres to the bench, a fresh RD comes from there to the blue line. LD stays put.',
+      'The whole rink in period 2, our goal at the top. We have the puck down in the opponents’ zone, LD and RD are on the blue line. RD skates the few metres to the bench, a fresh RD comes from there to the blue line. LD stays on the blue line and covers.',
     ],
     note: 'Two LDs and two RDs: the one heading to the bench and the fresh one coming off it.',
   },

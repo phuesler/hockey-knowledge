@@ -859,7 +859,7 @@ const geometry = {
     { correct: 0 },
     /* 3. Stuck in our zone, everyone tired: over the red line, deep, change. */
     { correct: 2 },
-    /* 4. The partner is changing: stay back. */
+    /* 4. The partner is changing: cover at the back. */
     { correct: 0 },
     /* 5. Period 1, long pressure up front: short shift, change on the way back. */
     { correct: 1 },
@@ -3412,20 +3412,20 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Du bist Verteidiger. Dein Partner fährt gerade zur Bank, der Puck ist in der neutralen Zone. Du bist auch müde. Was tust du?',
         options: [
           {
-            text: 'Hinten bleiben, bis die Ablösung auf dem Eis ist. Dann darfst du.',
-            feedback: 'Genau: „Einer bleibt hinten." So steht immer jemand zwischen dem Puck und unserem Tor.',
+            text: 'Hinten absichern, bis die Ablösung auf dem Eis ist. Dann darfst du.',
+            feedback: 'Genau: „Einer wechselt, einer sichert." So steht während des Wechsels immer jemand zwischen dem Puck und unserem Tor.',
           },
           {
             text: 'Gleich mitfahren, dann ist der Wechsel schneller vorbei.',
-            feedback: 'Dann ist für ein paar Sekunden niemand hinten. Ein langer Pass reicht, und die anderen fahren allein auf unser Tor zu.',
+            feedback: 'Dann sichert für ein paar Sekunden niemand ab. Ein langer Pass reicht, und die anderen fahren allein auf unser Tor zu.',
           },
           {
             text: 'Langsam Richtung Bank rollen, damit du gleich dran bist.',
-            feedback: 'Dann bist du weder hinten noch auf der Bank. Entweder hinten bleiben, oder, wenn du dran bist, mit Tempo zur Bank.',
+            feedback: 'Dann bist du weder hinten noch auf der Bank. Entweder absichern, oder, wenn du dran bist, mit Tempo zur Bank.',
           },
         ],
-        section: 'verteidiger-einer-bleibt-hinten',
-        topic: 'Einer bleibt hinten',
+        section: 'verteidiger-einer-wechselt-einer-sichert',
+        topic: 'Einer wechselt, einer sichert',
       },
       {
         prompt: '1. Drittel. Wir machen schon lange Druck in der Angriffszone. Du spielst Flügel und wirst müde. Was ist am besten?',
@@ -5943,20 +5943,20 @@ const en: typeof de = {
         prompt: 'You are a defender. Your partner is heading to the bench, the puck is in the neutral zone. You are tired too. What do you do?',
         options: [
           {
-            text: 'Stay back until the replacement is on the ice. Then it is your turn.',
-            feedback: 'Exactly: “one stays back.” That way someone is always between the puck and our goal.',
+            text: 'Cover at the back until the replacement is on the ice. Then it is your turn.',
+            feedback: 'Exactly: “one changes, one covers.” That way someone is always between the puck and our goal during the change.',
           },
           {
             text: 'Go with them, then the change is over sooner.',
-            feedback: 'Then for a few seconds nobody is back. One long pass is enough, and the opponents skate in alone on our goal.',
+            feedback: 'Then for a few seconds nobody is covering. One long pass is enough, and the opponents skate in alone on our goal.',
           },
           {
             text: 'Drift slowly towards the bench so you are ready.',
-            feedback: 'Then you are neither back nor on the bench. Either stay back, or, when it is your turn, skate hard to the bench.',
+            feedback: 'Then you are neither back nor on the bench. Either cover, or, when it is your turn, skate hard to the bench.',
           },
         ],
-        section: 'defenders-one-always-stays-back',
-        topic: 'One stays back',
+        section: 'defenders-one-changes-one-covers',
+        topic: 'One changes, one covers',
       },
       {
         prompt: 'Period 1. We have been pressing in the attacking zone for a while. You play wing and are getting tired. What is best?',

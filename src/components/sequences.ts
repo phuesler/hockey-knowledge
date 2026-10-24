@@ -1062,7 +1062,7 @@ const de: Record<SequenceId, SequenceText> = {
       },
       {
         title: 'Ab zur Bank',
-        text: 'Die anderen müssen den Puck erst hinter ihrem Tor holen. Diese Zeit nutzen wir: Die drei müden Stürmer fahren mit Tempo zur Bank. LD und RD bleiben hinten.',
+        text: 'Die anderen müssen den Puck erst hinter ihrem Tor holen. Diese Zeit nutzen wir: Die drei müden Stürmer fahren mit Tempo zur Bank. LD und RD sichern hinten ab.',
       },
       {
         title: 'Frische Beine',
@@ -1375,7 +1375,7 @@ const en: typeof de = {
       },
       {
         title: 'Off to the bench',
-        text: 'The opponents first have to fetch the puck from behind their goal. We use that time: the three tired forwards skate hard to the bench. LD and RD stay back.',
+        text: 'The opponents first have to fetch the puck from behind their goal. We use that time: the three tired forwards skate hard to the bench. LD and RD cover at the back.',
       },
       {
         title: 'Fresh legs',
