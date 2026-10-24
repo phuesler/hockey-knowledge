@@ -3371,12 +3371,12 @@ const de: Record<QuizId, QuizText> = {
         prompt: 'Warum ist der Weg aus der eigenen Zone zur Bank im 2. Drittel so lang?',
         options: [
           {
-            text: 'Die Teams tauschen nach jedem Drittel die Tore, die Bänke bleiben.',
+            text: 'Nach jedem Drittel ist Seitenwechsel, die Bänke bleiben aber.',
             feedback: 'Genau. Im 2. Drittel liegt unsere Bank darum in der gegnerischen Hälfte, weit weg vom eigenen Tor.',
           },
           {
             text: 'Im 2. Drittel tauschen die Teams die Bänke.',
-            feedback: 'Die Bänke bleiben das ganze Spiel gleich. Getauscht werden die Tore, und darum ist unsere Bank im 2. Drittel auf der anderen Seite der roten Linie.',
+            feedback: 'Die Bänke bleiben das ganze Spiel gleich. Gewechselt wird die Seite, und darum ist unsere Bank im 2. Drittel auf der anderen Seite der roten Linie.',
           },
           {
             text: 'Weil die Verteidiger im 2. Drittel neben der Tür sitzen.',

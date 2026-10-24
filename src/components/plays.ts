@@ -1615,7 +1615,7 @@ const de: Record<PlayId, PlayText> = {
       },
       {
         title: '2. Drittel: langer Wechsel',
-        text: 'Die Teams haben die Tore getauscht, die Bänke nicht. Unser Tor ist jetzt oben, unsere Bank liegt in der gegnerischen Hälfte. Aus der eigenen Zone ist der Weg lang (RD), aus der Angriffszone kurz (RW).',
+        text: 'Nach dem Seitenwechsel spielen die Teams auf das andere Tor, die Bänke bleiben. Unser Tor ist jetzt oben, unsere Bank liegt in der gegnerischen Hälfte. Aus der eigenen Zone ist der Weg lang (RD), aus der Angriffszone kurz (RW).',
       },
     ],
     labels: [
