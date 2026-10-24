@@ -211,6 +211,31 @@ export function benches(period: 'odd' | 'even'): Area[] {
   ];
 }
 
+/**
+ * A period 2 scene drawn the way the rink really looks. The scene is written as usual,
+ * our goal at d = 0 and the benches from benches('even') on the left boards. This
+ * mirrors it left to right (LD and RD, LW and RW swap places and names); Rink's `flip`
+ * then turns it by 180°. Together: our goal is at the top, and both benches are back
+ * where they were in period 1, because only the goals change ends.
+ */
+export function secondPeriod(scene: Scene): Scene {
+  const m = ([x, d]: Pt): Pt => [-x, d];
+  const swap = (label?: string) =>
+    label?.replace(/^([LR])([DW])$/, (_, side: string, pos: string) => (side === 'L' ? 'R' : 'L') + pos);
+  return {
+    ...scene,
+    players: scene.players.map((p) => ({ ...p, at: m(p.at), label: swap(p.label) })),
+    puck: scene.puck && m(scene.puck),
+    moves: scene.moves?.map((mv) => ({ ...mv, path: mv.path.map(m) as unknown as Move['path'] })),
+    areas: scene.areas?.map((a) => ({
+      ...a,
+      poly: a.poly?.map(m),
+      ellipse: a.ellipse && { ...a.ellipse, at: m(a.ellipse.at) },
+      labelAt: a.labelAt && m(a.labelAt),
+    })),
+  };
+}
+
 /** Rink metres to SVG user units: the goal at the bottom, 1 unit = 1 m. `length` is the view's length. */
 export function svg([x, d]: Pt, length = RINK_LENGTH): [number, number] {
   return [x + RINK_WIDTH / 2, length - d];

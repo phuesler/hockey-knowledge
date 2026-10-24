@@ -23,6 +23,7 @@
       attack: 'Oben ist das gegnerische Tor, wir greifen nach oben an',
       full: 'Das ganze Eis: unten unser Tor, oben das gegnerische',
       neutral: 'Die neutrale Zone: unser Tor liegt unten, wir greifen nach oben an',
+      turned: 'Das ganze Eis im 2. Drittel: oben unser Tor, wir greifen nach unten an',
     },
     back: 'Zurück',
     next: 'Weiter',
@@ -38,6 +39,7 @@
       attack: 'The opponents’ goal is at the top, we attack upwards',
       full: 'The whole rink: our goal at the bottom, the opponents’ at the top',
       neutral: 'The neutral zone: our goal is below, we attack upwards',
+      turned: 'The whole rink in period 2: our goal at the top, we attack downwards',
     },
     back: 'Back',
     next: 'Next',
@@ -93,7 +95,7 @@
         scene={seq.frames[step]}
         label={text.labels[step]}
         view={seq.view}
-        flip={seq.zone === 'attack'}
+        flip={seq.zone === 'attack' || seq.zone === 'turned'}
       />
 
       <div class="controls">

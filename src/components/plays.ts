@@ -5,15 +5,17 @@
  * A play has one or more panels. Each panel is one zone; `zone` says whose goal is at
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
-import { DANGER_ZONE, POST_X, GOAL_LINE, benches, bubble, passShadow, viewCone, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, POST_X, GOAL_LINE, benches, bubble, secondPeriod, passShadow, viewCone, type Pt, type Scene, type View } from './rink';
 import { animals } from './stories';
 
 export interface PlayPanel {
   /**
    * own: our goal at the bottom; attack: the opponents' goal, drawn turned so it is at
-   * the top; full: both; neutral: the neutral zone, our goal below the drawing.
+   * the top; full: both; neutral: the neutral zone, our goal below the drawing; turned:
+   * the full rink in period 2, drawn turned so our goal is at the top and the benches stay
+   * where they are in period 1 (write the scene with secondPeriod()).
    */
-  zone: 'own' | 'attack' | 'full' | 'neutral';
+  zone: 'own' | 'attack' | 'full' | 'neutral' | 'turned';
   /** How much of the rink to draw; one zone if left out. */
   view?: View;
   verdict?: 'good' | 'bad';
@@ -585,6 +587,7 @@ const geometry = {
       scene: {
         areas: benches('odd'),
         players: [
+          { team: 'us', label: 'G', at: [0, 5.5] },
           { team: 'us', label: 'LD', at: [-8, 9] },
           { team: 'us', label: 'LW', at: [-9, 51] },
         ],
@@ -595,11 +598,12 @@ const geometry = {
       },
     },
     {
-      zone: 'full',
+      zone: 'turned',
       view: 'full',
-      scene: {
+      scene: secondPeriod({
         areas: benches('even'),
         players: [
+          { team: 'us', label: 'G', at: [0, 5.5] },
           { team: 'us', label: 'LD', at: [-8, 9] },
           { team: 'us', label: 'LW', at: [-9, 51] },
         ],
@@ -607,7 +611,7 @@ const geometry = {
           { kind: 'skate', path: [[-8, 9], [-12.6, 18], [-13, 31.5]], trim: 0.2 },
           { kind: 'skate', path: [[-9, 51], [-12.4, 45], [-13, 36.5]], trim: 0.2 },
         ],
-      },
+      }),
     },
   ],
 
@@ -615,10 +619,10 @@ const geometry = {
      against two; changing while we attack costs nothing, and RD stays back. */
   'long-change': [
     {
-      zone: 'full',
+      zone: 'turned',
       view: 'full',
       verdict: 'bad',
-      scene: {
+      scene: secondPeriod({
         areas: [...benches('even'), { kind: 'gap', ellipse: { at: [-3, 12], rx: 4, ry: 3 }, label: '!', labelAt: [-8.4, 12] }],
         players: [
           { team: 'them', at: [4, 27] },
@@ -641,13 +645,13 @@ const geometry = {
           { kind: 'skate', path: [[-12.4, 28.5], [-13, 32.6]], trim: 0.2 },
           { kind: 'skate', path: [[-12.4, 36.4], [-9, 33], [-6, 26]], trim: 0.2 },
         ],
-      },
+      }),
     },
     {
-      zone: 'full',
+      zone: 'turned',
       view: 'full',
       verdict: 'good',
-      scene: {
+      scene: secondPeriod({
         areas: benches('even'),
         players: [
           { team: 'them', at: [-6, 52] },
@@ -667,7 +671,7 @@ const geometry = {
           { kind: 'skate', path: [[-8, 39.5], [-13, 37]], trim: 0.2 },
           { kind: 'skate', path: [[-12.4, 32], [-6.5, 36]], trim: 0.2 },
         ],
-      },
+      }),
     },
   ],
 
@@ -1611,12 +1615,12 @@ const de: Record<PlayId, PlayText> = {
       },
       {
         title: '2. Drittel: langer Wechsel',
-        text: 'Die Teams haben die Tore getauscht, die Bänke nicht. Unsere Bank liegt jetzt in der gegnerischen Hälfte. Aus der eigenen Zone ist der Weg lang (LD), aus der Angriffszone kurz (LW).',
+        text: 'Die Teams haben die Tore getauscht, die Bänke nicht. Unser Tor ist jetzt oben, unsere Bank liegt in der gegnerischen Hälfte. Aus der eigenen Zone ist der Weg lang (RD), aus der Angriffszone kurz (RW).',
       },
     ],
     labels: [
-      'Das ganze Eis, unser Tor unten. Unsere Spielerbank liegt an der linken Bande zwischen unserer blauen Linie und der roten Mittellinie, die Bank der anderen gleich darüber. Ein Pfeil zeigt den kurzen Weg von LD in unserer Zone zur Bank, ein zweiter den langen Weg von LW in der Angriffszone.',
-      'Das ganze Eis, unser Tor unten. Unsere Spielerbank liegt an der linken Bande zwischen der roten Mittellinie und der gegnerischen blauen Linie, die Bank der anderen darunter. Der Pfeil von LD in unserer Zone zur Bank ist jetzt lang, der Pfeil von LW in der Angriffszone kurz.',
+      'Das ganze Eis, unser Tor mit unserer Torhüterin unten. Unsere Spielerbank liegt an der linken Bande zwischen unserer blauen Linie und der roten Mittellinie, die Bank der anderen gleich darüber. Ein Pfeil zeigt den kurzen Weg von LD in unserer Zone zur Bank, ein zweiter den langen Weg von LW in der Angriffszone.',
+      'Das gleiche Eis im 2. Drittel, unser Tor mit unserer Torhüterin jetzt oben. Die Bänke stehen am selben Ort wie im 1. Drittel, unsere Bank liegt damit in der gegnerischen Hälfte. Der Pfeil von RD in unserer Zone zur Bank ist lang, der Pfeil von RW in der Angriffszone kurz.',
     ],
   },
   'long-change': {
@@ -1624,16 +1628,16 @@ const de: Record<PlayId, PlayText> = {
     panels: [
       {
         title: 'Wechsel, während die anderen kommen',
-        text: 'Die anderen fahren mit dem Puck auf unser Tor zu. RD fährt jetzt zur Bank. Der frische RD springt weit hinter dem Puck aufs Eis. Vor unserem Tor steht LD allein gegen zwei.',
+        text: 'Die anderen fahren mit dem Puck auf unser Tor zu. LD fährt jetzt zur Bank. Der frische LD springt weit hinter dem Puck aufs Eis. Vor unserem Tor steht RD allein gegen zwei.',
       },
       {
         title: 'Wechsel im Angriff',
-        text: 'Wir haben den Puck vorne. LD steht an der blauen Linie, die Bank ist gleich daneben. LD wechselt, RD bleibt. Der frische LD ist sofort wieder an der blauen Linie.',
+        text: 'Wir haben den Puck vorne. RD steht an der blauen Linie, die Bank ist gleich daneben. RD wechselt, LD bleibt. Der frische RD ist sofort wieder an der blauen Linie.',
       },
     ],
     labels: [
-      'Das ganze Eis im 2. Drittel, unsere Bank an der linken Bande in der gegnerischen Hälfte. Zwei von den anderen fahren mit dem Puck aus der Mitte auf unser Tor zu. Unser RD fährt zur Bank, ein frischer RD kommt von der Bank, weit hinter dem Puck. Vor unserem Tor stehen nur unsere Torhüterin und LD. Ein Ausrufezeichen markiert die Lücke.',
-      'Das ganze Eis im 2. Drittel. Wir haben den Puck in der gegnerischen Zone, LD und RD stehen an der blauen Linie. LD fährt die paar Meter zur Bank, ein frischer LD fährt von dort an die blaue Linie. RD bleibt stehen.',
+      'Das ganze Eis im 2. Drittel, unser Tor oben, unsere Bank an der linken Bande in der gegnerischen Hälfte. Zwei von den anderen fahren mit dem Puck aus der Mitte auf unser Tor zu. Unser LD fährt zur Bank, ein frischer LD kommt von der Bank, weit hinter dem Puck. Vor unserem Tor stehen nur unsere Torhüterin und RD. Ein Ausrufezeichen markiert die Lücke.',
+      'Das ganze Eis im 2. Drittel, unser Tor oben. Wir haben den Puck unten in der gegnerischen Zone, LD und RD stehen an der blauen Linie. RD fährt die paar Meter zur Bank, ein frischer RD fährt von dort an die blaue Linie. LD bleibt stehen.',
     ],
     note: 'Zwei LD und zwei RD: Wer zur Bank fährt, und wer frisch von der Bank kommt.',
   },
@@ -2165,12 +2169,12 @@ const en: typeof de = {
       },
       {
         title: 'Period 2: long change',
-        text: 'The teams have switched ends, the benches have not. Our bench is now in the opponents’ half. From our zone the way is long (LD), from the attacking zone it is short (LW).',
+        text: 'The teams have switched ends, the benches have not. Our goal is now at the top, our bench is in the opponents’ half. From our zone the way is long (RD), from the attacking zone it is short (RW).',
       },
     ],
     labels: [
-      'The whole rink, our goal at the bottom. Our bench is on the left boards between our blue line and the centre red line, the opponents’ bench just above. One arrow shows LD’s short way from our zone to the bench, another shows LW’s long way from the attacking zone.',
-      'The whole rink, our goal at the bottom. Our bench is on the left boards between the centre red line and the opponents’ blue line, the opponents’ bench below. The arrow from LD in our zone to the bench is now long, the arrow from LW in the attacking zone short.',
+      'The whole rink, our goal with our goalie at the bottom. Our bench is on the left boards between our blue line and the centre red line, the opponents’ bench just above. One arrow shows LD’s short way from our zone to the bench, another shows LW’s long way from the attacking zone.',
+      'The same rink in period 2, our goal with our goalie now at the top. The benches are in the same place as in period 1, so our bench is in the opponents’ half. The arrow from RD in our zone to the bench is long, the arrow from RW in the attacking zone short.',
     ],
   },
   'long-change': {
@@ -2178,16 +2182,16 @@ const en: typeof de = {
     panels: [
       {
         title: 'Changing while they come at us',
-        text: 'The opponents carry the puck towards our goal. RD heads to the bench now. The fresh RD jumps on far behind the puck. In front of our goal LD is alone against two.',
+        text: 'The opponents carry the puck towards our goal. LD heads to the bench now. The fresh LD jumps on far behind the puck. In front of our goal RD is alone against two.',
       },
       {
         title: 'Changing while we attack',
-        text: 'We have the puck up front. LD is on the blue line, right next to the bench. LD changes, RD stays. The fresh LD is back on the blue line straight away.',
+        text: 'We have the puck up front. RD is on the blue line, right next to the bench. RD changes, LD stays. The fresh RD is back on the blue line straight away.',
       },
     ],
     labels: [
-      'The whole rink in period 2, our bench on the left boards in the opponents’ half. Two opponents carry the puck from the middle towards our goal. Our RD skates to the bench, a fresh RD comes off the bench far behind the puck. Only our goalie and LD are in front of our goal. An exclamation mark marks the gap.',
-      'The whole rink in period 2. We have the puck in the opponents’ zone, LD and RD are on the blue line. LD skates the few metres to the bench, a fresh LD comes from there to the blue line. RD stays put.',
+      'The whole rink in period 2, our goal at the top, our bench on the left boards in the opponents’ half. Two opponents carry the puck from the middle towards our goal. Our LD skates to the bench, a fresh LD comes off the bench far behind the puck. Only our goalie and RD are in front of our goal. An exclamation mark marks the gap.',
+      'The whole rink in period 2, our goal at the top. We have the puck down in the opponents’ zone, LD and RD are on the blue line. RD skates the few metres to the bench, a fresh RD comes from there to the blue line. LD stays put.',
     ],
     note: 'Two LDs and two RDs: the one heading to the bench and the fresh one coming off it.',
   },
