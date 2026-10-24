@@ -57,7 +57,7 @@
 <figure class="signals" bind:this={root}>
   <figcaption>{t.groups[group]}</figcaption>
   <ul>
-    {#each ids as id (id)}
+    {#each ids as id, i (id)}
       <li data-signal={id}>
         <div class="art">
           <SignalFigure {id} bind:this={figures[id]} />
@@ -65,7 +65,7 @@
         <p>
           <strong>{t.signals[id].name}</strong>
           <span class="who">
-            {t.who[signals[id].who]}{signals[id].rule ? ` · ${t.rule(signals[id].rule)}` : ''}
+            {t.who(signals[id].who, i)}{signals[id].rule ? ` · ${t.rule(signals[id].rule)}` : ''}
           </span>
           <span>{t.signals[id].meaning}</span>
           <span class="looks">{t.signals[id].looks}</span>
