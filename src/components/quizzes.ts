@@ -3420,7 +3420,7 @@ const de: Record<QuizId, QuizText> = {
             feedback: 'Dann sichert für ein paar Sekunden niemand ab. Ein langer Pass reicht, und die anderen fahren allein auf unser Tor zu.',
           },
           {
-            text: 'Langsam Richtung Bank rollen, damit du gleich dran bist.',
+            text: 'Langsam Richtung Bank gleiten, damit du gleich dran bist.',
             feedback: 'Dann bist du weder hinten noch auf der Bank. Entweder absichern, oder, wenn du dran bist, mit Tempo zur Bank.',
           },
         ],
