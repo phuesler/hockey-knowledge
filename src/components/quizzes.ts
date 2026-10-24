@@ -3435,7 +3435,7 @@ const de: Record<QuizId, QuizText> = {
             feedback: 'Im 1. Drittel ist die Bank von dort weit weg. Vorne fehlt dann jemand, und die Ablösung braucht lange, bis sie im Spiel ist.',
           },
           {
-            text: 'Den Shift kurz halten. Geht der Puck in die andere Richtung, auf dem Rückweg wechseln.',
+            text: 'Die Shift kurz halten. Geht der Puck in die andere Richtung, auf dem Rückweg wechseln.',
             feedback:
               'Genau. Im 1. und 3. Drittel liegt die Bank auf dem Rückweg. Wichtig: Die Ablösung muss vor den Puck kommen. Sonst erst zurückfahren, später wechseln.',
           },
