@@ -1930,8 +1930,8 @@ const de: Record<QuizId, QuizText> = {
             feedback: 'An der Bande ist der Weg länger, und die Mitte bleibt frei. Gepard heisst: durch die Mitte.',
           },
           {
-            text: 'Ausrollen lassen. Die Verteidiger sind ja hinten.',
-            feedback: 'Ein Backcheck ist ein Sprint, kein Ausrollen. Wer schneller zurück ist, gewinnt das Rennen zum Tor.',
+            text: 'Zurückgleiten. Die Verteidiger sind ja hinten.',
+            feedback: 'Ein Backcheck ist ein Sprint, kein Gleiten. Wer schneller zurück ist, gewinnt das Rennen zum Tor.',
           },
         ],
         section: 'backcheck-der-gepard',
