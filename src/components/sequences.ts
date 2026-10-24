@@ -1075,7 +1075,7 @@ const de: Record<SequenceId, SequenceText> = {
       'Der Puck liegt in der Ecke neben dem gegnerischen Tor, ein Verteidiger der anderen fährt hin. Pfeile zeigen: Unsere drei Stürmer fahren zur Bank, gleich neben ihnen.',
       'Die drei müden Stürmer sind an der Bank. Drei frische Stürmer sind auf dem Eis und fahren in die gegnerische Zone. LD und RD stehen an der roten Mittellinie.',
     ],
-    note: 'Nach einem tiefen Puck dürfen auch beide Verteidiger wechseln: Bis die anderen wieder vor unserem Tor sind, dauert es lange. Die neuen Verteidiger springen dann über die Bande, damit sich an der Tür nichts staut.',
+    note: 'Nach einem tiefen Puck dürfen auch beide Verteidiger wechseln: Bis die anderen wieder vor unserem Tor sind, dauert es lange. Wie immer gilt: rein über die Bande, raus durch die Tür.',
   },
   delay: {
     caption: 'Verzögern: Zeit für das Team',
@@ -1388,7 +1388,7 @@ const en: typeof de = {
       'The puck is in the corner next to the opponents’ goal, one of their defenders skates over. Arrows show our three forwards skating to the bench, right next to them.',
       'The three tired forwards are at the bench. Three fresh forwards are on the ice, skating into the opponents’ zone. LD and RD stand at the centre red line.',
     ],
-    note: 'After a deep puck, both defenders may change too: it takes a long time before the opponents are back at our goal. The new defenders then jump over the boards, so nothing jams up at the door.',
+    note: 'After a deep puck, both defenders may change too: it takes a long time before the opponents are back at our goal. As always: on over the boards, off through the door.',
   },
   delay: {
     caption: 'Slowing down: time for the teammates',
