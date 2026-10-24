@@ -5,7 +5,7 @@
  *
  * Positions are rink metres, see rink.ts. In the attacking zone our left is at positive x.
  */
-import { DANGER_ZONE, bubble, passShadow, viewCone, type Area, type Move, type Player, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, benches, bubble, passShadow, viewCone, type Area, type Move, type Player, type Pt, type Scene, type View } from './rink';
 import type { PlayPanel } from './plays';
 
 export interface Sequence {
@@ -122,6 +122,13 @@ const ourStart: Pt[] = [[-11, 22.6], [-5, 24], [-7, 27.6], [-11, 25.6], [7, 27.6
 const theirStart: Pt[] = [[-11, 34.4], [5, 36], [7, 32.4], [-11, 37.4], [-7, 32.4], [0, 54.4], [-5, 36]];
 const startLabels = [undefined, 'LD', 'LW', undefined, 'RW', 'G', 'RD'];
 const BENCH_PLAYERS = [0, 3];
+
+/* dump-change: period 2, our bench in the opponents' half. The fresh forwards wait on
+   the bench (drawn on the ice next to it, so the bench stays visible) until the tired
+   ones come off. */
+const dumpBench = benches('even');
+const benchSpots: Pt[] = [[-12.2, 31.4], [-12.2, 34], [-12.2, 36.6]];
+const goalies = [us('g', 'G', [0, 5.5]), { id: 'tg', team: 'them', label: 'G', at: [0, 54.5] } as Player];
 
 const geometry = {
   'role-switch': {
@@ -683,6 +690,105 @@ const geometry = {
       },
     ],
   },
+  'dump-change': {
+    zone: 'full',
+    view: 'full',
+    frames: [
+      {
+        areas: dumpBench,
+        players: [
+          ...goalies,
+          them('o1', [-1, 9]),
+          them('o2', [6, 11]),
+          them('o3', [-8, 18]),
+          them('o4', [-9, 26]),
+          them('o5', [8, 25]),
+          us('ld', 'LD', [-6, 7]),
+          us('rd', 'RD', [5, 6.5]),
+          us('c', 'C', [-4, 13]),
+          us('lw', 'LW', [-11, 15]),
+          us('rw', 'RW', [10, 14]),
+          us('lw2', 'LW', benchSpots[0]),
+          us('c2', 'C', benchSpots[1]),
+          us('rw2', 'RW', benchSpots[2]),
+        ],
+        puck: [-3.4, 14.2],
+        moves: [{ kind: 'carry', path: [[-3.4, 14.2], [-1, 22], [-2, 30.6]], trim: 0.2 }],
+      },
+      {
+        areas: dumpBench,
+        players: [
+          ...goalies,
+          them('o1', [-1, 22]),
+          them('o2', [5, 24]),
+          them('o3', [-7, 27]),
+          them('o4', [-5, 38]),
+          them('o5', [6, 40]),
+          us('ld', 'LD', [-5, 20]),
+          us('rd', 'RD', [5, 19]),
+          us('c', 'C', [-2.4, 31.4]),
+          us('lw', 'LW', [-10, 27]),
+          us('rw', 'RW', [9.5, 28]),
+          us('lw2', 'LW', benchSpots[0]),
+          us('c2', 'C', benchSpots[1]),
+          us('rw2', 'RW', benchSpots[2]),
+        ],
+        puck: [-1.8, 32.6],
+        moves: [{ kind: 'shot', path: [[-1.8, 32.6], [11.6, 57]], trim: 0.2 }],
+      },
+      {
+        areas: dumpBench,
+        players: [
+          ...goalies,
+          them('o1', [-1, 30]),
+          them('o2', [6, 32]),
+          them('o3', [-4, 28]),
+          them('o4', [-3, 46]),
+          them('o5', [7, 50]),
+          us('ld', 'LD', [-5, 24]),
+          us('rd', 'RD', [5, 24]),
+          us('c', 'C', [-3, 35.5]),
+          us('lw', 'LW', [-9, 29]),
+          us('rw', 'RW', [8, 35]),
+          us('lw2', 'LW', benchSpots[0]),
+          us('c2', 'C', benchSpots[1]),
+          us('rw2', 'RW', benchSpots[2]),
+        ],
+        puck: [11.6, 57],
+        moves: [
+          { kind: 'skate', team: 'them', path: [[7, 50], [10.4, 55.2]], trim: 1 },
+          { kind: 'skate', path: [[-9, 29], [-12.2, 31.4]], trim: 1.6 },
+          { kind: 'skate', path: [[-3, 35.5], [-12.2, 34]], trim: 1.6 },
+          { kind: 'skate', path: [[8, 35], [-3, 39.5], [-12.2, 36.6]], trim: 1.6 },
+        ],
+      },
+      {
+        areas: dumpBench,
+        players: [
+          ...goalies,
+          them('o1', [-1, 34]),
+          them('o2', [6, 36]),
+          them('o3', [-4, 31]),
+          them('o4', [-4, 50]),
+          them('o5', [8, 56.6]),
+          us('ld', 'LD', [-5, 28]),
+          us('rd', 'RD', [5, 28]),
+          us('lw', 'LW', benchSpots[0]),
+          us('c', 'C', benchSpots[1]),
+          us('rw', 'RW', benchSpots[2]),
+          us('lw2', 'LW', [-10.4, 39]),
+          us('c2', 'C', [-7.8, 36]),
+          us('rw2', 'RW', [-4.6, 40]),
+        ],
+        puck: [7.4, 57.2],
+        moves: [
+          { kind: 'skate', path: [[-10.4, 39], [-9, 46]], trim: 0.2 },
+          { kind: 'skate', path: [[-7.8, 36], [-1, 44]], trim: 0.2 },
+          { kind: 'skate', path: [[-4.6, 40], [6, 47]], trim: 0.2 },
+        ],
+      },
+    ],
+  },
 } satisfies Record<string, Sequence>;
 
 export type SequenceId = keyof typeof geometry;
@@ -940,6 +1046,34 @@ const de: Record<SequenceId, SequenceText> = {
       'Der Wächter steht rechts vor dem Stürmer, Schläger in den Passweg. Hinter dem Schläger ist ein grauer Passschatten, der Stürmer steht darin.',
       'Der Puck ist an der linken Bande, der Jäger daneben, Schläger zum Puck. Der Kreis um den Puck ist sehr klein. Der Passweg nach rechts bleibt zu.',
     ],
+  },
+  'dump-change': {
+    caption: 'Tief spielen und wechseln',
+    steps: [
+      {
+        title: 'Endlich der Puck',
+        text: 'Wir waren lange in der eigenen Zone. Alle sind müde. Jetzt hat C den Puck und fährt los, aber nicht weit: nur bis über die rote Linie.',
+      },
+      {
+        title: 'Über Rot, in die Ecke',
+        text: 'C ist über der roten Mittellinie. Von hier ist ein weiter Puck kein Icing. C schiesst ihn tief in die Ecke, an der Torhüterin vorbei.',
+      },
+      {
+        title: 'Ab zur Bank',
+        text: 'Die anderen müssen den Puck erst hinter ihrem Tor holen. Diese Zeit nutzen wir: Die drei müden Stürmer fahren mit Tempo zur Bank. LD und RD bleiben hinten.',
+      },
+      {
+        title: 'Frische Beine',
+        text: 'Kaum ist ein müder Stürmer an der Bande, springt ein frischer aufs Eis. Die neue Reihe hat volle Kraft und kann sofort Druck machen.',
+      },
+    ],
+    labels: [
+      'Das ganze Eis im 2. Drittel, unsere Bank an der linken Bande in der gegnerischen Hälfte. Drei frische Stürmer warten auf der Bank. In unserer Zone hat C den Puck, um ihn herum drei von den anderen. Ein Pfeil zeigt: C fährt mit dem Puck bis zur roten Mittellinie.',
+      'C steht knapp hinter der roten Mittellinie. Ein gestrichelter Pfeil zeigt den Schuss tief in die rechte Ecke der gegnerischen Zone. Die anderen Stürmer von uns sind in der neutralen Zone, LD und RD an unserer blauen Linie.',
+      'Der Puck liegt in der rechten Ecke hinter dem gegnerischen Tor, ein Verteidiger der anderen fährt hin. Pfeile zeigen: Unsere drei Stürmer fahren zur Bank, gleich neben ihnen.',
+      'Die drei müden Stürmer sitzen auf der Bank. Drei frische Stürmer sind auf dem Eis und fahren in die gegnerische Zone. LD und RD stehen an der roten Mittellinie.',
+    ],
+    note: 'Nach einem tiefen Puck dürfen auch beide Verteidiger wechseln: Bis die anderen wieder vor unserem Tor sind, dauert es lange.',
   },
   delay: {
     caption: 'Verzögern: Zeit für das Team',
@@ -1225,6 +1359,34 @@ const en: typeof de = {
       'The Wächter stands in front of the opponent on the right, stick in the passing lane. Behind the stick is a grey passing shadow, and the opponent stands in it.',
       'The opponent with the puck is on the left boards, the Jäger next to them, stick to the puck. The circle around the opponent is very small. The lane to the right stays closed.',
     ],
+  },
+  'dump-change': {
+    caption: 'Dump and change',
+    steps: [
+      {
+        title: 'Finally the puck',
+        text: 'We have been stuck in our own zone for a long time. Everyone is tired. Now C has the puck and sets off, but not far: just over the red line.',
+      },
+      {
+        title: 'Over the red line, into the corner',
+        text: 'C is past the centre red line. From here a long puck is not icing. C shoots it deep into the corner, away from the goalie.',
+      },
+      {
+        title: 'Off to the bench',
+        text: 'The opponents first have to fetch the puck from behind their goal. We use that time: the three tired forwards skate hard to the bench. LD and RD stay back.',
+      },
+      {
+        title: 'Fresh legs',
+        text: 'As soon as a tired forward reaches the boards, a fresh one jumps on. The new line has full energy and can put on pressure straight away.',
+      },
+    ],
+    labels: [
+      'The whole rink in period 2, our bench on the left boards in the opponents’ half. Three fresh forwards wait on the bench. In our zone C has the puck, with three opponents around. An arrow shows C carrying the puck up to the centre red line.',
+      'C is just past the centre red line. A dashed arrow shows the shot deep into the right corner of the opponents’ zone. Our other forwards are in the neutral zone, LD and RD at our blue line.',
+      'The puck is in the right corner behind the opponents’ goal, one of their defenders skates over. Arrows show our three forwards skating to the bench, right next to them.',
+      'The three tired forwards sit on the bench. Three fresh forwards are on the ice, skating into the opponents’ zone. LD and RD stand at the centre red line.',
+    ],
+    note: 'After a deep puck, both defenders may change too: it takes a long time before the opponents are back at our goal.',
   },
   delay: {
     caption: 'Slowing down: time for the teammates',

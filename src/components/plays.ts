@@ -5,7 +5,7 @@
  * A play has one or more panels. Each panel is one zone; `zone` says whose goal is at
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
-import { DANGER_ZONE, POST_X, GOAL_LINE, bubble, passShadow, viewCone, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, POST_X, GOAL_LINE, benches, bubble, passShadow, viewCone, type Pt, type Scene, type View } from './rink';
 import { animals } from './stories';
 
 export interface PlayPanel {
@@ -572,6 +572,133 @@ const geometry = {
         moves: [
           { kind: 'skate', path: [[0, 5.5], [-10, 9], [-12.8, 25.5]], trim: 1.6 },
           { kind: 'skate', path: [[-13, 29.5], [-3, 40.5]], trim: 1.6 },
+        ],
+      },
+    },
+  ],
+  /* Line changes: the way to the bench from our zone and from the attacking zone, in
+     periods 1 and 3 (bench in our half) and in period 2 (bench in their half). */
+  'bench-distance': [
+    {
+      zone: 'full',
+      view: 'full',
+      scene: {
+        areas: benches('odd'),
+        players: [
+          { team: 'us', label: 'LD', at: [-8, 9] },
+          { team: 'us', label: 'LW', at: [-9, 51] },
+        ],
+        moves: [
+          { kind: 'skate', path: [[-8, 9], [-12, 15], [-13, 24.5]], trim: 0.2 },
+          { kind: 'skate', path: [[-9, 51], [-12.6, 42], [-13, 28.5]], trim: 0.2 },
+        ],
+      },
+    },
+    {
+      zone: 'full',
+      view: 'full',
+      scene: {
+        areas: benches('even'),
+        players: [
+          { team: 'us', label: 'LD', at: [-8, 9] },
+          { team: 'us', label: 'LW', at: [-9, 51] },
+        ],
+        moves: [
+          { kind: 'skate', path: [[-8, 9], [-12.6, 18], [-13, 31.5]], trim: 0.2 },
+          { kind: 'skate', path: [[-9, 51], [-12.4, 45], [-13, 36.5]], trim: 0.2 },
+        ],
+      },
+    },
+  ],
+
+  /* Period 2: changing a defender while the opponents come at our goal leaves LD alone
+     against two; changing while we attack costs nothing, and RD stays back. */
+  'long-change': [
+    {
+      zone: 'full',
+      view: 'full',
+      verdict: 'bad',
+      scene: {
+        areas: [...benches('even'), { kind: 'gap', ellipse: { at: [-3, 12], rx: 4, ry: 3 }, label: '!', labelAt: [-8.4, 12] }],
+        players: [
+          { team: 'them', at: [4, 27] },
+          { team: 'them', at: [-5, 29] },
+          { team: 'them', at: [10, 35] },
+          { team: 'them', at: [-2, 43] },
+          { team: 'them', at: [6, 47] },
+          { team: 'us', label: 'G', at: [0, 5.5] },
+          { team: 'us', label: 'LD', at: [1.5, 16] },
+          { team: 'us', label: 'RD', at: [-12.4, 28.5] },
+          { team: 'us', label: 'RD', at: [-12.4, 36.4] },
+          { team: 'us', label: 'C', at: [5, 38] },
+          { team: 'us', label: 'LW', at: [-6, 41] },
+          { team: 'us', label: 'RW', at: [11, 42] },
+        ],
+        puck: [3.4, 25.7],
+        moves: [
+          { kind: 'carry', team: 'them', path: [[3.4, 25.7], [2.6, 18.6]], trim: 0.2 },
+          { kind: 'skate', team: 'them', path: [[-5, 29], [-4.6, 19]], trim: 0.2 },
+          { kind: 'skate', path: [[-12.4, 28.5], [-13, 32.6]], trim: 0.2 },
+          { kind: 'skate', path: [[-12.4, 36.4], [-9, 33], [-6, 26]], trim: 0.2 },
+        ],
+      },
+    },
+    {
+      zone: 'full',
+      view: 'full',
+      verdict: 'good',
+      scene: {
+        areas: benches('even'),
+        players: [
+          { team: 'them', at: [-6, 52] },
+          { team: 'them', at: [2, 53] },
+          { team: 'them', at: [8, 48] },
+          { team: 'them', at: [-3, 44] },
+          { team: 'them', at: [5, 42.5] },
+          { team: 'us', label: 'LW', at: [-10.5, 50] },
+          { team: 'us', label: 'C', at: [1, 48] },
+          { team: 'us', label: 'RW', at: [11, 51] },
+          { team: 'us', label: 'LD', at: [-8, 39.5] },
+          { team: 'us', label: 'LD', at: [-12.4, 32] },
+          { team: 'us', label: 'RD', at: [6, 39] },
+        ],
+        puck: [-9.6, 48.8],
+        moves: [
+          { kind: 'skate', path: [[-8, 39.5], [-13, 37]], trim: 0.2 },
+          { kind: 'skate', path: [[-12.4, 32], [-6.5, 36]], trim: 0.2 },
+        ],
+      },
+    },
+  ],
+
+  /* Periods 1 and 3: the opponents take the puck the other way, the bench is on our way
+     back. The tired LW changes, the fresh LW comes on ahead of the puck. */
+  'backcheck-change': [
+    {
+      zone: 'full',
+      view: 'full',
+      scene: {
+        areas: benches('odd'),
+        players: [
+          { team: 'them', at: [4, 42] },
+          { team: 'them', at: [-6, 45] },
+          { team: 'them', at: [11, 47] },
+          { team: 'them', at: [-3, 53] },
+          { team: 'them', at: [6, 53] },
+          { team: 'us', label: 'LW', at: [-11.5, 41] },
+          { team: 'us', label: 'LW', at: [-12.4, 24] },
+          { team: 'us', label: 'C', at: [1, 47.5] },
+          { team: 'us', label: 'RW', at: [10, 43] },
+          { team: 'us', label: 'LD', at: [-5, 21] },
+          { team: 'us', label: 'RD', at: [5, 20] },
+        ],
+        puck: [3.4, 40.7],
+        moves: [
+          { kind: 'carry', team: 'them', path: [[3.4, 40.7], [3, 33]], trim: 0.2 },
+          { kind: 'skate', team: 'them', path: [[-6, 45], [-6.6, 36]], trim: 0.2 },
+          { kind: 'skate', path: [[-11.5, 41], [-13, 34], [-13, 28.2]], trim: 0.2 },
+          { kind: 'skate', path: [[-12.4, 24], [-9, 26], [-7, 30]], trim: 0.2 },
+          { kind: 'skate', path: [[1, 47.5], [1.2, 39]], trim: 0.2 },
         ],
       },
     },
@@ -1475,6 +1602,54 @@ const de: Record<PlayId, PlayText> = {
     ],
     note: 'Die gestrichelte Markierung zeigt, wo die Torhüterin vorher stand.',
   },
+  'bench-distance': {
+    caption: 'Der Weg zur Bank',
+    panels: [
+      {
+        title: '1. und 3. Drittel: kurzer Wechsel',
+        text: 'Unsere Bank liegt in unserer Hälfte. Aus der eigenen Zone ist der Weg kurz (LD), aus der Angriffszone lang (LW).',
+      },
+      {
+        title: '2. Drittel: langer Wechsel',
+        text: 'Die Teams haben die Tore getauscht, die Bänke nicht. Unsere Bank liegt jetzt in der gegnerischen Hälfte. Aus der eigenen Zone ist der Weg lang (LD), aus der Angriffszone kurz (LW).',
+      },
+    ],
+    labels: [
+      'Das ganze Eis, unser Tor unten. Unsere Spielerbank liegt an der linken Bande zwischen unserer blauen Linie und der roten Mittellinie, die Bank der anderen gleich darüber. Ein Pfeil zeigt den kurzen Weg von LD in unserer Zone zur Bank, ein zweiter den langen Weg von LW in der Angriffszone.',
+      'Das ganze Eis, unser Tor unten. Unsere Spielerbank liegt an der linken Bande zwischen der roten Mittellinie und der gegnerischen blauen Linie, die Bank der anderen darunter. Der Pfeil von LD in unserer Zone zur Bank ist jetzt lang, der Pfeil von LW in der Angriffszone kurz.',
+    ],
+  },
+  'long-change': {
+    caption: '2. Drittel: wann die Verteidigung wechselt',
+    panels: [
+      {
+        title: 'Wechsel, während die anderen kommen',
+        text: 'Die anderen fahren mit dem Puck auf unser Tor zu. RD fährt jetzt zur Bank. Der frische RD springt weit hinter dem Puck aufs Eis. Vor unserem Tor steht LD allein gegen zwei.',
+      },
+      {
+        title: 'Wechsel im Angriff',
+        text: 'Wir haben den Puck vorne. LD steht an der blauen Linie, die Bank ist gleich daneben. LD wechselt, RD bleibt. Der frische LD ist sofort wieder an der blauen Linie.',
+      },
+    ],
+    labels: [
+      'Das ganze Eis im 2. Drittel, unsere Bank an der linken Bande in der gegnerischen Hälfte. Zwei von den anderen fahren mit dem Puck aus der Mitte auf unser Tor zu. Unser RD fährt zur Bank, ein frischer RD kommt von der Bank, weit hinter dem Puck. Vor unserem Tor stehen nur unsere Torhüterin und LD. Ein Ausrufezeichen markiert die Lücke.',
+      'Das ganze Eis im 2. Drittel. Wir haben den Puck in der gegnerischen Zone, LD und RD stehen an der blauen Linie. LD fährt die paar Meter zur Bank, ein frischer LD fährt von dort an die blaue Linie. RD bleibt stehen.',
+    ],
+    note: 'Zwei LD und zwei RD: Wer zur Bank fährt, und wer frisch von der Bank kommt.',
+  },
+  'backcheck-change': {
+    caption: '1. und 3. Drittel: Wechsel auf dem Rückweg',
+    panels: [
+      {
+        title: 'Die Bank liegt auf dem Weg',
+        text: 'Die anderen haben den Puck erobert und fahren auf unser Tor zu. LW ist müde und fährt auf dem Rückweg zur Bank. Der frische LW springt vor dem Puck aufs Eis und übernimmt das Gegenüber.',
+      },
+    ],
+    labels: [
+      'Das ganze Eis im 1. Drittel, unsere Bank an der linken Bande in unserer Hälfte. Die anderen fahren mit dem Puck aus ihrer Zone Richtung Mitte. Unser müder LW fährt an der linken Bande zurück zur Bank. Ein frischer LW kommt von der Bank aufs Eis, zwischen das Gegenüber und unser Tor. C fährt mit zurück, LD und RD warten an unserer blauen Linie.',
+    ],
+    note: 'Kommt der frische LW nicht mehr vor den Puck, gilt: erst zurückfahren, später wechseln.',
+  },
   'faceoff-own': {
     caption: 'Bully in der eigenen Zone',
     panels: [
@@ -1980,6 +2155,54 @@ const en: typeof de = {
       'The whole rink. Our team has the puck in the opponents’ zone. Our goalie skates out of the goal to the bench on the left boards, an extra skater comes on from there. Our goal is empty.',
     ],
     note: 'The dashed marker shows where the goalie stood before.',
+  },
+  'bench-distance': {
+    caption: 'The way to the bench',
+    panels: [
+      {
+        title: 'Periods 1 and 3: short change',
+        text: 'Our bench is in our own half. From our zone the way is short (LD), from the attacking zone it is long (LW).',
+      },
+      {
+        title: 'Period 2: long change',
+        text: 'The teams have switched ends, the benches have not. Our bench is now in the opponents’ half. From our zone the way is long (LD), from the attacking zone it is short (LW).',
+      },
+    ],
+    labels: [
+      'The whole rink, our goal at the bottom. Our bench is on the left boards between our blue line and the centre red line, the opponents’ bench just above. One arrow shows LD’s short way from our zone to the bench, another shows LW’s long way from the attacking zone.',
+      'The whole rink, our goal at the bottom. Our bench is on the left boards between the centre red line and the opponents’ blue line, the opponents’ bench below. The arrow from LD in our zone to the bench is now long, the arrow from LW in the attacking zone short.',
+    ],
+  },
+  'long-change': {
+    caption: 'Period 2: when the defence changes',
+    panels: [
+      {
+        title: 'Changing while they come at us',
+        text: 'The opponents carry the puck towards our goal. RD heads to the bench now. The fresh RD jumps on far behind the puck. In front of our goal LD is alone against two.',
+      },
+      {
+        title: 'Changing while we attack',
+        text: 'We have the puck up front. LD is on the blue line, right next to the bench. LD changes, RD stays. The fresh LD is back on the blue line straight away.',
+      },
+    ],
+    labels: [
+      'The whole rink in period 2, our bench on the left boards in the opponents’ half. Two opponents carry the puck from the middle towards our goal. Our RD skates to the bench, a fresh RD comes off the bench far behind the puck. Only our goalie and LD are in front of our goal. An exclamation mark marks the gap.',
+      'The whole rink in period 2. We have the puck in the opponents’ zone, LD and RD are on the blue line. LD skates the few metres to the bench, a fresh LD comes from there to the blue line. RD stays put.',
+    ],
+    note: 'Two LDs and two RDs: the one heading to the bench and the fresh one coming off it.',
+  },
+  'backcheck-change': {
+    caption: 'Periods 1 and 3: changing on the way back',
+    panels: [
+      {
+        title: 'The bench is on the way',
+        text: 'The opponents have won the puck and head for our goal. LW is tired and goes to the bench on the way back. The fresh LW jumps on ahead of the puck and picks up the opponent.',
+      },
+    ],
+    labels: [
+      'The whole rink in period 1, our bench on the left boards in our own half. The opponents carry the puck out of their zone towards the middle. Our tired LW skates back along the left boards to the bench. A fresh LW comes off the bench, between the opponent and our goal. C skates back too, LD and RD wait at our blue line.',
+    ],
+    note: 'If the fresh LW can’t get ahead of the puck any more: skate back first, change later.',
   },
   'faceoff-own': {
     caption: 'Face-off in our own zone',

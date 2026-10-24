@@ -852,6 +852,20 @@ const geometry = {
     /* 6. Alone in the zone, teammates far behind: slow down and wait. */
     { correct: 2 },
   ],
+  wechseln: [
+    /* 1. Period 2, puck in our zone, a tired defender: get it out first. */
+    { correct: 1 },
+    /* 2. Why the way is long in period 2: ends switch, benches stay. */
+    { correct: 0 },
+    /* 3. Stuck in our zone, everyone tired: over the red line, deep, change. */
+    { correct: 2 },
+    /* 4. The partner is changing: stay back. */
+    { correct: 0 },
+    /* 5. Period 1, long pressure up front: short shift, change on the way back. */
+    { correct: 1 },
+    /* 6. When to jump on. */
+    { correct: 1 },
+  ],
 } satisfies Record<string, QuestionGeometry[]>;
 
 export type QuizId = keyof typeof geometry;
@@ -865,6 +879,7 @@ export const mixQuizzes: QuizId[] = [
   'aufstellung',
   'spielbeginn',
   'regeln',
+  'wechseln',
   'handzeichen',
   'bully',
   'rollen',
@@ -3326,6 +3341,133 @@ const de: Record<QuizId, QuizText> = {
       },
     ],
   },
+  wechseln: {
+    title: 'Quiz: Wechseln',
+    name: 'Wechseln',
+    article: 'wechseln',
+    questions: [
+      {
+        prompt: '2. Drittel. Der Puck ist in unserer Zone, die anderen machen Druck. Du bist Verteidigerin und schon lange draussen. Was tust du?',
+        options: [
+          {
+            text: 'Sofort zur Bank fahren. Müde ist müde.',
+            feedback:
+              'Im 2. Drittel ist die Bank weit weg. Die Ablösung springt erst hinter der roten Linie aufs Eis, und vor unserem Tor fehlt genau jetzt jemand.',
+          },
+          {
+            text: 'Zuerst den Puck rausbringen, am besten über die rote Linie und tief. Dann wechseln.',
+            feedback: 'Genau. Puck in unserer Hälfte, du bleibst. Ist der Puck weit weg von unserem Tor, ist der lange Weg zur Bank kein Problem mehr.',
+          },
+          {
+            text: 'Zur Bank rufen, dass jemand kommt.',
+            feedback:
+              'Die Ablösung darf erst aufs Eis, wenn du fast an der Bande bist. Sonst sind zu viele auf dem Eis, und das ist eine Strafe. Wechseln heisst: du musst zur Bank.',
+          },
+        ],
+        section: '2-drittel-der-lange-wechsel',
+        topic: 'Der lange Wechsel',
+      },
+      {
+        prompt: 'Warum ist der Weg aus der eigenen Zone zur Bank im 2. Drittel so lang?',
+        options: [
+          {
+            text: 'Die Teams tauschen nach jedem Drittel die Tore, die Bänke bleiben.',
+            feedback: 'Genau. Im 2. Drittel liegt unsere Bank darum in der gegnerischen Hälfte, weit weg vom eigenen Tor.',
+          },
+          {
+            text: 'Im 2. Drittel tauschen die Teams die Bänke.',
+            feedback: 'Die Bänke bleiben das ganze Spiel gleich. Getauscht werden die Tore, und darum ist unsere Bank im 2. Drittel auf der anderen Seite der roten Linie.',
+          },
+          {
+            text: 'Weil die Verteidiger im 2. Drittel neben der Tür sitzen.',
+            feedback:
+              'Das stimmt zwar, aber es ist die Folge, nicht der Grund. Die Verteidiger sitzen immer so nah wie möglich am eigenen Tor. Weit ist der Weg, weil die ganze Bank im 2. Drittel in der gegnerischen Hälfte liegt.',
+          },
+        ],
+        section: 'wo-die-bank-steht',
+        topic: 'Wo die Bank steht',
+      },
+      {
+        prompt: 'Wir waren lange in der eigenen Zone, alle sind müde. Jetzt hast du den Puck an unserer blauen Linie. Was ist am besten?',
+        options: [
+          {
+            text: 'Den Puck sofort so weit wie möglich nach vorne schiessen.',
+            feedback:
+              'Von unserer blauen Linie aus ist das Icing. Dann gibt es ein Bully vor unserem Tor, und wir dürfen nicht wechseln. Die müde Reihe muss draussen bleiben.',
+          },
+          {
+            text: 'Allein bis vors gegnerische Tor fahren.',
+            feedback:
+              'Mit müden Beinen klappt das selten. Verlierst du den Puck, kommen die anderen zurück, und unsere müde Reihe muss wieder verteidigen.',
+          },
+          {
+            text: 'Über die rote Linie, tief in die Ecke, dann ab zur Bank.',
+            feedback: 'Genau: „Rot, Ecke, Bank." Die anderen müssen den Puck erst hinter ihrem Tor holen. In dieser Zeit kommt die frische Reihe aufs Eis.',
+          },
+        ],
+        section: 'tief-spielen-und-wechseln',
+        topic: 'Tief spielen und wechseln',
+      },
+      {
+        prompt: 'Du bist Verteidiger. Dein Partner fährt gerade zur Bank, der Puck ist in der neutralen Zone. Du bist auch müde. Was tust du?',
+        options: [
+          {
+            text: 'Hinten bleiben, bis die Ablösung auf dem Eis ist. Dann darfst du.',
+            feedback: 'Genau: „Einer bleibt hinten." So steht immer jemand zwischen dem Puck und unserem Tor.',
+          },
+          {
+            text: 'Gleich mitfahren, dann ist der Wechsel schneller vorbei.',
+            feedback: 'Dann ist für ein paar Sekunden niemand hinten. Ein langer Pass reicht, und die anderen fahren allein auf unser Tor zu.',
+          },
+          {
+            text: 'Langsam Richtung Bank rollen, damit du gleich dran bist.',
+            feedback: 'Dann bist du weder hinten noch auf der Bank. Entweder hinten bleiben, oder, wenn du dran bist, mit Tempo zur Bank.',
+          },
+        ],
+        section: 'verteidiger-einer-bleibt-hinten',
+        topic: 'Einer bleibt hinten',
+      },
+      {
+        prompt: '1. Drittel. Wir machen schon lange Druck in der Angriffszone. Du spielst Flügel und wirst müde. Was ist am besten?',
+        options: [
+          {
+            text: 'Mitten im Angriff zur Bank fahren.',
+            feedback: 'Im 1. Drittel ist die Bank von dort weit weg. Vorne fehlt dann jemand, und die Ablösung braucht lange, bis sie im Spiel ist.',
+          },
+          {
+            text: 'Den Shift kurz halten. Geht der Puck in die andere Richtung, auf dem Rückweg wechseln.',
+            feedback:
+              'Genau. Im 1. und 3. Drittel liegt die Bank auf dem Rückweg. Wichtig: Die Ablösung muss vor den Puck kommen. Sonst erst zurückfahren, später wechseln.',
+          },
+          {
+            text: 'Draussen bleiben, bis der Angriff vorbei ist, egal wie lange.',
+            feedback: 'Dann bist du genau dann ganz müde, wenn die anderen den Puck holen und du zurückfahren musst. Kurze Shifts sind besser.',
+          },
+        ],
+        section: '1-und-3-drittel-kurzer-wechsel',
+        topic: 'Wechsel auf dem Rückweg',
+      },
+      {
+        prompt: 'Du sitzt auf der Bank und bist als Nächstes dran. Deine Mitspielerin kommt zum Wechseln. Wann springst du aufs Eis?',
+        options: [
+          {
+            text: 'Sobald sie losfährt.',
+            feedback: 'Dann sind für eine Weile sechs von uns auf dem Eis. Das ist eine Strafe: zu viele Spieler auf dem Eis.',
+          },
+          {
+            text: 'Wenn sie etwa 1.5 Meter vor der Bande ist.',
+            feedback: 'Genau. So fehlt niemand lange, und es sind nie zu viele auf dem Eis.',
+          },
+          {
+            text: 'Erst wenn sie auf der Bank sitzt.',
+            feedback: 'Das ist zu spät. Bis du auf dem Eis bist, fehlt uns jemand. Springen darfst du schon, wenn sie fast an der Bande ist.',
+          },
+        ],
+        section: 'beim-wechseln-selbst',
+        topic: 'Beim Wechseln selbst',
+      },
+    ],
+  },
 };
 
 const en: typeof de = {
@@ -5727,6 +5869,133 @@ const en: typeof de = {
         ],
         section: 'gaining-time-and-space',
         topic: 'Slowing down',
+      },
+    ],
+  },
+  wechseln: {
+    title: 'Quiz: line changes',
+    name: 'Line changes',
+    article: 'line-changes',
+    questions: [
+      {
+        prompt: 'Period 2. The puck is in our zone and the opponents are pressing. You are a defender and have been out for a long time. What do you do?',
+        options: [
+          {
+            text: 'Skate to the bench straight away. Tired is tired.',
+            feedback:
+              'In period 2 the bench is far away. Your replacement only jumps on past the red line, and right now we are a player short in front of our goal.',
+          },
+          {
+            text: 'Get the puck out first, ideally over the red line and deep. Then change.',
+            feedback: 'Exactly. Puck in our half, you stay. Once the puck is far from our goal, the long way to the bench is no problem.',
+          },
+          {
+            text: 'Shout to the bench for someone to come on.',
+            feedback:
+              'Your replacement may only come on when you are almost at the boards. Otherwise there are too many on the ice, and that is a penalty. Changing means: you go to the bench.',
+          },
+        ],
+        section: 'period-2-the-long-change',
+        topic: 'The long change',
+      },
+      {
+        prompt: 'Why is the way from our zone to the bench so long in period 2?',
+        options: [
+          {
+            text: 'The teams switch ends after every period, the benches stay.',
+            feedback: 'Exactly. That is why our bench is in the opponents’ half in period 2, far from our own goal.',
+          },
+          {
+            text: 'In period 2 the teams swap benches.',
+            feedback: 'The benches stay the same for the whole game. The teams switch ends, and that puts our bench on the other side of the red line in period 2.',
+          },
+          {
+            text: 'Because the defenders sit next to the door in period 2.',
+            feedback:
+              'That is true, but it is the result, not the reason. Defenders always sit as close to their own goal as possible. The way is long because the whole bench is in the opponents’ half in period 2.',
+          },
+        ],
+        section: 'where-the-bench-is',
+        topic: 'Where the bench is',
+      },
+      {
+        prompt: 'We have been stuck in our own zone for a long time and everyone is tired. Now you have the puck at our blue line. What is best?',
+        options: [
+          {
+            text: 'Shoot the puck as far up the ice as you can, right away.',
+            feedback:
+              'From our blue line that is icing. Then there is a faceoff in front of our goal, and we are not allowed to change. The tired line has to stay out.',
+          },
+          {
+            text: 'Carry it all the way to the opponents’ goal on your own.',
+            feedback:
+              'With tired legs that rarely works. If you lose the puck, the opponents come back, and our tired line has to defend again.',
+          },
+          {
+            text: 'Over the red line, deep into the corner, then off to the bench.',
+            feedback: 'Exactly: “red line, corner, bench.” The opponents first have to fetch the puck from behind their goal. In that time the fresh line comes on.',
+          },
+        ],
+        section: 'dump-and-change',
+        topic: 'Dump and change',
+      },
+      {
+        prompt: 'You are a defender. Your partner is heading to the bench, the puck is in the neutral zone. You are tired too. What do you do?',
+        options: [
+          {
+            text: 'Stay back until the replacement is on the ice. Then it is your turn.',
+            feedback: 'Exactly: “one stays back.” That way someone is always between the puck and our goal.',
+          },
+          {
+            text: 'Go with them, then the change is over sooner.',
+            feedback: 'Then for a few seconds nobody is back. One long pass is enough, and the opponents skate in alone on our goal.',
+          },
+          {
+            text: 'Drift slowly towards the bench so you are ready.',
+            feedback: 'Then you are neither back nor on the bench. Either stay back, or, when it is your turn, skate hard to the bench.',
+          },
+        ],
+        section: 'defenders-one-always-stays-back',
+        topic: 'One stays back',
+      },
+      {
+        prompt: 'Period 1. We have been pressing in the attacking zone for a while. You play wing and are getting tired. What is best?',
+        options: [
+          {
+            text: 'Skate to the bench in the middle of the attack.',
+            feedback: 'In period 1 the bench is far from there. We are a player short up front, and your replacement takes a long time to join the play.',
+          },
+          {
+            text: 'Keep the shift short. When the puck goes the other way, change on the way back.',
+            feedback:
+              'Exactly. In periods 1 and 3 the bench is on the way back. Important: your replacement has to get ahead of the puck. Otherwise skate back first, change later.',
+          },
+          {
+            text: 'Stay out until the attack is over, however long it takes.',
+            feedback: 'Then you are exhausted exactly when the opponents win the puck and you have to skate back. Short shifts are better.',
+          },
+        ],
+        section: 'periods-1-and-3-the-short-change',
+        topic: 'Changing on the way back',
+      },
+      {
+        prompt: 'You are on the bench and up next. A teammate is coming off. When do you jump on?',
+        options: [
+          {
+            text: 'As soon as they head for the bench.',
+            feedback: 'Then six of us are on the ice for a while. That is a penalty: too many players on the ice.',
+          },
+          {
+            text: 'When they are about 1.5 metres from the boards.',
+            feedback: 'Exactly. That way nobody is missing for long, and there are never too many on the ice.',
+          },
+          {
+            text: 'Only once they are sitting on the bench.',
+            feedback: 'That is too late. Until you are on the ice, we are a player short. You may jump as soon as they are almost at the boards.',
+          },
+        ],
+        section: 'when-you-change',
+        topic: 'When you change',
       },
     ],
   },

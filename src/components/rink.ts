@@ -197,6 +197,20 @@ export function bubble(at: Pt, r: number, seconds?: string, labelAt?: Pt): Area 
   return { kind: 'bubble', ellipse: { at, rx: r, ry: r }, label: seconds, labelAt };
 }
 
+/**
+ * Both benches on the left boards, either side of the centre line (full view). In
+ * periods 1 and 3 our bench is in our own half. The teams switch ends for period 2 but
+ * the benches stay, so ours is then in the opponents' half: the long change.
+ */
+export function benches(period: 'odd' | 'even'): Area[] {
+  const low: Pt[] = [[-15, 22], [-13.8, 22], [-13.8, 29.9], [-15, 29.9]];
+  const high: Pt[] = [[-15, 30.1], [-13.8, 30.1], [-13.8, 38], [-15, 38]];
+  return [
+    { kind: 'bench', poly: period === 'odd' ? low : high },
+    { kind: 'bench-them', poly: period === 'odd' ? high : low },
+  ];
+}
+
 /** Rink metres to SVG user units: the goal at the bottom, 1 unit = 1 m. `length` is the view's length. */
 export function svg([x, d]: Pt, length = RINK_LENGTH): [number, number] {
   return [x + RINK_WIDTH / 2, length - d];
