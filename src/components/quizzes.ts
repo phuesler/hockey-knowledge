@@ -253,6 +253,9 @@ const geometry = {
 
     /* 8. Our own pass into our empty net during the delayed penalty. */
     { correct: 1 },
+
+    /* 9. Pushed into the goalie by a defender: does the goal count? */
+    { correct: 1 },
   ],
 
   abwehrseite: [
@@ -736,6 +739,10 @@ const geometry = {
     { correct: 1 },
     /* 6. After a goal against. */
     { correct: 2 },
+    /* 7. Puck in the corner next to the trapezoid. */
+    { correct: 2 },
+    /* 8. Loose puck beside the goal, nobody close: cover it? */
+    { correct: 1 },
   ],
   'hockey-sprache': [
     /* 1. What is an apple? */
@@ -1088,6 +1095,28 @@ const de: Record<QuizId, QuizText> = {
         ],
         section: 'torhüter-raus-sechster-feldspieler-rein',
         topic: 'Torhüter raus, sechster Feldspieler rein',
+      },
+      {
+        prompt:
+          'Vor dem Tor der anderen schubst ein Verteidiger unsere Stürmerin in den Torhüter. Sie hat noch versucht auszuweichen. Im selben Moment geht der Puck ins Tor. Zählt das Tor?',
+        options: [
+          {
+            text: 'Nein. Jede Berührung mit dem Torhüter im Torraum macht das Tor ungültig.',
+            feedback:
+              'Nur wenn die Berührung von uns kommt. Unsere Stürmerin wurde geschubst und hat versucht auszuweichen. Darum ist sie nicht schuld.',
+          },
+          {
+            text: 'Ja. Wer geschubst wird, ist nicht schuld, wenn die Person versucht hat auszuweichen.',
+            feedback: 'Richtig. Die Berührung kam vom Verteidiger der anderen, nicht von uns. Das Tor zählt.',
+          },
+          {
+            text: 'Nein, und unsere Stürmerin bekommt eine Strafe wegen Torhüterbehinderung.',
+            feedback:
+              'Eine Strafe gibt es, wenn jemand absichtlich in den Torhüter fährt. Unsere Stürmerin wurde geschubst. Das Tor zählt, und es gibt keine Strafe.',
+          },
+        ],
+        section: 'torhüterbehinderung',
+        topic: 'Torhüterbehinderung',
       },
     ],
   },
@@ -2478,6 +2507,52 @@ const de: Record<QuizId, QuizText> = {
         section: 'nach-einem-gegentor',
         topic: 'Nach einem Gegentor',
       },
+      {
+        prompt:
+          'Der Puck rutscht hinter unserem Tor in die Ecke, neben das Trapez. Das andere Team ist noch weit weg. Was macht unser Torhüter?',
+        options: [
+          {
+            text: 'Er fährt hin und passt den Puck zum Verteidiger. Es ist ja niemand in der Nähe.',
+            feedback:
+              'Hinter der Torlinie darf der Torhüter den Puck nur im Trapez spielen. Daneben gibt es eine kleine Strafe, auch wenn niemand in der Nähe ist.',
+          },
+          {
+            text: 'Er stoppt den Puck nur mit dem Schlittschuh. Das ist kein Spielen.',
+            feedback:
+              'Auch mit dem Schlittschuh spielt man den Puck. Es zählt, wo der Puck liegt. Neben dem Trapez gibt es dafür eine kleine Strafe.',
+          },
+          {
+            text: 'Er bleibt im Tor und ruft dem Verteidiger, damit der den Puck holt.',
+            feedback:
+              'Richtig. Neben dem Trapez holt ein Verteidiger den Puck. Der Torhüter hilft mit den Rufen, die ihr im Training abgesprochen habt.',
+          },
+        ],
+        section: 'den-puck-spielen',
+        topic: 'Den Puck spielen',
+      },
+      {
+        prompt:
+          'Ein Schuss geht knapp neben das Tor. Der Puck liegt langsam neben dem Pfosten. Die anderen sind weit weg, unser Team will wechseln. Was macht unsere Torhüterin?',
+        options: [
+          {
+            text: 'Sie legt sich auf den Puck. Dann gibt es einen Pfiff, und alle können wechseln.',
+            feedback:
+              'Ist niemand in der Nähe, darf der Torhüter den Puck nicht festhalten, nur um das Spiel zu stoppen. Dafür gibt es eine kleine Strafe wegen Spielverzögerung.',
+          },
+          {
+            text: 'Sie stoppt den Puck und spielt ihn zu einer Verteidigerin.',
+            feedback:
+              'Richtig. Ohne Druck bleibt der Puck im Spiel. Gewechselt wird, wenn wir den Puck haben, nicht mit einem Pfiff.',
+          },
+          {
+            text: 'Sie nimmt den Puck in die Fanghand und wartet, bis alle gewechselt haben.',
+            feedback:
+              'Ohne Druck darf der Puck höchstens drei Sekunden in der Fanghand bleiben. Ein Wechsel dauert länger, und dann gibt es eine Strafe.',
+          },
+        ],
+        section: 'wann-der-torhüter-den-puck-festhalten-darf',
+        topic: 'Den Puck festhalten',
+      },
     ],
   },
   'hockey-sprache': {
@@ -3659,6 +3734,28 @@ const en: typeof de = {
         ],
         section: 'goalie-off-extra-skater-on',
         topic: 'Goalie off, extra skater on',
+      },
+      {
+        prompt:
+          'In front of the opponents’ goal, a defender pushes our forward into the goalie. Our forward tried to get out of the way. At the same moment the puck goes in. Does the goal count?',
+        options: [
+          {
+            text: 'No. Any contact with the goalie in the crease makes the goal invalid.',
+            feedback:
+              'Only if the contact comes from us. Our forward was pushed and tried to get out of the way, so it isn’t their fault.',
+          },
+          {
+            text: 'Yes. Being pushed isn’t your fault, as long as you tried to get out of the way.',
+            feedback: 'Right. The contact came from the opponents’ defender, not from us. The goal counts.',
+          },
+          {
+            text: 'No, and our forward gets a penalty for goalie interference.',
+            feedback:
+              'There is a penalty when someone skates into the goalie on purpose. Our forward was pushed. The goal counts, and there is no penalty.',
+          },
+        ],
+        section: 'goalie-interference',
+        topic: 'Goalie interference',
       },
     ],
   },
@@ -5014,6 +5111,52 @@ const en: typeof de = {
         ],
         section: 'after-a-goal-against',
         topic: 'After a goal against',
+      },
+      {
+        prompt:
+          'The puck slides into the corner behind our goal, next to the trapezoid. The opponents are still far away. What does our goalie do?',
+        options: [
+          {
+            text: 'They skate over and pass the puck to a defender. Nobody is close anyway.',
+            feedback:
+              'Behind the goal line, the goalie may only play the puck inside the trapezoid. Next to it there is a minor penalty, even if nobody is close.',
+          },
+          {
+            text: 'They only stop the puck with a skate. That isn’t playing it.',
+            feedback:
+              'Stopping the puck with a skate is playing it too. What counts is where the puck is. Next to the trapezoid that is a minor penalty.',
+          },
+          {
+            text: 'They stay in the goal and call to a defender to get the puck.',
+            feedback:
+              'Right. Next to the trapezoid, a defender gets the puck. The goalie helps with the calls you agreed on in practice.',
+          },
+        ],
+        section: 'playing-the-puck',
+        topic: 'Playing the puck',
+      },
+      {
+        prompt:
+          'A shot goes just wide. The puck slows down next to the post. The opponents are far away, and our team wants to change. What does our goalie do?',
+        options: [
+          {
+            text: 'They fall on the puck. Then there is a whistle and everyone can change.',
+            feedback:
+              'If nobody is close, the goalie may not cover the puck just to stop play. That is a minor penalty for delay of game.',
+          },
+          {
+            text: 'They stop the puck and pass it to a defender.',
+            feedback:
+              'Right. Without pressure the puck stays in play. We change when we have the puck, not with a whistle.',
+          },
+          {
+            text: 'They pick the puck up in the catching glove and wait until everyone has changed.',
+            feedback:
+              'Without pressure the puck may stay in the catching glove for three seconds at most. A change takes longer, and then it is a penalty.',
+          },
+        ],
+        section: 'when-the-goalie-may-cover-the-puck',
+        topic: 'Covering the puck',
       },
     ],
   },

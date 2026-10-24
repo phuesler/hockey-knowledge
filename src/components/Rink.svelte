@@ -22,6 +22,7 @@
     POST_X,
     RINK_WIDTH,
     VIEW_FROM,
+    VIEW_HALF_WIDTH,
     VIEW_LENGTH,
     moveGeometry,
     points,
@@ -46,6 +47,8 @@
   const from = $derived(VIEW_FROM[view]);
   /* Height of the drawing; the bottom edge is at d = from. */
   const H = $derived(L - from);
+  /* A narrow view keeps the middle of the rink and cuts off both sides. */
+  const left = $derived(W / 2 - VIEW_HALF_WIDTH[view]);
   const full = $derived(view === 'full');
   /* A view that starts above the end boards shows only the side boards. */
   const middle = $derived(from > 0);
@@ -105,7 +108,7 @@
 </script>
 
 <!-- `still`: the caller moves the players itself (RinkStory), so no CSS transition. -->
-<svg viewBox="0 0 {W} {H}" role="img" aria-label={label} class:still>
+<svg viewBox="{left} 0 {W - 2 * left} {H}" role="img" aria-label={label} class:still>
   <g transform={flip ? `rotate(180 ${W / 2} ${H / 2})` : undefined}>
   <path d={ice} class="ice" />
 
@@ -328,6 +331,27 @@
     fill-opacity: 0.18;
     stroke-width: 0.12;
   }
+  /* The crease itself is part of the rink; this area only carries its label. */
+  .area.crease {
+    fill: none;
+    stroke: none;
+  }
+  .area.goalie-ok {
+    fill: var(--c-good-soft);
+    stroke: none;
+  }
+  /* The trapezoid's two lines are red on the ice. */
+  .area.trapezoid {
+    fill: var(--c-good-soft);
+    stroke: var(--c-brand);
+    stroke-width: 0.2;
+  }
+  .area.goalie-no {
+    fill: var(--c-brand-soft);
+    stroke: var(--c-brand);
+    stroke-dasharray: 0.5 0.35;
+    stroke-width: 0.15;
+  }
 
   text {
     font-family: var(--font-sans);
@@ -340,11 +364,13 @@
     fill: var(--c-accent);
   }
   .area-label.gap,
-  .area-label.danger {
+  .area-label.danger,
+  .area-label.goalie-no {
     fill: var(--c-brand);
   }
   .area-label.near,
-  .area-label.open {
+  .area-label.open,
+  .area-label.trapezoid {
     fill: var(--c-good);
   }
   .area-label.bubble {

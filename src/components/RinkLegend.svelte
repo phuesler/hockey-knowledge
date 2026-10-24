@@ -38,6 +38,10 @@
     'cover-c': 'Bereich C',
     'cover-lw': 'Bereich LW',
     'cover-rw': 'Bereich RW',
+    crease: 'Torraum',
+    trapezoid: 'Trapez',
+    'goalie-ok': 'Torhüter darf den Puck spielen',
+    'goalie-no': 'Torhüter darf den Puck nicht spielen',
   };
   const en: typeof de = {
     title: 'Key',
@@ -69,6 +73,10 @@
     'cover-c': 'C’s area',
     'cover-lw': 'LW’s area',
     'cover-rw': 'RW’s area',
+    crease: 'crease',
+    trapezoid: 'trapezoid',
+    'goalie-ok': 'goalie may play the puck',
+    'goalie-no': 'goalie may not play the puck',
   };
 
   const s = $derived({ de, en }[locale]);
@@ -86,6 +94,7 @@
     }
     const order: Key[] = [
       'us', 'them', 'ref', 'ghost', 'puck', 'skate', 'carry', 'pass', 'shot', 'stick', 'lane', 'sight', 'danger', 'near', 'far', 'gap', 'open', 'shadow', 'view', 'bubble', 'bench', 'bench-them', 'ref-crease',
+      'crease', 'trapezoid', 'goalie-ok', 'goalie-no',
       'cover-lw', 'cover-rw', 'cover-ld', 'cover-rd', 'cover-c',
     ];
     return order.filter((k) => keys.has(k));
@@ -273,5 +282,22 @@
     fill: var(--c-accent);
     fill-opacity: 0.18;
     stroke: var(--c-accent);
+  }
+  .area.crease {
+    fill: var(--c-ice);
+    stroke: var(--c-brand);
+  }
+  .area.trapezoid {
+    fill: var(--c-good-soft);
+    stroke: var(--c-brand);
+  }
+  .area.goalie-ok {
+    fill: var(--c-good-soft);
+    stroke: var(--c-good);
+  }
+  .area.goalie-no {
+    fill: var(--c-brand-soft);
+    stroke: var(--c-brand);
+    stroke-dasharray: 2 1.5;
   }
 </style>

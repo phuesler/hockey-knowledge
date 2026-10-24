@@ -5,7 +5,7 @@
  * A play has one or more panels. Each panel is one zone; `zone` says whose goal is at
  * the bottom, and `verdict` marks a "do this" / "not like this" comparison.
  */
-import { DANGER_ZONE, POST_X, GOAL_LINE, benches, bubble, secondPeriod, passShadow, viewCone, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, POST_X, GOAL_LINE, benches, bubble, goalieAreas, secondPeriod, passShadow, viewCone, type Pt, type Scene, type View } from './rink';
 import { animals } from './stories';
 
 export interface PlayPanel {
@@ -1359,6 +1359,69 @@ const geometry = {
       },
     },
   ],
+  /* Regeln/Torhüter: crease (1), trapezoid (2) and the corners beside it (3), then the
+     puck in such a corner: the goalie stays, RD fetches it. */
+  'goalie-trapezoid': [
+    {
+      zone: 'own',
+      view: 'end',
+      scene: {
+        areas: [
+          ...goalieAreas(12),
+          { kind: 'crease', ellipse: { at: [0, 5.1], rx: 0, ry: 0 }, label: '1' },
+          { kind: 'trapezoid', poly: [], label: '2', labelAt: [0, 1.4] },
+          { kind: 'goalie-no', poly: [], label: '3', labelAt: [-9.6, 1.8] },
+          { kind: 'goalie-no', poly: [], label: '3', labelAt: [9.6, 1.8] },
+        ],
+        players: [],
+      },
+    },
+    {
+      zone: 'own',
+      view: 'end',
+      verdict: 'good',
+      scene: {
+        areas: goalieAreas(12),
+        players: [
+          { team: 'us', label: 'G', at: [0.7, 4.8] },
+          { team: 'us', label: 'RD', at: [4.5, 9] },
+        ],
+        puck: [10.6, 1.4],
+        moves: [{ kind: 'skate', path: [[4.5, 9], [8.5, 6], [9.6, 2.6]], trim: 1.2 }],
+      },
+    },
+  ],
+  /* Regeln: goalie interference. LW in the crease, touching their goalie, then at the
+     edge of the crease. Attacking zone, our left at positive x. */
+  'goalie-crease': [
+    {
+      zone: 'attack',
+      view: 'crease',
+      verdict: 'bad',
+      scene: {
+        players: [
+          { team: 'them', label: 'G', at: [-0.3, 4.9] },
+          { team: 'us', label: 'LW', at: [1.1, 6.1] },
+          { team: 'us', label: 'C', at: [-5.6, 8.4] },
+        ],
+        puck: [-4.6, 7.8],
+      },
+    },
+    {
+      zone: 'attack',
+      view: 'crease',
+      verdict: 'good',
+      scene: {
+        players: [
+          { team: 'them', label: 'G', at: [-0.3, 4.9] },
+          { team: 'us', label: 'LW', at: [2.3, 7.5] },
+          { team: 'us', label: 'C', at: [-5.6, 8.4] },
+        ],
+        puck: [-4.6, 7.8],
+        moves: [{ kind: 'stick', path: [[2.3, 7.5], [-0.2, 6.4]] }],
+      },
+    },
+  ],
 } satisfies Record<string, PlayPanel[]>;
 
 export type PlayId = keyof typeof geometry;
@@ -1380,6 +1443,41 @@ interface PlayText {
 }
 
 const de: Record<PlayId, PlayText> = {
+  'goalie-crease': {
+    caption: 'Vor dem Tor der anderen',
+    panels: [
+      {
+        title: 'Im Torraum',
+        text: 'LW steht im Torraum und berührt die Torhüterin der anderen. Schiesst C jetzt ein Tor, zählt es nicht.',
+      },
+      {
+        title: 'Am Rand des Torraums',
+        text: 'LW steht am Rand, den Schläger am Eis. Die Torhüterin hat Platz. Ein Abpraller ist für LW trotzdem nah.',
+      },
+    ],
+    labels: [
+      'Nahaufnahme vor dem Tor der anderen. Ihre Torhüterin steht im Torraum. Unser linker Flügel steht ebenfalls im Torraum, ganz nah an ihr. Unser Center hat den Puck schräg vor dem Tor.',
+      'Gleiche Lage. Unser linker Flügel steht ausserhalb des Torraums, am Rand, und hält den Schläger aufs Eis vor dem Tor.',
+    ],
+  },
+  'goalie-trapezoid': {
+    caption: 'Torraum und Trapez',
+    panels: [
+      {
+        title: 'Die Markierungen',
+        text: 'Der blaue Torraum (1) gehört dem Torhüter. Hinter dem Tor bilden zwei rote Linien das Trapez (2). Hinter der Torlinie darf der Torhüter den Puck nur dort spielen, in den Ecken daneben (3) nicht.',
+      },
+      {
+        title: 'Puck in der Ecke',
+        text: 'Der Puck liegt in einer Ecke neben dem Trapez. Die Torhüterin bleibt im Tor und ruft. RD holt den Puck.',
+      },
+    ],
+    labels: [
+      'Nahaufnahme hinter unserem Tor. Vor dem Tor der halbrunde blaue Torraum. Hinter dem Tor laufen zwei schräge rote Linien von der Torlinie zur Bande, das Trapez. Vor der Torlinie und im Trapez ist das Eis grün: Dort darf der Torhüter den Puck spielen. Die beiden Ecken neben dem Trapez sind rot: Dort nicht.',
+      'Gleiche Nahaufnahme. Der Puck liegt rechts in der roten Ecke neben dem Trapez. Unsere Torhüterin steht im Torraum. Unser rechter Verteidiger fährt in die Ecke zum Puck.',
+    ],
+    note: 'Vor der Torlinie darf der Torhüter den Puck überall spielen, bis zur roten Mittellinie.',
+  },
   'goal-side': {
     caption: 'Abwehrseite',
     panels: [
@@ -1934,6 +2032,41 @@ const de: Record<PlayId, PlayText> = {
 };
 
 const en: typeof de = {
+  'goalie-crease': {
+    caption: 'In front of the opponents’ goal',
+    panels: [
+      {
+        title: 'In the crease',
+        text: 'LW stands in the crease and touches the opponents’ goalie. If C scores now, the goal doesn’t count.',
+      },
+      {
+        title: 'At the edge of the crease',
+        text: 'LW stands at the edge, stick on the ice. The goalie has room. A rebound is still close for LW.',
+      },
+    ],
+    labels: [
+      'Close-up in front of the opponents’ goal. Their goalie stands in the crease. Our left winger stands in the crease too, right next to the goalie. Our centre has the puck at an angle in front of the goal.',
+      'The same situation. Our left winger stands outside the crease, at its edge, with the stick on the ice in front of the goal.',
+    ],
+  },
+  'goalie-trapezoid': {
+    caption: 'Crease and trapezoid',
+    panels: [
+      {
+        title: 'The markings',
+        text: 'The blue crease (1) belongs to the goalie. Behind the goal, two red lines make the trapezoid (2). Behind the goal line, the goalie may only play the puck in there, not in the corners beside it (3).',
+      },
+      {
+        title: 'Puck in the corner',
+        text: 'The puck is in a corner beside the trapezoid. The goalie stays in the goal and calls. RD gets the puck.',
+      },
+    ],
+    labels: [
+      'Close-up behind our goal. In front of the goal, the blue half-circle of the crease. Behind the goal, two slanted red lines run from the goal line to the boards: the trapezoid. In front of the goal line and inside the trapezoid the ice is green: the goalie may play the puck there. The two corners beside the trapezoid are red: not there.',
+      'The same close-up. The puck is in the red corner on the right, beside the trapezoid. Our goalie stands in the crease. Our right defender skates into the corner to the puck.',
+    ],
+    note: 'In front of the goal line the goalie may play the puck anywhere, up to the red centre line.',
+  },
   'goal-side': {
     caption: 'Defensive side',
     panels: [
