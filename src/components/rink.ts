@@ -69,6 +69,9 @@ export interface Move {
  * bubble — the time and space the puck carrier has: the ice they reach before an opponent.
  * cover-* — the coverage area of one position in our zone (see COVERAGE_AREAS);
  *           cover-shared is the middle strip up high that the wingers and C share.
+ * crease — marks the goal crease (drawn by the rink itself) for a label and the key.
+ * trapezoid — the goalie's area behind the goal, see TRAPEZOID.
+ * goalie-ok / goalie-no — where the goalie may or may not play the puck, see goalieAreas().
  */
 export type CoverRole = 'ld' | 'rd' | 'c' | 'lw' | 'rw';
 export type AreaKind =
@@ -86,7 +89,11 @@ export type AreaKind =
   | 'view'
   | 'bubble'
   | `cover-${CoverRole}`
-  | 'cover-shared';
+  | 'cover-shared'
+  | 'crease'
+  | 'trapezoid'
+  | 'goalie-ok'
+  | 'goalie-no';
 
 export interface Area {
   kind: AreaKind;
@@ -111,11 +118,13 @@ export const RINK_LENGTH = 25;
 export const FULL_LENGTH = 60;
 export const CENTRE_LINE = FULL_LENGTH / 2;
 
-export type View = 'zone' | 'half' | 'full' | 'neutral';
+export type View = 'zone' | 'half' | 'full' | 'neutral' | 'end' | 'crease';
 
 /**
  * zone: one zone plus a strip of the neutral zone; half: up to just past the centre line;
- * neutral: the neutral zone with a few metres of each zone, without the ends of the rink.
+ * neutral: the neutral zone with a few metres of each zone, without the ends of the rink;
+ * end: a close-up of the end boards, the goal and the faceoff dots; crease: a closer one
+ * of the goal and the crease, cut off at the sides (VIEW_HALF_WIDTH).
  * VIEW_LENGTH is the top edge of the view, VIEW_FROM its bottom edge.
  */
 export const VIEW_LENGTH: Record<View, number> = {
@@ -123,8 +132,12 @@ export const VIEW_LENGTH: Record<View, number> = {
   half: CENTRE_LINE + 1,
   full: FULL_LENGTH,
   neutral: 48,
+  end: 12,
+  crease: 10,
 };
-export const VIEW_FROM: Record<View, number> = { zone: 0, half: 0, full: 0, neutral: 18 };
+export const VIEW_FROM: Record<View, number> = { zone: 0, half: 0, full: 0, neutral: 18, end: 0, crease: 0 };
+/** How far to each side of the middle a view reaches; only the crease view is narrower than the rink. */
+export const VIEW_HALF_WIDTH: Record<View, number> = { zone: 15, half: 15, full: 15, neutral: 15, end: 15, crease: 8 };
 export const CORNER_RADIUS = 7;
 export const GOAL_LINE = 4;
 export const BLUE_LINE = 22;
@@ -150,6 +163,50 @@ export const DANGER_ZONE: readonly Pt[] = [
   [DOT_X, DOT_D],
   [POST_X, GOAL_LINE],
 ];
+
+/**
+ * The trapezoid behind the goal (IIHF rule 1.8): two red lines from the goal line, 6.80 m
+ * apart, to the end boards, 8.60 m apart. Behind the goal line the goalie may only play
+ * the puck in here.
+ */
+export const TRAPEZOID: readonly Pt[] = [
+  [-3.4, GOAL_LINE],
+  [3.4, GOAL_LINE],
+  [4.3, 0],
+  [-4.3, 0],
+];
+
+/** Where the boards are at distance d from the end boards, on one side (inside the rounded corner). */
+function boardsX(side: -1 | 1, d: number): number {
+  const r = CORNER_RADIUS;
+  return side * (d >= r ? 15 : 15 - r + Math.sqrt(r * r - (r - d) ** 2));
+}
+
+/** Points along the boards on one side, from d = `a` to d = `b`. */
+function alongBoards(side: -1 | 1, a: number, b: number): Pt[] {
+  return Array.from({ length: 9 }, (_, i) => {
+    const d = a + ((b - a) * i) / 8;
+    return [boardsX(side, d), d] as const;
+  });
+}
+
+/**
+ * Where the goalie may play the puck: everything above the goal line, up to `to` (the
+ * top of the drawing), and the trapezoid. The two corners behind the goal line, beside
+ * the trapezoid, are where they may not.
+ */
+export function goalieAreas(to: number): Area[] {
+  const corner = (side: -1 | 1): Pt[] => [[side * 3.4, GOAL_LINE], ...alongBoards(side, GOAL_LINE, 0), [side * 4.3, 0]];
+  return [
+    {
+      kind: 'goalie-ok',
+      poly: [...alongBoards(-1, CORNER_RADIUS, GOAL_LINE), ...alongBoards(1, GOAL_LINE, CORNER_RADIUS), [15, to], [-15, to]],
+    },
+    { kind: 'goalie-no', poly: corner(-1) },
+    { kind: 'goalie-no', poly: corner(1) },
+    { kind: 'trapezoid', poly: TRAPEZOID },
+  ];
+}
 
 /**
  * A player's field of view as a wedge: from `from`, looking towards `toward`, `spread`
