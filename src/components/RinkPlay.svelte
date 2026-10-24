@@ -20,6 +20,7 @@
       attack: 'Oben ist das gegnerische Tor, wir greifen nach oben an',
       full: 'Das ganze Eis: unten unser Tor, oben das gegnerische',
       neutral: 'Die neutrale Zone: unser Tor liegt unten, wir greifen nach oben an',
+      turned: 'Das ganze Eis im 2. Drittel: oben unser Tor, wir greifen nach unten an',
     },
     verdict: { good: 'So', bad: 'Nicht so' },
   };
@@ -29,6 +30,7 @@
       attack: 'The opponents’ goal is at the top, we attack upwards',
       full: 'The whole rink: our goal at the bottom, the opponents’ at the top',
       neutral: 'The neutral zone: our goal is below, we attack upwards',
+      turned: 'The whole rink in period 2: our goal at the top, we attack downwards',
     },
     verdict: { good: 'Do', bad: 'Don’t' },
   };
@@ -37,11 +39,13 @@
   const panels = $derived(plays[play]);
   const text = $derived(playText[locale][play]);
   const scenes = $derived(panels.map((p) => p.scene));
+  /* Panels drawn the other way round (period 1 next to period 2) each say where our goal is. */
+  const mixed = $derived(panels.some((p) => p.zone !== panels[0].zone));
 </script>
 
 <figure class="play">
   <figcaption>{text.caption}</figcaption>
-  <p class="zone">{s.zone[panels[0].zone]}</p>
+  {#if !mixed}<p class="zone">{s.zone[panels[0].zone]}</p>{/if}
 
   <div class="panels" class:pair={panels.length > 1} class:tall={panels.some((p) => p.view === 'full')}>
     {#each panels as panel, i}
@@ -52,7 +56,8 @@
           {/if}
           {text.panels[i].title}
         </p>
-        <Rink scene={panel.scene} label={text.labels[i]} view={panel.view} flip={panel.zone === 'attack'} />
+        {#if mixed}<p class="zone">{s.zone[panel.zone]}</p>{/if}
+        <Rink scene={panel.scene} label={text.labels[i]} view={panel.view} flip={panel.zone === 'attack' || panel.zone === 'turned'} />
         <p class="text">{text.panels[i].text}</p>
       </div>
     {/each}

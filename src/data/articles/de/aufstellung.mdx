@@ -11,6 +11,7 @@ import LineupBoard from '../../../components/LineupBoard.astro';
 import BenchSeating from '../../../components/BenchSeating.astro';
 import Callout from '../../../components/Callout.astro';
 import Quiz from '../../../components/Quiz.svelte';
+import { href } from '../../../lib/href';
 
 Vor jedem Spiel gibt es eine Aufstellung. Sie sagt, wer mit wem auf dem Eis steht und auf
 welcher Position. Für Eltern sieht sie zuerst aus wie eine Liste voller Abkürzungen. Dieser
@@ -39,7 +40,7 @@ während des Spiels schnell umstellen. Was am Board steht, gilt.
 
 Auf dem Eis stehen pro Team fünf Feldspieler und ein Torhüter. Die Feldspieler wechseln
 sich ständig ab. Eine Gruppe, die zusammen aufs Eis geht, heisst **Reihe**, oft auch
-**Linie**. Ein Einsatz auf dem Eis heisst **Shift**, er dauert meistens nur 40 bis 60
+**Linie**. Ein Einsatz auf dem Eis heisst **die Shift**, sie dauert meistens nur 40 bis 60
 Sekunden.
 
 Die Aufstellung hat immer die gleiche Reihenfolge:
@@ -101,6 +102,9 @@ vor jedem Spiel beim **Aufwärmen neben dem Eis** (Off-Ice) mehrere Situationen 
 eine Simulation. Die Kinder üben dabei normale Wechsel, PK1 und PK2, eine Strafe gegen den
 Center und weitere Situationen. Auf dem Eis wissen sie dann schon, wann sie dran sind.
 
+Wann im Spiel der richtige Moment für einen Wechsel ist und warum das 2. Drittel anders
+ist, steht im Artikel über das <a href={href('/de/wechseln')}>Wechseln</a>.
+
 ### Kenne deine Reihe
 
 Jedes Kind muss wissen, in **welcher Reihe** es spielt. Nach einer Spielunterbrechung kann
@@ -136,13 +140,11 @@ wechseln, wechseln auch die Plätze:
 
 <BenchSeating />
 
-### An der Tür
+### Über die Bande, durch die Tür
 
-- Die **Verteidiger** springen über die Bande.
-- Der **Ersatztorhüter** bedient die Tür und lässt alle raus und rein.
-- Wer **aufs Eis** geht, hat Vorrang und geht zuerst.
-- Wer **vom Eis** kommt, wartet, bis alle draussen sind. Erst danach geht man auf die Bank. So
-  blockiert niemand den Weg aufs Eis.
+- Wer **aufs Eis** geht, springt **über die Bande**.
+- Wer **vom Eis** kommt, nimmt die **Tür**. Der **Ersatztorhüter** bedient sie.
+- So kommen sich die beiden Gruppen nicht in die Quere, und an der Tür staut sich nichts.
 
 ## Wie die Reihen zusammengestellt werden
 

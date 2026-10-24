@@ -197,6 +197,45 @@ export function bubble(at: Pt, r: number, seconds?: string, labelAt?: Pt): Area 
   return { kind: 'bubble', ellipse: { at, rx: r, ry: r }, label: seconds, labelAt };
 }
 
+/**
+ * Both benches on the left boards, either side of the centre line (full view). In
+ * periods 1 and 3 our bench is in our own half. The teams switch ends for period 2 but
+ * the benches stay, so ours is then in the opponents' half: the long change.
+ */
+export function benches(period: 'odd' | 'even'): Area[] {
+  const low: Pt[] = [[-15, 22], [-13.8, 22], [-13.8, 29.9], [-15, 29.9]];
+  const high: Pt[] = [[-15, 30.1], [-13.8, 30.1], [-13.8, 38], [-15, 38]];
+  return [
+    { kind: 'bench', poly: period === 'odd' ? low : high },
+    { kind: 'bench-them', poly: period === 'odd' ? high : low },
+  ];
+}
+
+/**
+ * A period 2 scene drawn the way the rink really looks. The scene is written as usual,
+ * our goal at d = 0 and the benches from benches('even') on the left boards. This
+ * mirrors it left to right (LD and RD, LW and RW swap places and names); Rink's `flip`
+ * then turns it by 180°. Together: our goal is at the top, and both benches are back
+ * where they were in period 1, because only the goals change ends.
+ */
+export function secondPeriod(scene: Scene): Scene {
+  const m = ([x, d]: Pt): Pt => [-x, d];
+  const swap = (label?: string) =>
+    label?.replace(/^([LR])([DW])$/, (_, side: string, pos: string) => (side === 'L' ? 'R' : 'L') + pos);
+  return {
+    ...scene,
+    players: scene.players.map((p) => ({ ...p, at: m(p.at), label: swap(p.label) })),
+    puck: scene.puck && m(scene.puck),
+    moves: scene.moves?.map((mv) => ({ ...mv, path: mv.path.map(m) as unknown as Move['path'] })),
+    areas: scene.areas?.map((a) => ({
+      ...a,
+      poly: a.poly?.map(m),
+      ellipse: a.ellipse && { ...a.ellipse, at: m(a.ellipse.at) },
+      labelAt: a.labelAt && m(a.labelAt),
+    })),
+  };
+}
+
 /** Rink metres to SVG user units: the goal at the bottom, 1 unit = 1 m. `length` is the view's length. */
 export function svg([x, d]: Pt, length = RINK_LENGTH): [number, number] {
   return [x + RINK_WIDTH / 2, length - d];
