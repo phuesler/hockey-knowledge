@@ -70,8 +70,8 @@ export const games: Game[] = [
     youtubeId: '9Es9Um2ulXU',
     channel: { name: 'Hockey Hub Hannover', url: 'https://www.youtube.com/@HOCKEYHUBHANNOVER' },
     note: {
-      de: 'Unsere U13 aus dieser Saison.',
-      en: 'Our U13 from this season.',
+      de: 'Unsere U13 aus dieser Saison. FASS spielt in Weiss.',
+      en: 'Our U13 from this season. FASS play in white.',
     },
     scenes: [],
   },
