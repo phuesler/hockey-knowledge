@@ -60,6 +60,22 @@ export const games: Game[] = [
     scenes: [],
   },
   {
+    date: '2026-11-08',
+    home: 'ESG Hannover B',
+    away: 'FASS Berlin',
+    level: {
+      de: 'U13 · MK2 · Saison 2026/27',
+      en: 'U13 · MK2 · 2026/27 season',
+    },
+    youtubeId: '9Es9Um2ulXU',
+    channel: { name: 'Hockey Hub Hannover', url: 'https://www.youtube.com/@HOCKEYHUBHANNOVER' },
+    note: {
+      de: 'Unsere U13 aus dieser Saison. FASS spielt in Weiss.',
+      en: 'Our U13 from this season. FASS play in white.',
+    },
+    scenes: [],
+  },
+  {
     date: '2026-01-31',
     home: 'Crocodiles Hamburg',
     away: 'FASS Berlin',

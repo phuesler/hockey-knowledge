@@ -13,6 +13,7 @@ import LineupBoard from '../../../components/LineupBoard.astro';
 import BenchSeating from '../../../components/BenchSeating.astro';
 import Callout from '../../../components/Callout.astro';
 import Quiz from '../../../components/Quiz.svelte';
+import { href } from '../../../lib/href';
 
 Before every game there is a lineup (Aufstellung). It says who is on the ice with whom, and
 in which position. To parents it first looks like a list full of abbreviations. This article
@@ -99,6 +100,9 @@ like a simulation. The children practise normal line changes, PK1 and PK2, a pen
 against the centre and other situations. On the ice, they then already know when they are
 up.
 
+When the right moment for a change is during play, and why period 2 is different, is in
+the article on <a href={href('/en/line-changes')}>line changes</a>.
+
 ### Know your line
 
 Every child has to know **which line** they play in. After a stoppage, the coach may call
@@ -134,13 +138,11 @@ period, the places switch too:
 
 <BenchSeating />
 
-### At the door
+### Over the boards, through the door
 
-- The **defenders** jump over the boards.
-- The **backup goalie** works the door and lets players out and in.
-- Players going **onto the ice** have right of way and go first.
-- Players coming **off the ice** wait until everyone is out. Only then do they go onto the
-  bench. That way nobody blocks the way onto the ice.
+- Players going **onto the ice** jump **over the boards**.
+- Players coming **off the ice** use the **door**. The **backup goalie** works it.
+- That way the two groups don't get in each other's way, and nothing jams up at the door.
 
 ## How the lines are put together
 

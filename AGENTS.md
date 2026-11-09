@@ -126,6 +126,11 @@ The articles are written in German (this section describes how). The audience is
 aged 11 to 13 **and** parents who have never stood in a locker room.
 
 - German, Swiss spelling (`ss` instead of `ß`).
+- Gender-neutral by rewording, for girls and boys alike: "wer den Puck hat", "dein
+  Gegenüber", "jemand aus deinem Team", "das andere Team"; repeat the role name instead
+  of "er". No gender star, colon or doubling — kids read the texts aloud. Position names
+  (Verteidiger, Stürmer, Center, Torhüter) and role names (König, Jäger …) stay as hockey
+  terms. Real, named people keep their own pronouns.
 - Short sentences. One technical term per paragraph, explained on first use.
 - No advertising, no brand recommendations. Price ranges instead of specific products,
   in Euro (German price levels — the team plays in Berlin).
@@ -140,6 +145,7 @@ English articles (`src/data/articles/en/`) translate the German ones and follow 
 rules, plus:
 
 - British English spelling (`colour`, `centre`, `tyre`).
+- Singular "they" or the repeated role name instead of "he"; "defender", not "defenceman".
 - Same short sentences, same rule-of-thumb notes, prices stay in Euro at German price
   levels — the readers still shop in Berlin.
 - German shop terms in brackets on first use only, e.g. "sharpening (Schliff)", so

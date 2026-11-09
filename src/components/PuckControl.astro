@@ -24,21 +24,21 @@ const de = {
   bad: 'Nicht so',
   good: 'So',
   front: 'Puck vor dem Körper',
-  frontText: 'Der Gegner kommt mit dem Schläger leicht an den Puck.',
-  away: 'Puck weg vom Gegner',
-  awayText: 'Der Körper ist zwischen Puck und Gegner. Der Schläger des Gegners kommt nicht hin.',
+  frontText: 'Das Gegenüber kommt mit dem Schläger leicht an den Puck.',
+  away: 'Puck weg vom Gegenüber',
+  awayText: 'Der Körper ist zwischen Puck und Gegenüber. Der Schläger vom Gegenüber kommt nicht hin.',
   frontLabel:
-    'Von oben: Ein Spieler führt den Puck direkt vor sich. Ein Gegner links vorne streckt den Schläger aus und erreicht den Puck.',
+    'Von oben: Eine Spielerin führt den Puck direkt vor sich. Links vorne streckt das Gegenüber den Schläger aus und erreicht den Puck.',
   awayLabel:
-    'Von oben: Derselbe Spieler führt den Puck rechts neben sich, weg vom Gegner. Der Gegner links kommt mit dem Schläger nur bis an den Körper.',
+    'Von oben: Dieselbe Spielerin führt den Puck rechts neben sich, weg vom Gegenüber. Das Gegenüber links kommt mit dem Schläger nur bis an den Körper.',
   pass: 'Pass',
   shot: 'Schuss',
   skate: 'weiterfahren',
-  defender: 'Gegner',
+  defender: 'Gegenüber',
   forehandText:
-    'Liegt der Puck auf der Vorhand, kann der König passen, schiessen oder weiterfahren. Der Gegner weiss nicht, was kommt.',
+    'Liegt der Puck auf der Vorhand, kann der König passen, schiessen oder weiterfahren. Das Gegenüber weiss nicht, was kommt.',
   forehandLabel:
-    'Von oben: Ein Spieler hat den Puck auf der Vorhand, rechts neben sich. Drei Pfeile gehen vom Puck aus: nach links ein Pass, nach oben ein Schuss, und ein Pfeil vom Spieler nach rechts oben zum Weiterfahren. Vorne steht ein Gegner.',
+    'Von oben: Ein Spieler hat den Puck auf der Vorhand, rechts neben sich. Drei Pfeile gehen vom Puck aus: nach links ein Pass, nach oben ein Schuss, und ein Pfeil vom Spieler nach rechts oben zum Weiterfahren. Vorne steht das Gegenüber.',
 };
 
 const en: typeof de = {
@@ -49,13 +49,13 @@ const en: typeof de = {
   bad: 'Don’t',
   good: 'Do',
   front: 'Puck in front of the body',
-  frontText: 'The opponent can easily reach the puck with his stick.',
+  frontText: 'The opponent can easily reach the puck with their stick.',
   away: 'Puck away from the opponent',
   awayText: 'The body is between the puck and the opponent. The opponent’s stick can’t get there.',
   frontLabel:
-    'From above: a player carries the puck straight in front of him. An opponent ahead on the left reaches out with his stick and gets to the puck.',
+    'From above: a player carries the puck straight in front of them. An opponent ahead on the left reaches out with a stick and gets to the puck.',
   awayLabel:
-    'From above: the same player carries the puck on his right, away from the opponent. The opponent on the left can only reach the player’s body with his stick.',
+    'From above: the same player carries the puck on the right, away from the opponent. The opponent on the left can only reach the player’s body with the stick.',
   pass: 'Pass',
   shot: 'Shot',
   skate: 'keep skating',
@@ -63,7 +63,7 @@ const en: typeof de = {
   forehandText:
     'With the puck on the forehand, the König can pass, shoot or keep skating. The opponent doesn’t know what is coming.',
   forehandLabel:
-    'From above: a player has the puck on his forehand, to his right. Three arrows start at the puck: a pass to the left, a shot straight up, and an arrow from the player up to the right for skating on. An opponent stands ahead.',
+    'From above: a player has the puck on the forehand, to the right. Three arrows start at the puck: a pass to the left, a shot straight up, and an arrow from the player up to the right for skating on. An opponent stands ahead.',
 };
 
 const s = { de, en }[localeFromUrl(Astro.url)];

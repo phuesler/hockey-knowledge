@@ -5,7 +5,7 @@
  *
  * Positions are rink metres, see rink.ts. In the attacking zone our left is at positive x.
  */
-import { DANGER_ZONE, bubble, passShadow, viewCone, type Area, type Move, type Player, type Pt, type Scene, type View } from './rink';
+import { DANGER_ZONE, benches, bubble, secondPeriod, passShadow, viewCone, type Area, type Move, type Player, type Pt, type Scene, type View } from './rink';
 import type { PlayPanel } from './plays';
 
 export interface Sequence {
@@ -122,6 +122,13 @@ const ourStart: Pt[] = [[-11, 22.6], [-5, 24], [-7, 27.6], [-11, 25.6], [7, 27.6
 const theirStart: Pt[] = [[-11, 34.4], [5, 36], [7, 32.4], [-11, 37.4], [-7, 32.4], [0, 54.4], [-5, 36]];
 const startLabels = [undefined, 'LD', 'LW', undefined, 'RW', 'G', 'RD'];
 const BENCH_PLAYERS = [0, 3];
+
+/* dump-change: period 2, our bench in the opponents' half, drawn turned (secondPeriod). The fresh forwards wait on
+   the bench (drawn on the ice next to it, so the bench stays visible) until the tired
+   ones come off. */
+const dumpBench = benches('even');
+const benchSpots: Pt[] = [[-12.2, 31.4], [-12.2, 34], [-12.2, 36.6]];
+const goalies = [us('g', 'G', [0, 5.5]), { id: 'tg', team: 'them', label: 'G', at: [0, 54.5] } as Player];
 
 const geometry = {
   'role-switch': {
@@ -683,6 +690,107 @@ const geometry = {
       },
     ],
   },
+  'dump-change': {
+    zone: 'turned',
+    view: 'full',
+    frames: (
+      [
+        {
+          areas: dumpBench,
+          players: [
+            ...goalies,
+            them('o1', [-1, 9]),
+            them('o2', [6, 11]),
+            them('o3', [-8, 18]),
+            them('o4', [-9, 26]),
+            them('o5', [8, 25]),
+            us('ld', 'LD', [-6, 7]),
+            us('rd', 'RD', [5, 6.5]),
+            us('c', 'C', [-4, 13]),
+            us('lw', 'LW', [-11, 15]),
+            us('rw', 'RW', [10, 14]),
+            us('lw2', 'LW', benchSpots[0]),
+            us('c2', 'C', benchSpots[1]),
+            us('rw2', 'RW', benchSpots[2]),
+          ],
+          puck: [-3.4, 14.2],
+          moves: [{ kind: 'carry', path: [[-3.4, 14.2], [-1, 22], [-2, 30.6]], trim: 0.2 }],
+        },
+        {
+          areas: dumpBench,
+          players: [
+            ...goalies,
+            them('o1', [-1, 22]),
+            them('o2', [5, 24]),
+            them('o3', [-7, 27]),
+            them('o4', [-5, 38]),
+            them('o5', [6, 40]),
+            us('ld', 'LD', [-5, 20]),
+            us('rd', 'RD', [5, 19]),
+            us('c', 'C', [-2.4, 31.4]),
+            us('lw', 'LW', [-10, 27]),
+            us('rw', 'RW', [9.5, 28]),
+            us('lw2', 'LW', benchSpots[0]),
+            us('c2', 'C', benchSpots[1]),
+            us('rw2', 'RW', benchSpots[2]),
+          ],
+          puck: [-1.8, 32.6],
+          moves: [{ kind: 'shot', path: [[-1.8, 32.6], [11.6, 57]], trim: 0.2 }],
+        },
+        {
+          areas: dumpBench,
+          players: [
+            ...goalies,
+            them('o1', [-1, 30]),
+            them('o2', [6, 32]),
+            them('o3', [-4, 28]),
+            them('o4', [-3, 46]),
+            them('o5', [7, 50]),
+            us('ld', 'LD', [-5, 24]),
+            us('rd', 'RD', [5, 24]),
+            us('c', 'C', [-3, 35.5]),
+            us('lw', 'LW', [-9, 29]),
+            us('rw', 'RW', [8, 35]),
+            us('lw2', 'LW', benchSpots[0]),
+            us('c2', 'C', benchSpots[1]),
+            us('rw2', 'RW', benchSpots[2]),
+          ],
+          puck: [11.6, 57],
+          moves: [
+            { kind: 'skate', team: 'them', path: [[7, 50], [10.4, 55.2]], trim: 1 },
+            { kind: 'skate', path: [[-9, 29], [-12.2, 31.4]], trim: 1.6 },
+            { kind: 'skate', path: [[-3, 35.5], [-12.2, 34]], trim: 1.6 },
+            { kind: 'skate', path: [[8, 35], [-3, 39.5], [-12.2, 36.6]], trim: 1.6 },
+          ],
+        },
+        {
+          areas: dumpBench,
+          players: [
+            ...goalies,
+            them('o1', [-1, 34]),
+            them('o2', [6, 36]),
+            them('o3', [-4, 31]),
+            them('o4', [-4, 50]),
+            them('o5', [8, 56.6]),
+            us('ld', 'LD', [-5, 28]),
+            us('rd', 'RD', [5, 28]),
+            us('lw', 'LW', benchSpots[0]),
+            us('c', 'C', benchSpots[1]),
+            us('rw', 'RW', benchSpots[2]),
+            us('lw2', 'LW', [-10.4, 39]),
+            us('c2', 'C', [-7.8, 36]),
+            us('rw2', 'RW', [-4.6, 40]),
+          ],
+          puck: [7.4, 57.2],
+          moves: [
+            { kind: 'skate', path: [[-10.4, 39], [-9, 46]], trim: 0.2 },
+            { kind: 'skate', path: [[-7.8, 36], [-1, 44]], trim: 0.2 },
+            { kind: 'skate', path: [[-4.6, 40], [6, 47]], trim: 0.2 },
+          ],
+        },
+      ] satisfies Scene[]
+    ).map(secondPeriod),
+  },
 } satisfies Record<string, Sequence>;
 
 export type SequenceId = keyof typeof geometry;
@@ -709,21 +817,21 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Wir haben den Puck',
-        text: 'K ist König. Er passt zum Satelliten tief an der Bande. Aber ein Gegner steht im Passweg.',
+        text: 'K ist König und passt zum Satelliten tief an der Bande. Aber eins von den anderen steht im Passweg.',
       },
       {
         title: 'Puck verloren – neue Rollen',
-        text: 'Der Gegner fängt den Pass ab. Sofort hat jeder eine neue Rolle: Der frühere König ist am nächsten und schon zwischen Puck und unserem Tor. Er wird Jäger (J). Alle anderen werden Wächter (W).',
+        text: 'Die anderen fangen den Pass ab. Sofort haben alle eine neue Rolle: Der frühere König ist am nächsten und schon zwischen Puck und unserem Tor und wird Jäger (J). Alle anderen werden Wächter (W).',
       },
       {
         title: 'Alle auf der Abwehrseite',
-        text: 'Der Jäger macht Druck, der Schläger zeigt zum Puck. Jeder Wächter steht zwischen einem Gegner und unserem Tor. Unser Tor liegt unten, hinter der blauen Linie.',
+        text: 'Der Jäger macht Druck, der Schläger zeigt zum Puck. Die Wächter stehen jeweils zwischen einem Gegenüber und unserem Tor. Unser Tor liegt unten, hinter der blauen Linie.',
       },
     ],
     labels: [
-      'Angriffsdrittel. Der König hat den Puck an der linken Bande und passt tief zur Bande. Ein Gegner steht im Passweg.',
-      'Der Gegner hat den Pass abgefangen. Unsere Spieler heissen jetzt J und W. Pfeile zeigen, wie jeder zwischen einen Gegner und unser Tor fährt.',
-      'Der Jäger steht vor dem Gegner mit Puck, Schläger zum Puck. Die vier Wächter stehen jeweils zwischen einem Gegner und der blauen Linie.',
+      'Angriffsdrittel. Der König hat den Puck an der linken Bande und passt tief zur Bande. Eins von den anderen steht im Passweg.',
+      'Die anderen haben den Pass abgefangen. Bei uns heissen jetzt alle J oder W. Pfeile zeigen, wie alle zwischen ein Gegenüber und unser Tor fahren.',
+      'Der Jäger steht vor dem Gegenüber mit dem Puck, Schläger zum Puck. Die vier Wächter stehen jeweils zwischen einem Gegenüber und der blauen Linie.',
     ],
   },
   scan: {
@@ -731,39 +839,39 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Über die Schulter',
-        text: 'Der Verteidiger hat den Puck hinter dem Tor. Der Flügel an der Bande schaut zuerst über die Schulter zur Mitte. Er sieht: Ein Gegner kommt auf ihn zu. Der Center in der Mitte ist frei.',
+        text: 'Der Verteidiger hat den Puck hinter dem Tor. Die Flügelspielerin an der Bande schaut zuerst über die Schulter zur Mitte und sieht: Eins von den anderen kommt direkt auf sie zu. Der Center in der Mitte ist frei.',
       },
       {
         title: 'Zum Puck',
-        text: 'Dann schaut er zum Puck und nimmt den Pass an. Er weiss jetzt schon, wo der Gegner ist und wer frei ist.',
+        text: 'Dann schaut sie zum Puck und nimmt den Pass an. Jetzt weiss sie schon, wo ihr Gegenüber ist und wer frei ist.',
       },
       {
         title: 'Sofort spielen',
-        text: 'Er ist jetzt König. Er muss nicht mehr suchen: Er spielt den Puck sofort zum freien Center, bevor der Gegner da ist.',
+        text: 'Die Flügelspielerin ist jetzt König und muss nicht mehr suchen: Der Puck geht sofort zum freien Center, bevor das Gegenüber da ist.',
       },
       {
         title: 'Weiter geht’s',
-        text: 'Der Center ist der neue König und fährt mit Tempo aus der Zone. Der Gegner kommt zu spät.',
+        text: 'Der Center ist der neue König und fährt mit Tempo aus der Zone. Das Gegenüber kommt zu spät.',
       },
     ],
     labels: [
-      'Eigenes Drittel. Der Verteidiger hat den Puck hinter dem Tor. Ein blauer Fächer zeigt, dass der Flügel an der linken Bande über die Schulter zur Mitte schaut. Ein Gegner fährt auf ihn zu, der Center ist frei.',
-      'Der blaue Fächer zeigt jetzt vom Flügel zum Puck. Der Verteidiger passt zu ihm.',
-      'Der Flügel hat den Puck und schaut zum Center. Er passt sofort zum Center. Der Gegner ist noch ein paar Meter weg.',
+      'Eigenes Drittel. Der Verteidiger hat den Puck hinter dem Tor. Ein blauer Fächer zeigt, dass die Flügelspielerin an der linken Bande über die Schulter zur Mitte schaut. Eins von den anderen fährt auf sie zu, der Center ist frei.',
+      'Der blaue Fächer zeigt jetzt von der Flügelspielerin zum Puck. Der Verteidiger passt zu ihr.',
+      'Die Flügelspielerin hat den Puck, schaut zum Center und passt sofort. Das Gegenüber ist noch ein paar Meter weg.',
       'Der Center hat den Puck und fährt Richtung blaue Linie.',
     ],
-    note: 'Der blaue Fächer zeigt, wohin der Spieler gerade schaut.',
+    note: 'Der blaue Fächer zeigt, wohin die Flügelspielerin gerade schaut.',
   },
   'pass-shadow': {
     caption: 'Raus aus dem Passschatten',
     steps: [
       {
         title: 'Versteckt',
-        text: 'Der Satellit steht hinter einem Gegner. Die graue Fläche ist der Passschatten: Jeder Pass dorthin trifft den Gegner. Für den König ist der Satellit unsichtbar.',
+        text: 'Der Satellit steht hinter einem von den anderen. Die graue Fläche ist der Passschatten: Jeder Pass dorthin trifft das Gegenüber. Für den König ist der Satellit unsichtbar.',
       },
       {
         title: 'Zwei Schritte',
-        text: 'Der Satellit fährt ein paar Meter zur Seite, bis er die Kelle des Königs sieht.',
+        text: 'Der Satellit fährt ein paar Meter zur Seite, bis die Kelle des Königs zu sehen ist.',
       },
       {
         title: 'Frei',
@@ -771,9 +879,9 @@ const de: Record<SequenceId, SequenceText> = {
       },
     ],
     labels: [
-      'Angriffsdrittel. Der König hat den Puck an der linken Bande. Ein Gegner steht im Slot. Direkt dahinter, in einer grauen Fläche, steht ein Satellit.',
+      'Angriffsdrittel. Der König hat den Puck an der linken Bande. Eins von den anderen steht im Slot. Direkt dahinter, in einer grauen Fläche, steht ein Satellit.',
       'Der Satellit fährt aus der grauen Fläche nach oben in den hohen Slot.',
-      'Der Satellit steht frei im hohen Slot. Der König passt zu ihm, am Gegner vorbei.',
+      'Der Satellit steht frei im hohen Slot. Der König passt zum Satelliten, am Gegenüber vorbei.',
     ],
   },
   'net-drive': {
@@ -781,21 +889,21 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Der Satellit fährt los',
-        text: 'Der König hat den Puck an der Bande. Im Slot steht ein Gegner bei unserem Satelliten. Der Satellit fährt zum Tor, der Gegner muss mit.',
+        text: 'Der König hat den Puck an der Bande. Im Slot steht unser Satellit, das Gegenüber dicht dabei. Der Satellit fährt zum Tor, das Gegenüber muss mit.',
       },
       {
         title: 'Platz im Slot',
-        text: 'Der Gegner steht jetzt vor dem Tor. Im Slot ist freies Eis (grün). Der König fährt mit dem Puck hinein.',
+        text: 'Das Gegenüber steht jetzt vor dem Tor. Im Slot ist freies Eis (grün). Der König fährt mit dem Puck hinein.',
       },
       {
         title: 'Schuss',
-        text: 'Der König schiesst aus dem Slot. Der Satellit vor dem Tor nimmt dem Torhüter die Sicht und ist bereit für den Abpraller.',
+        text: 'Der König schiesst aus dem Slot. Der Satellit vor dem Tor nimmt der Torhüterin die Sicht und ist bereit für den Abpraller.',
       },
     ],
     labels: [
-      'Angriffsdrittel. Der König hat den Puck an der linken Bande. Ein Satellit im Slot fährt zum Tor, sein Gegner folgt ihm.',
-      'Der Satellit und sein Gegner stehen vor dem Tor. Im Slot ist eine grüne Fläche frei. Der König fährt mit dem Puck hinein.',
-      'Der König schiesst aus dem Slot aufs Tor. Der Satellit steht vor dem Torhüter.',
+      'Angriffsdrittel. Der König hat den Puck an der linken Bande. Ein Satellit im Slot fährt zum Tor, das Gegenüber folgt.',
+      'Der Satellit und das Gegenüber stehen vor dem Tor. Im Slot ist eine grüne Fläche frei. Der König fährt mit dem Puck hinein.',
+      'Der König schiesst aus dem Slot aufs Tor. Der Satellit steht vor der Torhüterin.',
     ],
   },
   'guard-tight': {
@@ -803,11 +911,11 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Weit vom Tor: etwas Abstand',
-        text: 'Der Gegner ohne Puck ist hoch im Slot. Der Wächter steht zwischen ihm und dem Tor, mit etwas Abstand. Er sieht den Gegner und den Puck. Jetzt fährt der Gegner zum Tor.',
+        text: 'Das Gegenüber ohne Puck ist hoch im Slot. Der Wächter steht zwischen Gegenüber und Tor, mit etwas Abstand, und sieht Gegenüber und Puck. Jetzt fährt das Gegenüber zum Tor.',
       },
       {
         title: 'Vor dem Tor: ganz nah',
-        text: 'Vor dem Tor ist der Gegner gefährlich. Der Wächter bleibt ganz nah bei ihm, auf der Abwehrseite. Der Schläger liegt im Passweg. Der Gegner an der Bande versucht den Pass.',
+        text: 'Vor dem Tor ist das Gegenüber gefährlich. Der Wächter bleibt ganz nah dran, auf der Abwehrseite. Der Schläger liegt im Passweg. An der Bande versuchen die anderen den Pass.',
       },
       {
         title: 'Pass abgefangen',
@@ -815,8 +923,8 @@ const de: Record<SequenceId, SequenceText> = {
       },
     ],
     labels: [
-      'Eigenes Drittel. Ein Gegner mit Puck an der rechten Bande, der Jäger vor ihm. Ein Gegner ohne Puck im hohen Slot fährt zum Tor. Der Wächter fährt mit, ein blauer Fächer zeigt, dass er Gegner und Puck im Blick hat.',
-      'Der Gegner steht vor dem Tor, der Wächter direkt daneben auf der Torseite, Schläger im Passweg. Der Gegner an der Bande passt zum Tor.',
+      'Eigenes Drittel. Eins von den anderen hat den Puck an der rechten Bande, der Jäger steht davor. Ein zweites fährt ohne Puck aus dem hohen Slot zum Tor. Der Wächter fährt mit, ein blauer Fächer zeigt, dass der Wächter Gegenüber und Puck im Blick hat.',
+      'Das Gegenüber steht vor dem Tor, der Wächter direkt daneben auf der Torseite, Schläger im Passweg. Von der Bande kommt der Pass zum Tor.',
       'Der Puck liegt beim Schläger des Wächters vor dem Tor.',
     ],
   },
@@ -825,11 +933,11 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Der Pass quer',
-        text: 'Der Torhüter steht auf der Linie zum Puck. Der Gegner passt quer auf die andere Seite.',
+        text: 'Der Torhüter steht auf der Linie zum Puck. Die anderen passen quer auf die andere Seite.',
       },
       {
         title: 'T-Push',
-        text: 'Der Torhüter schaut dem Puck nach und stösst sich mit einem T-Push hinüber. Er steht wieder auf der Linie zum Puck, bevor der Schuss kommt.',
+        text: 'Der Torhüter schaut dem Puck nach und stösst sich mit einem T-Push hinüber. So steht er wieder auf der Linie zum Puck, bevor der Schuss kommt.',
       },
       {
         title: 'Abpraller',
@@ -841,37 +949,37 @@ const de: Record<SequenceId, SequenceText> = {
       },
     ],
     labels: [
-      'Eigene Zone. Ein Gegner mit Puck links vor dem Bullykreis, ein zweiter Gegner rechts. Unser linker Verteidiger steht zwischen dem linken Gegner und dem Tor. Der Puckführer passt quer nach rechts.',
-      'Der rechte Gegner hat den Puck. Unser Torhüter ist zur rechten Seite des Tores gerutscht. Der Gegner schiesst auf ihn.',
-      'Der Puck liegt nach dem Schuss links vor dem Tor. Unser Torhüter schaut zum Puck, unser linker Verteidiger fährt hin.',
-      'Unser linker Verteidiger ist beim Puck und spielt ihn in die linke Ecke. Unser Torhüter steht wieder auf der Linie zum Puck.',
+      'Eigene Zone. Eins von den anderen hat den Puck links vor dem Bullykreis, ein zweites steht rechts. Unsere linke Verteidigerin steht zwischen ihrem Gegenüber und dem Tor. Der Puck geht quer nach rechts.',
+      'Rechts haben jetzt die anderen den Puck. Unser Torhüter ist zur rechten Seite des Tores gerutscht. Von dort kommt der Schuss aufs Tor.',
+      'Der Puck liegt nach dem Schuss links vor dem Tor. Unser Torhüter schaut zum Puck, unsere linke Verteidigerin fährt hin.',
+      'Unsere linke Verteidigerin ist beim Puck und spielt ihn in die linke Ecke. Unser Torhüter steht wieder auf der Linie zum Puck.',
     ],
   },
   greeting: {
     caption: 'Vom Aufstellen bis zum ersten Bully',
     steps: [
-      { title: 'Aufstellen und warten', text: 'Beide Mannschaften stehen auf ihrer blauen Linie, mit dem Gesicht zum Gegner. Der Torhüter steht mit in der Reihe. Alle warten, bis die Schiedsrichter in ihrem Halbkreis an der Bande stehen.' },
-      { title: 'Stock hoch, dann klopfen', text: 'Wenn die Schiedsrichter bereit sind, heben alle den Stock in Richtung Gegner. So grüsst man die andere Mannschaft. Danach klopfen alle mit dem Stock aufs Eis. Wann, zeigt der Kapitän: Die beiden Kapitäne haben es vorher abgemacht.' },
+      { title: 'Aufstellen und warten', text: 'Beide Mannschaften stehen auf ihrer blauen Linie, mit dem Gesicht zur anderen Mannschaft. Der Torhüter steht mit in der Reihe. Alle warten, bis die Schiedsrichter in ihrem Halbkreis an der Bande stehen.' },
+      { title: 'Stock hoch, dann klopfen', text: 'Wenn die Schiedsrichter bereit sind, heben alle den Stock in Richtung der anderen Mannschaft. So grüsst man die andere Mannschaft. Danach klopfen alle mit dem Stock aufs Eis. Wann, zeigt der Kapitän: Die beiden Kapitäne haben es vorher abgemacht.' },
       { title: 'Die Kapitäne fahren los', text: 'Nur die beiden Kapitäne (C) fahren zur Mitte. Alle anderen bleiben ruhig auf der blauen Linie stehen.' },
       { title: 'Handschlag in der Mitte', text: 'Die Kapitäne geben sich die Hand. Dann fahren sie zusammen zu den Schiedsrichtern.' },
-      { title: 'Handschlag mit den Schiedsrichtern', text: 'Die Kapitäne geben beiden Schiedsrichtern die Hand. Dann fährt jeder Kapitän zur Bank der anderen Mannschaft.' },
-      { title: 'Handschlag mit den Trainern', text: 'Jeder Kapitän gibt den Trainern der anderen Mannschaft die Hand und sagt: „Gutes Spiel!“ Dann fährt er zurück zur eigenen Mannschaft.' },
-      { title: 'Faust an Faust', text: 'Der Kapitän fährt an der Reihe entlang und gibt jedem Mitspieler einen Fist Bump: Faust an Faust, mit Handschuh.' },
+      { title: 'Handschlag mit den Schiedsrichtern', text: 'Die Kapitäne geben beiden Schiedsrichtern die Hand. Dann fahren beide Kapitäne zur Bank der anderen Mannschaft.' },
+      { title: 'Handschlag mit dem Trainerteam', text: 'Beide Kapitäne geben dem Trainerteam der anderen Mannschaft die Hand und sagen: „Gutes Spiel!“ Dann fahren sie zurück zur eigenen Mannschaft.' },
+      { title: 'Faust an Faust', text: 'Der Kapitän fährt an der Reihe entlang und gibt allen aus dem Team einen Fist Bump: Faust an Faust, mit Handschuh.' },
       { title: 'Ab zum eigenen Tor', text: 'Jetzt fährt die ganze Mannschaft zum eigenen Tor.' },
       { title: 'Der Kreis am Tor', text: 'Alle stehen eng im Kreis um den Torhüter. Es gibt ein paar letzte Worte, dann kommt der Teamruf. Danach bleiben die erste Reihe und der erste Torhüter auf dem Eis. Alle anderen fahren auf die Bank.' },
-      { title: 'Türen zu, Spiel los', text: 'Die erste Reihe stellt sich zum Bully in der Mitte auf. Sind alle Türen der Spielerbänke zu, wirft der Schiedsrichter den Puck ein. Das Spiel beginnt.' },
+      { title: 'Türen zu, Spiel los', text: 'Die erste Reihe stellt sich zum Bully in der Mitte auf. Sind alle Türen der Spielerbänke zu, wirft die Schiedsrichterin den Puck ein. Das Spiel beginnt.' },
     ],
     labels: [
-      'Das ganze Eis. Unsere Mannschaft steht unten auf der blauen Linie, die Gegner oben auf ihrer blauen Linie. Beide Kapitäne stehen in der Mitte ihrer Reihe. Zwei Schiedsrichter fahren zu ihrem Halbkreis an der rechten Bande. Beide Spielerbänke liegen an der linken Bande.',
-      'Die Schiedsrichter stehen in ihrem Halbkreis. Alle Spieler halten den Stock in Richtung der anderen Mannschaft.',
+      'Das ganze Eis. Unsere Mannschaft steht unten auf der blauen Linie, die andere Mannschaft oben auf ihrer blauen Linie. Beide Kapitäne stehen in der Mitte ihrer Reihe. Eine Schiedsrichterin und ein Schiedsrichter fahren zu ihrem Halbkreis an der rechten Bande. Beide Spielerbänke liegen an der linken Bande.',
+      'Die Schiedsrichter stehen in ihrem Halbkreis. Alle halten den Stock in Richtung der anderen Mannschaft.',
       'Die beiden Kapitäne fahren von ihrer blauen Linie zum Mittelkreis.',
       'Die Kapitäne stehen im Mittelkreis nebeneinander und fahren zu den Schiedsrichtern an der rechten Bande.',
-      'Die Kapitäne stehen bei den Schiedsrichtern. Pfeile zeigen, wie jeder Kapitän zur Bank der anderen Mannschaft fährt.',
-      'Unser Kapitän steht bei den Trainern der Gegner, der gegnerische Kapitän bei unseren Trainern.',
-      'Jeder Kapitän fährt vor seiner Reihe von links nach rechts an allen Mitspielern vorbei.',
+      'Die Kapitäne stehen bei den Schiedsrichtern. Pfeile zeigen, wie beide Kapitäne zur Bank der anderen Mannschaft fahren.',
+      'Unser Kapitän steht beim Trainerteam der anderen Mannschaft, der andere Kapitän bei unserem Trainerteam.',
+      'Beide Kapitäne fahren vor der eigenen Reihe von links nach rechts an allen aus dem Team vorbei.',
       'Pfeile zeigen, wie jede Mannschaft zu ihrem eigenen Tor fährt.',
-      'Jede Mannschaft steht im Kreis um ihren Torhüter vor dem eigenen Tor. Zwei Spieler jeder Mannschaft fahren zur Bank.',
-      'Bully im Mittelkreis: Die beiden Center stehen sich gegenüber, der Schiedsrichter steht daneben. Je fünf Spieler und ein Torhüter sind auf dem Eis, die anderen auf der Bank.',
+      'Jede Mannschaft steht im Kreis um ihren Torhüter vor dem eigenen Tor. Aus jeder Mannschaft fahren zwei zur Bank.',
+      'Bully im Mittelkreis: Die beiden Center stehen sich gegenüber, die Schiedsrichterin steht daneben. Pro Mannschaft sind sechs auf dem Eis, mit Torhüter; die anderen sind auf der Bank.',
     ],
   },
   'bubble-pass': {
@@ -879,11 +987,11 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Eingeklemmt',
-        text: 'K hat den Puck an der Bande, zwei aus dem anderen Team sind nah. Die Blase ist winzig. Auf der anderen Seite steht S ganz frei. K passt.',
+        text: 'K hat den Puck an der Bande, zwei von den anderen sind nah. Die Blase ist winzig. Auf der anderen Seite steht S ganz frei. K passt.',
       },
       {
         title: 'Die Blase wandert mit',
-        text: 'Jetzt hat S den Puck – und eine grosse Blase. Das andere Team muss quer über das Eis. Der Pass war viel schneller, als jemand fahren kann.',
+        text: 'Jetzt hat S den Puck – und eine grosse Blase. Die anderen müssen quer über das Eis. Der Pass war viel schneller, als jemand fahren kann.',
       },
       {
         title: 'Freie Bahn',
@@ -891,9 +999,9 @@ const de: Record<SequenceId, SequenceText> = {
       },
     ],
     labels: [
-      'Angriffszone. K hat den Puck an der linken Bande, zwei aus dem anderen Team stehen nah bei K. Der Kreis um K ist klein. Ein gestrichelter Pfeil zeigt den Pass quer übers Eis zu S auf der rechten Seite.',
-      'S hat den Puck, der Kreis ist jetzt gross und um S. Jemand aus dem anderen Team fährt von links herüber, S fährt Richtung Tor.',
-      'S steht mit dem Puck vor dem Tor und schiesst. Das andere Team ist noch ein paar Meter weg.',
+      'Angriffszone. K hat den Puck an der linken Bande, zwei von den anderen stehen nah bei K. Der Kreis um K ist klein. Ein gestrichelter Pfeil zeigt den Pass quer übers Eis zu S auf der rechten Seite.',
+      'S hat den Puck, der Kreis ist jetzt gross und um S. Eins von den anderen fährt von links herüber, S fährt Richtung Tor.',
+      'S steht mit dem Puck vor dem Tor und schiesst. Die anderen sind noch ein paar Meter weg.',
     ],
   },
   'bubble-shrink': {
@@ -901,11 +1009,11 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Grosse Blase',
-        text: 'Das andere Team kommt mit dem Puck über die blaue Linie. Der Jäger ist weit weg: Mit dem Puck bleiben etwa 2 Sekunden zum Schauen und für den Weg zum Tor. Der Jäger fährt schnell auf den Puck zu.',
+        text: 'Eine Stürmerin von den anderen kommt mit dem Puck über die blaue Linie. Der Jäger ist weit weg: Sie hat etwa 2 Sekunden zum Schauen und für den Weg zum Tor. Der Jäger fährt schnell auf den Puck zu.',
       },
       {
         title: 'Die Blase schrumpft',
-        text: 'Der Jäger ist nah dran, auf der Abwehrseite und etwas innen. Der Schläger zeigt zum Puck. Jetzt bleibt weniger als eine Sekunde – und nur der Weg nach aussen.',
+        text: 'Der Jäger ist nah dran, auf der Abwehrseite und etwas innen. Der Schläger zeigt zum Puck. Jetzt bleibt ihr weniger als eine Sekunde – und nur der Weg nach aussen.',
       },
       {
         title: 'Die Bande hilft',
@@ -913,8 +1021,8 @@ const de: Record<SequenceId, SequenceText> = {
       },
     ],
     labels: [
-      'Eigenes Drittel. Jemand aus dem anderen Team hat den Puck an der linken blauen Linie, mit einem grossen Kreis drumherum. Der Jäger fährt entgegen.',
-      'Der Jäger steht nah vor dem Puck, etwas zur Mitte hin, Schläger zum Puck. Der Kreis ist klein. Mit dem Puck geht es nach aussen zur Bande.',
+      'Eigenes Drittel. Eine gegnerische Stürmerin hat den Puck an der linken blauen Linie, mit einem grossen Kreis drumherum. Der Jäger fährt entgegen.',
+      'Der Jäger steht nah vor dem Puck, etwas zur Mitte hin, Schläger zum Puck. Der Kreis ist klein. Die Stürmerin weicht nach aussen zur Bande aus.',
       'Der Puck ist an der linken Bande neben dem Bullykreis, mit einem kleinen Kreis. Der Jäger steht innen daneben, Schläger zum Puck.',
     ],
     note: 'Der Jäger bremst kurz vorher ab. Wer mit vollem Tempo hineinfährt, wird leicht umfahren – und lässt hinter sich viel Platz.',
@@ -924,29 +1032,57 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Der Passweg ist offen',
-        text: 'Der Jäger macht Druck auf den Puck. Die Blase ist klein. Aber auf der anderen Seite steht jemand aus dem anderen Team frei. Ein Pass dorthin, und dort wäre viel Zeit. Der Wächter (W) sieht das.',
+        text: 'Der Jäger macht Druck auf die Stürmerin mit dem Puck. Ihre Blase ist klein. Aber auf der anderen Seite steht ein zweiter Stürmer frei. Ein Pass zu ihm, und er hätte viel Zeit. Der Wächter (W) sieht das.',
       },
       {
         title: 'Schläger in den Passweg',
-        text: 'Der Wächter fährt in den Passweg, bleibt aber zwischen seinem Gegenüber und dem Tor. Der Schläger liegt auf dem Eis, genau dort, wo der Pass durch müsste. Dahinter ist der Passschatten: Dort kommt kein Pass an.',
+        text: 'Der Wächter fährt in den Passweg, bleibt aber zwischen dem Stürmer und dem Tor. Der Schläger liegt auf dem Eis, genau dort, wo der Pass durch müsste. Dahinter ist der Passschatten: Dort kommt kein Pass an.',
       },
       {
         title: 'Kein Ausweg',
-        text: 'Mit dem Puck findet sich kein Pass mehr. Der Jäger drängt an die Bande. Die Blase ist fast weg.',
+        text: 'Die Stürmerin findet keinen Pass mehr. Der Jäger drängt sie an die Bande. Ihre Blase ist fast weg.',
       },
     ],
     labels: [
-      'Eigenes Drittel. Das andere Team hat den Puck an der linken Bande, der Jäger steht nah davor. Eine gepunktete Linie zeigt den freien Passweg zu jemandem aus dem anderen Team beim rechten Bullypunkt. Der Wächter fährt vom Tor nach oben.',
-      'Der Wächter steht rechts vor seinem Gegenüber, Schläger in den Passweg. Hinter dem Schläger ist ein grauer Passschatten, das Gegenüber steht darin.',
+      'Eigenes Drittel. Eine gegnerische Stürmerin hat den Puck an der linken Bande, der Jäger steht nah davor. Eine gepunktete Linie zeigt den freien Passweg zu einem zweiten Stürmer beim rechten Bullypunkt. Der Wächter fährt vom Tor nach oben.',
+      'Der Wächter steht rechts vor dem Stürmer, Schläger in den Passweg. Hinter dem Schläger ist ein grauer Passschatten, der Stürmer steht darin.',
       'Der Puck ist an der linken Bande, der Jäger daneben, Schläger zum Puck. Der Kreis um den Puck ist sehr klein. Der Passweg nach rechts bleibt zu.',
     ],
+  },
+  'dump-change': {
+    caption: 'Tief spielen und wechseln',
+    steps: [
+      {
+        title: 'Endlich der Puck',
+        text: 'Wir waren lange in der eigenen Zone. Alle sind müde. Jetzt hat C den Puck und fährt los, aber nicht weit: nur bis über die rote Linie.',
+      },
+      {
+        title: 'Über Rot, in die Ecke',
+        text: 'C ist über der roten Mittellinie. Von hier ist ein weiter Puck kein Icing. C schiesst ihn tief in die Ecke, an der Torhüterin vorbei.',
+      },
+      {
+        title: 'Ab zur Bank',
+        text: 'Die anderen müssen den Puck erst hinter ihrem Tor holen. Diese Zeit nutzen wir: Die drei müden Stürmer fahren mit Tempo zur Bank. LD und RD sichern hinten ab.',
+      },
+      {
+        title: 'Frische Beine',
+        text: 'Kaum ist ein müder Stürmer an der Bande, springt ein frischer aufs Eis. Die neue Reihe hat volle Kraft und kann sofort Druck machen.',
+      },
+    ],
+    labels: [
+      'Das ganze Eis im 2. Drittel, unser Tor oben, unsere Bank an der linken Bande in der gegnerischen Hälfte. Drei frische Stürmer warten an der Bank. In unserer Zone hat C den Puck, um ihn herum drei von den anderen. Ein Pfeil zeigt: C fährt mit dem Puck nach unten bis zur roten Mittellinie.',
+      'C steht knapp hinter der roten Mittellinie. Ein gestrichelter Pfeil zeigt den Schuss tief in eine Ecke der gegnerischen Zone. Die anderen Stürmer von uns sind in der neutralen Zone, LD und RD an unserer blauen Linie.',
+      'Der Puck liegt in der Ecke neben dem gegnerischen Tor, ein Verteidiger der anderen fährt hin. Pfeile zeigen: Unsere drei Stürmer fahren zur Bank, gleich neben ihnen.',
+      'Die drei müden Stürmer sind an der Bank. Drei frische Stürmer sind auf dem Eis und fahren in die gegnerische Zone. LD und RD stehen an der roten Mittellinie.',
+    ],
+    note: 'Nach einem tiefen Puck dürfen auch beide Verteidiger wechseln: Bis die anderen wieder vor unserem Tor sind, dauert es lange. Wie immer gilt: rein über die Bande, raus durch die Tür.',
   },
   delay: {
     caption: 'Verzögern: Zeit für das Team',
     steps: [
       {
         title: 'Allein vorne',
-        text: 'K kommt mit dem Puck allein in die Angriffszone. Drei aus dem anderen Team warten, der Rest von unserem Team ist noch an der blauen Linie. K fährt nicht allein in die Abwehr, sondern dreht an der Bande ab.',
+        text: 'K kommt mit dem Puck allein in die Angriffszone. Drei von den anderen warten, der Rest von uns ist noch an der blauen Linie. K fährt nicht allein in die Abwehr, sondern dreht an der Bande ab.',
       },
       {
         title: 'Puck behalten',
@@ -954,13 +1090,13 @@ const de: Record<SequenceId, SequenceText> = {
       },
       {
         title: 'Jetzt der Pass',
-        text: 'Beide Satelliten sind da, eine Person oben im Slot, eine am langen Pfosten. Die Blase von K wird klein, aber jetzt braucht K sie nicht mehr: Der Pass geht in den Slot.',
+        text: 'Beide Satelliten sind da: einer oben im Slot, einer am langen Pfosten. Die Blase von K wird klein, aber jetzt braucht K sie nicht mehr: Der Pass geht in den Slot.',
       },
     ],
     labels: [
-      'Angriffszone. K fährt mit dem Puck an der linken Seite in die Zone. Drei aus dem anderen Team sind vor dem Tor, eine Person fährt auf K zu. Zwei aus unserem Team sind noch an der blauen Linie. Pfeile zeigen: K fährt zur Bande und dreht nach oben ab, die beiden fahren nach.',
-      'K steht an der linken Bande mit dem Gesicht zum Spiel und wird verfolgt. Die beiden aus unserem Team sind in der Zone und fahren weiter: eine Person in den Slot, eine zum rechten Pfosten.',
-      'Eine Person aus unserem Team steht oben im Slot, eine rechts am Tor. Das Gegenüber ist nah bei K. K passt quer in den Slot.',
+      'Angriffszone. K fährt mit dem Puck an der linken Seite in die Zone. Drei von den anderen sind vor dem Tor, eins fährt auf K zu. Zwei von uns sind noch an der blauen Linie. Pfeile zeigen: K fährt zur Bande und dreht nach oben ab, die beiden fahren nach.',
+      'K steht an der linken Bande mit dem Gesicht zum Spiel und wird verfolgt. Die beiden Satelliten sind in der Zone und fahren weiter: einer in den Slot, einer zum rechten Pfosten.',
+      'Ein Satellit steht oben im Slot, einer rechts am Tor. Das Gegenüber ist nah bei K. K passt quer in den Slot.',
     ],
   },
   'split-d': {
@@ -968,11 +1104,11 @@ const de: Record<SequenceId, SequenceText> = {
     steps: [
       {
         title: 'Zwei gegen zwei',
-        text: 'K kommt mit dem Puck über die blaue Linie, S fährt in der Mitte mit. Zwei aus dem anderen Team verteidigen. S fährt ohne Puck zwischen den beiden hindurch, direkt zum Tor.',
+        text: 'K kommt mit dem Puck über die blaue Linie, S fährt in der Mitte mit. Bei den anderen verteidigen eine Verteidigerin und ein Verteidiger. S fährt ohne Puck zwischen den beiden hindurch, direkt zum Tor.',
       },
       {
         title: 'Die Abwehr muss entscheiden',
-        text: 'Wer nimmt S? Eine Person fährt mit S zum Tor, die andere bleibt in der Mitte. Bei K ist niemand mehr. Die Blase von K ist gross.',
+        text: 'Wer nimmt S? Die Verteidigerin fährt mit S zum Tor, der Verteidiger bleibt in der Mitte. Bei K ist niemand mehr. Die Blase von K ist gross.',
       },
       {
         title: 'Platz für den Schuss',
@@ -980,8 +1116,8 @@ const de: Record<SequenceId, SequenceText> = {
       },
     ],
     labels: [
-      'Angriffszone. K kommt mit dem Puck an der linken Seite über die blaue Linie, S in der Mitte. Zwei aus dem anderen Team stehen vor den Bullykreisen. Ein Pfeil zeigt, wie S zwischen den beiden hindurch zum Tor fährt.',
-      'S steht vor dem Tor, eine Person aus dem anderen Team ist mitgefahren, die andere steht rechts davon. K ist links allein, mit einem grossen Kreis.',
+      'Angriffszone. K kommt mit dem Puck an der linken Seite über die blaue Linie, S in der Mitte. Verteidigerin und Verteidiger der anderen stehen vor den Bullykreisen. Ein Pfeil zeigt, wie S zwischen den beiden hindurch zum Tor fährt.',
+      'S steht vor dem Tor, die Verteidigerin ist mitgefahren, der Verteidiger steht rechts davon. K ist links allein, mit einem grossen Kreis.',
       'K steht links neben dem Bullykreis und schiesst aufs Tor. S steht vor dem Tor.',
     ],
     note: 'Bleiben beide bei K, ist S vor dem Tor frei. Dann kommt der Pass zu S.',
@@ -994,11 +1130,11 @@ const en: typeof de = {
     steps: [
       {
         title: 'We have the puck',
-        text: 'K is the König. He passes to the Satellit low on the boards. But an opponent is in the passing lane.',
+        text: 'K is the König and passes to the Satellit low on the boards. But an opponent is in the passing lane.',
       },
       {
         title: 'Puck lost – new roles',
-        text: 'The opponent picks off the pass. Straight away everyone has a new role: the former König is closest and already between the puck and our goal. He becomes the Jäger (J). Everyone else becomes a Wächter (W).',
+        text: 'The opponent picks off the pass. Straight away everyone has a new role: the former König is closest and already between the puck and our goal, and becomes the Jäger (J). Everyone else becomes a Wächter (W).',
       },
       {
         title: 'Everyone on the defensive side',
@@ -1016,15 +1152,15 @@ const en: typeof de = {
     steps: [
       {
         title: 'Over the shoulder',
-        text: 'The defender has the puck behind the goal. The winger on the boards first looks over his shoulder towards the middle. He sees: an opponent is coming at him. The centre in the middle is open.',
+        text: 'The defender has the puck behind the goal. The winger on the boards first looks over their shoulder towards the middle and sees: an opponent is coming straight at them. The centre in the middle is open.',
       },
       {
         title: 'To the puck',
-        text: 'Then he looks at the puck and takes the pass. He already knows where the opponent is and who is open.',
+        text: 'Then the winger looks at the puck and takes the pass, already knowing where the opponent is and who is open.',
       },
       {
         title: 'Play it straight away',
-        text: 'Now he is the König. He doesn’t need to search: he plays the puck straight to the open centre, before the opponent gets there.',
+        text: 'Now the winger is the König and doesn’t need to search: the puck goes straight to the open centre, before the opponent gets there.',
       },
       {
         title: 'On we go',
@@ -1032,9 +1168,9 @@ const en: typeof de = {
       },
     ],
     labels: [
-      'Our zone. The defender has the puck behind the goal. A blue fan shows the winger on the left boards looking over his shoulder towards the middle. An opponent is skating at him, the centre is open.',
-      'The blue fan now points from the winger to the puck. The defender passes to him.',
-      'The winger has the puck and looks at the centre. He passes to the centre straight away. The opponent is still a few metres away.',
+      'Our zone. The defender has the puck behind the goal. A blue fan shows the winger on the left boards looking over their shoulder towards the middle. An opponent is skating at them, the centre is open.',
+      'The blue fan now points from the winger to the puck. The defender passes to the winger.',
+      'The winger has the puck, looks at the centre and passes straight away. The opponent is still a few metres away.',
       'The centre has the puck and skates towards the blue line.',
     ],
     note: 'The blue fan shows where the player is looking.',
@@ -1048,7 +1184,7 @@ const en: typeof de = {
       },
       {
         title: 'A couple of strides',
-        text: 'The Satellit skates a few metres to the side, until he can see the König’s blade.',
+        text: 'The Satellit skates a few metres to the side, until the König’s blade comes into view.',
       },
       {
         title: 'Open',
@@ -1056,9 +1192,9 @@ const en: typeof de = {
       },
     ],
     labels: [
-      'Attacking zone. The König has the puck on the left boards. An opponent stands in the slot. Right behind him, in a grey area, stands a Satellit.',
+      'Attacking zone. The König has the puck on the left boards. An opponent stands in the slot. Right behind that opponent, in a grey area, stands a Satellit.',
       'The Satellit skates out of the grey area up into the high slot.',
-      'The Satellit is open in the high slot. The König passes to him, past the opponent.',
+      'The Satellit is open in the high slot. The König passes to the Satellit, past the opponent.',
     ],
   },
   'net-drive': {
@@ -1078,8 +1214,8 @@ const en: typeof de = {
       },
     ],
     labels: [
-      'Attacking zone. The König has the puck on the left boards. A Satellit in the slot drives to the net, his opponent follows.',
-      'The Satellit and his opponent are in front of the goal. A green area in the slot is open. The König skates into it with the puck.',
+      'Attacking zone. The König has the puck on the left boards. A Satellit in the slot drives to the net, and the opponent follows.',
+      'The Satellit and the opponent are in front of the goal. A green area in the slot is open. The König skates into it with the puck.',
       'The König shoots from the slot. The Satellit stands in front of the goalie.',
     ],
   },
@@ -1088,11 +1224,11 @@ const en: typeof de = {
     steps: [
       {
         title: 'Far from the goal: some space',
-        text: 'The opponent without the puck is high in the slot. The Wächter stands between him and the goal, with some space. He can see the opponent and the puck. Now the opponent skates to the goal.',
+        text: 'The opponent without the puck is high in the slot. The Wächter stands between the opponent and the goal, with some space, and can see both the opponent and the puck. Now the opponent skates to the goal.',
       },
       {
         title: 'In front of the goal: very close',
-        text: 'In front of the goal the opponent is dangerous. The Wächter stays very close to him, on the defensive side. His stick is in the passing lane. The opponent on the boards tries the pass.',
+        text: 'In front of the goal the opponent is dangerous. The Wächter stays very close, on the defensive side, stick in the passing lane. The opponent on the boards tries the pass.',
       },
       {
         title: 'Pass picked off',
@@ -1100,8 +1236,8 @@ const en: typeof de = {
       },
     ],
     labels: [
-      'Our zone. An opponent with the puck on the right boards, the Jäger in front of him. An opponent without the puck in the high slot skates to the goal. The Wächter goes with him; a blue fan shows he can see both the opponent and the puck.',
-      'The opponent is in front of the goal, the Wächter right next to him on the goal side, stick in the passing lane. The opponent on the boards passes towards the goal.',
+      'Our zone. An opponent with the puck on the right boards, the Jäger in front. Another opponent without the puck skates from the high slot to the goal. The Wächter goes along; a blue fan shows the Wächter can see both the opponent and the puck.',
+      'The opponent is in front of the goal, the Wächter right next to them on the goal side, stick in the passing lane. The opponent on the boards passes towards the goal.',
       'The puck lies at the Wächter’s stick in front of the goal.',
     ],
   },
@@ -1225,6 +1361,34 @@ const en: typeof de = {
       'The Wächter stands in front of the opponent on the right, stick in the passing lane. Behind the stick is a grey passing shadow, and the opponent stands in it.',
       'The opponent with the puck is on the left boards, the Jäger next to them, stick to the puck. The circle around the opponent is very small. The lane to the right stays closed.',
     ],
+  },
+  'dump-change': {
+    caption: 'Dump and change',
+    steps: [
+      {
+        title: 'Finally the puck',
+        text: 'We have been stuck in our own zone for a long time. Everyone is tired. Now C has the puck and sets off, but not far: just over the red line.',
+      },
+      {
+        title: 'Over the red line, into the corner',
+        text: 'C is past the centre red line. From here a long puck is not icing. C shoots it deep into the corner, away from the goalie.',
+      },
+      {
+        title: 'Off to the bench',
+        text: 'The opponents first have to fetch the puck from behind their goal. We use that time: the three tired forwards skate hard to the bench. LD and RD cover at the back.',
+      },
+      {
+        title: 'Fresh legs',
+        text: 'As soon as a tired forward reaches the boards, a fresh one jumps on. The new line has full energy and can put on pressure straight away.',
+      },
+    ],
+    labels: [
+      'The whole rink in period 2, our goal at the top, our bench on the left boards in the opponents’ half. Three fresh forwards wait at the bench. In our zone C has the puck, with three opponents around. An arrow shows C carrying the puck down to the centre red line.',
+      'C is just past the centre red line. A dashed arrow shows the shot deep into a corner of the opponents’ zone. Our other forwards are in the neutral zone, LD and RD at our blue line.',
+      'The puck is in the corner next to the opponents’ goal, one of their defenders skates over. Arrows show our three forwards skating to the bench, right next to them.',
+      'The three tired forwards are at the bench. Three fresh forwards are on the ice, skating into the opponents’ zone. LD and RD stand at the centre red line.',
+    ],
+    note: 'After a deep puck, both defenders may change too: it takes a long time before the opponents are back at our goal. As always: on over the boards, off through the door.',
   },
   delay: {
     caption: 'Slowing down: time for the teammates',

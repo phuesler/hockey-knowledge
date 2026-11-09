@@ -20,12 +20,12 @@
     glide: 'Gleiten',
     /** One per grind, same order as `grinds` below. */
     verdicts: [
-      'Sehr tief. Klebt im Eis, bremst stark. Höchstens für sehr leichte Spieler.',
-      'Tief. Viel Kantengriff, dafür merklich langsamer. Leichte Spieler kommen damit zurecht, schwere sinken zu tief ein.',
+      'Sehr tief. Klebt im Eis, bremst stark. Höchstens bei sehr wenig Gewicht.',
+      'Tief. Viel Kantengriff, dafür merklich langsamer. Wer leicht ist, kommt damit zurecht. Wer schwer ist, sinkt zu tief ein.',
       'Der Standard in den meisten Shops. Guter Kompromiss – ein sinnvoller Startpunkt.',
       'Flacher. Läuft spürbar leichter, hält in der Kurve immer noch gut. Passt zu U13-Kindern, die schon schwerer sind und sicher laufen.',
       'Sehr flach. Schnell und leichtläufig, verlangt aber saubere Technik beim Bremsen.',
-      'Fast flach. Sehr wenig Kantengriff. Eher für schwere Spieler oder auf weichem, warmem Eis.',
+      'Fast flach. Sehr wenig Kantengriff. Eher bei viel Gewicht oder auf weichem, warmem Eis.',
     ],
   };
 
